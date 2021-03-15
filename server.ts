@@ -27,12 +27,3 @@ app.use(routes);
 app.listen(port, function () {
   console.log("Server is running on port " + port);
 });
-
-/*function controllerExample(req, res) {
-  const httpRequest = adaptRequest(req);
-  handleExampleRequest(httpRequest)
-    .then(({ headers, statusCode, data }) =>
-      res.set(headers).status(statusCode).send(data)
-    )
-    .catch((e) => res.status(500).end);
-}*/

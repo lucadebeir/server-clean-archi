@@ -19,6 +19,7 @@
     "express-sanitizer": "^1.0.5",
     "mongodb": "^3.6.4",
     "mysql2": "^2.2.5",
+    "sequelize": "^6.5.1",
     "sequelize-typescript": "^2.1.0"
   },
   "devDependencies": {
