@@ -3,12 +3,12 @@ import { Category } from "./Category";
 import { Ingredient } from "./Ingredient";
 
 export default class Recipe {
-  idRecette: number;
-  nomRecette: string;
-  datePublication: Date;
-  nbFavoris: number;
-  nbVues: number;
-  etapes: string;
+  idRecette?: number;
+  nomRecette?: string;
+  datePublication?: Date;
+  nbFavoris?: number;
+  nbVues?: number;
+  etapes?: string;
   nbrePart?: number;
   libellePart?: string;
   tempsPreparation?: Time;

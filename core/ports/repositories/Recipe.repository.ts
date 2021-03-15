@@ -1,6 +1,25 @@
+import { Category } from "../../domain/Category";
+import { Ingredient } from "../../domain/Ingredient";
 import Recipe from "../../domain/Recipe";
 
 export default interface RecipeRepository {
-  findAll(): Promise<Recipe[]>;
+  findAll(order: string): Promise<Recipe[]>;
+  findAllPerToNbView(): Promise<Recipe[]>;
   findById(id: any): Promise<Recipe>;
+
+  getIngredientsById(id: any): Promise<Ingredient[]>;
+  getLatestRecipes(): Promise<Recipe[]>;
+  getMostPopularRecipes(): Promise<Recipe[]>;
+
+  getRecipesOfCategory(id: any): Promise<Recipe[]>;
+  getRecipesOfCategoryPerToNbView(id: any): Promise<Recipe[]>;
+
+  updateNbView(id: any): Promise<string>;
+  deleteById(id: any): Promise<string>;
+
+  create(recipe: Recipe): Promise<Recipe>;
+  insertIngredientsAndCategories(
+    id: any,
+    categories: Category[]
+  ): Promise<Recipe>;
 }

@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
-const db = require("../config/db");
+import Sequelize from "sequelize";
+import db from "../config/db";
 
-module.exports = db.sequelize.define(
+export const RecipeSequelize = db.sequelize.define(
   "recette",
   {
     idRecette: {
