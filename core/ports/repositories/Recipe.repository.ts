@@ -7,7 +7,8 @@ export default interface RecipeRepository {
   findAllPerToNbView(): Promise<Recipe[]>;
   findById(id: any): Promise<Recipe>;
 
-  getIngredientsById(id: any): Promise<Ingredient[]>;
+  getIngredientsByIdRecipe(id: any): Promise<Ingredient[]>;
+  getCategoriesByIdRecipe(id: any): Promise<Category[]>;
   getLatestRecipes(): Promise<Recipe[]>;
   getMostPopularRecipes(): Promise<Recipe[]>;
 

@@ -72,7 +72,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
       });
   }
 
-  getIngredientsById(id: any): Promise<Ingredient[]> {
+  getIngredientsByIdRecipe(id: any): Promise<Ingredient[]> {
     return db.sequelize
       .query(
         "SELECT ingredient.idIngredient, ingredient.nomIngredient, utiliserIngredients.qte, unites.libelleUnite FROM ingredient INNER JOIN recettes INNER JOIN utiliserIngredients INNER JOIN unites WHERE ingredient.idIngredient = utiliserIngredients.idIngredient AND utiliserIngredients.idRecette = ? AND utiliserIngredients.idRecette = recettes.idRecette AND unites.idUnite = utiliserIngredients.idUnite ORDER BY ingredient.nomIngredient",
@@ -83,6 +83,23 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
       )
       .then((resultats) => {
         return resultats;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  getCategoriesByIdRecipe(id: any): Promise<Category[]> {
+    return db.sequelize
+      .query(
+        "SELECT categories.* FROM categories, classerDans WHERE categories.idCategorie = classerDans.idCategorie AND classerDans.idRecette = ?",
+        {
+          replacements: [id],
+          type: QueryTypes.SELECT,
+        }
+      )
+      .then((categories) => {
+        return categories;
       })
       .catch((err) => {
         throw new Error(err);
@@ -128,6 +145,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         throw new Error(err);
       });
   }
+
   getRecipesOfCategory(id: any): Promise<Recipe[]> {
     throw new Error("Method not implemented.");
   }
