@@ -6,36 +6,36 @@ import GetIngredientsByIdRecipeUseCase from "../../../../core/usecases/recipe/Ge
 import GetLatestRecipesUseCase from "../../../../core/usecases/recipe/GetLatestRecipes.usecase";
 import GetMostPopularRecipesUseCase from "../../../../core/usecases/recipe/GetMostPopularRecipes.usecase";
 import GetRecipeByIdUseCase from "../../../../core/usecases/recipe/GetRecipeById.usecase";
-import RepositoryRecipeSQL from "../../../secondaries/mysql/repositories/RepositoryRecipeSQL";
+import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
-export default class Config {
-  public repositoryRecipe: RecipeRepository = new RepositoryRecipeSQL();
+export default class RecipeConfig {
+  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public getAllRecipeUseCase(): GetAllRecipesUseCase {
-    return new GetAllRecipesUseCase(this.repositoryRecipe);
+    return new GetAllRecipesUseCase(this.recipeRepository);
   }
 
   public getAllPerToNbViewUseCase(): GetAllPerToNbViewUseCase {
-    return new GetAllPerToNbViewUseCase(this.repositoryRecipe);
+    return new GetAllPerToNbViewUseCase(this.recipeRepository);
   }
 
   public getRecipeByIdUseCase(): GetRecipeByIdUseCase {
-    return new GetRecipeByIdUseCase(this.repositoryRecipe);
+    return new GetRecipeByIdUseCase(this.recipeRepository);
   }
 
   public getIngredientsByIdRecipeUseCase(): GetIngredientsByIdRecipeUseCase {
-    return new GetIngredientsByIdRecipeUseCase(this.repositoryRecipe);
+    return new GetIngredientsByIdRecipeUseCase(this.recipeRepository);
   }
 
   public getCategoriesByIdRecipeUseCase(): GetCategoriesByIdRecipeUseCase {
-    return new GetCategoriesByIdRecipeUseCase(this.repositoryRecipe);
+    return new GetCategoriesByIdRecipeUseCase(this.recipeRepository);
   }
 
   public getLatestRecipesUseCase(): GetLatestRecipesUseCase {
-    return new GetLatestRecipesUseCase(this.repositoryRecipe);
+    return new GetLatestRecipesUseCase(this.recipeRepository);
   }
 
   public getMostPopularRecipesUseCase(): GetMostPopularRecipesUseCase {
-    return new GetMostPopularRecipesUseCase(this.repositoryRecipe);
+    return new GetMostPopularRecipesUseCase(this.recipeRepository);
   }
 }

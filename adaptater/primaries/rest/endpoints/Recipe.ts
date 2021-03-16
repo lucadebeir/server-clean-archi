@@ -3,12 +3,12 @@ const recipe = express.Router();
 import cors from "cors";
 recipe.use(cors());
 
-import Config from "../config/Config";
-const config = new Config();
+import RecipeConfig from "../config/RecipeConfig";
+const recipeConfig = new RecipeConfig();
 
 //Récupérer toutes les recettes
-recipe.get("/allRecipes", (req, res) => {
-  config
+recipe.get("/all", (req, res) => {
+  recipeConfig
     .getAllRecipeUseCase()
     .execute("desc")
     .then((recipes: any) => {
@@ -20,8 +20,8 @@ recipe.get("/allRecipes", (req, res) => {
 });
 
 //Récupérer toutes les recettes dans l'ordre alphabétique
-recipe.get("/allRecipes/asc", (req, res) => {
-  config
+recipe.get("/all/asc", (req, res) => {
+  recipeConfig
     .getAllRecipeUseCase()
     .execute("asc")
     .then((recipes: any) => {
@@ -33,8 +33,8 @@ recipe.get("/allRecipes/asc", (req, res) => {
 });
 
 //Récupérer toutes les recettes dans l'ordre des plus vues
-recipe.get("/allRecipes/nbVues/desc", (req, res) => {
-  config
+recipe.get("/all/desc/views", (req, res) => {
+  recipeConfig
     .getAllPerToNbViewUseCase()
     .execute()
     .then((recipes: any) => {
@@ -47,7 +47,7 @@ recipe.get("/allRecipes/nbVues/desc", (req, res) => {
 
 //Récupérer la recette depuis son identifiant
 recipe.get("/:id", (req, res) => {
-  config
+  recipeConfig
     .getRecipeByIdUseCase()
     .execute(req.params.id)
     .then((recipe: any) => {
@@ -64,7 +64,7 @@ recipe.get("/:id", (req, res) => {
 
 //recupérer les ingrédients d'une recette à partir de son id
 recipe.get("/:id/ingredients", (req, res) => {
-  config
+  recipeConfig
     .getIngredientsByIdRecipeUseCase()
     .execute(req.params.id)
     .then((ingredients: any) => {
@@ -81,7 +81,7 @@ recipe.get("/:id/ingredients", (req, res) => {
 
 //recupérer les catégories d'une recette à partir de son id
 recipe.get("/:id/categories", (req, res) => {
-  config
+  recipeConfig
     .getCategoriesByIdRecipeUseCase()
     .execute(req.params.id)
     .then((categories: any) => {
@@ -97,8 +97,8 @@ recipe.get("/:id/categories", (req, res) => {
 });
 
 //Récupérer les 3 recettes les plus récentes
-recipe.get("/latestRecipes", (req, res) => {
-  config
+recipe.get("/latest", (req, res) => {
+  recipeConfig
     .getLatestRecipesUseCase()
     .execute()
     .then((recipes: any) => {
@@ -110,8 +110,8 @@ recipe.get("/latestRecipes", (req, res) => {
 });
 
 //Récupérer les 3 recettes les plus vues
-recipe.get("/mostPopularRecipes", (req, res) => {
-  config
+recipe.get("/popular", (req, res) => {
+  recipeConfig
     .getMostPopularRecipesUseCase()
     .execute()
     .then((recipes: any) => {

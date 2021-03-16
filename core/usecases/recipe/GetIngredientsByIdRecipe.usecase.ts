@@ -1,4 +1,4 @@
-import { Ingredient } from "../../domain/Ingredient";
+import Ingredient from "../../domain/Ingredient";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 
 export default class GetIngredientsByIdRecipeUseCase {

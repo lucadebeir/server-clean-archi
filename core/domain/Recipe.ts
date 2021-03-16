@@ -1,6 +1,6 @@
 import { Time } from "@angular/common";
-import { Category } from "./Category";
-import { Ingredient } from "./Ingredient";
+import Category from "./Category";
+import Ingredient from "./Ingredient";
 
 export default class Recipe {
   idRecette?: number;

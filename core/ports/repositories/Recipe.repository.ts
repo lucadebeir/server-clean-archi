@@ -1,5 +1,5 @@
-import { Category } from "../../domain/Category";
-import { Ingredient } from "../../domain/Ingredient";
+import Category from "../../domain/Category";
+import Ingredient from "../../domain/Ingredient";
 import Recipe from "../../domain/Recipe";
 
 export default interface RecipeRepository {
@@ -11,9 +11,6 @@ export default interface RecipeRepository {
   getCategoriesByIdRecipe(id: any): Promise<Category[]>;
   getLatestRecipes(): Promise<Recipe[]>;
   getMostPopularRecipes(): Promise<Recipe[]>;
-
-  getRecipesOfCategory(id: any): Promise<Recipe[]>;
-  getRecipesOfCategoryPerToNbView(id: any): Promise<Recipe[]>;
 
   updateNbView(id: any): Promise<string>;
   deleteById(id: any): Promise<string>;

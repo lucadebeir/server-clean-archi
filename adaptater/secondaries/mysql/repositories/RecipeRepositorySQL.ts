@@ -3,10 +3,11 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import db from "../config/db";
 import { QueryTypes } from "sequelize";
 import { RecipeSequelize } from "../entities/Recipe.model";
-import { Category } from "../../../../core/domain/Category";
-import { Ingredient } from "../../../../core/domain/Ingredient";
+import Category from "../../../../core/domain/Category";
+import Ingredient from "../../../../core/domain/Ingredient";
+import category from "../../../primaries/rest/endpoints/Category";
 
-export default class RepositoryRecipeSQL implements RecipeRepository {
+export default class RecipeRepositorySQL implements RecipeRepository {
   findAll(order: string): Promise<Recipe[]> {
     return db.sequelize
       .query(
@@ -17,7 +18,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         }
       )
       .then((recipes: any) => {
-        if (recipes) {
+        if (recipes.length != 0) {
           return recipes;
         } else {
           throw new Error("Il n'y a pas de recettes");
@@ -60,9 +61,9 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
           type: QueryTypes.SELECT,
         }
       )
-      .then((recipe) => {
-        if (recipe) {
-          return recipe;
+      .then((recipes) => {
+        if (recipes.length != 0) {
+          return recipes;
         } else {
           throw new Error("Il n'y a pas de recettes");
         }
@@ -81,8 +82,12 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
           type: QueryTypes.SELECT,
         }
       )
-      .then((resultats) => {
-        return resultats;
+      .then((ingredients) => {
+        if(ingredients.length != 0) {
+          return ingredients;
+        } else {
+          throw new Error("Cette recette n'a pas d'ingrédients !")
+        }
       })
       .catch((err) => {
         throw new Error(err);
@@ -99,7 +104,11 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         }
       )
       .then((categories) => {
-        return categories;
+        if(categories.length != 0) {
+          return categories;
+        } else {
+          throw new Error("Cette recette n'a pas de catégories !")
+        }
       })
       .catch((err) => {
         throw new Error(err);
@@ -115,7 +124,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         }
       )
       .then((recipe) => {
-        if (recipe) {
+        if (recipe.length != 0) {
           return recipe;
         } else {
           throw new Error("Il n'y a pas de recettes");
@@ -135,7 +144,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         }
       )
       .then((recipes) => {
-        if (recipes) {
+        if (recipes.length != 0) {
           return recipes;
         } else {
           throw new Error("Il n'y a pas de recettes");
@@ -145,13 +154,7 @@ export default class RepositoryRecipeSQL implements RecipeRepository {
         throw new Error(err);
       });
   }
-
-  getRecipesOfCategory(id: any): Promise<Recipe[]> {
-    throw new Error("Method not implemented.");
-  }
-  getRecipesOfCategoryPerToNbView(id: any): Promise<Recipe[]> {
-    throw new Error("Method not implemented.");
-  }
+  
   updateNbView(id: any): Promise<string> {
     throw new Error("Method not implemented.");
   }
