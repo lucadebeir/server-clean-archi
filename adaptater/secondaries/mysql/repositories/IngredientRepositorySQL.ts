@@ -1,11 +1,38 @@
 import { QueryTypes, Op } from "sequelize";
 import Ingredient from "../../../../core/domain/Ingredient";
 import IngredientRepository from "../../../../core/ports/repositories/Ingredient.repository";
-import ingredient from "../../../primaries/rest/endpoints/Ingredient";
 import db from "../config/db";
 import { IngredientSequelize } from "../entities/Ingredient.model";
 
 export default class IngredientRepositorySQL implements IngredientRepository {
+  create(ingredientToCreate: Ingredient): Promise<Ingredient> {
+    return IngredientSequelize.findOne({
+      where: {
+        nomIngredient: ingredientToCreate.nomIngredient,
+      },
+    })
+      .then((ingredient) => {
+        if (!ingredient) {
+          return IngredientSequelize.create(ingredientToCreate)
+            .then((ingredientCreate) => {
+              if (ingredientCreate) {
+                return ingredientCreate;
+              } else {
+                throw new Error("Problème technique");
+              }
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
+        } else {
+          throw new Error("Cet ingrédient existe déjà");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
   findAll(): Promise<Ingredient[]> {
     return IngredientSequelize.findAll({
       type: QueryTypes.SELECT,
@@ -73,6 +100,54 @@ export default class IngredientRepositorySQL implements IngredientRepository {
           return ingredients;
         } else {
           throw new Error("Il n'y a pas d'ingrédient.");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  deleteById(id: any): Promise<string> {
+    return IngredientSequelize.destroy({
+      where: {
+        idIngredient: id,
+      },
+    })
+      .then(() => {
+        return "Ingredient deleted!";
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  update(ingredientToUpdate: Ingredient): any {
+    console.log(ingredientToUpdate);
+    return IngredientSequelize.findOne({
+      where: {
+        nomIngredient: ingredientToUpdate.nomIngredient,
+      },
+    })
+      .then((ingredient) => {
+        if (!ingredient) {
+          return IngredientSequelize.update(
+            { nomIngredient: ingredientToUpdate.nomIngredient },
+            { where: { idIngredient: ingredientToUpdate.idIngredient } }
+          )
+            .then((ingredient) => {
+              console.log("lol");
+              console.log(ingredient);
+              if (ingredient) {
+                return ingredientToUpdate;
+              } else {
+                throw new Error("Problème technique");
+              }
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
+        } else {
+          throw new Error("Cet ingrédient existe déjà");
         }
       })
       .catch((err) => {

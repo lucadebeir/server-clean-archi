@@ -4,34 +4,33 @@ import Ingredient from "../../../../core/domain/Ingredient";
 
 import { UseIngredientSequelize } from "./UseIngredient.model";
 
-
-export interface IngredientModel extends Model<Ingredient>, Ingredient {};
+export interface IngredientModel extends Model<Ingredient>, Ingredient {}
 
 export type IngredientStatic = typeof Model & {
-   new (values?: object, options?: BuildOptions): IngredientModel;
+  new (values?: object, options?: BuildOptions): IngredientModel;
 };
 
 export function IngredientFactory(sequelize: Sequelize): IngredientStatic {
-    return <IngredientStatic> sequelize.define(
-        'ingredient',
-        {
-            idIngredient: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            nomIngredient : {
-                type: DataTypes.STRING
-            }
-        },
-        {
-            timestamps: false,
-            freezeTableName: true
-        }
-    )
-};
+  return <IngredientStatic>sequelize.define(
+    "ingredient",
+    {
+      idIngredient: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      nomIngredient: {
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      timestamps: false,
+      tableName: "ingredient",
+    }
+  );
+}
 
-export const IngredientSequelize = IngredientFactory(db.sequelize)
+export const IngredientSequelize = IngredientFactory(db.sequelize);
 
 /*IngredientSequelize.belongsToMany(UseIngredientSequelize, {
     through: 'utiliserIngredients',

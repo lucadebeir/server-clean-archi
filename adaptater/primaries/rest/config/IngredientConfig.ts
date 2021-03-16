@@ -4,6 +4,9 @@ import GetAllIngredientsUseCase from "../../../../core/usecases/ingredient/GetAl
 import GetIngredientByIdUseCase from "../../../../core/usecases/ingredient/GetIngredientById.usecase";
 import GetRestOfIngredientsPerToListUseCase from "../../../../core/usecases/ingredient/GetRestOfIngredientsPerToList.usecase";
 import GetIngredientsNotInRecipeUseCase from "../../../../core/usecases/ingredient/GetIngredientsNotInRecipe.usecase";
+import CreateIngredientUseCase from "../../../../core/usecases/ingredient/CreateIngredient.usecase";
+import DeleteIngredientUseCase from "../../../../core/usecases/ingredient/DeleteIngredient.usecase";
+import UpdateIngredientUseCase from "../../../../core/usecases/ingredient/UpdateIngredient.usecase";
 
 export default class IngredientConfig {
   public ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
@@ -22,5 +25,17 @@ export default class IngredientConfig {
 
   public getIngredientsNotInRecipeUseCase(): GetIngredientsNotInRecipeUseCase {
     return new GetIngredientsNotInRecipeUseCase(this.ingredientRepository);
+  }
+
+  public createIngredientUseCase(): CreateIngredientUseCase {
+    return new CreateIngredientUseCase(this.ingredientRepository);
+  }
+
+  public deleteIngredientUseCase(): DeleteIngredientUseCase {
+    return new DeleteIngredientUseCase(this.ingredientRepository);
+  }
+
+  public updateIngredientUseCase(): UpdateIngredientUseCase {
+    return new UpdateIngredientUseCase(this.ingredientRepository);
   }
 }
