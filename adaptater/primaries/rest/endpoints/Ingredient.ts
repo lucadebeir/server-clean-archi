@@ -67,7 +67,6 @@ ingredient.post("/add", (req, res) => {
     .createIngredientUseCase()
     .execute(ingredientData)
     .then((ingredient: any) => {
-      console.log("ba : " + ingredient);
       res.json(ingredient);
     })
     .catch((err: string) => {
