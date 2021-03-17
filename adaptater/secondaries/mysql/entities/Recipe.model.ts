@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import db from "../config/db";
 
 export const RecipeSequelize = db.sequelize.define(
-  "recette",
+  "recettes",
   {
     idRecette: {
       type: Sequelize.INTEGER,
