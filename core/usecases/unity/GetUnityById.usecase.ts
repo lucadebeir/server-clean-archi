@@ -1,10 +1,10 @@
 import Unity from "../../domain/Unity";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 
-export default class GetAllUnitiesUseCase {
+export default class GetUnityByIdUseCase {
   constructor(private unityRepository: UnityRepository) {}
 
-  async execute(): Promise<Unity[]> {
-    return await this.unityRepository.findAll();
+  async execute(id: any): Promise<Unity> {
+    return await this.unityRepository.findById(id);
   }
 }
