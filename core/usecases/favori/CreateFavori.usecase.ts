@@ -5,7 +5,7 @@ import FavoriRepository from "../../ports/repositories/Favori.repository";
 export default class CreateFavoriUseCase {
   constructor(private favoriRepository: FavoriRepository) {}
 
-  async execute(favori: Favori): Promise<Favori> {
+  async execute(favori: Favori): Promise<string> {
     return await this.favoriRepository.create(favori);
   }
 }
