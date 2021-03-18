@@ -2,7 +2,7 @@ import Category from "../../domain/Category";
 import Recipe from "../../domain/Recipe";
 
 export default interface CategoryRepository {
-    create(category: Category): Promise<Category>;
+    create(category?: Category): Promise<Category>;
     findAll(): Promise<Category[]>;
     findCategoriesNotInRecipe(id: any): Promise<Category[]>;
     

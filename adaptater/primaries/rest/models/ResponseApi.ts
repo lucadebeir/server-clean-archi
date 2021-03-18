@@ -19,7 +19,7 @@ export class ResponseApi<T> {
     this.errors = errors;
   }
 
-  constructor(result?: T) {
+  constructor(result: T) {
     this.result = result;
     this.errors = new Array<string>();
   }
