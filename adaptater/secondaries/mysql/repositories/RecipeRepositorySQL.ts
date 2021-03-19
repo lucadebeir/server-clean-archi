@@ -5,7 +5,6 @@ import { QueryTypes } from "sequelize";
 import { RecipeSequelize } from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category";
 import Ingredient from "../../../../core/domain/Ingredient";
-import category from "../../../primaries/rest/endpoints/Category";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   findAll(order: string): Promise<Recipe[]> {
