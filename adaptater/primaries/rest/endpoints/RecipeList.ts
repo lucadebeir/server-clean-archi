@@ -51,7 +51,7 @@ recipeList.post("/update", (req, res) => {
 });
 
 //suppression d'une recette de la liste
-recipeList.post("/delete", (req, res) => {
+recipeList.delete("/delete", (req, res) => {
   recipeListConfig
     .deleteByIdUseCase()
     .execute(req.body.idRecipeList, req.body.pseudoUser)
@@ -64,7 +64,7 @@ recipeList.post("/delete", (req, res) => {
 });
 
 //suppression de toutes les recettes de la liste
-recipeList.post("/delete/all", (req, res) => {
+recipeList.delete("/delete/all", (req, res) => {
   recipeListConfig
     .deleteAllUseCase()
     .execute(req.body.pseudoUser)

@@ -2,7 +2,7 @@ import RecipeListRepository from "../../../../core/ports/repositories/RecipeList
 import AddRecipeToRecipeListUseCase from "../../../../core/usecases/recipe-list/AddRecipeToRecipeList.usecase";
 import DeleteAllUseCase from "../../../../core/usecases/recipe-list/DeleteAll.usecase";
 import DeleteByIdUseCase from "../../../../core/usecases/recipe-list/DeleteById.usecase";
-import GetRecipeListByIdUseCase from "../../../../core/usecases/recipe-list/GetRecipeListByID.usecase";
+import GetRecipeListByIdUseCase from "../../../../core/usecases/recipe-list/GetRecipeListById.usecase";
 import UpdateStateByIdUseCase from "../../../../core/usecases/recipe-list/UpdateStateById.usecase";
 import RecipeListRepositorySQL from "../../../secondaries/mysql/repositories/RecipeListRepositorySQL";
 

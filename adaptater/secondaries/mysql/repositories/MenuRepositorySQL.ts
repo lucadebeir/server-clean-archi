@@ -43,7 +43,7 @@ export default class MenuRepositorySQL implements MenuRepository {
         if (recipe[0]) {
           return recipe[0];
         } else {
-          throw new Error("Pas de petit déjeuner disponibles dans le menu");
+          throw new Error("Mauvais identifiant");
         }
       })
       .catch((err) => {
