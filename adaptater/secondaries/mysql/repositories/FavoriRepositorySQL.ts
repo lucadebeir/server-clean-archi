@@ -3,7 +3,7 @@ import FavoriRepository from "../../../../core/ports/repositories/Favori.reposit
 import db from "../config/db";
 import { QueryTypes } from "sequelize";
 import { FavoriSequelize } from "../entities/Favori.model";
-import { RecipeSequelize } from "../entities/Recipe.model";
+import RecipeSequelize from "../entities/Recipe.model";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
   create(favoriToCreate: Favori): Promise<string> {

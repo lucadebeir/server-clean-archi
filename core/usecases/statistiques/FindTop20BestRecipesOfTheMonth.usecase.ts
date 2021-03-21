@@ -4,7 +4,7 @@ import StatistiqueRepository from "../../ports/repositories/Statistique.reposito
 export default class FindTop20BestRecipesOfTheMonthUseCase {
   constructor(private statistiqueRepository: StatistiqueRepository) {}
 
-  async execute(): Promise<Recipe[]> {
+  async execute(): Promise<any> {
     return this.statistiqueRepository.findTop20BestRecipesOfTheMonth();
   }
 }

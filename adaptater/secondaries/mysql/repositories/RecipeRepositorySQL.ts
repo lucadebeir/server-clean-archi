@@ -2,7 +2,7 @@ import Recipe from "../../../../core/domain/Recipe";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import db from "../config/db";
 import { QueryTypes } from "sequelize";
-import { RecipeSequelize } from "../entities/Recipe.model";
+import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category";
 import Ingredient from "../../../../core/domain/Ingredient";
 
@@ -82,10 +82,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         }
       )
       .then((ingredients) => {
-        if(ingredients.length != 0) {
+        if (ingredients.length != 0) {
           return ingredients;
         } else {
-          throw new Error("Cette recette n'a pas d'ingrédients !")
+          throw new Error("Cette recette n'a pas d'ingrédients !");
         }
       })
       .catch((err) => {
@@ -103,10 +103,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         }
       )
       .then((categories) => {
-        if(categories.length != 0) {
+        if (categories.length != 0) {
           return categories;
         } else {
-          throw new Error("Cette recette n'a pas de catégories !")
+          throw new Error("Cette recette n'a pas de catégories !");
         }
       })
       .catch((err) => {
@@ -153,7 +153,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         throw new Error(err);
       });
   }
-  
+
   updateNbView(id: any): Promise<string> {
     throw new Error("Method not implemented.");
   }

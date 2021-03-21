@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
+import NotificationSequelize from "./Notification.model";
 
 interface RecipeModel extends Model<Recipe>, Recipe {}
 
@@ -61,8 +62,18 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
     },
     {
       timestamps: false,
+      tableName: "recettes",
     }
   );
 }
 
-export const RecipeSequelize = RecipeFactory(db.sequelize);
+const RecipeSequelize = RecipeFactory(db.sequelize);
+
+NotificationSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(NotificationSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+export = RecipeSequelize;

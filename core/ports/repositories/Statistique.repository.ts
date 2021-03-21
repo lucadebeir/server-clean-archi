@@ -9,7 +9,7 @@ export default interface StatistiqueRepository {
   findUsersXAbonnes(): Promise<User[]>;
   findTop20BestRecipes(): Promise<Recipe[]>;
   findTop20WorstRecipes(): Promise<Recipe[]>;
-  findTop20BestRecipesOfTheMonth(): Promise<Recipe[]>;
+  findTop20BestRecipesOfTheMonth(): Promise<any>;
   findNbViewsSince30Days(): Promise<number>;
   findNbCommentairesSince30Days(): Promise<number>;
   findNbUsersMonthly(): Promise<number>;

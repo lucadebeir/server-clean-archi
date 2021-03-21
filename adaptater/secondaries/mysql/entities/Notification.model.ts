@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import db from "../config/db";
 import Notification from "../../../../core/domain/Notification";
-import { RecipeSequelize } from "./Recipe.model";
+import RecipeSequelize from "./Recipe.model";
 import { UserSequelize } from "./User.model";
 
 interface NotificationModel extends Model<Notification>, Notification {}
@@ -45,11 +45,6 @@ function NotificationFactory(sequelize: Sequelize): NotificationStatic {
 
 const NotificationSequelize = NotificationFactory(db.sequelize);
 
-NotificationSequelize.hasOne(RecipeSequelize, {
-  foreignKey: { name: "idRecette", allowNull: false },
-});
-NotificationSequelize.hasOne(UserSequelize, {
-  foreignKey: { name: "pseudo", allowNull: false },
-});
+//NotificationSequelize.belongsTo(UserSequelize);
 
 export = NotificationSequelize;

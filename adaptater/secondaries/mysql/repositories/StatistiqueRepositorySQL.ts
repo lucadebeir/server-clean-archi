@@ -1,8 +1,10 @@
+import { fn, col, literal, DataTypes, Op } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import User from "../../../../core/domain/User";
 import StatistiqueRepository from "../../../../core/ports/repositories/Statistique.repository";
 import { CommentaireSequelize } from "../entities/Commentaire.model";
-import { RecipeSequelize } from "../entities/Recipe.model";
+import NotificationSequelize, { count } from "../entities/Notification.model";
+import RecipeSequelize from "../entities/Recipe.model";
 import { UserSequelize } from "../entities/User.model";
 
 export default class StatistiqueRepositorySQL implements StatistiqueRepository {
@@ -88,15 +90,86 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findTop20BestRecipesOfTheMonth(): Promise<Recipe[]> {
-    throw new Error("Method not implemented.");
+  findTop20BestRecipesOfTheMonth(): Promise<any> {
+    return RecipeSequelize.findAll({
+      attributes: {
+        include: [[fn("COUNT", col("notifications.idNotification")), "nbVues"]],
+        exclude: [
+          "categories",
+          "idRecette",
+          "nbFavoris",
+          "datePublication",
+          "etapes",
+          "nbrePart",
+          "libellePart",
+          "tempsPreparation",
+          "tempsCuisson",
+          "astuce",
+          "mot",
+        ],
+      },
+      include: [
+        {
+          model: NotificationSequelize,
+          attributes: [],
+          where: {
+            type: "vue",
+          },
+          duplicating: false,
+          required: false,
+        },
+      ],
+      order: literal("nbVues DESC"),
+      group: "idRecette",
+      limit: 20,
+    })
+      .then((resultat) => {
+        return resultat;
+      })
+      .catch((err) => {
+        return "error: " + err;
+      });
   }
+
   findNbViewsSince30Days(): Promise<number> {
-    throw new Error("Method not implemented.");
+    return NotificationSequelize.findAll({
+      attributes: {
+        include: [[fn("COUNT", col("idNotification")), "nbVues"]],
+      },
+      where: {
+        /*date: {
+          //[Op.gte]: literal("NOW() - INTERVAL '30d'"),
+        },*/
+        type: "vue",
+      },
+      order: literal("nbVues DESC"),
+      group: "idNotification",
+    })
+      .then((result: any) => {
+        return result;
+      })
+      .catch((err) => {
+        return "error: " + err;
+      });
   }
+
   findNbCommentairesSince30Days(): Promise<number> {
-    throw new Error("Method not implemented.");
+    return NotificationSequelize.findAndCountAll({
+      where: {
+        date: {
+          [Op.gte]: literal("NOW() - INTERVAL '30d'"),
+        },
+        type: "commentaire",
+      },
+    })
+      .then((result: any) => {
+        return result;
+      })
+      .catch((err) => {
+        return "error: " + err;
+      });
   }
+
   findNbUsersMonthly(): Promise<number> {
     throw new Error("Method not implemented.");
   }
