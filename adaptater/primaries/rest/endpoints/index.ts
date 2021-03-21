@@ -9,6 +9,7 @@ import menuRoute from "./Menu";
 import recipeListRoute from "./RecipeList";
 import shoppingRoute from "./Shopping";
 import userRoute from "./User";
+import useIngredientRoute from "./UseIngredient";
 
 const routes = Router();
 
@@ -22,5 +23,6 @@ routes.use("/menu", menuRoute);
 routes.use("/list/recipe", recipeListRoute);
 routes.use("/shopping", shoppingRoute);
 routes.use("/users", userRoute);
+routes.use("/use/ingredient", useIngredientRoute);
 
 export default routes;
