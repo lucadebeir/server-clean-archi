@@ -1,10 +1,10 @@
 import User from "../../domain/User";
 import { UserRepository } from "../../ports/repositories/User.repository";
 
-export default class GetUserByIdUseCase {
+export default class GetAllAbonneUsersUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(id: any): Promise<User> {
-    return this.userRepository.findById(id);
+  async execute(): Promise<User[]> {
+    return this.userRepository.findAllAbonneUsers();
   }
 }
