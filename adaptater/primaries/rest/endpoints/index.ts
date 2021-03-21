@@ -11,6 +11,7 @@ import shoppingRoute from "./Shopping";
 import userRoute from "./User";
 import useIngredientRoute from "./UseIngredient";
 import notificationRoute from "./Notification";
+import statistiqueRoute from "./Statistique";
 
 const routes = Router();
 
@@ -26,5 +27,6 @@ routes.use("/shopping", shoppingRoute);
 routes.use("/users", userRoute);
 routes.use("/use/ingredient", useIngredientRoute);
 routes.use("/notifications", notificationRoute);
+routes.use("/statistiques", statistiqueRoute);
 
 export default routes;
