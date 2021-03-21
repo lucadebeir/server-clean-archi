@@ -4,8 +4,6 @@ import { UserSequelize } from "../entities/User.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ResetTokenSequelize } from "../entities/ResetToken.model";
-import db from "../config/db";
-import { QueryTypes } from "sequelize";
 
 export default class UserRepositorySQL implements UserRepository {
   register(user: User): Promise<User> {
