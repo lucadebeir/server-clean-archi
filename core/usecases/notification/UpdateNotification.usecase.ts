@@ -4,7 +4,7 @@ import NotificationRepository from "../../ports/repositories/Notification.reposi
 export default class UpdateNotificationUseCase {
   constructor(private notificationRepository: NotificationRepository) {}
 
-  async execute(id: any): Promise<Notification> {
+  async execute(id: any): Promise<string> {
     return this.notificationRepository.update(id);
   }
 }

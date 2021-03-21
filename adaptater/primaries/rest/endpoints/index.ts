@@ -10,6 +10,7 @@ import recipeListRoute from "./RecipeList";
 import shoppingRoute from "./Shopping";
 import userRoute from "./User";
 import useIngredientRoute from "./UseIngredient";
+import notificationRoute from "./Notification";
 
 const routes = Router();
 
@@ -24,5 +25,6 @@ routes.use("/list/recipe", recipeListRoute);
 routes.use("/shopping", shoppingRoute);
 routes.use("/users", userRoute);
 routes.use("/use/ingredient", useIngredientRoute);
+routes.use("/notifications", notificationRoute);
 
 export default routes;

@@ -32,6 +32,10 @@ function NotificationFactory(sequelize: Sequelize): NotificationStatic {
       idRecette: {
         type: DataTypes.INTEGER,
       },
+      enabled: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
     },
     {
       timestamps: false,

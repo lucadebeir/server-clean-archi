@@ -5,5 +5,5 @@ export default interface NotificationRepository {
   findAllNotificationsEnabled(): Promise<Notification[]>;
 
   create(notification: Notification): Promise<Notification>;
-  update(id: any): Promise<Notification>;
+  update(id: any): Promise<string>;
 }

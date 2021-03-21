@@ -4,4 +4,5 @@ export default class Notification {
   type?: string;
   idRecette?: number;
   pseudo?: string;
+  enabled?: boolean;
 }
