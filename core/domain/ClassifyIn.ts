@@ -1,4 +1,4 @@
 export default class ClassifyIn {
-    idRecette?: any;
-    idCategorie?: any;
+  idRecette?: any;
+  idCategorie?: any;
 }

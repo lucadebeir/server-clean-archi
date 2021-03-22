@@ -10,21 +10,22 @@ type ImageStatic = typeof Model & {
 
 function ImageFactory(sequelize: Sequelize): ImageStatic {
   return <ImageStatic>sequelize.define(
-    'image', {
-        idImage: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        lienImage: {
-            type: DataTypes.STRING,
-        },
-        nameImage: {
-            type: DataTypes.STRING,
-        }
-
-    }, {
-        timestamps: false
+    "images",
+    {
+      idImage: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      lienImage: {
+        type: DataTypes.STRING,
+      },
+      nameImage: {
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      timestamps: false,
     }
   );
 }

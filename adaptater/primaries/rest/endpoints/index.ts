@@ -13,6 +13,8 @@ import useIngredientRoute from "./UseIngredient";
 import notificationRoute from "./Notification";
 import statistiqueRoute from "./Statistique";
 import classifyInRoute from "./ClassifyIn";
+import imageRoute from "./Image";
+import illustrateRoute from "./IllustrateRecipe";
 
 const routes = Router();
 
@@ -30,5 +32,7 @@ routes.use("/use/ingredient", useIngredientRoute);
 routes.use("/notifications", notificationRoute);
 routes.use("/statistiques", statistiqueRoute);
 routes.use("/classify", classifyInRoute);
+routes.use("/images", imageRoute);
+routes.use("/illustrate/recipe", illustrateRoute);
 
 export default routes;

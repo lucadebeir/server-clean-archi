@@ -6,43 +6,43 @@ import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category";
 import Ingredient from "../../../../core/domain/Ingredient";
 import CategorySequelize from "../entities/Category.model";
-import { IngredientSequelize } from "../entities/Ingredient.model";
+import IngredientSequelize from "../entities/Ingredient.model";
 import ImageSequelize from "../entities/Image.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   findAll(order: string): Promise<Recipe[]> {
-    return RecipeSequelize.findAll({
-      //attributes: {
+    return (
+      RecipeSequelize.findAll({
+        //attributes: {
         //include: ["nomRecette", [fn("COUNT", col("notifications.idNotification")), "nbVues"]],
-      //},
-      include: [
-        {
-          model: CategorySequelize,
-          as: "categories",
-          through: {
-            attributes: []
-          }
-        },
-        {
-          model: IngredientSequelize,
-          as: "ingredients",
-          through: {
-            attributes: []
-          }
-        },
-        {
-          model: ImageSequelize,
-          as: "images",
-          through: {
-            attributes: []
-          }
-        }
-      ],
-      //order: literal("nbVues DESC"),
-      group: "idRecette",
-      limit: 20,
-    })
-    /*return db.sequelize
+        //},
+        include: [
+          {
+            model: CategorySequelize,
+            as: "categories",
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: IngredientSequelize,
+            as: "ingredients",
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: ImageSequelize,
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        //order: literal("nbVues DESC"),
+        group: "idRecette",
+        limit: 20,
+      })
+        /*return db.sequelize
       .query(
         "select recettes.*, images.* from recettes, images, illustrerRecettes where illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette order by recettes.datePublication " +
           order,
@@ -50,16 +50,17 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           type: QueryTypes.SELECT,
         }
       )*/
-      .then((recipes: any) => {
-        if (recipes.length != 0) {
-          return recipes;
-        } else {
-          throw new Error("Il n'y a pas de recettes");
-        }
-      })
-      .catch((err: string | undefined) => {
-        throw new Error(err);
-      });
+        .then((recipes: any) => {
+          if (recipes.length != 0) {
+            return recipes;
+          } else {
+            throw new Error("Il n'y a pas de recettes");
+          }
+        })
+        .catch((err: string | undefined) => {
+          throw new Error(err);
+        })
+    );
   }
 
   findById(id: any): Promise<Recipe> {

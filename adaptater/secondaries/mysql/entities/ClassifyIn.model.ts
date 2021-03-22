@@ -12,28 +12,28 @@ type ClassifyInStatic = typeof Model & {
 
 function ClassifyInFactory(sequelize: Sequelize): ClassifyInStatic {
   return <ClassifyInStatic>sequelize.define(
-    'classerDans',
+    "classerDans",
     {
-        idRecette: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            references: {
-                model: "recettes",
-                key: 'idRecette'
-            }
+      idRecette: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: "recettes",
+          key: "idRecette",
         },
-        idCategorie : {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            references: {
-                model: "categories",
-                key: 'idCategorie'
-            }
-        }
+      },
+      idCategorie: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: "categories",
+          key: "idCategorie",
+        },
+      },
     },
-    
+
     {
-        timestamps: false
+      timestamps: false,
     }
   );
 }
@@ -41,10 +41,13 @@ function ClassifyInFactory(sequelize: Sequelize): ClassifyInStatic {
 const ClassifyInSequelize = ClassifyInFactory(db.sequelize);
 
 RecipeSequelize.belongsToMany(CategorySequelize, {
-    through: ClassifyInSequelize, foreignKey: "idRecette", as: "categories"
+  through: ClassifyInSequelize,
+  foreignKey: "idRecette",
+  as: "categories",
 });
 CategorySequelize.belongsToMany(RecipeSequelize, {
-    through: ClassifyInSequelize, foreignKey: "idCategorie"
+  through: ClassifyInSequelize,
+  foreignKey: "idCategorie",
 });
 
 export = ClassifyInSequelize;

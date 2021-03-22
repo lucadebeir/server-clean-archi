@@ -2,7 +2,7 @@ import { QueryTypes, Op } from "sequelize";
 import Ingredient from "../../../../core/domain/Ingredient";
 import IngredientRepository from "../../../../core/ports/repositories/Ingredient.repository";
 import db from "../config/db";
-import { IngredientSequelize } from "../entities/Ingredient.model";
+import IngredientSequelize from "../entities/Ingredient.model";
 
 export default class IngredientRepositorySQL implements IngredientRepository {
   create(ingredientToCreate: Ingredient): Promise<Ingredient> {

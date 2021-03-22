@@ -1,65 +1,63 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import UseIngredient from "../../../../core/domain/UseIngredient";
 import db from "../config/db";
-import { IngredientSequelize } from "./Ingredient.model";
+import IngredientSequelize from "./Ingredient.model";
 import RecipeSequelize from "./Recipe.model";
-import { UnitySequelize } from "./Unity.model";
 
-interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {};
+interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {}
 
 type UseIngredientStatic = typeof Model & {
-   new (values?: object, options?: BuildOptions): UseIngredientModel;
+  new (values?: object, options?: BuildOptions): UseIngredientModel;
 };
 
 function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic {
-    return <UseIngredientStatic> sequelize.define(
-        'utiliserIngredients',
+  return <UseIngredientStatic>sequelize.define(
+    "utiliserIngredients",
     {
-        qte: {
-            type: DataTypes.FLOAT,
-          
+      qte: {
+        type: DataTypes.FLOAT,
+      },
+      idRecette: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: "recettes", // 'Movies' would also work
+          key: "idRecette",
         },
-        idRecette : {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            references: {
-                model: "recettes", // 'Movies' would also work
-                key: 'idRecette'
-            }
+      },
 
+      idIngredient: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        references: {
+          model: "ingredient",
+          key: "idIngredient",
         },
-      
-        idIngredient : {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            references: {
-                model: "ingredients",
-                key: 'idIngredient'
-            }
-
+      },
+      idUnite: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "unites",
+          key: "idUnite",
         },
-        idUnite : {
-            type: DataTypes.INTEGER,
-            references: {
-                model: "unites",
-                key: 'idUnite'
-            }
-        }
-        
+      },
     },
     {
-        timestamps: false
+      timestamps: false,
     }
-    )
-};
+  );
+}
 
-const UseIngredientSequelize = UseIngredientFactory(db.sequelize)
+const UseIngredientSequelize = UseIngredientFactory(db.sequelize);
 
 RecipeSequelize.belongsToMany(IngredientSequelize, {
-    through: UseIngredientSequelize, foreignKey: "idRecette", as: "ingredients"
+  through: UseIngredientSequelize,
+  foreignKey: "idRecette",
+  as: "ingredients",
 });
 IngredientSequelize.belongsToMany(RecipeSequelize, {
-    through: UseIngredientSequelize, foreignKey: "idIngredient"
+  through: UseIngredientSequelize,
+  foreignKey: "idIngredient",
 });
 
 export = UseIngredientSequelize;

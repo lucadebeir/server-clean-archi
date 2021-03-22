@@ -74,7 +74,4 @@ RecipeSequelize.hasMany(NotificationSequelize, {
   foreignKey: { name: "idRecette" },
 });
 
-
-
-
 export = RecipeSequelize;
