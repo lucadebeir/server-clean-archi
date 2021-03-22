@@ -3,7 +3,7 @@ import Category from "../../../../core/domain/Category";
 import Recipe from "../../../../core/domain/Recipe";
 import CategoryRepository from "../../../../core/ports/repositories/Category.repository";
 import db from "../config/db";
-import { CategorySequelize } from "../entities/Category.model";
+import CategorySequelize from "../entities/Category.model";
 
 export default class CategoryRepositorySQL implements CategoryRepository {
   create(categoryToCreate: Category): Promise<Category> {

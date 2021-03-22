@@ -27,4 +27,6 @@ function CategoryFactory(sequelize: Sequelize): CategoryStatic {
   );
 }
 
-export const CategorySequelize = CategoryFactory(db.sequelize);
+const CategorySequelize = CategoryFactory(db.sequelize);
+
+export = CategorySequelize;

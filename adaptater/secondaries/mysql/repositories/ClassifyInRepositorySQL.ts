@@ -1,6 +1,6 @@
 import ClassifyIn from "../../../../core/domain/ClassifyIn";
 import ClassifyInRepository from "../../../../core/ports/repositories/ClassifyIn.repository";
-import { ClassifyInSequelize } from "../entities/ClassifyIn.model";
+import ClassifyInSequelize from "../entities/ClassifyIn.model";
 
 export default class ClassifyInRepositorySQL implements ClassifyInRepository {
     addCategoryToRecipe(classify: ClassifyIn): Promise<string> {

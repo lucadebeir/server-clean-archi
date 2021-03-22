@@ -2,15 +2,16 @@ import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import UseIngredient from "../../../../core/domain/UseIngredient";
 import db from "../config/db";
 import { IngredientSequelize } from "./Ingredient.model";
+import RecipeSequelize from "./Recipe.model";
 import { UnitySequelize } from "./Unity.model";
 
-export interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {};
+interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {};
 
-export type UseIngredientStatic = typeof Model & {
+type UseIngredientStatic = typeof Model & {
    new (values?: object, options?: BuildOptions): UseIngredientModel;
 };
 
-export function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic {
+function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic {
     return <UseIngredientStatic> sequelize.define(
         'utiliserIngredients',
     {
@@ -20,17 +21,29 @@ export function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic 
         },
         idRecette : {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            references: {
+                model: "recettes", // 'Movies' would also work
+                key: 'idRecette'
+            }
 
         },
       
         idIngredient : {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            references: {
+                model: "ingredients",
+                key: 'idIngredient'
+            }
 
         },
         idUnite : {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            references: {
+                model: "unites",
+                key: 'idUnite'
+            }
         }
         
     },
@@ -40,7 +53,13 @@ export function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic 
     )
 };
 
-export const UseIngredientSequelize = UseIngredientFactory(db.sequelize)
+const UseIngredientSequelize = UseIngredientFactory(db.sequelize)
 
-/*UseIngredientSequelize.hasOne(IngredientSequelize, {foreignKey: 'idIngredient'})
-UseIngredientSequelize.hasOne(UnitySequelize, {foreignKey: 'idUnite'})*/
+RecipeSequelize.belongsToMany(IngredientSequelize, {
+    through: UseIngredientSequelize, foreignKey: "idRecette", as: "ingredients"
+});
+IngredientSequelize.belongsToMany(RecipeSequelize, {
+    through: UseIngredientSequelize, foreignKey: "idIngredient"
+});
+
+export = UseIngredientSequelize;

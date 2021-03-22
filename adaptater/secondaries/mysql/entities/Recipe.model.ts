@@ -1,6 +1,8 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
+import CategorySequelize from "./Category.model";
+import ClassifyInSequelize from "./ClassifyIn.model";
 import NotificationSequelize from "./Notification.model";
 
 interface RecipeModel extends Model<Recipe>, Recipe {}
@@ -71,5 +73,8 @@ NotificationSequelize.belongsTo(RecipeSequelize, {
 RecipeSequelize.hasMany(NotificationSequelize, {
   foreignKey: { name: "idRecette" },
 });
+
+
+
 
 export = RecipeSequelize;

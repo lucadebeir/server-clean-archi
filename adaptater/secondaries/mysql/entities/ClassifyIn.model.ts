@@ -1,6 +1,8 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import ClassifyIn from "../../../../core/domain/ClassifyIn";
 import db from "../config/db";
+import CategorySequelize from "./Category.model";
+import RecipeSequelize from "./Recipe.model";
 
 interface ClassifyInModel extends Model<ClassifyIn>, ClassifyIn {}
 
@@ -14,11 +16,19 @@ function ClassifyInFactory(sequelize: Sequelize): ClassifyInStatic {
     {
         idRecette: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            references: {
+                model: "recettes",
+                key: 'idRecette'
+            }
         },
         idCategorie : {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            references: {
+                model: "categories",
+                key: 'idCategorie'
+            }
         }
     },
     
@@ -28,4 +38,13 @@ function ClassifyInFactory(sequelize: Sequelize): ClassifyInStatic {
   );
 }
 
-export const ClassifyInSequelize = ClassifyInFactory(db.sequelize);
+const ClassifyInSequelize = ClassifyInFactory(db.sequelize);
+
+RecipeSequelize.belongsToMany(CategorySequelize, {
+    through: ClassifyInSequelize, foreignKey: "idRecette", as: "categories"
+});
+CategorySequelize.belongsToMany(RecipeSequelize, {
+    through: ClassifyInSequelize, foreignKey: "idCategorie"
+});
+
+export = ClassifyInSequelize;

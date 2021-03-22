@@ -1,6 +1,6 @@
 import UseIngredient from "../../../../core/domain/UseIngredient";
 import UseIngredientRepository from "../../../../core/ports/repositories/UseIngredient.repository";
-import { UseIngredientSequelize } from "../entities/UseIngredient.model";
+import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class UseIngredientRepositorySQL
   implements UseIngredientRepository {

@@ -2,8 +2,6 @@ import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import db from "../config/db";
 import Ingredient from "../../../../core/domain/Ingredient";
 
-import { UseIngredientSequelize } from "./UseIngredient.model";
-
 export interface IngredientModel extends Model<Ingredient>, Ingredient {}
 
 export type IngredientStatic = typeof Model & {
@@ -31,8 +29,3 @@ export function IngredientFactory(sequelize: Sequelize): IngredientStatic {
 }
 
 export const IngredientSequelize = IngredientFactory(db.sequelize);
-
-/*IngredientSequelize.belongsToMany(UseIngredientSequelize, {
-    through: 'utiliserIngredients',
-    foreignKey : 'idIngredient'
-})*/
