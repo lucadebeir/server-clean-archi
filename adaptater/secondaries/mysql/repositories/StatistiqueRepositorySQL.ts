@@ -114,6 +114,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
           attributes: [],
           where: {
             type: "vue",
+            [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`)
           },
           duplicating: false,
           required: false,
@@ -134,16 +135,14 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findNbViewsSince30Days(): Promise<number> {
     return NotificationSequelize.findAll({
       attributes: {
-        include: [[fn("COUNT", col("idNotification")), "nbVues"]],
+        include: [[fn("COUNT", col("*")), "nbVues"], [fn("DATE", col("dateNotification")), "date"]],
+        exclude: [`idNotification`, `type`, `pseudo`, `idRecette`, `enabled`, `dateNotification`]
       },
       where: {
-        /*date: {
-          //[Op.gte]: literal("NOW() - INTERVAL '30d'"),
-        },*/
+        [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`),
         type: "vue",
       },
-      order: literal("nbVues DESC"),
-      group: "idNotification",
+      group: "date",
     })
       .then((result: any) => {
         return result;
@@ -154,13 +153,16 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbCommentairesSince30Days(): Promise<number> {
-    return NotificationSequelize.findAndCountAll({
+    return NotificationSequelize.findAll({
+      attributes: {
+        include: [[fn("COUNT", col("*")), "nbVues"], [fn("DATE", col("dateNotification")), "date"]],
+        exclude: [`idNotification`, `type`, `pseudo`, `idRecette`, `enabled`, `dateNotification`]
+      },
       where: {
-        date: {
-          [Op.gte]: literal("NOW() - INTERVAL '30d'"),
-        },
+        [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`),
         type: "commentaire",
       },
+      group: "date",
     })
       .then((result: any) => {
         return result;
