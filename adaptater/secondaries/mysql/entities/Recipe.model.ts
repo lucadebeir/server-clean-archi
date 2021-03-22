@@ -55,10 +55,6 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
       mot: {
         type: DataTypes.STRING,
       },
-      categories: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        defaultValue: [],
-      },
     },
     {
       timestamps: false,

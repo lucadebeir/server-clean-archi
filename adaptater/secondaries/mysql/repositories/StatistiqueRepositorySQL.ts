@@ -19,7 +19,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbCommentaires(): Promise<number> {
-    return CommentaireSequelize.sum("idCommentaire")
+    return CommentaireSequelize.count()
       .then((resultat) => {
         return resultat;
       })
@@ -29,7 +29,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbUsers(): Promise<number> {
-    return UserSequelize.sum("pseudo")
+    return UserSequelize.count()
       .then((resultat) => {
         return resultat;
       })
@@ -39,7 +39,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbAbonnes(): Promise<number> {
-    return UserSequelize.sum("pseudo", {
+    return UserSequelize.count({
       where: {
         abonneNews: true,
       },
@@ -93,9 +93,8 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findTop20BestRecipesOfTheMonth(): Promise<any> {
     return RecipeSequelize.findAll({
       attributes: {
-        include: [[fn("COUNT", col("notifications.idNotification")), "nbVues"]],
+        include: ["nomRecette", [fn("COUNT", col("notifications.idNotification")), "nbVues"]],
         exclude: [
-          "categories",
           "idRecette",
           "nbFavoris",
           "datePublication",
@@ -173,9 +172,40 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbUsersMonthly(): Promise<number> {
-    throw new Error("Method not implemented.");
+    return NotificationSequelize.findAll({
+      attributes: {
+        include: [[fn("COUNT", col("*")), "nbUsers"], [fn("MONTH", col("dateNotification")), "month"]],
+        exclude: [`idNotification`, `type`, `pseudo`, `idRecette`, `enabled`, `dateNotification`]
+      },
+      where: {
+        type: "user",
+      },
+      group: "month",
+    })
+      .then((result: any) => {
+        return result;
+      })
+      .catch((err) => {
+        return "error: " + err;
+      });
   }
+
   findNbAbonnesMonthly(): Promise<number> {
-    throw new Error("Method not implemented.");
+    return NotificationSequelize.findAll({
+      attributes: {
+        include: [[fn("COUNT", col("*")), "nbAbonnes"], [fn("MONTH", col("dateNotification")), "month"]],
+        exclude: [`idNotification`, `type`, `pseudo`, `idRecette`, `enabled`, `dateNotification`]
+      },
+      where: {
+        type: "abonne",
+      },
+      group: "month",
+    })
+      .then((result: any) => {
+        return result;
+      })
+      .catch((err) => {
+        return "error: " + err;
+      });
   }
 }
