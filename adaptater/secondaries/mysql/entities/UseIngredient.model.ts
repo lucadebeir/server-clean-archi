@@ -3,6 +3,7 @@ import UseIngredient from "../../../../core/domain/UseIngredient";
 import db from "../config/db";
 import IngredientSequelize from "./Ingredient.model";
 import RecipeSequelize from "./Recipe.model";
+import { UnitySequelize } from "./Unity.model";
 
 interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {}
 
@@ -58,6 +59,22 @@ RecipeSequelize.belongsToMany(IngredientSequelize, {
 IngredientSequelize.belongsToMany(RecipeSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idIngredient",
+});
+UnitySequelize.belongsToMany(IngredientSequelize, {
+  through: UseIngredientSequelize,
+  foreignKey: "idUnite",
+});
+IngredientSequelize.belongsToMany(UnitySequelize, {
+  through: UseIngredientSequelize,
+  foreignKey: "idIngredient",
+});
+RecipeSequelize.belongsToMany(UnitySequelize, {
+  through: UseIngredientSequelize,
+  foreignKey: "idRecette",
+});
+UnitySequelize.belongsToMany(RecipeSequelize, {
+  through: UseIngredientSequelize,
+  foreignKey: "idUnite",
 });
 
 export = UseIngredientSequelize;
