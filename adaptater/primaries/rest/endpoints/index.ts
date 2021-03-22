@@ -12,6 +12,7 @@ import userRoute from "./User";
 import useIngredientRoute from "./UseIngredient";
 import notificationRoute from "./Notification";
 import statistiqueRoute from "./Statistique";
+import classifyInRoute from "./ClassifyIn";
 
 const routes = Router();
 
@@ -28,5 +29,6 @@ routes.use("/users", userRoute);
 routes.use("/use/ingredient", useIngredientRoute);
 routes.use("/notifications", notificationRoute);
 routes.use("/statistiques", statistiqueRoute);
+routes.use("/classify", classifyInRoute);
 
 export default routes;
