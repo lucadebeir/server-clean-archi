@@ -1,4 +1,5 @@
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
+import CreateRecipeUseCase from "../../../../core/usecases/recipe/CreateRecipe.usecase";
 import GetAllPerToNbViewUseCase from "../../../../core/usecases/recipe/GetAllPerToNbView.usecase";
 import GetAllRecipesUseCase from "../../../../core/usecases/recipe/GetAllRecipes.usecase";
 import GetCategoriesByIdRecipeUseCase from "../../../../core/usecases/recipe/GetCategoriesByIdRecipe.usecase";
@@ -37,5 +38,9 @@ export default class RecipeConfig {
 
   public getMostPopularRecipesUseCase(): GetMostPopularRecipesUseCase {
     return new GetMostPopularRecipesUseCase(this.recipeRepository);
+  }
+
+  public createRecipeUseCase(): CreateRecipeUseCase {
+    return new CreateRecipeUseCase(this.recipeRepository);
   }
 }

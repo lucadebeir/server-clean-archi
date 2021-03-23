@@ -16,8 +16,4 @@ export default interface RecipeRepository {
   deleteById(id: any): Promise<string>;
 
   create(recipe: Recipe): Promise<Recipe>;
-  insertIngredientsAndCategories(
-    id: any,
-    categories: Category[]
-  ): Promise<Recipe>;
 }

@@ -54,4 +54,18 @@ RecipeSequelize.belongsToMany(ImageSequelize, {
   foreignKey: "idRecette",
 });
 
+IllustrateRecipeSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(IllustrateRecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+IllustrateRecipeSequelize.belongsTo(ImageSequelize, {
+  foreignKey: { name: "idImage" },
+});
+ImageSequelize.hasMany(IllustrateRecipeSequelize, {
+  foreignKey: { name: "idImage" },
+});
+
 export = IllustrateRecipeSequelize;

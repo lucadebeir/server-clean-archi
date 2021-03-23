@@ -122,4 +122,17 @@ recipe.get("/popular", (req, res) => {
     });
 });
 
+//créer une recette
+recipe.post("/add", (req, res) => {
+  recipeConfig
+    .createRecipeUseCase()
+    .execute(req.body)
+    .then((recipe: any) => {
+      res.json(recipe);
+    })
+    .catch((err: string) => {
+      res.send("error: " + err);
+    });
+});
+
 export default recipe;

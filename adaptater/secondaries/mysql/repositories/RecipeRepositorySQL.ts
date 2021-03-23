@@ -11,6 +11,7 @@ import ImageSequelize from "../entities/Image.model";
 import { UnitySequelize } from "../entities/Unity.model";
 import UseIngredientSequelize from "../entities/UseIngredient.model";
 import ClassifyInSequelize from "../entities/ClassifyIn.model";
+import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   findAll(order: string): Promise<Recipe[]> {
@@ -342,13 +343,23 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   create(recipe: Recipe): Promise<Recipe> {
-    throw new Error("Method not implemented.");
-  }
-  
-  insertIngredientsAndCategories(
-    id: any,
-    categories: Category[]
-  ): Promise<Recipe> {
-    throw new Error("Method not implemented.");
+    return RecipeSequelize.create(recipe, {
+      include: [ 
+        ClassifyInSequelize,
+        ImageSequelize, 
+        IllustrateRecipeSequelize,
+        UseIngredientSequelize,
+      ]
+    })
+      .then((recipeCreate) => {
+        if (recipeCreate) {
+                return recipeCreate;
+              } else {
+                throw new Error("Problème technique");
+              }
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
   }
 }
