@@ -301,14 +301,50 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   updateNbView(id: any): Promise<string> {
-    throw new Error("Method not implemented.");
+    return RecipeSequelize.findOne({
+      where: {
+        idRecette: id,
+      },
+    }).then((recipe: any) => {
+      if (!recipe) {
+        throw new Error("Problème technique");
+      } else {
+        return RecipeSequelize.update(
+          { nbVues: recipe.nbVues + 1 },
+          { where: { idRecette: id } }
+        )
+          .then((recipe: any) => {
+            if (recipe) {
+              return "Nombre de vues bien incrémenté";
+            } else {
+              throw new Error("Problème technique");
+            }
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
+      }
+    });
   }
+
   deleteById(id: any): Promise<string> {
-    throw new Error("Method not implemented.");
+    return RecipeSequelize.destroy({
+      where: {
+        idRecette: id,
+      },
+    })
+      .then(() => {
+        return "Recette supprimée!";
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   create(recipe: Recipe): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
+  
   insertIngredientsAndCategories(
     id: any,
     categories: Category[]
