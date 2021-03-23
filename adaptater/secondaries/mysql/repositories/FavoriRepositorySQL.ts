@@ -1,9 +1,8 @@
 import Favori from "../../../../core/domain/Favori";
 import FavoriRepository from "../../../../core/ports/repositories/Favori.repository";
-import db from "../config/db";
-import { QueryTypes } from "sequelize";
-import { FavoriSequelize } from "../entities/Favori.model";
+import FavoriSequelize from "../entities/Favori.model";
 import RecipeSequelize from "../entities/Recipe.model";
+import CategorySequelize from "../entities/Category.model";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
   create(favoriToCreate: Favori): Promise<string> {
@@ -51,14 +50,19 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   }
 
   findByIdUser(pseudo: any): Promise<Favori[]> {
-    return db.sequelize
-      .query(
-        "SELECT recettes.* FROM recettes INNER JOIN favoris WHERE recettes.idRecette = favoris.idRecette AND favoris.pseudo = ? ORDER BY recettes.datePublication DESC",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          replacements: [pseudo],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: FavoriSequelize,
+          attributes: [],
+          required: true,
+          where: {
+            pseudo: pseudo,
+          },
+        },
+      ],
+      order: [["datePublication", "DESC"]],
+    })
       .then((favoris) => {
         if (favoris.length != 0) {
           return favoris;
@@ -72,14 +76,27 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   }
 
   findByIdUserPerToCategory(pseudo: any, idCategorie: any): Promise<Favori[]> {
-    return db.sequelize
-      .query(
-        "SELECT recettes.* FROM recettes INNER JOIN favoris INNER JOIN classerDans WHERE recettes.idRecette = favoris.idRecette AND recettes.idRecette = classerDans.idRecette AND classerDans.idCategorie = ? AND favoris.pseudo = ? ORDER BY recettes.datePublication DESC",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          replacements: [idCategorie, pseudo],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: FavoriSequelize,
+          attributes: [],
+          required: true,
+          where: {
+            pseudo: pseudo,
+          },
+        },
+        {
+          model: CategorySequelize,
+          attributes: [],
+          as: "categories",
+          where: {
+            idCategorie: idCategorie,
+          },
+        },
+      ],
+      order: [["datePublication", "DESC"]],
+    })
       .then((favoris) => {
         if (favoris.length != 0) {
           return favoris;

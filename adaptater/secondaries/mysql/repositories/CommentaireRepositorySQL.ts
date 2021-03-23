@@ -1,6 +1,6 @@
 import Commentaire from "../../../../core/domain/Commentaire";
 import CommentaireRepository from "../../../../core/ports/repositories/Commentaire.repository";
-import { CommentaireSequelize } from "../entities/Commentaire.model";
+import CommentaireSequelize from "../entities/Commentaire.model";
 
 export default class CommentaireRepositorySQL implements CommentaireRepository {
   create(commentaire: Commentaire): Promise<Commentaire> {

@@ -2,28 +2,30 @@ import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Menu from "../../../../core/domain/Menu";
 import db from "../config/db";
 
-export interface MenuModel extends Model<Menu>, Menu {}
+interface MenuModel extends Model<Menu>, Menu {}
 
-export type MenuStatic = typeof Model & {
+type MenuStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): MenuModel;
 };
 
-export function MenuFactory(sequelize: Sequelize): MenuStatic {
+function MenuFactory(sequelize: Sequelize): MenuStatic {
   return <MenuStatic>sequelize.define(
-    'menu',
+    "menu",
     {
-        idMenu : {
-            type: DataTypes.INTEGER,
-            primaryKey: true
-        },
-        idRecette: {
-            type: DataTypes.INTEGER
-        }
-    }
-    , {
-        timestamps: false
+      idMenu: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
+      idRecette: {
+        type: DataTypes.INTEGER,
+      },
+    },
+    {
+      timestamps: false,
     }
   );
 }
 
-export const MenuSequelize = MenuFactory(db.sequelize);
+const MenuSequelize = MenuFactory(db.sequelize);
+
+export = MenuSequelize;

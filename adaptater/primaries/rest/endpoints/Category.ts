@@ -19,6 +19,19 @@ category.get("/all", (req, res) => {
     });
 });
 
+//selectionner les catégories dont une recette ne fait pas partie
+category.get("/rest/recipes/:id", (req, res) => {
+  categoryConfig
+    .getCategoriesNotInRecipeUseCase()
+    .execute(req.params.id)
+    .then((categories: any) => {
+      res.json(categories);
+    })
+    .catch((err: string) => {
+      res.send("error: " + err);
+    });
+});
+
 //Récupére les recettes d'une catégorie
 category.get("/:id/recipes", (req, res) => {
   categoryConfig

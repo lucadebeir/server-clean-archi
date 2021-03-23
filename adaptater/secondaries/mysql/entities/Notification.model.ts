@@ -1,8 +1,6 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import db from "../config/db";
 import Notification from "../../../../core/domain/Notification";
-import RecipeSequelize from "./Recipe.model";
-import { UserSequelize } from "./User.model";
 
 interface NotificationModel extends Model<Notification>, Notification {}
 

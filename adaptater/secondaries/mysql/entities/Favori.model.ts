@@ -27,4 +27,6 @@ function FavoriFactory(sequelize: Sequelize): FavoriStatic {
   );
 }
 
-export const FavoriSequelize = FavoriFactory(db.sequelize);
+const FavoriSequelize = FavoriFactory(db.sequelize);
+
+export = FavoriSequelize;

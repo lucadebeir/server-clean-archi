@@ -1,22 +1,24 @@
 import Menu from "../../../../core/domain/Menu";
 import Recipe from "../../../../core/domain/Recipe";
 import MenuRepository from "../../../../core/ports/repositories/Menu.repository";
-import db from "../config/db";
-import { QueryTypes } from "sequelize";
-import { MenuSequelize } from "../entities/Menu.model";
+import MenuSequelize from "../entities/Menu.model";
+import RecipeSequelize from "../entities/Recipe.model";
+import ImageSequelize from "../entities/Image.model";
+import CategorySequelize from "../entities/Category.model";
 
 export default class MenuRepositorySQL implements MenuRepository {
   findMenu(): Promise<Menu> {
-    return db.sequelize
-      .query(
-        "SELECT idMenu, recettes.* FROM menus INNER JOIN recettes ON menus.idRecette = recettes.idRecette",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: MenuSequelize,
+          attributes: ["idMenu"],
+          required: true,
+        },
+      ],
+    })
       .then((menu: any) => {
         if (menu) {
-          console.log(menu);
           return menu;
         } else {
           throw new Error("Pas de recettes disponibles dans le menu");
@@ -28,20 +30,36 @@ export default class MenuRepositorySQL implements MenuRepository {
   }
 
   findById(id: any): Promise<Recipe> {
-    return db.sequelize
-      .query(
-        "SELECT recettes.*, images.* FROM menus, recettes, images, illustrerRecettes WHERE menus.idMenu = ? AND menus.idRecette = recettes.idRecette and illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette",
+    return RecipeSequelize.findOne({
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
-          raw: false,
           model: MenuSequelize,
-          mapToModel: false,
-        }
-      )
+          attributes: ["idMenu"],
+          required: true,
+          where: {
+            idMenu: id,
+          },
+        },
+        {
+          model: ImageSequelize,
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: CategorySequelize,
+          as: "categories",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    })
       .then((recipe: any) => {
-        if (recipe[0]) {
-          return recipe[0];
+        if (recipe) {
+          return recipe;
         } else {
           throw new Error("Mauvais identifiant");
         }
@@ -52,13 +70,26 @@ export default class MenuRepositorySQL implements MenuRepository {
   }
 
   updateById(id: any, idRecette: any): Promise<Recipe> {
-    return db.sequelize
-      .query("UPDATE menus SET idRecette = ?  WHERE idMenu = ?", {
-        replacements: [idRecette, id],
-        type: QueryTypes.UPDATE,
-      })
-      .then((recipe: any) => {
-        return recipe;
+    return MenuSequelize.findOne({
+      where: {
+        idMenu: id,
+      },
+    })
+      .then((menu: any) => {
+        if (menu) {
+          return MenuSequelize.update(
+            { idRecette: idRecette },
+            { where: { idMenu: id } }
+          )
+            .then((recipe: any) => {
+              return recipe;
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
+        } else {
+          throw new Error("Mauvais identifiant");
+        }
       })
       .catch((err) => {
         throw new Error(err);

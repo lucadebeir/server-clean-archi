@@ -1,9 +1,9 @@
 import User from "../../../../core/domain/User";
 import { UserRepository } from "../../../../core/ports/repositories/User.repository";
-import { UserSequelize } from "../entities/User.model";
+import UserSequelize from "../entities/User.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { ResetTokenSequelize } from "../entities/ResetToken.model";
+import ResetTokenSequelize from "../entities/ResetToken.model";
 
 export default class UserRepositorySQL implements UserRepository {
   register(user: User): Promise<User> {

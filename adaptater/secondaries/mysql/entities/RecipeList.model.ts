@@ -37,4 +37,6 @@ function RecipeListFactory(sequelize: Sequelize): RecipeListStatic {
   );
 }
 
-export const RecipeListSequelize = RecipeListFactory(db.sequelize);
+const RecipeListSequelize = RecipeListFactory(db.sequelize);
+
+export = RecipeListSequelize;

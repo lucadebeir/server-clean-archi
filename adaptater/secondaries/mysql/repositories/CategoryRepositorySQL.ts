@@ -1,9 +1,10 @@
-import { QueryTypes } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import Category from "../../../../core/domain/Category";
 import Recipe from "../../../../core/domain/Recipe";
 import CategoryRepository from "../../../../core/ports/repositories/Category.repository";
-import db from "../config/db";
 import CategorySequelize from "../entities/Category.model";
+import ImageSequelize from "../entities/Image.model";
+import RecipeSequelize from "../entities/Recipe.model";
 
 export default class CategoryRepositorySQL implements CategoryRepository {
   create(categoryToCreate: Category): Promise<Category> {
@@ -50,14 +51,29 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   }
 
   findCategoriesNotInRecipe(id: any): Promise<Category[]> {
-    return db.sequelize
-      .query(
-        "SELECT * FROM categories WHERE categories.idCategorie NOT IN (SELECT categories.idCategorie FROM recettes INNER JOIN classerDans INNER JOIN categories WHERE recettes.idRecette = classerDans.idRecette AND classerDans.idCategorie = categories.idCategorie AND recettes.idRecette = ?)",
+    return CategorySequelize.findAll({
+      attributes: ["idCategorie"],
+      raw: true,
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: RecipeSequelize,
+          where: {
+            idRecette: id,
+          },
+          attributes: [],
+        },
+      ],
+    })
+      .then((data: any) => {
+        let array = data.map((item: any) => item.idCategorie);
+        return CategorySequelize.findAll({
+          where: {
+            idCategorie: {
+              [Op.notIn]: array,
+            },
+          },
+        });
+      })
       .then((categories) => {
         if (categories) {
           return categories;
@@ -71,14 +87,22 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   }
 
   getRecipesByIdCategory(id: any): Promise<Recipe[]> {
-    return db.sequelize
-      .query(
-        "SELECT recettes.*, images.* FROM recettes, images, illustrerRecettes INNER JOIN categories INNER JOIN classerDans WHERE illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette and classerDans.idCategorie = categories.idCategorie AND classerDans.idRecette = recettes.idRecette AND categories.idCategorie = ? ORDER BY recettes.datePublication DESC",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: ImageSequelize,
+        },
+        {
+          model: CategorySequelize,
+          as: "categories",
+          where: {
+            idCategorie: id,
+          },
+          attributes: [],
+        },
+      ],
+      order: [["datePublication", "DESC"]],
+    })
       .then((recipes) => {
         if (recipes.length != 0) {
           return recipes;
@@ -92,14 +116,22 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   }
 
   getRecipesByIdCategoryPerToNbView(id: any): Promise<Recipe[]> {
-    return db.sequelize
-      .query(
-        "SELECT recettes.*, images.* FROM recettes, images, illustrerRecettes INNER JOIN categories INNER JOIN classerDans WHERE illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette and classerDans.idCategorie = categories.idCategorie AND classerDans.idRecette = recettes.idRecette AND categories.idCategorie = ? ORDER BY recettes.nbVues DESC",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: ImageSequelize,
+        },
+        {
+          model: CategorySequelize,
+          as: "categories",
+          where: {
+            idCategorie: id,
+          },
+          attributes: [],
+        },
+      ],
+      order: [["nbVues", "DESC"]],
+    })
       .then((recipes) => {
         if (recipes.length != 0) {
           return recipes;

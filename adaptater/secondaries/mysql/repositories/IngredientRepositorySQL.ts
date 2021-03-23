@@ -1,8 +1,8 @@
 import { QueryTypes, Op } from "sequelize";
 import Ingredient from "../../../../core/domain/Ingredient";
 import IngredientRepository from "../../../../core/ports/repositories/Ingredient.repository";
-import db from "../config/db";
 import IngredientSequelize from "../entities/Ingredient.model";
+import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class IngredientRepositorySQL implements IngredientRepository {
   create(ingredientToCreate: Ingredient): Promise<Ingredient> {
@@ -87,14 +87,30 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   }
 
   findIngredientsNotInRecipe(id: any): Promise<Ingredient[]> {
-    return db.sequelize
-      .query(
-        "SELECT * FROM ingredient WHERE ingredient.idIngredient NOT IN (SELECT ingredient.idIngredient FROM ingredient INNER JOIN recettes INNER JOIN utiliserIngredients INNER JOIN unites WHERE ingredient.idIngredient = utiliserIngredients.idIngredient AND utiliserIngredients.idRecette = ? AND utiliserIngredients.idRecette = recettes.idRecette AND unites.idUnite = utiliserIngredients.idUnite) ORDER BY nomIngredient",
+    return IngredientSequelize.findAll({
+      attributes: ["idIngredient"],
+      raw: true,
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: UseIngredientSequelize,
+          required: true,
+          where: {
+            idRecette: id,
+          },
+          attributes: [],
+        },
+      ],
+    })
+      .then((data: any) => {
+        let array = data.map((item: any) => item.idIngredient);
+        return IngredientSequelize.findAll({
+          where: {
+            idIngredient: {
+              [Op.notIn]: array,
+            },
+          },
+        });
+      })
       .then((ingredients) => {
         if (ingredients) {
           return ingredients;
@@ -122,7 +138,6 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   }
 
   update(ingredientToUpdate: Ingredient): any {
-    console.log(ingredientToUpdate);
     return IngredientSequelize.findOne({
       where: {
         nomIngredient: ingredientToUpdate.nomIngredient,
@@ -135,8 +150,6 @@ export default class IngredientRepositorySQL implements IngredientRepository {
             { where: { idIngredient: ingredientToUpdate.idIngredient } }
           )
             .then((ingredient) => {
-              console.log("lol");
-              console.log(ingredient);
               if (ingredient) {
                 return ingredientToUpdate;
               } else {

@@ -41,4 +41,6 @@ function CommentaireFactory(sequelize: Sequelize): CommentaireStatic {
   );
 }
 
-export const CommentaireSequelize = CommentaireFactory(db.sequelize);
+const CommentaireSequelize = CommentaireFactory(db.sequelize);
+
+export = CommentaireSequelize;

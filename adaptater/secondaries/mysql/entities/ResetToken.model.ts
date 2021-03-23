@@ -23,4 +23,6 @@ function ResetTokenFactory(sequelize: Sequelize): ResetTokenStatic {
   });
 }
 
-export const ResetTokenSequelize = ResetTokenFactory(db.sequelize);
+const ResetTokenSequelize = ResetTokenFactory(db.sequelize);
+
+export = ResetTokenSequelize;

@@ -1,8 +1,8 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
-import CategorySequelize from "./Category.model";
-import ClassifyInSequelize from "./ClassifyIn.model";
+import FavoriSequelize from "./Favori.model";
+import MenuSequelize from "./Menu.model";
 import NotificationSequelize from "./Notification.model";
 
 interface RecipeModel extends Model<Recipe>, Recipe {}
@@ -67,10 +67,27 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
 
 const RecipeSequelize = RecipeFactory(db.sequelize);
 
+//association 0:N avec les notifications
 NotificationSequelize.belongsTo(RecipeSequelize, {
   foreignKey: { name: "idRecette" },
 });
 RecipeSequelize.hasMany(NotificationSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+//association 0:N avec les favoris
+FavoriSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(FavoriSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+//association 0:N avec le menu
+MenuSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(MenuSequelize, {
   foreignKey: { name: "idRecette" },
 });
 

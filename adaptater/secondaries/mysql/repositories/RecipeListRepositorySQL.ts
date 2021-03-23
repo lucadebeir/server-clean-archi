@@ -1,6 +1,6 @@
 import RecipeList from "../../../../core/domain/RecipeList";
 import RecipeListRepository from "../../../../core/ports/repositories/RecipeList.repository";
-import { RecipeListSequelize } from "../entities/RecipeList.model";
+import RecipeListSequelize from "../entities/RecipeList.model";
 
 export default class RecipeListRepositorySQL implements RecipeListRepository {
   findById(pseudo: any): Promise<RecipeList[]> {

@@ -1,9 +1,10 @@
-import { QueryTypes } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import Ingredient from "../../../../core/domain/Ingredient";
 import Shopping from "../../../../core/domain/Shopping";
 import ShoppingRepository from "../../../../core/ports/repositories/Shopping.repository";
 import db from "../config/db";
-import { ShoppingSequelize } from "../entities/Shopping.model";
+import IngredientSequelize from "../entities/Ingredient.model";
+import ShoppingSequelize from "../entities/Shopping.model";
 
 export default class ShoppingRepositorySQL implements ShoppingRepository {
   findById(pseudo: any): Promise<Shopping[]> {
@@ -27,14 +28,23 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   }
 
   findIngredientsNotInShoppingListById(pseudo: any): Promise<Ingredient[]> {
-    return db.sequelize
-      .query(
-        "SELECT ingredient.* FROM ingredient WHERE ingredient.idIngredient NOT IN (SELECT ingredient.idIngredient FROM ingredient INNER JOIN liste_de_courses WHERE liste_de_courses.idIngredient = ingredient.idIngredient AND liste_de_courses.pseudo = ?) ORDER BY ingredient.nomIngredient",
-        {
-          replacements: [pseudo],
-          type: QueryTypes.SELECT,
-        }
-      )
+    return ShoppingSequelize.findAll({
+      where: {
+        pseudo: pseudo,
+      },
+    })
+      .then((data: any) => {
+        let array = data.map((item: any) =>
+          item.idIngredient ? item.idIngredient : ""
+        );
+        return IngredientSequelize.findAll({
+          where: {
+            idIngredient: {
+              [Op.notIn]: array,
+            },
+          },
+        });
+      })
       .then((ingredients) => {
         if (ingredients.length != 0) {
           return ingredients;

@@ -41,4 +41,6 @@ function UserFactory(sequelize: Sequelize): UserStatic {
   );
 }
 
-export const UserSequelize = UserFactory(db.sequelize);
+const UserSequelize = UserFactory(db.sequelize);
+
+export = UserSequelize;

@@ -2,13 +2,13 @@ import { Sequelize, DataTypes, Model, BuildOptions } from "sequelize";
 import Unity from "../../../../core/domain/Unity";
 import db from "../config/db";
 
-export interface UnityModel extends Model<Unity>, Unity {}
+interface UnityModel extends Model<Unity>, Unity {}
 
-export type UnityStatic = typeof Model & {
+type UnityStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): UnityModel;
 };
 
-export function UnityFactory(sequelize: Sequelize): UnityStatic {
+function UnityFactory(sequelize: Sequelize): UnityStatic {
   return <UnityStatic>sequelize.define(
     "unites",
     {
@@ -28,9 +28,6 @@ export function UnityFactory(sequelize: Sequelize): UnityStatic {
   );
 }
 
-export const UnitySequelize = UnityFactory(db.sequelize);
+const UnitySequelize = UnityFactory(db.sequelize);
 
-/*UnitySequelize.belongsToMany(UseIngredientSequelize, {
-    through: 'utiliserIngredients',
-    foreignKey : 'idUnite'
-})*/
+export = UnitySequelize;

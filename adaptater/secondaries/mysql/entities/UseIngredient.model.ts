@@ -3,7 +3,7 @@ import UseIngredient from "../../../../core/domain/UseIngredient";
 import db from "../config/db";
 import IngredientSequelize from "./Ingredient.model";
 import RecipeSequelize from "./Recipe.model";
-import { UnitySequelize } from "./Unity.model";
+import UnitySequelize from "./Unity.model";
 
 interface UseIngredientModel extends Model<UseIngredient>, UseIngredient {}
 
@@ -51,6 +51,7 @@ function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic {
 
 const UseIngredientSequelize = UseIngredientFactory(db.sequelize);
 
+//association N:N entre les recettes et les ingrédients
 RecipeSequelize.belongsToMany(IngredientSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idRecette",
@@ -59,6 +60,8 @@ IngredientSequelize.belongsToMany(RecipeSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idIngredient",
 });
+
+//association N:N entre les unités et les ingrédients
 UnitySequelize.belongsToMany(IngredientSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idUnite",
@@ -67,31 +70,36 @@ IngredientSequelize.belongsToMany(UnitySequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idIngredient",
 });
+
+//association N:N entre les recettes et les unités
 RecipeSequelize.belongsToMany(UnitySequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idRecette",
-  
 });
 UnitySequelize.belongsToMany(RecipeSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idUnite",
 });
 
-
+//association 1:N avec les recettes
 UseIngredientSequelize.belongsTo(RecipeSequelize, {
   foreignKey: { name: "idRecette" },
-});
-UseIngredientSequelize.belongsTo(IngredientSequelize, {
-  foreignKey: { name: "idIngredient" },
-});
-UseIngredientSequelize.belongsTo(UnitySequelize, {
-  foreignKey: { name: "idUnite" },
 });
 RecipeSequelize.hasMany(UseIngredientSequelize, {
   foreignKey: { name: "idRecette" },
 });
+
+//association 1:N avec les ingrédients
+UseIngredientSequelize.belongsTo(IngredientSequelize, {
+  foreignKey: { name: "idIngredient" },
+});
 IngredientSequelize.hasMany(UseIngredientSequelize, {
   foreignKey: { name: "idIngredient" },
+});
+
+//association 1:N avec les unités
+UseIngredientSequelize.belongsTo(UnitySequelize, {
+  foreignKey: { name: "idUnite" },
 });
 UnitySequelize.hasMany(UseIngredientSequelize, {
   foreignKey: { name: "idUnite" },
