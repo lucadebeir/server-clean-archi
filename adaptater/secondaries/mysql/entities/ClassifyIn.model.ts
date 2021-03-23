@@ -50,4 +50,11 @@ CategorySequelize.belongsToMany(RecipeSequelize, {
   foreignKey: "idCategorie",
 });
 
+ClassifyInSequelize.belongsTo(CategorySequelize, {
+  foreignKey: { name: "idCategorie" },
+});
+CategorySequelize.hasMany(ClassifyInSequelize, {
+  foreignKey: { name: "idCategorie" },
+});
+
 export = ClassifyInSequelize;

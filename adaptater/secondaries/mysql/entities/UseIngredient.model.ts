@@ -54,7 +54,6 @@ const UseIngredientSequelize = UseIngredientFactory(db.sequelize);
 RecipeSequelize.belongsToMany(IngredientSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idRecette",
-  as: "ingredients",
 });
 IngredientSequelize.belongsToMany(RecipeSequelize, {
   through: UseIngredientSequelize,
@@ -71,10 +70,31 @@ IngredientSequelize.belongsToMany(UnitySequelize, {
 RecipeSequelize.belongsToMany(UnitySequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idRecette",
+  
 });
 UnitySequelize.belongsToMany(RecipeSequelize, {
   through: UseIngredientSequelize,
   foreignKey: "idUnite",
+});
+
+
+UseIngredientSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+UseIngredientSequelize.belongsTo(IngredientSequelize, {
+  foreignKey: { name: "idIngredient" },
+});
+UseIngredientSequelize.belongsTo(UnitySequelize, {
+  foreignKey: { name: "idUnite" },
+});
+RecipeSequelize.hasMany(UseIngredientSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+IngredientSequelize.hasMany(UseIngredientSequelize, {
+  foreignKey: { name: "idIngredient" },
+});
+UnitySequelize.hasMany(UseIngredientSequelize, {
+  foreignKey: { name: "idUnite" },
 });
 
 export = UseIngredientSequelize;

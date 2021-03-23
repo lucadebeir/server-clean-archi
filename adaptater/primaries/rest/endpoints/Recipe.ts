@@ -46,7 +46,7 @@ recipe.get("/all/desc/views", (req, res) => {
 });
 
 //Récupérer la recette depuis son identifiant
-recipe.get("/:id", (req, res) => {
+recipe.get("/get/:id", (req, res) => {
   recipeConfig
     .getRecipeByIdUseCase()
     .execute(req.params.id)

@@ -1,7 +1,7 @@
 import Recipe from "../../../../core/domain/Recipe";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import db from "../config/db";
-import { QueryTypes } from "sequelize";
+import { col, Op, QueryTypes } from "sequelize";
 import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category";
 import Ingredient from "../../../../core/domain/Ingredient";
@@ -9,6 +9,8 @@ import CategorySequelize from "../entities/Category.model";
 import IngredientSequelize from "../entities/Ingredient.model";
 import ImageSequelize from "../entities/Image.model";
 import { UnitySequelize } from "../entities/Unity.model";
+import UseIngredientSequelize from "../entities/UseIngredient.model";
+import ClassifyInSequelize from "../entities/ClassifyIn.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   findAll(order: string): Promise<Recipe[]> {
@@ -16,38 +18,32 @@ export default class RecipeRepositorySQL implements RecipeRepository {
       include: [
         {
           model: CategorySequelize,
+          //attributes: ["libelleCategorie"],
           as: "categories",
+          required: true,
           through: {
-            attributes: [],
+            attributes: []
           },
         },
         {
-          model: IngredientSequelize,
-          as: "ingredients",
-          through: {
-            attributes: [],
-          },
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
           include: [
             {
+              model: IngredientSequelize,
+              //attributes: ["nomIngredient"]
+            }, 
+            {
               model: UnitySequelize,
-              as: "unites",
-              //attributes: ["libelleUnite"],
-              through: {
-                //attributes: ["qte"],
-                where: {
-                  idRecette: "recettes.idRecette",
-                },
-              },
-            },
-          ],
-        },
-        {
-          model: UnitySequelize,
-          as: "unites",
+              //attributes: ["libelleUnite"]
+            }
+          ]
         },
         {
           model: ImageSequelize,
           as: "images",
+          required: true,
           through: {
             attributes: [],
           },
@@ -83,11 +79,17 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           },
         },
         {
-          model: IngredientSequelize,
-          as: "ingredients",
-          through: {
-            attributes: [],
-          },
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+            }, 
+            {
+              model: UnitySequelize,
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -121,11 +123,17 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           },
         },
         {
-          model: IngredientSequelize,
-          as: "ingredients",
-          through: {
-            attributes: [],
-          },
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+            }, 
+            {
+              model: UnitySequelize,
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -150,15 +158,21 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   getIngredientsByIdRecipe(id: any): Promise<Ingredient[]> {
-    return db.sequelize
-      .query(
-        "SELECT ingredient.idIngredient, ingredient.nomIngredient, utiliserIngredients.qte, unites.libelleUnite FROM ingredient INNER JOIN recettes INNER JOIN utiliserIngredients INNER JOIN unites WHERE ingredient.idIngredient = utiliserIngredients.idIngredient AND utiliserIngredients.idRecette = ? AND utiliserIngredients.idRecette = recettes.idRecette AND unites.idUnite = utiliserIngredients.idUnite ORDER BY ingredient.nomIngredient",
+    return UseIngredientSequelize.findAll({
+      where: {
+        idRecette: id
+      },
+      attributes: ["qte"],
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
+          model: IngredientSequelize
+        }, 
+        {
+          model: UnitySequelize,
         }
-      )
-      .then((ingredients) => {
+      ]
+    })
+    .then((ingredients) => {
         if (ingredients.length != 0) {
           return ingredients;
         } else {
@@ -171,14 +185,17 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   getCategoriesByIdRecipe(id: any): Promise<Category[]> {
-    return db.sequelize
-      .query(
-        "SELECT categories.* FROM categories, classerDans WHERE categories.idCategorie = classerDans.idCategorie AND classerDans.idRecette = ?",
+    return CategorySequelize.findAll({
+      include: [
         {
-          replacements: [id],
-          type: QueryTypes.SELECT,
+          model: ClassifyInSequelize,
+          where: {
+            idRecette: id
+          },
+          attributes: []
         }
-      )
+      ]
+    })
       .then((categories) => {
         if (categories.length != 0) {
           return categories;
@@ -192,16 +209,42 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   getLatestRecipes(): Promise<Recipe[]> {
-    return db.sequelize
-      .query(
-        "select recettes.*, images.* from recettes, images, illustrerRecettes where illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette order by recettes.datePublication desc LIMIT 3",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          type: QueryTypes.SELECT,
-        }
-      )
-      .then((recipe) => {
-        if (recipe.length != 0) {
-          return recipe;
+          model: CategorySequelize,
+          as: "categories",
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+            }, 
+            {
+              model: UnitySequelize,
+            }
+          ]
+        },
+        {
+          model: ImageSequelize,
+          as: "images",
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+      order: [["datePublication", "DESC"]],
+      limit: 3
+    })
+      .then((recipes) => {
+        if (recipes.length != 0) {
+          return recipes;
         } else {
           throw new Error("Il n'y a pas de recettes");
         }
@@ -212,13 +255,39 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   getMostPopularRecipes(): Promise<Recipe[]> {
-    return db.sequelize
-      .query(
-        "select recettes.*, images.* from recettes, images, illustrerRecettes where illustrerRecettes.idImage = images.idImage and illustrerRecettes.idRecette = recettes.idRecette order by recettes.nbVues desc LIMIT 12",
+    return RecipeSequelize.findAll({
+      include: [
         {
-          type: QueryTypes.SELECT,
-        }
-      )
+          model: CategorySequelize,
+          as: "categories",
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+            }, 
+            {
+              model: UnitySequelize,
+            }
+          ]
+        },
+        {
+          model: ImageSequelize,
+          as: "images",
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+      order: [["nbVues", "DESC"]],
+      limit: 12
+    })
       .then((recipes) => {
         if (recipes.length != 0) {
           return recipes;
