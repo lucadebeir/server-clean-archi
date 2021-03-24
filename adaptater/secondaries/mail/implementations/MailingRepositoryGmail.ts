@@ -1,36 +1,32 @@
 import MailingRepository from "../../../../core/ports/mailing/Mailing.repository";
 import { smtpTransport } from "../config/MailConfig";
 import ejs from "ejs";
+import path from "path";
+import { getEnvironment } from "../config/environmentFile";
+import { TEMPLATES } from "./Template";
+
+const environment: any = getEnvironment();
 
 export default class MailingRepositoryGmail implements MailingRepository {
-  sendMail(data: any): Promise<string> {
-    const TEMPLATES = {
-      subscribe: {
-        fileName: "new_recipes.ejs",
-        subject: "Nouvelle recette sur Marine's recipes",
-      },
-    };
-
-    const filePath = `${__dirname}/templates/${TEMPLATES.subscribe.fileName}`;
+  sendMail(data: any): void {
+    const filePath = path.join(
+      __dirname,
+      `../templates/${TEMPLATES["new_recipe"].fileName}`
+    );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
       if (e) return e;
       const mailOptions = {
-        from: "marinesrecipes@gmail.com",
+        from: environment.AUTH_USER,
         to: data.email,
-        subject: TEMPLATES.subscribe.subject,
+        subject: TEMPLATES["new_recipe"].subject,
         html: content,
       };
-
-      console.log(mailOptions);
-      console.log(smtpTransport);
 
       smtpTransport.sendMail(mailOptions, (err, info) => {
         if (err) return err;
         return info;
       });
     });
-
-    throw new Error("Method not implemented.");
   }
 }

@@ -5,7 +5,6 @@ import MailingRepositoryGmail from "../../../secondaries/mail/implementations/Ma
 mailing.use(cors());
 
 const mailingRepository: MailingRepositoryGmail = new MailingRepositoryGmail();
-console.log(mailingRepository);
 
 mailing.post("/", (req, res) => {
   try {

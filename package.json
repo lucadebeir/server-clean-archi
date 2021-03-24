@@ -4,8 +4,8 @@
   "description": "Server de Marine's Recipe en clean architecture",
   "main": "serveur.js",
   "scripts": {
-    "start": "export NODE_ENV=production && ts-node-dev --ignore-watch node_modules server.ts --proxy-config proxy-conf.json",
-    "start:dev": "export NODE_ENV=development && ts-node-dev --ignore-watch node_modules server.ts --proxy-config proxy-conf.json",
+    "start": "export NODE_ENV=production && ts-node-dev --ignore-watch node_modules ./adaptater/primaries/rest/server.ts",
+    "start:dev": "export NODE_ENV=development && ts-node-dev --ignore-watch node_modules ./adaptater/primaries/rest/server.ts",
     "build": "tsc",
     "test": "jest"
   },
