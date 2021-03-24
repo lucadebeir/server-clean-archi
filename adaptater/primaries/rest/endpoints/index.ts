@@ -15,6 +15,7 @@ import statistiqueRoute from "./Statistique";
 import classifyInRoute from "./ClassifyIn";
 import imageRoute from "./Image";
 import illustrateRoute from "./IllustrateRecipe";
+import mailingRoute from "./Mailing";
 
 const routes = Router();
 
@@ -34,5 +35,6 @@ routes.use("/statistiques", statistiqueRoute);
 routes.use("/classify", classifyInRoute);
 routes.use("/images", imageRoute);
 routes.use("/illustrate/recipe", illustrateRoute);
+routes.use("/mailing", mailingRoute);
 
 export default routes;

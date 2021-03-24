@@ -1,3 +1,3 @@
 export default interface MailingRepository {
-  sendMail(): Promise<string>;
+  sendMail(data: any): Promise<string>;
 }

@@ -1,6 +1,6 @@
 import * as nodemailer from "nodemailer";
-import { google } from "googleapis";
-const OAuth2 = google.auth.OAuth2;
+const { google } = require('googleapis');
+const { OAuth2 } = google.auth;
 const oauth2Client = new OAuth2(
   process.env.AUTH_CLIENT,
   process.env.AUTH_CLIENT_PASSWORD, // Client Secret
@@ -11,7 +11,7 @@ oauth2Client.setCredentials({
 });
 const accessToken = oauth2Client.getAccessToken();
 
-/*export const smtpTransport = nodemailer.createTransport({
+export const smtpTransport = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
@@ -30,5 +30,5 @@ const accessToken = oauth2Client.getAccessToken();
 
     /*user: process.env.USER_MAIL,
           pass: process.env.PASS_MAIL*/
-/*},
-});*/
+  },
+});
