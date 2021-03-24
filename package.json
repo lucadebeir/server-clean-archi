@@ -4,8 +4,8 @@
   "description": "Server de Marine's Recipe en clean architecture",
   "main": "serveur.js",
   "scripts": {
-    "start": "node server.ts --proxy-config proxy-conf.json",
-    "start:dev": "ts-node-dev --ignore-watch node_modules server.ts --proxy-config proxy-conf.json",
+    "start": "export NODE_ENV=production && ts-node-dev --ignore-watch node_modules server.ts --proxy-config proxy-conf.json",
+    "start:dev": "export NODE_ENV=development && ts-node-dev --ignore-watch node_modules server.ts --proxy-config proxy-conf.json",
     "build": "tsc",
     "test": "jest"
   },
@@ -31,7 +31,8 @@
     "nodemailer": "^6.5.0",
     "sanitize-html": "^2.3.3",
     "sequelize": "^6.5.1",
-    "sequelize-typescript": "^2.1.0"
+    "sequelize-typescript": "^2.1.0",
+    "ts-node": "^9.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
