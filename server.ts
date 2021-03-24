@@ -26,4 +26,5 @@ app.use(routes);
 //lancement serveur
 app.listen(port, function () {
   console.log("Server is running on port " + port);
+  console.log(process.env.NODE_ENV);
 });
