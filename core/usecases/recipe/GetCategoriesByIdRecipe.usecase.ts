@@ -1,4 +1,4 @@
-import Category from "../../domain/Category";
+import Category from "../../domain/Category.domain";
 import Ingredient from "../../domain/Ingredient";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 

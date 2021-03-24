@@ -1,4 +1,4 @@
-import Category from "../../domain/Category";
+import Category from "../../domain/Category.domain";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 
 export default class GetCategoriesNotInRecipeUseCase {

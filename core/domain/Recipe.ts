@@ -1,5 +1,5 @@
 import { Time } from "@angular/common";
-import Category from "./Category";
+import Category from "./Category.domain";
 import Ingredient from "./Ingredient";
 
 export default class Recipe {

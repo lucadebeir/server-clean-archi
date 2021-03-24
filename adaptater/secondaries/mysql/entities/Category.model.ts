@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import db from "../config/db";
-import Category from "../../../../core/domain/Category";
+import Category from "../../../../core/domain/Category.domain";
 
 interface CategoryModel extends Model<Category>, Category {}
 

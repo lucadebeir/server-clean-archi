@@ -1,5 +1,5 @@
 import { Op, QueryTypes } from "sequelize";
-import Category from "../../../../core/domain/Category";
+import Category from "../../../../core/domain/Category.domain";
 import Recipe from "../../../../core/domain/Recipe";
 import CategoryRepository from "../../../../core/ports/repositories/Category.repository";
 import CategorySequelize from "../entities/Category.model";

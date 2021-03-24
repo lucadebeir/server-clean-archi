@@ -1,4 +1,4 @@
-import Category from "../../domain/Category";
+import Category from "../../domain/Category.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";

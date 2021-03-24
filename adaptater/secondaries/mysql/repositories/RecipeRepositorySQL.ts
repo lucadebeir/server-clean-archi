@@ -1,7 +1,9 @@
 import Recipe from "../../../../core/domain/Recipe";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
+import db from "../config/db";
+import { col, Op, QueryTypes } from "sequelize";
 import RecipeSequelize from "../entities/Recipe.model";
-import Category from "../../../../core/domain/Category";
+import Category from "../../../../core/domain/Category.domain";
 import Ingredient from "../../../../core/domain/Ingredient";
 import CategorySequelize from "../entities/Category.model";
 import IngredientSequelize from "../entities/Ingredient.model";
@@ -21,7 +23,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           as: "categories",
           required: true,
           through: {
-            attributes: [],
+            attributes: []
           },
         },
         {
@@ -32,12 +34,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             {
               model: IngredientSequelize,
               //attributes: ["nomIngredient"]
-            },
+            }, 
             {
               model: UnitySequelize,
               //attributes: ["libelleUnite"]
-            },
-          ],
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -84,11 +86,11 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           include: [
             {
               model: IngredientSequelize,
-            },
+            }, 
             {
               model: UnitySequelize,
-            },
-          ],
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -128,11 +130,11 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           include: [
             {
               model: IngredientSequelize,
-            },
+            }, 
             {
               model: UnitySequelize,
-            },
-          ],
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -159,19 +161,19 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   getIngredientsByIdRecipe(id: any): Promise<Ingredient[]> {
     return UseIngredientSequelize.findAll({
       where: {
-        idRecette: id,
+        idRecette: id
       },
       attributes: ["qte"],
       include: [
         {
-          model: IngredientSequelize,
-        },
+          model: IngredientSequelize
+        }, 
         {
           model: UnitySequelize,
-        },
-      ],
+        }
+      ]
     })
-      .then((ingredients) => {
+    .then((ingredients) => {
         if (ingredients.length != 0) {
           return ingredients;
         } else {
@@ -189,11 +191,11 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         {
           model: ClassifyInSequelize,
           where: {
-            idRecette: id,
+            idRecette: id
           },
-          attributes: [],
-        },
-      ],
+          attributes: []
+        }
+      ]
     })
       .then((categories) => {
         if (categories.length != 0) {
@@ -224,11 +226,11 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           include: [
             {
               model: IngredientSequelize,
-            },
+            }, 
             {
               model: UnitySequelize,
-            },
-          ],
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -239,7 +241,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
       ],
       order: [["datePublication", "DESC"]],
-      limit: 3,
+      limit: 3
     })
       .then((recipes) => {
         if (recipes.length != 0) {
@@ -270,11 +272,11 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           include: [
             {
               model: IngredientSequelize,
-            },
+            }, 
             {
               model: UnitySequelize,
-            },
-          ],
+            }
+          ]
         },
         {
           model: ImageSequelize,
@@ -285,7 +287,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
       ],
       order: [["nbVues", "DESC"]],
-      limit: 12,
+      limit: 12
     })
       .then((recipes) => {
         if (recipes.length != 0) {
@@ -342,22 +344,22 @@ export default class RecipeRepositorySQL implements RecipeRepository {
 
   create(recipe: Recipe): Promise<Recipe> {
     return RecipeSequelize.create(recipe, {
-      include: [
+      include: [ 
         ClassifyInSequelize,
-        ImageSequelize,
+        ImageSequelize, 
         IllustrateRecipeSequelize,
         UseIngredientSequelize,
-      ],
+      ]
     })
       .then((recipeCreate) => {
         if (recipeCreate) {
-          return recipeCreate;
-        } else {
-          throw new Error("Problème technique");
-        }
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+                return recipeCreate;
+              } else {
+                throw new Error("Problème technique");
+              }
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
   }
 }
