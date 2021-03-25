@@ -2,7 +2,6 @@ import express from "express";
 const user = express.Router();
 import cors from "cors";
 import sanitizeHtml from "sanitize-html";
-import jwt from "jsonwebtoken";
 user.use(cors());
 
 import UserConfig from "../config/UserConfig";
@@ -20,7 +19,7 @@ user.post("/register", (req, res) => {
   };
   userConfig
     .registerUseCase()
-    .execute(userData)
+    .execute(userData, req.get("host"))
     .then((user: any) => {
       res.json(user);
     })

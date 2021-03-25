@@ -4,10 +4,60 @@ import UserSequelize from "../entities/User.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ResetTokenSequelize from "../entities/ResetToken.model";
+import MailingRepositoryGmail from "../../mail/implementations/MailingRepositoryGmail";
+
+const mailingRepository: MailingRepositoryGmail = new MailingRepositoryGmail();
 
 export default class UserRepositorySQL implements UserRepository {
-  register(user: User): Promise<User> {
-    throw new Error("Method not implemented.");
+  register(user: User, host: any): Promise<string> {
+    const userData = {
+      pseudo: user.pseudo,
+      email: user.email,
+      mdp: user.mdp,
+      mdp2: user.mdp2,
+      admin: user.admin,
+      abonneNews: user.abonneNews,
+    };
+
+    return UserSequelize.findOne({
+      where: {
+        pseudo: user.pseudo,
+      },
+    })
+      .then((user: any) => {
+        if (!user) {
+          if (userData.mdp === userData.mdp2) {
+            const hash = bcrypt.hashSync(userData.mdp, 10);
+            userData.mdp = hash;
+            return UserSequelize.create(userData)
+              .then((user: any) => {
+                let token = jwt.sign(user.dataValues, "secret", {
+                  expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
+                });
+                const rand = Math.floor(Math.random() * 100 + 54);
+                const link =
+                  "http://" +
+                  host +
+                  "/server/verify?id=" +
+                  rand +
+                  "&pseudo=" +
+                  user.pseudo;
+                mailingRepository.sendMailAfterRegister(user, link);
+                return token;
+              })
+              .catch((err) => {
+                throw new Error(err);
+              });
+          } else {
+            throw new Error("Les mots de passe ne sont pas identiques.");
+          }
+        } else {
+          throw new Error("L'utilisateur existe déjà");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   login(pseudo: any, password: any): Promise<string> {
