@@ -3,6 +3,7 @@ import Category from "../../../../core/domain/Category.domain";
 import Recipe from "../../../../core/domain/Recipe";
 import CategoryRepository from "../../../../core/ports/repositories/Category.repository";
 import CategorySequelize from "../entities/Category.model";
+import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import ImageSequelize from "../entities/Image.model";
 import RecipeSequelize from "../entities/Recipe.model";
 
@@ -183,6 +184,25 @@ export default class CategoryRepositorySQL implements CategoryRepository {
         } else {
           throw new Error("Cet catégorie existe déjà");
         }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  checkExistInRecipes(id: any): Promise<boolean> {
+    return RecipeSequelize.findAll({
+      include: [
+        {
+          model: ClassifyInSequelize,
+          where: {
+            idCategorie: id,
+          },
+        },
+      ],
+    })
+      .then((result: any) => {
+        return result.length != 0;
       })
       .catch((err) => {
         throw new Error(err);
