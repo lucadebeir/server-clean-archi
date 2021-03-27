@@ -9,6 +9,12 @@ import MailingRepositoryGmail from "../../mail/implementations/MailingRepository
 const mailingRepository: MailingRepositoryGmail = new MailingRepositoryGmail();
 
 export default class UserRepositorySQL implements UserRepository {
+  isAdmin(user: User): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  isLogin(user: User): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   register(user: User, host: any): Promise<string> {
     const userData = {
       pseudo: user.pseudo,

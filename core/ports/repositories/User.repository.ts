@@ -23,4 +23,7 @@ export interface UserRepository {
   sendFromContact(email: any, subject: any, message: any): Promise<string>;
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
+
+  isAdmin(user: User): Promise<boolean>;
+  isLogin(user: User): Promise<boolean>;
 }

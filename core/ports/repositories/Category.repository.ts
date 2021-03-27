@@ -10,7 +10,8 @@ export default interface CategoryRepository {
   getRecipesByIdCategoryPerToNbView(id: any): Promise<Recipe[]>;
 
   deleteById(id: any): Promise<string>;
-  update(category: Category): Promise<Category>;
+  update(category?: Category): Promise<Category>;
 
   checkExistInRecipes(id: any): Promise<boolean>;
+  checkExistByName(name: any): Promise<boolean>;
 }

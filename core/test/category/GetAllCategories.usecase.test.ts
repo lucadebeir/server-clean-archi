@@ -1,0 +1,75 @@
+import Category from "../../domain/Category.domain";
+import User from "../../domain/User";
+import { BusinessException } from "../../exceptions/BusinessException";
+import CategoryRepository from "../../ports/repositories/Category.repository";
+import { UserRepository } from "../../ports/repositories/User.repository";
+import GetAllCategoriesUseCase from "../../usecases/category/GetAllCategories.usecase";
+
+const initCategories = (): Category[] => {
+  const category1 = new Category();
+  category1.idCategorie = 1;
+  category1.libelleCategorie = "Douceur";
+
+  const category2 = new Category();
+  category2.idCategorie = 2;
+  category2.libelleCategorie = "Repas";
+
+  const list = [];
+
+  list.push(category1);
+  list.push(category2);
+
+  return list;
+};
+
+describe("Update category use case unit tests", () => {
+  let getAllCategoriesUseCase: GetAllCategoriesUseCase;
+
+  let list: Category[];
+  let user: User = new User();
+
+  let categoryRepository: CategoryRepository = ({
+    findAll: null,
+  } as unknown) as CategoryRepository;
+
+  let userRepository: UserRepository = ({
+    isAdmin: null,
+  } as unknown) as UserRepository;
+
+  beforeEach(() => {
+    list = initCategories();
+
+    getAllCategoriesUseCase = new GetAllCategoriesUseCase(
+      categoryRepository,
+      userRepository
+    );
+
+    spyOn(categoryRepository, "findAll").and.callFake(() => {
+      if (list) {
+        const result: Category[] = list;
+        return new Promise((resolve, reject) => resolve(result));
+      }
+      return new Promise((resolve, reject) => resolve(null));
+    });
+  });
+
+  it("getAllCategoriesUseCase should return categories when it succeeded", async () => {
+    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    const result: Category[] = await getAllCategoriesUseCase.execute(user);
+    expect(result).toBeDefined();
+    expect(result.length).toBe(2);
+    expect(result).toBe(list);
+  });
+
+  it("getAllCategoriesUseCase should throw a parameter exception when the user is not admin", async () => {
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      await getAllCategoriesUseCase.execute(user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
+    }
+  });
+});
