@@ -4,24 +4,26 @@ import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import { UserRepository } from "../../ports/repositories/User.repository";
-import CreateIngredientUseCase from "../../usecases/ingredient/CreateIngredient.usecase";
+import UpdateIngredientUseCase from "../../usecases/ingredient/UpdateIngredient.usecase";
 
 const initIngredient = (): Ingredient => {
   const ingredient = new Ingredient();
+  ingredient.idIngredient = 1;
   ingredient.nomIngredient = "Cacahuètes";
 
   return ingredient;
 };
 
-describe("Create ingredient use case unit tests", () => {
-  let createIngredientUseCase: CreateIngredientUseCase;
+describe("Update ingredient use case unit tests", () => {
+  let updateIngredientUseCase: UpdateIngredientUseCase;
 
   let ingredient: Ingredient;
   let user: User = new User();
 
   let ingredientRepository: IngredientRepository = ({
-    create: null,
+    update: null,
     checkExistByName: null,
+    findById: null,
   } as unknown) as IngredientRepository;
 
   let userRepository: UserRepository = ({
@@ -31,15 +33,15 @@ describe("Create ingredient use case unit tests", () => {
   beforeEach(() => {
     ingredient = initIngredient();
 
-    createIngredientUseCase = new CreateIngredientUseCase(
+    updateIngredientUseCase = new UpdateIngredientUseCase(
       ingredientRepository,
       userRepository
     );
 
-    spyOn(ingredientRepository, "create").and.callFake(
+    spyOn(ingredientRepository, "update").and.callFake(
       (ingredient: Ingredient) => {
         if (ingredient) {
-          const result: Ingredient = { ...ingredient, idIngredient: 1 };
+          const result: Ingredient = ingredient;
           return new Promise((resolve, reject) => resolve(result));
         }
         return new Promise((resolve, reject) => resolve(null));
@@ -47,10 +49,11 @@ describe("Create ingredient use case unit tests", () => {
     );
   });
 
-  it("createIngredientUseCase should return ingredient when it succeeded", async () => {
+  it("updateIngredientUseCase should return ingredient when it succeeded", async () => {
+    spyOn(ingredientRepository, "findById").and.returnValue(true);
     spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);
     spyOn(userRepository, "isAdmin").and.returnValue(true);
-    const result: Ingredient = await createIngredientUseCase.execute(
+    const result: Ingredient = await updateIngredientUseCase.execute(
       ingredient,
       user
     );
@@ -59,9 +62,9 @@ describe("Create ingredient use case unit tests", () => {
     expect(result.nomIngredient).toBe("Cacahuètes");
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the user is null", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      await createIngredientUseCase.execute(ingredient, undefined);
+      await updateIngredientUseCase.execute(ingredient, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -70,10 +73,10 @@ describe("Create ingredient use case unit tests", () => {
     }
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the user is not admin", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(false);
-      await createIngredientUseCase.execute(ingredient, user);
+      await updateIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -82,34 +85,60 @@ describe("Create ingredient use case unit tests", () => {
     }
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the ingredient is null", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the ingredient is null", async () => {
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(true);
-      await createIngredientUseCase.execute(undefined, user);
+      await updateIngredientUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'ingrédient est indéfinie");
     }
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the name is null", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the id is null", async () => {
+    ingredient.idIngredient = undefined;
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      await updateIngredientUseCase.execute(ingredient, user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe(
+        "L'identifiant d'un ingrédient est obligatoire pour pouvoir le modifier"
+      );
+    }
+  });
+
+  it("updateIngredientUseCase should throw a parameter exception when the ingredient doesn't exist", async () => {
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(ingredientRepository, "findById").and.returnValue(false);
+      await updateIngredientUseCase.execute(ingredient, user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe("Cet ingrédient n'existe pas");
+    }
+  });
+
+  it("updateIngredientUseCase should throw a parameter exception when the name is null", async () => {
     ingredient.nomIngredient = undefined;
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(true);
-      await createIngredientUseCase.execute(ingredient, user);
+      spyOn(ingredientRepository, "findById").and.returnValue(true);
+      await updateIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le nom d'un ingrédient est obligatoire");
     }
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the name has more than 39 characters", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the name has more than 39 characters", async () => {
     ingredient.nomIngredient =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);
+      spyOn(ingredientRepository, "findById").and.returnValue(true);
       spyOn(userRepository, "isAdmin").and.returnValue(true);
-      await createIngredientUseCase.execute(ingredient, user);
+      await updateIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -118,11 +147,12 @@ describe("Create ingredient use case unit tests", () => {
     }
   });
 
-  it("createIngredientUseCase should throw a parameter exception when the libelleUnity already exists", async () => {
+  it("updateIngredientUseCase should throw a parameter exception when the libelleUnity already exists", async () => {
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(true);
+      spyOn(ingredientRepository, "findById").and.returnValue(true);
       spyOn(userRepository, "isAdmin").and.returnValue(true);
-      await createIngredientUseCase.execute(ingredient, user);
+      await updateIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce nom est déjà utilisé par un ingrédient");

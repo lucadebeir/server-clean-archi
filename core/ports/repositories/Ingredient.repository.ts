@@ -8,7 +8,7 @@ export default interface IngredientRepository {
   findIngredientsNotInRecipe(id: any): Promise<Ingredient[]>;
 
   deleteById(id: any): Promise<string>;
-  update(ingredient: Ingredient): Promise<Ingredient>;
+  update(ingredient?: Ingredient): Promise<Ingredient>;
 
   checkExistByName(name: any): Promise<boolean>;
 }
