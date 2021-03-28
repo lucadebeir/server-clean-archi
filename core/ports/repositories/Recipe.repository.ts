@@ -16,4 +16,6 @@ export default interface RecipeRepository {
   deleteById(id: any): Promise<string>;
 
   create(recipe: Recipe): Promise<Recipe>;
+
+  existById(id: any): Promise<boolean>;
 }

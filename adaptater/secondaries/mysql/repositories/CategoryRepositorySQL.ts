@@ -8,6 +8,9 @@ import ImageSequelize from "../entities/Image.model";
 import RecipeSequelize from "../entities/Recipe.model";
 
 export default class CategoryRepositorySQL implements CategoryRepository {
+  existById(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   checkExistByName(name: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

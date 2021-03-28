@@ -5,6 +5,7 @@ export default interface CategoryRepository {
   create(category?: Category): Promise<Category>;
   findAll(): Promise<Category[]>;
   findCategoriesNotInRecipe(id: any): Promise<Category[]>;
+  existById(id: any): Promise<boolean>;
 
   getRecipesByIdCategory(id: any): Promise<Recipe[]>;
   getRecipesByIdCategoryPerToNbView(id: any): Promise<Recipe[]>;
