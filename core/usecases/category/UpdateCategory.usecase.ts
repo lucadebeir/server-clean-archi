@@ -19,18 +19,29 @@ export default class UpdateCategoryUseCase {
   private checkBusinessRules(user?: User, category?: Category): void {
     if (user && this.userRepository.isAdmin(user)) {
       if (category) {
-        if (!category.libelleCategorie) {
-          throw new BusinessException(
-            "Le libellé d'une catégorie est obligatoire"
+        if (!category.idCategorie) {
+          throw new TechnicalException(
+            "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
           );
-        } else {
-          if (
-            this.categoryRepository.checkExistByName(category.libelleCategorie)
-          ) {
+        }
+        if (this.categoryRepository.existById(category.idCategorie)) {
+          if (!category.libelleCategorie) {
             throw new BusinessException(
-              "Ce libellé est déjà utilisé par une catégorie"
+              "Le libellé d'une catégorie est obligatoire"
             );
+          } else {
+            if (
+              this.categoryRepository.checkExistByName(
+                category.libelleCategorie
+              )
+            ) {
+              throw new BusinessException(
+                "Ce libellé est déjà utilisé par une catégorie"
+              );
+            }
           }
+        } else {
+          throw new BusinessException("Cette catégorie n'existe pas");
         }
       } else {
         throw new TechnicalException("La catégorie est indéfinie");

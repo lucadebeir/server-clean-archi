@@ -23,6 +23,7 @@ describe("Delete category use case unit tests", () => {
   let categoryRepository: CategoryRepository = ({
     deleteById: null,
     checkExistInRecipes: null,
+    existById: null,
   } as unknown) as CategoryRepository;
 
   let userRepository: UserRepository = ({
@@ -37,17 +38,21 @@ describe("Delete category use case unit tests", () => {
       userRepository
     );
 
-    spyOn(categoryRepository, "deleteById").and.returnValues(true);
+    spyOn(categoryRepository, "deleteById").and.returnValue(
+      "La catégorie a bien été supprimé"
+    );
   });
 
   it("deleteCategoryUseCase should return category when it succeeded", async () => {
     spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
     spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: string = await deleteCategoryUseCase.execute(
       category.idCategorie,
       user
     );
     expect(result).toBeDefined();
+    expect(result).toBe("La catégorie a bien été supprimé");
   });
 
   it("deleteCategoryUseCase should throw a parameter exception when the user is not admin", async () => {
@@ -72,10 +77,23 @@ describe("Delete category use case unit tests", () => {
     }
   });
 
+  it("deleteCategoryUseCase should throw a parameter exception when the category doesn't exist", async () => {
+    try {
+      spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
+      spyOn(categoryRepository, "existById").and.returnValue(false);
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      await deleteCategoryUseCase.execute(category.idCategorie, user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe("Cette catégorie n'existe pas");
+    }
+  });
+
   it("deleteCategoryUseCase should throw a parameter exception when the category is used in a recipe", async () => {
     try {
-      spyOn(categoryRepository, "checkExistInRecipes").and.returnValues(true);
-      spyOn(userRepository, "isAdmin").and.returnValues(true);
+      spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(true);
+      spyOn(categoryRepository, "existById").and.returnValue(true);
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
       await deleteCategoryUseCase.execute(category.idCategorie, user);
     } catch (e) {
       const a: BusinessException = e;

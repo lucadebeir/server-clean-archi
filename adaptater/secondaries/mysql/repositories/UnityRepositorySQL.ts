@@ -1,6 +1,8 @@
 import Unity from "../../../../core/domain/Unity";
 import UnityRepository from "../../../../core/ports/repositories/Unity.repository";
+import RecipeSequelize from "../entities/Recipe.model";
 import UnitySequelize from "../entities/Unity.model";
+import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class UnityRepositorySQL implements UnityRepository {
   create(unityToCreate: Unity): Promise<Unity> {
@@ -99,6 +101,42 @@ export default class UnityRepositorySQL implements UnityRepository {
             });
         } else {
           throw new Error("Cet unité existe déjà");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  checkExistByName(name: any): Promise<boolean> {
+    return UnitySequelize.findOne({
+      where: {
+        libelleUnite: name,
+      },
+    })
+      .then((unity) => {
+        if (unity) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  checkExistInRecipes(id: any): Promise<boolean> {
+    return UseIngredientSequelize.findOne({
+      where: {
+        idUnite: id,
+      },
+    })
+      .then((unity) => {
+        if (unity) {
+          return true;
+        } else {
+          return false;
         }
       })
       .catch((err) => {

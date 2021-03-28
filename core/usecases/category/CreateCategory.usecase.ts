@@ -1,25 +1,44 @@
 import Category from "../../domain/Category.domain";
+import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
+import { UserRepository } from "../../ports/repositories/User.repository";
 
 export default class CreateCategoryUseCase {
-  constructor(private categoryRepository: CategoryRepository) {}
+  constructor(
+    private categoryRepository: CategoryRepository,
+    private userRepository: UserRepository
+  ) {}
 
-  async execute(category?: Category): Promise<Category> {
-    this.checkBusinessRules(category);
+  async execute(category?: Category, user?: User): Promise<Category> {
+    this.checkBusinessRules(category, user);
     return await this.categoryRepository.create(category);
   }
 
-  private checkBusinessRules(category?: Category): void {
-    if (category) {
-      if (!category.libelleCategorie) {
-        throw new BusinessException(
-          "Le libellé d'une catégorie est obligatoire"
-        );
+  private checkBusinessRules(category?: Category, user?: User): void {
+    if (user && this.userRepository.isAdmin(user)) {
+      if (category) {
+        if (!category.libelleCategorie) {
+          throw new BusinessException(
+            "Le libellé d'une catégorie est obligatoire"
+          );
+        } else {
+          if (
+            this.categoryRepository.checkExistByName(category.libelleCategorie)
+          ) {
+            throw new BusinessException(
+              "Ce libellé est déjà utilisé par une catégorie"
+            );
+          }
+        }
+      } else {
+        throw new TechnicalException("La catégorie est indéfinie");
       }
     } else {
-      throw new TechnicalException("La catégorie est indéfinie");
+      throw new BusinessException(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
     }
   }
 }

@@ -28,7 +28,7 @@ const initRecipe = (): Recipe[] => {
   return list;
 };
 
-describe("Update category use case unit tests", () => {
+describe("Get recipes by id category use case unit tests", () => {
   let getRecipesByIdCategoryUseCase: GetRecipesByIdCategoryUseCase;
 
   let category: Category;
@@ -71,14 +71,10 @@ describe("Update category use case unit tests", () => {
       category.idCategorie,
       user
     );
-    if (result[0].datePublication && result[1].datePublication) {
-      const comparaisonDate =
-        result[0].datePublication.getTime() <
-        result[1].datePublication.getTime();
-      expect(comparaisonDate).toBe(true);
-    }
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
+    //attendre la nouvelle dépendance pour typescript
+    //expect(result).toBeSortedBy("datePublication");
     expect(result).toBe(recipes);
   });
 

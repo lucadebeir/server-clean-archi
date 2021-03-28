@@ -1,0 +1,90 @@
+import Unity from "../../domain/Unity";
+import User from "../../domain/User";
+import { BusinessException } from "../../exceptions/BusinessException";
+import UnityRepository from "../../ports/repositories/Unity.repository";
+import { UserRepository } from "../../ports/repositories/User.repository";
+import GetUnityByIdUseCase from "../../usecases/unity/GetUnityById.usecase";
+
+const initUnity = (): Unity => {
+  const unity = new Unity();
+  unity.idUnite = 1;
+  unity.libelleUnite = "g";
+
+  return unity;
+};
+
+describe("get unity by id use case unit tests", () => {
+  let getUnityByIdUseCase: GetUnityByIdUseCase;
+
+  let unity: Unity;
+
+  let user: User = new User();
+
+  let unityRepository: UnityRepository = ({
+    findById: null,
+  } as unknown) as UnityRepository;
+
+  let userRepository: UserRepository = ({
+    isAdmin: null,
+  } as unknown) as UserRepository;
+
+  beforeEach(() => {
+    getUnityByIdUseCase = new GetUnityByIdUseCase(
+      unityRepository,
+      userRepository
+    );
+
+    unity = initUnity();
+
+    spyOn(unityRepository, "findById").and.callFake((id: any) => {
+      if (unity) {
+        const result: Unity = unity;
+        return new Promise((resolve, reject) => resolve(result));
+      }
+      return new Promise((resolve, reject) => resolve(null));
+    });
+  });
+
+  it("getUnityByIdUseCase should throw a parameter exception when the user is not admin", async () => {
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      await getUnityByIdUseCase.execute(unity.idUnite, user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
+    }
+  });
+
+  it("getUnityByIdUseCase should throw a parameter exception when the user is null", async () => {
+    try {
+      await getUnityByIdUseCase.execute(unity.idUnite, undefined);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
+    }
+  });
+
+  it("getUnityByIdUseCase should return unity when id is 1", async () => {
+    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    const result: Unity = await getUnityByIdUseCase.execute(
+      unity.idUnite,
+      user
+    );
+    expect(result.idUnite).toBe(1);
+    expect(result.libelleUnite).toBe("g");
+  });
+
+  it("should throw an error when id is missing", async () => {
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      await getUnityByIdUseCase.execute(null, user);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe("L'id d'une unité est obligatoire");
+    }
+  });
+});

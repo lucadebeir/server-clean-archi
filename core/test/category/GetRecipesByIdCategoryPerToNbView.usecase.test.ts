@@ -28,7 +28,7 @@ const initRecipe = (): Recipe[] => {
   return list;
 };
 
-describe("Update category use case unit tests", () => {
+describe("Get Recipes by id category use case unit tests", () => {
   let getRecipesByIdCategoryPerToNbViewUseCase: GetRecipesByIdCategoryPerToNbViewUseCase;
 
   let category: Category;
@@ -71,13 +71,11 @@ describe("Update category use case unit tests", () => {
       category.idCategorie,
       user
     );
-    if (result[0].nbVues && result[1].nbVues) {
-      const comparaisonDate = result[0].nbVues > result[1].nbVues;
-      expect(comparaisonDate).toBe(true);
-    }
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(recipes);
+    //attendre la nouvelle dépendance pour typescript
+    //expect(result).toBeSortedBy("nbVues");
   });
 
   it("getRecipesByIdCategoryPerToNbViewUseCase should throw a parameter exception when the user is not admin", async () => {

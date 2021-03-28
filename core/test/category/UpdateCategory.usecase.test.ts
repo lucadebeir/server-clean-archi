@@ -23,6 +23,7 @@ describe("Update category use case unit tests", () => {
   let categoryRepository: CategoryRepository = ({
     update: null,
     checkExistByName: null,
+    existById: null,
   } as unknown) as CategoryRepository;
 
   let userRepository: UserRepository = ({
@@ -49,6 +50,7 @@ describe("Update category use case unit tests", () => {
   it("updateCategoryUseCase should return category when it succeeded", async () => {
     spyOn(categoryRepository, "checkExistByName").and.returnValue(false);
     spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: Category = await updateCategoryUseCase.execute(
       user,
       category
@@ -79,10 +81,38 @@ describe("Update category use case unit tests", () => {
     }
   });
 
+  it("updateCategoryUseCase should throw a parameter exception when the idCategory is null", async () => {
+    category.idCategorie = null;
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      await updateCategoryUseCase.execute(user, category);
+    } catch (e) {
+      const a: TechnicalException = e;
+      expect(a.message).toBe(
+        "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
+      );
+    }
+  });
+
+  it("updateCategoryUseCase should throw a parameter exception when the category doesnt exist", async () => {
+    category.idCategorie = null;
+    try {
+      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(categoryRepository, "existById").and.returnValue(false);
+      await updateCategoryUseCase.execute(user, category);
+    } catch (e) {
+      const a: TechnicalException = e;
+      expect(a.message).toBe(
+        "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
+      );
+    }
+  });
+
   it("updateCategoryUseCase should throw a parameter exception when the libelleCategorie is null", async () => {
     category.libelleCategorie = null;
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
     } catch (e) {
       const a: BusinessException = e;
@@ -93,6 +123,7 @@ describe("Update category use case unit tests", () => {
   it("updateCategoryUseCase should throw a parameter exception when the libelleCategorie exist in db", async () => {
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "checkExistByName").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
     } catch (e) {

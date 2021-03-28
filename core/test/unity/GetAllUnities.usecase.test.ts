@@ -1,70 +1,73 @@
 import Category from "../../domain/Category.domain";
+import Unity from "../../domain/Unity";
 import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
+import UnityRepository from "../../ports/repositories/Unity.repository";
 import { UserRepository } from "../../ports/repositories/User.repository";
 import GetAllCategoriesUseCase from "../../usecases/category/GetAllCategories.usecase";
+import GetAllUnitiesUseCase from "../../usecases/unity/GetAllUnities.usecase";
 
-const initCategories = (): Category[] => {
-  const category1 = new Category();
-  category1.idCategorie = 1;
-  category1.libelleCategorie = "Douceur";
+const initUnities = (): Unity[] => {
+  const unity1 = new Unity();
+  unity1.idUnite = 1;
+  unity1.libelleUnite = "cl";
 
-  const category2 = new Category();
-  category2.idCategorie = 2;
-  category2.libelleCategorie = "Repas";
+  const unity2 = new Unity();
+  unity2.idUnite = 2;
+  unity2.libelleUnite = "g";
 
   const list = [];
 
-  list.push(category1);
-  list.push(category2);
+  list.push(unity1);
+  list.push(unity2);
 
   return list;
 };
 
-describe("Get all categories use case unit tests", () => {
-  let getAllCategoriesUseCase: GetAllCategoriesUseCase;
+describe("Get all unities use case unit tests", () => {
+  let getAllUnitiesUseCase: GetAllUnitiesUseCase;
 
-  let list: Category[];
+  let list: Unity[];
   let user: User = new User();
 
-  let categoryRepository: CategoryRepository = ({
+  let unityRepository: UnityRepository = ({
     findAll: null,
-  } as unknown) as CategoryRepository;
+  } as unknown) as UnityRepository;
 
   let userRepository: UserRepository = ({
     isAdmin: null,
   } as unknown) as UserRepository;
 
   beforeEach(() => {
-    list = initCategories();
+    list = initUnities();
 
-    getAllCategoriesUseCase = new GetAllCategoriesUseCase(
-      categoryRepository,
+    getAllUnitiesUseCase = new GetAllUnitiesUseCase(
+      unityRepository,
       userRepository
     );
 
-    spyOn(categoryRepository, "findAll").and.callFake(() => {
+    spyOn(unityRepository, "findAll").and.callFake(() => {
       if (list) {
-        const result: Category[] = list;
+        const result: Unity[] = list;
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
     });
   });
 
-  it("getAllCategoriesUseCase should return categories when it succeeded", async () => {
+  it("getAllUnitiesUseCase should return unities when it succeeded", async () => {
     spyOn(userRepository, "isAdmin").and.returnValue(true);
-    const result: Category[] = await getAllCategoriesUseCase.execute(user);
+    const result: Unity[] = await getAllUnitiesUseCase.execute(user);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(list);
   });
 
-  it("getAllCategoriesUseCase should throw a parameter exception when the user is not admin", async () => {
+  it("getAllUnitiesUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(userRepository, "isAdmin").and.returnValue(false);
-      await getAllCategoriesUseCase.execute(user);
+      await getAllUnitiesUseCase.execute(user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

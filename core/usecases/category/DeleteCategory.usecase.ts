@@ -18,10 +18,14 @@ export default class DeleteCategoryUseCase {
   private checkBusinessRules(id: any, user: User): void {
     if (this.userRepository.isAdmin(user)) {
       if (id) {
-        if (this.categoryRepository.checkExistInRecipes(id)) {
-          throw new BusinessException(
-            "Cette catégorie est associée à une ou plusieurs recettes"
-          );
+        if (this.categoryRepository.existById(id)) {
+          if (this.categoryRepository.checkExistInRecipes(id)) {
+            throw new BusinessException(
+              "Cette catégorie est associée à une ou plusieurs recettes"
+            );
+          }
+        } else {
+          throw new BusinessException("Cette catégorie n'existe pas");
         }
       } else {
         throw new TechnicalException(

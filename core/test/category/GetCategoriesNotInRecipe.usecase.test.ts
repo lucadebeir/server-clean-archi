@@ -31,7 +31,7 @@ const initRecipe = (): Recipe => {
   return recipe;
 };
 
-describe("Update category use case unit tests", () => {
+describe("Get categories not in recipe use case unit tests", () => {
   let getCategoriesNotInRecipeUseCase: GetCategoriesNotInRecipeUseCase;
 
   let list: Category[];

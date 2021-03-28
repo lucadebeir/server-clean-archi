@@ -8,12 +8,6 @@ import ImageSequelize from "../entities/Image.model";
 import RecipeSequelize from "../entities/Recipe.model";
 
 export default class CategoryRepositorySQL implements CategoryRepository {
-  existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
-  checkExistByName(name: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
   create(categoryToCreate: Category): Promise<Category> {
     return CategorySequelize.findOne({
       where: {
@@ -209,6 +203,42 @@ export default class CategoryRepositorySQL implements CategoryRepository {
     })
       .then((result: any) => {
         return result.length != 0;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  existById(id: any): Promise<boolean> {
+    return CategorySequelize.findOne({
+      where: {
+        idCategorie: id,
+      },
+    })
+      .then((category) => {
+        if (category) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  checkExistByName(name: any): Promise<boolean> {
+    return CategorySequelize.findOne({
+      where: {
+        libelleCategorie: name,
+      },
+    })
+      .then((category) => {
+        if (category) {
+          return true;
+        } else {
+          return false;
+        }
       })
       .catch((err) => {
         throw new Error(err);
