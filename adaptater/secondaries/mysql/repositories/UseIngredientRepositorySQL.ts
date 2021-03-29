@@ -4,6 +4,9 @@ import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class UseIngredientRepositorySQL
   implements UseIngredientRepository {
+  check(useIngredient: UseIngredient): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   addIngredientToRecipe(useIngredientToAdd: UseIngredient): Promise<string> {
     return UseIngredientSequelize.findOne({
       where: {
