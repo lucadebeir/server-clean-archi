@@ -45,11 +45,8 @@ describe("Get all categories use case unit tests", () => {
     );
 
     spyOn(categoryRepository, "findAll").and.callFake(() => {
-      if (list) {
-        const result: Category[] = list;
-        return new Promise((resolve, reject) => resolve(result));
-      }
-      return new Promise((resolve, reject) => resolve(null));
+      const result: Category[] = list;
+      return new Promise((resolve, reject) => resolve(result));
     });
   });
 

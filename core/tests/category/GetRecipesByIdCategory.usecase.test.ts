@@ -55,7 +55,7 @@ describe("Get recipes by id category use case unit tests", () => {
 
     spyOn(categoryRepository, "getRecipesByIdCategory").and.callFake(
       (id: any) => {
-        if (recipes) {
+        if (id) {
           const result: Recipe[] = recipes;
           return new Promise((resolve, reject) => resolve(result));
         }

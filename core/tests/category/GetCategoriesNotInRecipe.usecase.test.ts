@@ -62,7 +62,7 @@ describe("Get categories not in recipe use case unit tests", () => {
 
     spyOn(categoryRepository, "findCategoriesNotInRecipe").and.callFake(
       (id: any) => {
-        if (list) {
+        if (id) {
           const result: Category[] = list;
           return new Promise((resolve, reject) => resolve(result));
         }

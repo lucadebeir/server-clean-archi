@@ -48,11 +48,8 @@ describe("Get all unities use case unit tests", () => {
     );
 
     spyOn(unityRepository, "findAll").and.callFake(() => {
-      if (list) {
-        const result: Unity[] = list;
-        return new Promise((resolve, reject) => resolve(result));
-      }
-      return new Promise((resolve, reject) => resolve(null));
+      const result: Unity[] = list;
+      return new Promise((resolve, reject) => resolve(result));
     });
   });
 

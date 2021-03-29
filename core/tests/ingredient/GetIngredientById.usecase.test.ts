@@ -37,7 +37,7 @@ describe("get ingredient by id use case unit tests", () => {
     ingredient = initIngredient();
 
     spyOn(ingredientRepository, "findById").and.callFake((id: any) => {
-      if (ingredient) {
+      if (id) {
         const result: Ingredient = ingredient;
         return new Promise((resolve, reject) => resolve(result));
       }

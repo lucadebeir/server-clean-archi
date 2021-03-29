@@ -37,7 +37,7 @@ describe("get unity by id use case unit tests", () => {
     unity = initUnity();
 
     spyOn(unityRepository, "findById").and.callFake((id: any) => {
-      if (unity) {
+      if (id) {
         const result: Unity = unity;
         return new Promise((resolve, reject) => resolve(result));
       }

@@ -4,7 +4,7 @@ export default interface IngredientRepository {
   create(ingredient?: Ingredient): Promise<Ingredient>;
   findAll(): Promise<Ingredient[]>;
   findById(id: any): Promise<Ingredient>;
-  findRestOfIngredientsPerToList(ingredients: any): Promise<Ingredient[]>;
+  findRestOfIngredientsPerToList(id: any): Promise<Ingredient[]>;
   findIngredientsNotInRecipe(id: any): Promise<Ingredient[]>;
 
   deleteById(id: any): Promise<string>;
