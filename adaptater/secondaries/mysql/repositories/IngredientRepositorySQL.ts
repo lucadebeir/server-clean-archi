@@ -5,6 +5,9 @@ import IngredientSequelize from "../entities/Ingredient.model";
 import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class IngredientRepositorySQL implements IngredientRepository {
+  checkExistByName(name: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   create(ingredientToCreate: Ingredient): Promise<Ingredient> {
     return IngredientSequelize.findOne({
       where: {

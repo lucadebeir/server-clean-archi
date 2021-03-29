@@ -4,13 +4,14 @@ import cors from "cors";
 category.use(cors());
 
 import CategoryConfig from "../config/CategoryConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const categoryConfig = new CategoryConfig();
 
 //Récupére toutes les catégories
-category.get("/all", (req, res) => {
+category.get("/all", authenticateJWT, (req, res) => {
   categoryConfig
     .getAllCategoriesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((categories: any) => {
       res.json(categories);
     })
@@ -20,10 +21,10 @@ category.get("/all", (req, res) => {
 });
 
 //selectionner les catégories dont une recette ne fait pas partie
-category.get("/rest/recipes/:id", (req, res) => {
+category.get("/rest/recipes/:id", authenticateJWT, (req, res) => {
   categoryConfig
     .getCategoriesNotInRecipeUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((categories: any) => {
       res.json(categories);
     })
@@ -33,10 +34,10 @@ category.get("/rest/recipes/:id", (req, res) => {
 });
 
 //Récupére les recettes d'une catégorie
-category.get("/:id/recipes", (req, res) => {
+category.get("/:id/recipes", authenticateJWT, (req, res) => {
   categoryConfig
     .getRecipesByIdCategoryUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((recipes: any) => {
       res.json(recipes);
     })
@@ -46,10 +47,10 @@ category.get("/:id/recipes", (req, res) => {
 });
 
 //Récupére les recettes d'une catégorie selon nbVue
-category.get("/:id/recipes/views", (req, res) => {
+category.get("/:id/recipes/views", authenticateJWT, (req, res) => {
   categoryConfig
     .getRecipesByIdCategoryPerToNbViewUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((recipes: any) => {
       res.json(recipes);
     })
@@ -59,13 +60,13 @@ category.get("/:id/recipes/views", (req, res) => {
 });
 
 //Ajouter catégorie
-category.post("/add", (req, res) => {
+category.post("/add", authenticateJWT, (req, res) => {
   const categoryData = {
     libelleCategorie: req.body.libelleCategorie,
   };
   categoryConfig
     .createCategoryUseCase()
-    .execute(categoryData)
+    .execute(categoryData, req.body.user)
     .then((category: any) => {
       res.json(category);
     })
@@ -75,10 +76,10 @@ category.post("/add", (req, res) => {
 });
 
 //supprimer catégorie
-category.delete("/:id", (req, res) => {
+category.delete("/:id", authenticateJWT, (req, res) => {
   categoryConfig
     .deleteCategoryUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((category: any) => {
       res.json(category);
     })
@@ -88,14 +89,14 @@ category.delete("/:id", (req, res) => {
 });
 
 //modifier catégorie
-category.post("/update", (req, res) => {
+category.post("/update", authenticateJWT, (req, res) => {
   const categoryData = {
     idCategorie: req.body.idCategorie,
     libelleCategorie: req.body.libelleCategorie,
   };
   categoryConfig
     .updateCategoryUseCase()
-    .execute(categoryData)
+    .execute(req.body.user, categoryData)
     .then((category: any) => {
       res.json(category);
     })

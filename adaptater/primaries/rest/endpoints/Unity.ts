@@ -4,13 +4,14 @@ import cors from "cors";
 unity.use(cors());
 
 import UnityConfig from "../config/UnityConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const unityConfig = new UnityConfig();
 
 //récupère toutes les unités
-unity.get("/all", (req, res) => {
+unity.get("/all", authenticateJWT, (req, res) => {
   unityConfig
     .getAllUnitiesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((unities: any) => {
       res.json(unities);
     })
@@ -20,10 +21,10 @@ unity.get("/all", (req, res) => {
 });
 
 //Récupérer tous les infos de l'unité
-unity.get("/:id", (req, res) => {
+unity.get("/:id", authenticateJWT, (req, res) => {
   unityConfig
     .getUnityByIdUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((unity: any) => {
       res.json(unity);
     })
