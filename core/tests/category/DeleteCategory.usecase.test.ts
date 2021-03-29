@@ -36,7 +36,7 @@ describe("Delete category use case unit tests", () => {
     );
   });
 
-  it("deleteCategoryUseCase should return category when it succeeded", async () => {
+  it("deleteCategoryUseCase should return message when it succeeded", async () => {
     spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
@@ -66,7 +66,7 @@ describe("Delete category use case unit tests", () => {
       await deleteCategoryUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
-      expect(a.message).toBe("L'identifiant d'une catégorie est indéfinie");
+      expect(a.message).toBe("L'identifiant d'une catégorie est indéfini");
     }
   });
 

@@ -4,13 +4,14 @@ import cors from "cors";
 ingredient.use(cors());
 
 import IngredientConfig from "../config/IngredientConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const ingredientConfig = new IngredientConfig();
 
-//Récupére toutes les catégories
-ingredient.get("/all", (req, res) => {
+//Récupére tous les ingrédients
+ingredient.get("/all", authenticateJWT, (req, res) => {
   ingredientConfig
     .getAllIngredientsUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((ingredients: any) => {
       res.json(ingredients);
     })
@@ -19,11 +20,11 @@ ingredient.get("/all", (req, res) => {
     });
 });
 
-//Récupérer tous les infos de l'ingrédient
-ingredient.get("/:id", (req, res) => {
+//Récupérer toutes les infos de l'ingrédient
+ingredient.get("/:id", authenticateJWT, (req, res) => {
   ingredientConfig
     .getIngredientByIdUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })
@@ -33,10 +34,10 @@ ingredient.get("/:id", (req, res) => {
 });
 
 //Récupérer tous les ingrédients restants dans l'ordre alphabétique
-ingredient.get("/rest/asc", (req, res) => {
+ingredient.get("/rest/asc", authenticateJWT, (req, res) => {
   ingredientConfig
     .getRestOfIngredientsPerToListUseCase()
-    .execute(req.body.ingredients)
+    .execute(req.body.ingredients, req.body.user)
     .then((ingredients: any) => {
       res.json(ingredients);
     })
@@ -46,10 +47,10 @@ ingredient.get("/rest/asc", (req, res) => {
 });
 
 //Récupérer les ingrédients qui ne sont pas utilisés dans une recette
-ingredient.get("/rest/recipe/:id", (req, res) => {
+ingredient.get("/rest/recipe/:id", authenticateJWT, (req, res) => {
   ingredientConfig
     .getIngredientsNotInRecipeUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((ingredients: any) => {
       res.json(ingredients);
     })
@@ -59,13 +60,13 @@ ingredient.get("/rest/recipe/:id", (req, res) => {
 });
 
 //Ajouter ingredient
-ingredient.post("/add", (req, res) => {
+ingredient.post("/add", authenticateJWT, (req, res) => {
   const ingredientData = {
     nomIngredient: req.body.nomIngredient,
   };
   ingredientConfig
     .createIngredientUseCase()
-    .execute(ingredientData)
+    .execute(ingredientData, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })
@@ -75,10 +76,10 @@ ingredient.post("/add", (req, res) => {
 });
 
 //supprimer ingredient
-ingredient.delete("/:id", (req, res) => {
+ingredient.delete("/:id", authenticateJWT, (req, res) => {
   ingredientConfig
     .deleteIngredientUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })
@@ -88,14 +89,14 @@ ingredient.delete("/:id", (req, res) => {
 });
 
 //modifier ingredient
-ingredient.post("/update", (req, res) => {
+ingredient.post("/update", authenticateJWT, (req, res) => {
   const ingredientData = {
     idIngredient: req.body.idIngredient,
     nomIngredient: req.body.nomIngredient,
   };
   ingredientConfig
     .updateIngredientUseCase()
-    .execute(ingredientData)
+    .execute(ingredientData, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })

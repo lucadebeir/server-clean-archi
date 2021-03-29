@@ -34,13 +34,13 @@ unity.get("/:id", authenticateJWT, (req, res) => {
 });
 
 //Ajouter ingredient
-unity.post("/add", (req, res) => {
+unity.post("/add", authenticateJWT, (req, res) => {
   const unityData = {
     libelleUnite: req.body.libelleUnite,
   };
   unityConfig
     .createUnityUseCase()
-    .execute(unityData)
+    .execute(unityData, req.body.user)
     .then((unity: any) => {
       res.json(unity);
     })
@@ -50,10 +50,10 @@ unity.post("/add", (req, res) => {
 });
 
 //supprimer ingredient
-unity.delete("/:id", (req, res) => {
+unity.delete("/:id", authenticateJWT, (req, res) => {
   unityConfig
     .deleteUnityUseCase()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((unity: any) => {
       res.json(unity);
     })
@@ -63,14 +63,14 @@ unity.delete("/:id", (req, res) => {
 });
 
 //modifier ingredient
-unity.post("/update", (req, res) => {
+unity.post("/update", authenticateJWT, (req, res) => {
   const unityData = {
     idUnite: req.body.idUnite,
     libelleUnite: req.body.libelleUnite,
   };
   unityConfig
     .updateUnityUseCase()
-    .execute(unityData)
+    .execute(unityData, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })

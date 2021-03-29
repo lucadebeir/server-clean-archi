@@ -26,7 +26,7 @@ export default class DeleteCategoryUseCase {
         }
       } else {
         throw new TechnicalException(
-          "L'identifiant d'une catégorie est indéfinie"
+          "L'identifiant d'une catégorie est indéfini"
         );
       }
     } else {
