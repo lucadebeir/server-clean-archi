@@ -1,7 +1,7 @@
 import User from "../../domain/User";
 
 export interface UserRepository {
-  register(user: User, host: any): Promise<string>;
+  register(user: User): Promise<string>;
   login(pseudo: any, password: any): Promise<string>;
   existByPseudo(pseudo: any): Promise<boolean>;
   findById(pseudo: any): Promise<User>;

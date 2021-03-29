@@ -1,3 +1,4 @@
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 import { UserRepository } from "../../ports/repositories/User.repository";
 
 export default class LoginUseCase {

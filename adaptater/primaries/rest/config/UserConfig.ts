@@ -1,3 +1,4 @@
+import MailingRepository from "../../../../core/ports/mailing/Mailing.repository";
 import { UserRepository } from "../../../../core/ports/repositories/User.repository";
 import CheckValideTokenUseCase from "../../../../core/usecases/user/CheckValideToken.usecase";
 import DeleteUserUseCase from "../../../../core/usecases/user/DeleteUser.usecase";
@@ -13,10 +14,12 @@ import SendFromContactUseCase from "../../../../core/usecases/user/SendFromConta
 import UpdatePasswordUseCase from "../../../../core/usecases/user/UpdatePassword.usecase";
 import UpdatePasswordWithTokenUseCase from "../../../../core/usecases/user/UpdatePasswordWithToken.usecase";
 import UpdateUserUseCase from "../../../../core/usecases/user/UpdateUser.usecase";
+import MailingRepositoryGmail from "../../../secondaries/mail/implementations/MailingRepositoryGmail";
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class UserConfig {
   public userRepository: UserRepository = new UserRepositorySQL();
+  public mailingRepository: MailingRepository = new MailingRepositoryGmail();
 
   public checkValideTokenUseCase(): CheckValideTokenUseCase {
     return new CheckValideTokenUseCase(this.userRepository);
@@ -55,7 +58,7 @@ export default class UserConfig {
   }
 
   public registerUseCase(): RegisterUseCase {
-    return new RegisterUseCase(this.userRepository);
+    return new RegisterUseCase(this.userRepository, this.mailingRepository);
   }
 
   public sendFromContactUseCase(): SendFromContactUseCase {

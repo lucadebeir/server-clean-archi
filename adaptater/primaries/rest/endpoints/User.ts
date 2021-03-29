@@ -2,10 +2,15 @@ import express from "express";
 const user = express.Router();
 import cors from "cors";
 import sanitizeHtml from "sanitize-html";
+import { authenticateJWT } from "../middleware/auth.middleware";
+import jwt from "jsonwebtoken";
 user.use(cors());
 
 import UserConfig from "../config/UserConfig";
 const userConfig = new UserConfig();
+
+const refreshTokenSecret = 'yourrefreshtokensecrethere';
+let refreshTokens: any[] = [];
 
 //Register for an user
 user.post("/register", (req, res) => {
@@ -17,11 +22,23 @@ user.post("/register", (req, res) => {
     admin: req.body.admin,
     abonneNews: req.body.abonneNews,
   };
+  const rand = Math.floor(Math.random() * 100 + 54);
+  const link =
+    "http://" +
+    req.get("host") +
+    "/server/verify?id=" +
+    rand +
+    "&pseudo=" +
+    userData.pseudo;
+    
   userConfig
     .registerUseCase()
-    .execute(userData, req.get("host"))
+    .execute(userData, link)
     .then((user: any) => {
-      res.json(user);
+      let accessToken = jwt.sign(user.dataValues, "secret", {
+        expiresIn: "1d",
+      });
+      res.json(accessToken);
     })
     .catch((err: string) => {
       res.send("error: " + err);
@@ -34,7 +51,16 @@ user.post("/login", (req, res) => {
     .loginUseCase()
     .execute(sanitizeHtml(req.body.pseudo), sanitizeHtml(req.body.mdp))
     .then((user: any) => {
-      res.json(user);
+      let accessToken = jwt.sign(user.dataValues, "secret", {
+        expiresIn: "1d",
+      });
+      let refreshToken = jwt.sign(user.dataValues, refreshTokenSecret);
+      refreshTokens.push(refreshToken);
+
+      return ({
+        accessToken,
+        refreshToken
+      });
     })
     .catch((err: string) => {
       res.send("error: " + err);
@@ -68,7 +94,7 @@ user.get("/pseudo/:pseudo", (req, res) => {
 });
 
 //Récupère tous les abonnés
-user.get("/abonne", (req, res) => {
+user.get("/abonne", authenticateJWT, (req, res) => {
   userConfig
     .getAllAbonneUsersUseCase()
     .execute()
@@ -178,5 +204,12 @@ user.get("/emails", (req, res) => {
       res.send("error: " + err);
     });
 });
+
+//logout
+user.post("/logout", (req, res) => {
+  const { token } = req.body;
+  refreshTokens = refreshTokens.filter(t => t !== token);
+  res.send("Logout successful");
+})
 
 export = user;

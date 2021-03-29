@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 import ResetTokenSequelize from "../entities/ResetToken.model";
 import MailingRepositoryGmail from "../../mail/implementations/MailingRepositoryGmail";
 
-const mailingRepository: MailingRepositoryGmail = new MailingRepositoryGmail();
 
 export default class UserRepositorySQL implements UserRepository {
   isAdmin(user: User): Promise<boolean> {
@@ -15,7 +14,7 @@ export default class UserRepositorySQL implements UserRepository {
   isLogin(user: User): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  register(user: User, host: any): Promise<string> {
+  register(user: User): Promise<string> {
     const userData = {
       pseudo: user.pseudo,
       email: user.email,
@@ -37,19 +36,7 @@ export default class UserRepositorySQL implements UserRepository {
             userData.mdp = hash;
             return UserSequelize.create(userData)
               .then((user: any) => {
-                let token = jwt.sign(user.dataValues, "secret", {
-                  expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
-                });
-                const rand = Math.floor(Math.random() * 100 + 54);
-                const link =
-                  "http://" +
-                  host +
-                  "/server/verify?id=" +
-                  rand +
-                  "&pseudo=" +
-                  user.pseudo;
-                mailingRepository.sendMailAfterRegister(user, link);
-                return token;
+                return user;
               })
               .catch((err) => {
                 throw new Error(err);
@@ -81,10 +68,7 @@ export default class UserRepositorySQL implements UserRepository {
           );
         } else {
           if (bcrypt.compareSync(password, user.mdp)) {
-            let token = jwt.sign(user.dataValues, "secret", {
-              expiresIn: "1d",
-            });
-            return token;
+            return user;
           } else {
             throw new Error("Mot de passe et/ou pseudo incorrect");
           }
