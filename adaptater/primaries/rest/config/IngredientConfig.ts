@@ -7,34 +7,34 @@ import GetIngredientsNotInRecipeUseCase from "../../../../core/usecases/ingredie
 import CreateIngredientUseCase from "../../../../core/usecases/ingredient/CreateIngredient.usecase";
 import DeleteIngredientUseCase from "../../../../core/usecases/ingredient/DeleteIngredient.usecase";
 import UpdateIngredientUseCase from "../../../../core/usecases/ingredient/UpdateIngredient.usecase";
-import { UserRepository } from "../../../../core/ports/repositories/User.repository";
-import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class IngredientConfig {
   public ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
-  public userRepository: UserRepository = new UserRepositorySQL();
   public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
-  
+
   public getAllIngredientsUseCase(): GetAllIngredientsUseCase {
     return new GetAllIngredientsUseCase(this.ingredientRepository);
   }
 
   public getIngredientByIdUseCase(): GetIngredientByIdUseCase {
-    return new GetIngredientByIdUseCase(this.ingredientRepository, this.userRepository);
+    return new GetIngredientByIdUseCase(this.ingredientRepository);
   }
 
   public getRestOfIngredientsPerToListUseCase(): GetRestOfIngredientsPerToListUseCase {
-    return new GetRestOfIngredientsPerToListUseCase(this.ingredientRepository, this.userRepository);
+    return new GetRestOfIngredientsPerToListUseCase(this.ingredientRepository);
   }
 
   public getIngredientsNotInRecipeUseCase(): GetIngredientsNotInRecipeUseCase {
-    return new GetIngredientsNotInRecipeUseCase(this.ingredientRepository, this.userRepository, this.recipeRepository);
+    return new GetIngredientsNotInRecipeUseCase(
+      this.ingredientRepository,
+      this.recipeRepository
+    );
   }
 
   public createIngredientUseCase(): CreateIngredientUseCase {
-    return new CreateIngredientUseCase(this.ingredientRepository, this.userRepository);
+    return new CreateIngredientUseCase(this.ingredientRepository);
   }
 
   public deleteIngredientUseCase(): DeleteIngredientUseCase {
@@ -42,6 +42,6 @@ export default class IngredientConfig {
   }
 
   public updateIngredientUseCase(): UpdateIngredientUseCase {
-    return new UpdateIngredientUseCase(this.ingredientRepository, this.userRepository);
+    return new UpdateIngredientUseCase(this.ingredientRepository);
   }
 }

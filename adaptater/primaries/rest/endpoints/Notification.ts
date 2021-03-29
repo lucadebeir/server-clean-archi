@@ -14,8 +14,8 @@ notification.get("/all", (req, res) => {
     .then((notifs: any) => {
       res.json(notifs);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ notification.get("/all/enabled", (req, res) => {
     .then((notifs: any) => {
       res.json(notifs);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ notification.post("/add", (req, res) => {
     .then((notif: any) => {
       res.json(notif);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -53,8 +53,8 @@ notification.post("/:id", (req, res) => {
     .then((notif: any) => {
       res.json(notif);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

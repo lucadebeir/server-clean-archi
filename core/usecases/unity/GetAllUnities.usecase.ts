@@ -1,22 +1,19 @@
+import TokenDomain from "../../domain/Token.domain";
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class GetAllUnitiesUseCase {
-  constructor(
-    private unityRepository: UnityRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private unityRepository: UnityRepository) {}
 
-  async execute(user: User): Promise<Unity[]> {
+  async execute(user: TokenDomain): Promise<Unity[]> {
     this.checkBusinessRules(user);
     return await this.unityRepository.findAll();
   }
 
-  private checkBusinessRules(user: User): void {
-    if (!this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(user: TokenDomain): void {
+    if (!isAdmin(user)) {
       throw new BusinessException(
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );

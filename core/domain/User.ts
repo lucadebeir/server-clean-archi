@@ -4,6 +4,6 @@ export default class User {
   emailConfirmed?: boolean;
   mdp?: string;
   mdp2?: string;
-  admin?: boolean;
+  admin!: boolean;
   abonneNews?: boolean;
 }

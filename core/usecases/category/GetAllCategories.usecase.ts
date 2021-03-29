@@ -1,22 +1,19 @@
 import Category from "../../domain/Category.domain";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class GetAllCategoriesUseCase {
-  constructor(
-    private categoryRepository: CategoryRepository,
-    private userRepository: UserRepository
-  ) {} //constructeur avec l'interface
+  constructor(private categoryRepository: CategoryRepository) {} //constructeur avec l'interface
 
-  async execute(user: User): Promise<Category[]> {
+  async execute(user: TokenDomain): Promise<Category[]> {
     this.checkBusinessRules(user);
     return await this.categoryRepository.findAll();
   }
 
-  private checkBusinessRules(user: User): void {
-    if (!this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(user: TokenDomain): void {
+    if (!isAdmin(user)) {
       throw new BusinessException(
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );

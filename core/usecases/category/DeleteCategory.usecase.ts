@@ -1,22 +1,19 @@
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class DeleteCategoryUseCase {
-  constructor(
-    private categoryRepository: CategoryRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private categoryRepository: CategoryRepository) {}
 
-  async execute(id: any, user: User): Promise<string> {
+  async execute(id: any, user: TokenDomain): Promise<string> {
     this.checkBusinessRules(id, user);
     return await this.categoryRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id: any, user: User): void {
-    if (this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(id: any, user: TokenDomain): void {
+    if (isAdmin(user)) {
       if (id) {
         if (this.categoryRepository.existById(id)) {
           if (this.categoryRepository.checkExistInRecipes(id)) {

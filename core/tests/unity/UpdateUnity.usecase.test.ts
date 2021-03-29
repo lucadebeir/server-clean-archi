@@ -1,10 +1,10 @@
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import UpdateUnityUseCase from "../../usecases/unity/UpdateUnity.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
@@ -18,7 +18,7 @@ describe("Update unity use case unit tests", () => {
   let updateUnityUseCase: UpdateUnityUseCase;
 
   let unity: Unity;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let unityRepository: UnityRepository = ({
     update: null,
@@ -26,17 +26,10 @@ describe("Update unity use case unit tests", () => {
     findById: null,
   } as unknown) as UnityRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     unity = initUnity();
 
-    updateUnityUseCase = new UpdateUnityUseCase(
-      unityRepository,
-      userRepository
-    );
+    updateUnityUseCase = new UpdateUnityUseCase(unityRepository);
 
     spyOn(unityRepository, "update").and.callFake((unity: Unity) => {
       if (unity) {
@@ -49,7 +42,7 @@ describe("Update unity use case unit tests", () => {
 
   it("updateUnityUseCase should return unity when it succeeded", async () => {
     spyOn(unityRepository, "checkExistByName").and.returnValue(false);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(unityRepository, "findById").and.returnValue(true);
     const result: Unity = await updateUnityUseCase.execute(unity, user);
     expect(result).toBeDefined();
@@ -70,7 +63,7 @@ describe("Update unity use case unit tests", () => {
 
   it("updateUnityUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -82,7 +75,7 @@ describe("Update unity use case unit tests", () => {
 
   it("updateUnityUseCase should throw a parameter exception when the unity is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -93,7 +86,7 @@ describe("Update unity use case unit tests", () => {
   it("updateUnityUseCase should throw a parameter exception when the idUnity is null", async () => {
     unity.idUnite = null;
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -106,7 +99,7 @@ describe("Update unity use case unit tests", () => {
   it("deleteUnityUseCase should throw a parameter exception when the unity doesn't exist", async () => {
     try {
       spyOn(unityRepository, "findById").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -118,7 +111,7 @@ describe("Update unity use case unit tests", () => {
     unity.libelleUnite = null;
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -131,7 +124,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(unityRepository, "checkExistByName").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -145,7 +138,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(unityRepository, "checkExistByName").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;

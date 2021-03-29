@@ -18,8 +18,8 @@ favori.post("/add", (req, res) => {
     .then((favori: any) => {
       res.json(favori);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -31,8 +31,8 @@ favori.get("/recipe/:pseudo", (req, res) => {
     .then((favoris: any) => {
       res.json(favoris);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -44,8 +44,8 @@ favori.get("/recipe/:pseudo/category/:id", (req, res) => {
     .then((favoris: any) => {
       res.json(favoris);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -57,8 +57,8 @@ favori.delete("/:id/:pseudo", (req, res) => {
     .then((favori: any) => {
       res.json(favori);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

@@ -1,9 +1,9 @@
 import Ingredient from "../../domain/Ingredient";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import CreateIngredientUseCase from "../../usecases/ingredient/CreateIngredient.usecase";
 
 const initIngredient = (): Ingredient => {
@@ -17,24 +17,17 @@ describe("Create ingredient use case unit tests", () => {
   let createIngredientUseCase: CreateIngredientUseCase;
 
   let ingredient: Ingredient;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let ingredientRepository: IngredientRepository = ({
     create: null,
     checkExistByName: null,
   } as unknown) as IngredientRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     ingredient = initIngredient();
 
-    createIngredientUseCase = new CreateIngredientUseCase(
-      ingredientRepository,
-      userRepository
-    );
+    createIngredientUseCase = new CreateIngredientUseCase(ingredientRepository);
 
     spyOn(ingredientRepository, "create").and.callFake(
       (ingredient: Ingredient) => {
@@ -49,7 +42,7 @@ describe("Create ingredient use case unit tests", () => {
 
   it("createIngredientUseCase should return ingredient when it succeeded", async () => {
     spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Ingredient = await createIngredientUseCase.execute(
       ingredient,
       user
@@ -72,7 +65,7 @@ describe("Create ingredient use case unit tests", () => {
 
   it("createIngredientUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await createIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -84,7 +77,7 @@ describe("Create ingredient use case unit tests", () => {
 
   it("createIngredientUseCase should throw a parameter exception when the ingredient is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -95,7 +88,7 @@ describe("Create ingredient use case unit tests", () => {
   it("createIngredientUseCase should throw a parameter exception when the name is null", async () => {
     ingredient.nomIngredient = undefined;
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -108,7 +101,7 @@ describe("Create ingredient use case unit tests", () => {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -121,7 +114,7 @@ describe("Create ingredient use case unit tests", () => {
   it("createIngredientUseCase should throw a parameter exception when the libelleUnity already exists", async () => {
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
     } catch (e) {
       const a: BusinessException = e;

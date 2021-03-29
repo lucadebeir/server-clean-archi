@@ -1,22 +1,19 @@
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class DeleteUnityUseCase {
-  constructor(
-    private unityRepository: UnityRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private unityRepository: UnityRepository) {}
 
-  async execute(id: any, user?: User): Promise<string> {
+  async execute(id: any, user?: TokenDomain): Promise<string> {
     this.checkBusinessRules(id, user);
     return await this.unityRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id?: any, user?: User): void {
-    if (user && this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(id?: any, user?: TokenDomain): void {
+    if (user && isAdmin(user)) {
       if (id) {
         if (this.unityRepository.findById(id)) {
           if (this.unityRepository.checkExistInRecipes(id)) {

@@ -1,10 +1,10 @@
 import Category from "../../domain/Category.domain";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
 import CreateCategoryUseCase from "../../usecases/category/CreateCategory.usecase";
+import * as Utils from "../../utils/token.service";
 
 const initCategory = (): Category => {
   const category = new Category();
@@ -17,24 +17,17 @@ describe("Create category use case unit tests", () => {
   let createCategoryUseCase: CreateCategoryUseCase;
 
   let category: Category;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let categoryRepository: CategoryRepository = ({
     create: null,
     checkExistByName: null,
   } as unknown) as CategoryRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     category = initCategory();
 
-    createCategoryUseCase = new CreateCategoryUseCase(
-      categoryRepository,
-      userRepository
-    );
+    createCategoryUseCase = new CreateCategoryUseCase(categoryRepository);
 
     spyOn(categoryRepository, "create").and.callFake((category: Category) => {
       if (category) {
@@ -47,7 +40,7 @@ describe("Create category use case unit tests", () => {
 
   it("createCategoryUseCase should return category when it succeeded", async () => {
     spyOn(categoryRepository, "checkExistByName").and.returnValue(false);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Category = await createCategoryUseCase.execute(
       category,
       user
@@ -70,7 +63,7 @@ describe("Create category use case unit tests", () => {
 
   it("updateCategoryUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await createCategoryUseCase.execute(category, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -82,7 +75,7 @@ describe("Create category use case unit tests", () => {
 
   it("createCategoryUseCase should throw a parameter exception when the category is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -94,7 +87,7 @@ describe("Create category use case unit tests", () => {
     category.libelleCategorie = null;
     try {
       spyOn(categoryRepository, "checkExistByName").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(category, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -105,7 +98,7 @@ describe("Create category use case unit tests", () => {
   it("createCategoryUseCase should throw a parameter exception when the libelleCategorie already exists", async () => {
     try {
       spyOn(categoryRepository, "checkExistByName").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(category, user);
     } catch (e) {
       const a: BusinessException = e;

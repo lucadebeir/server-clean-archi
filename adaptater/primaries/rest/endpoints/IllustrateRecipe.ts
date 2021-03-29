@@ -14,8 +14,8 @@ illustrate.get("/add", (req, res) => {
     .then((image: any) => {
       res.json(image);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ illustrate.get("/update", (req, res) => {
     .then((image: any) => {
       res.json(image);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

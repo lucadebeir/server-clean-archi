@@ -1,9 +1,9 @@
 import Category from "../../domain/Category.domain";
 import Recipe from "../../domain/Recipe";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByIdCategory.usecase";
 
 const initCategories = (): Category => {
@@ -32,7 +32,7 @@ describe("Get recipes by id category use case unit tests", () => {
   let getRecipesByIdCategoryUseCase: GetRecipesByIdCategoryUseCase;
 
   let category: Category;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
   let recipes: Recipe[];
 
   let categoryRepository: CategoryRepository = ({
@@ -40,17 +40,12 @@ describe("Get recipes by id category use case unit tests", () => {
     existById: null,
   } as unknown) as CategoryRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     category = initCategories();
     recipes = initRecipe();
 
     getRecipesByIdCategoryUseCase = new GetRecipesByIdCategoryUseCase(
-      categoryRepository,
-      userRepository
+      categoryRepository
     );
 
     spyOn(categoryRepository, "getRecipesByIdCategory").and.callFake(
@@ -65,7 +60,7 @@ describe("Get recipes by id category use case unit tests", () => {
   });
 
   it("getRecipesByIdCategoryUseCase should return categories when it succeeded", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: Recipe[] = await getRecipesByIdCategoryUseCase.execute(
       category.idCategorie,
@@ -80,7 +75,7 @@ describe("Get recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(category.idCategorie, user);
     } catch (e) {
@@ -93,7 +88,7 @@ describe("Get recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryUseCase should throw a parameter exception when the id is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(null, user);
     } catch (e) {
@@ -104,7 +99,7 @@ describe("Get recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryUseCase should throw a parameter exception when the category doesn't exist", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(category.idCategorie, user);
     } catch (e) {

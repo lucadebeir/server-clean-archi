@@ -1,22 +1,19 @@
 import Ingredient from "../../domain/Ingredient";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class GetIngredientByIdUseCase {
-  constructor(
-    private ingredientRepository: IngredientRepository,
-    private userRepository: UserRepository
-  ) {} //constructeur avec l'interface
+  constructor(private ingredientRepository: IngredientRepository) {} //constructeur avec l'interface
 
-  async execute(id: any, user?: User): Promise<Ingredient> {
+  async execute(id: any, user?: TokenDomain): Promise<Ingredient> {
     this.checkBusinessRules(id, user);
     return await this.ingredientRepository.findById(id);
   }
 
-  private checkBusinessRules(id: any, user?: User): void {
-    if (user && this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(id: any, user?: TokenDomain): void {
+    if (user && isAdmin(user)) {
       if (!id) {
         throw new BusinessException("L'id d'un ingrédient est obligatoire");
       }

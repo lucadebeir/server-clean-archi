@@ -21,8 +21,8 @@ commentaire.post("/add", (req, res) => {
     .then((commentaires: any) => {
       res.json(commentaires);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -41,8 +41,8 @@ commentaire.post("/update", (req, res) => {
     .then((commentaire: any) => {
       res.json(commentaire);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -54,8 +54,8 @@ commentaire.get("/recipe/:id", (req, res) => {
     .then((commentaires) => {
       res.json(commentaires);
     })
-    .catch((err) => {
-      res.json("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -67,8 +67,8 @@ commentaire.get("/recipe/:id/reponse/:idCommentaire", (req, res) => {
     .then((commentaires) => {
       res.json(commentaires);
     })
-    .catch((err) => {
-      res.json("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -80,8 +80,8 @@ commentaire.get("/user/:pseudo", (req, res) => {
     .then((commentaires) => {
       res.json(commentaires);
     })
-    .catch((err) => {
-      res.json("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -93,8 +93,8 @@ commentaire.delete("/:id", (req, res) => {
     .then((commentaire) => {
       res.json(commentaire);
     })
-    .catch((err) => {
-      res.json("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

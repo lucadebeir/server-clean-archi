@@ -4,8 +4,9 @@ import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetIngredientsNotInRecipeUseCase from "../../usecases/ingredient/GetIngredientsNotInRecipe.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
@@ -26,22 +27,18 @@ const initRecipe = (): Recipe => {
   recipe.idRecette = 1;
 
   return recipe;
-}
+};
 
 describe("get ingredients not in recipe use case unit tests", () => {
   let getIngredientsNotInRecipeUseCase: GetIngredientsNotInRecipeUseCase;
 
   let ingredients: Ingredient[];
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
   let recipe: Recipe;
 
   let ingredientRepository: IngredientRepository = ({
     findIngredientsNotInRecipe: null,
   } as unknown) as IngredientRepository;
-
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
 
   let recipeRepository: RecipeRepository = ({
     existById: null,
@@ -50,7 +47,6 @@ describe("get ingredients not in recipe use case unit tests", () => {
   beforeEach(() => {
     getIngredientsNotInRecipeUseCase = new GetIngredientsNotInRecipeUseCase(
       ingredientRepository,
-      userRepository,
       recipeRepository
     );
 
@@ -69,7 +65,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
   });
 
   it("getIngredientsNotInRecipeUseCase should return ingredient when idRecette is 1", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: Ingredient[] = await getIngredientsNotInRecipeUseCase.execute(
       recipe.idRecette,
@@ -84,7 +80,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
 
   it("getIngredientsNotInRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await getIngredientsNotInRecipeUseCase.execute(recipe.idRecette, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -110,7 +106,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
 
   it("getIngredientsNotInRecipeUseCase should throw an error when idRecette is missing", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await getIngredientsNotInRecipeUseCase.execute(null, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -120,12 +116,16 @@ describe("get ingredients not in recipe use case unit tests", () => {
 
   it("getIngredientsNotInRecipeUseCase should throw an error when recipe doesn't exist", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
-    spyOn(recipeRepository, "existById").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
+      spyOn(recipeRepository, "existById").and.returnValue(false);
       await getIngredientsNotInRecipeUseCase.execute(recipe.idRecette, user);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("L'identifiant " + recipe.idRecette + " ne correspond à aucune ressource existante.");
+      expect(a.message).toBe(
+        "L'identifiant " +
+          recipe.idRecette +
+          " ne correspond à aucune ressource existante."
+      );
     }
   });
 });

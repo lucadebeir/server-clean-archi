@@ -1,24 +1,20 @@
-import user from "../../../adaptater/primaries/rest/endpoints/User";
+import TokenDomain from "../../domain/Token.domain";
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class UpdateUnityUseCase {
-  constructor(
-    private unityRepository: UnityRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private unityRepository: UnityRepository) {}
 
-  async execute(unity?: Unity, user?: User): Promise<Unity> {
+  async execute(unity?: Unity, user?: TokenDomain): Promise<Unity> {
     this.checkBusinessRules(unity, user);
     return await this.unityRepository.update(unity);
   }
 
-  private checkBusinessRules(unity?: Unity, user?: User): void {
-    if (user && this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(unity?: Unity, user?: TokenDomain): void {
+    if (user && isAdmin(user)) {
       if (unity) {
         if (!unity.idUnite) {
           throw new TechnicalException(

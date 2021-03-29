@@ -14,8 +14,8 @@ recipe.get("/all", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ recipe.get("/all/asc", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ recipe.get("/all/desc/views", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -57,8 +57,8 @@ recipe.get("/get/:id", (req, res) => {
         res.send("Mauvais identifiant");
       }
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -74,8 +74,8 @@ recipe.get("/:id/ingredients", (req, res) => {
         res.send("Mauvais identifiant");
       }
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -91,8 +91,8 @@ recipe.get("/:id/categories", (req, res) => {
         res.send("Mauvais identifiant");
       }
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -104,8 +104,8 @@ recipe.get("/latest", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -117,8 +117,8 @@ recipe.get("/popular", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -130,8 +130,8 @@ recipe.post("/add", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

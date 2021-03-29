@@ -14,8 +14,8 @@ statistique.get("/views", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ statistique.get("/commentaires", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ statistique.get("/users", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -53,8 +53,8 @@ statistique.get("/abonnes", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -66,8 +66,8 @@ statistique.get("/users/abonnes", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -79,8 +79,8 @@ statistique.get("/top/recipes", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -92,8 +92,8 @@ statistique.get("/worst/recipes", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -105,8 +105,8 @@ statistique.get("/top/recipes/month", (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -118,8 +118,8 @@ statistique.get("/views/month", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -131,8 +131,8 @@ statistique.get("/commentaires/month", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -144,8 +144,8 @@ statistique.get("/users/monthly", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -157,8 +157,8 @@ statistique.get("/abonnes/monthly", (req, res) => {
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

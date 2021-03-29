@@ -1,23 +1,26 @@
 import Ingredient from "../../domain/Ingredient";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class CreateIngredientUseCase {
-  constructor(
-    private ingredientRepository: IngredientRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private ingredientRepository: IngredientRepository) {}
 
-  async execute(ingredient?: Ingredient, user?: User): Promise<Ingredient> {
+  async execute(
+    ingredient?: Ingredient,
+    user?: TokenDomain
+  ): Promise<Ingredient> {
     this.checkBusinessRules(ingredient, user);
     return await this.ingredientRepository.create(ingredient);
   }
 
-  private checkBusinessRules(ingredient?: Ingredient, user?: User): void {
-    if (user && this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(
+    ingredient?: Ingredient,
+    user?: TokenDomain
+  ): void {
+    if (user && isAdmin(user)) {
       if (ingredient) {
         if (!ingredient.nomIngredient) {
           throw new BusinessException("Le nom d'un ingrédient est obligatoire");

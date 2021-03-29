@@ -1,10 +1,10 @@
 import Category from "../../domain/Category.domain";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
 import DeleteCategoryUseCase from "../../usecases/category/DeleteCategory.usecase";
+import * as Utils from "../../utils/token.service";
 
 const initCategory = (): Category => {
   const category = new Category();
@@ -18,7 +18,7 @@ describe("Delete category use case unit tests", () => {
   let deleteCategoryUseCase: DeleteCategoryUseCase;
 
   let category: Category;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let categoryRepository: CategoryRepository = ({
     deleteById: null,
@@ -26,17 +26,10 @@ describe("Delete category use case unit tests", () => {
     existById: null,
   } as unknown) as CategoryRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     category = initCategory();
 
-    deleteCategoryUseCase = new DeleteCategoryUseCase(
-      categoryRepository,
-      userRepository
-    );
+    deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
 
     spyOn(categoryRepository, "deleteById").and.returnValue(
       "La catégorie a bien été supprimé"
@@ -45,7 +38,7 @@ describe("Delete category use case unit tests", () => {
 
   it("deleteCategoryUseCase should return category when it succeeded", async () => {
     spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: string = await deleteCategoryUseCase.execute(
       category.idCategorie,
@@ -57,7 +50,7 @@ describe("Delete category use case unit tests", () => {
 
   it("deleteCategoryUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValues(false);
+      spyOn(Utils, "isAdmin").and.returnValues(false);
       await deleteCategoryUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -69,7 +62,7 @@ describe("Delete category use case unit tests", () => {
 
   it("deleteCategoryUseCase should throw a parameter exception when the id is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValues(true);
+      spyOn(Utils, "isAdmin").and.returnValues(true);
       await deleteCategoryUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -81,7 +74,7 @@ describe("Delete category use case unit tests", () => {
     try {
       spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteCategoryUseCase.execute(category.idCategorie, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -93,7 +86,7 @@ describe("Delete category use case unit tests", () => {
     try {
       spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteCategoryUseCase.execute(category.idCategorie, user);
     } catch (e) {
       const a: BusinessException = e;

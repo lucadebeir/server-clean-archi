@@ -1,9 +1,9 @@
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetUnityByIdUseCase from "../../usecases/unity/GetUnityById.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
@@ -18,21 +18,14 @@ describe("get unity by id use case unit tests", () => {
 
   let unity: Unity;
 
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let unityRepository: UnityRepository = ({
     findById: null,
   } as unknown) as UnityRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
-    getUnityByIdUseCase = new GetUnityByIdUseCase(
-      unityRepository,
-      userRepository
-    );
+    getUnityByIdUseCase = new GetUnityByIdUseCase(unityRepository);
 
     unity = initUnity();
 
@@ -47,7 +40,7 @@ describe("get unity by id use case unit tests", () => {
 
   it("getUnityByIdUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await getUnityByIdUseCase.execute(unity.idUnite, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -69,7 +62,7 @@ describe("get unity by id use case unit tests", () => {
   });
 
   it("getUnityByIdUseCase should return unity when id is 1", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Unity = await getUnityByIdUseCase.execute(
       unity.idUnite,
       user
@@ -80,7 +73,7 @@ describe("get unity by id use case unit tests", () => {
 
   it("should throw an error when id is missing", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await getUnityByIdUseCase.execute(null, user);
     } catch (e) {
       const a: BusinessException = e;

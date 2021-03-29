@@ -1,9 +1,9 @@
 import Category from "../../domain/Category.domain";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetAllCategoriesUseCase from "../../usecases/category/GetAllCategories.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initCategories = (): Category[] => {
   const category1 = new Category();
@@ -26,23 +26,16 @@ describe("Get all categories use case unit tests", () => {
   let getAllCategoriesUseCase: GetAllCategoriesUseCase;
 
   let list: Category[];
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let categoryRepository: CategoryRepository = ({
     findAll: null,
   } as unknown) as CategoryRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     list = initCategories();
 
-    getAllCategoriesUseCase = new GetAllCategoriesUseCase(
-      categoryRepository,
-      userRepository
-    );
+    getAllCategoriesUseCase = new GetAllCategoriesUseCase(categoryRepository);
 
     spyOn(categoryRepository, "findAll").and.callFake(() => {
       const result: Category[] = list;
@@ -51,7 +44,7 @@ describe("Get all categories use case unit tests", () => {
   });
 
   it("getAllCategoriesUseCase should return categories when it succeeded", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Category[] = await getAllCategoriesUseCase.execute(user);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
@@ -60,7 +53,7 @@ describe("Get all categories use case unit tests", () => {
 
   it("getAllCategoriesUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await getAllCategoriesUseCase.execute(user);
     } catch (e) {
       const a: BusinessException = e;

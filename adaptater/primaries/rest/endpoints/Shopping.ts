@@ -14,8 +14,8 @@ shopping.get("/:pseudo", (req, res) => {
     .then((list: any) => {
       res.json(list);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ shopping.get("/:pseudo/rest", (req, res) => {
     .then((list: any) => {
       res.json(list);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ shopping.post("/add/ingredient", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -53,8 +53,8 @@ shopping.post("/add", (req, res) => {
     .then((ingredients: any) => {
       res.json(ingredients);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -66,8 +66,8 @@ shopping.delete("/delete/:id/:pseudo", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

@@ -1,10 +1,10 @@
 import Category from "../../domain/Category.domain";
 import Recipe from "../../domain/Recipe";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetRecipesByIdCategoryPerToNbViewUseCase from "../../usecases/category/GetRecipesByIdCategoryPerToNbView.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initCategories = (): Category => {
   const category = new Category();
@@ -32,7 +32,7 @@ describe("Get Recipes by id category use case unit tests", () => {
   let getRecipesByIdCategoryPerToNbViewUseCase: GetRecipesByIdCategoryPerToNbViewUseCase;
 
   let category: Category;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
   let recipes: Recipe[];
 
   let categoryRepository: CategoryRepository = ({
@@ -40,17 +40,12 @@ describe("Get Recipes by id category use case unit tests", () => {
     existById: null,
   } as unknown) as CategoryRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     category = initCategories();
     recipes = initRecipe();
 
     getRecipesByIdCategoryPerToNbViewUseCase = new GetRecipesByIdCategoryPerToNbViewUseCase(
-      categoryRepository,
-      userRepository
+      categoryRepository
     );
 
     spyOn(categoryRepository, "getRecipesByIdCategoryPerToNbView").and.callFake(
@@ -65,7 +60,7 @@ describe("Get Recipes by id category use case unit tests", () => {
   });
 
   it("getRecipesByIdCategoryPerToNbViewUseCase should return categories when it succeeded", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: Recipe[] = await getRecipesByIdCategoryPerToNbViewUseCase.execute(
       category.idCategorie,
@@ -80,7 +75,7 @@ describe("Get Recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryPerToNbViewUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryPerToNbViewUseCase.execute(
         category.idCategorie,
@@ -96,7 +91,7 @@ describe("Get Recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryPerToNbViewUseCase should throw a parameter exception when the id is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryPerToNbViewUseCase.execute(null, user);
     } catch (e) {
@@ -107,7 +102,7 @@ describe("Get Recipes by id category use case unit tests", () => {
 
   it("getRecipesByIdCategoryPerToNbViewUseCase should throw a parameter exception when the category doesn't exist", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryPerToNbViewUseCase.execute(
         category.idCategorie,

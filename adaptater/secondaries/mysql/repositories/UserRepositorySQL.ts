@@ -1,19 +1,11 @@
 import User from "../../../../core/domain/User";
-import { UserRepository } from "../../../../core/ports/repositories/User.repository";
+import UserRepository from "../../../../core/ports/repositories/User.repository";
 import UserSequelize from "../entities/User.model";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import ResetTokenSequelize from "../entities/ResetToken.model";
-import MailingRepositoryGmail from "../../mail/implementations/MailingRepositoryGmail";
-
+import TokenDomain from "../../../../core/domain/Token.domain";
 
 export default class UserRepositorySQL implements UserRepository {
-  isAdmin(user: User): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
-  isLogin(user: User): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
   register(user: User): Promise<string> {
     const userData = {
       pseudo: user.pseudo,

@@ -15,8 +15,8 @@ unity.get("/all", authenticateJWT, (req, res) => {
     .then((unities: any) => {
       res.json(unities);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -28,8 +28,8 @@ unity.get("/:id", authenticateJWT, (req, res) => {
     .then((unity: any) => {
       res.json(unity);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -44,8 +44,8 @@ unity.post("/add", (req, res) => {
     .then((unity: any) => {
       res.json(unity);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -57,8 +57,8 @@ unity.delete("/:id", (req, res) => {
     .then((unity: any) => {
       res.json(unity);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -74,8 +74,8 @@ unity.post("/update", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

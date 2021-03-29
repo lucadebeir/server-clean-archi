@@ -14,8 +14,8 @@ menu.get("", (req, res) => {
     .then((menu: any) => {
       res.json(menu);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ menu.get("/:id", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ menu.post("/:id", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

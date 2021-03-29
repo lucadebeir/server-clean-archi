@@ -1,5 +1,5 @@
 import MailingRepository from "../../../../core/ports/mailing/Mailing.repository";
-import { UserRepository } from "../../../../core/ports/repositories/User.repository";
+import UserRepository from "../../../../core/ports/repositories/User.repository";
 import CheckValideTokenUseCase from "../../../../core/usecases/user/CheckValideToken.usecase";
 import DeleteUserUseCase from "../../../../core/usecases/user/DeleteUser.usecase";
 import ExistByPseudoUseCase from "../../../../core/usecases/user/ExistByPseudo.usecase";

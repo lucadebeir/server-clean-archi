@@ -8,35 +8,35 @@ const classifyInConfig = new ClassifyInConfig();
 
 //ajouter une catégorie à une recette
 classify.post("/:idRecette", (req, res) => {
-    const data = {
-        idRecette: req.params.idRecette,
-        idCategorie: req.body.idCategorie
-    }
-    classifyInConfig
+  const data = {
+    idRecette: req.params.idRecette,
+    idCategorie: req.body.idCategorie,
+  };
+  classifyInConfig
     .addCategoryToRecipeUseCase()
     .execute(data)
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
 //supprimer une recette d'une catégorie
 classify.delete("/:idRecette", (req, res) => {
-    const data = {
-        idRecette: req.params.idRecette,
-        idCategorie: req.body.idCategorie
-    }
-    classifyInConfig
+  const data = {
+    idRecette: req.params.idRecette,
+    idCategorie: req.body.idCategorie,
+  };
+  classifyInConfig
     .addCategoryToRecipeUseCase()
     .execute(data)
     .then((result: any) => {
       res.json(result);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

@@ -1,10 +1,10 @@
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import DeleteUnityUseCase from "../../usecases/unity/DeleteUnity.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
@@ -18,7 +18,7 @@ describe("Update unity use case unit tests", () => {
   let deleteUnityUseCase: DeleteUnityUseCase;
 
   let unity: Unity;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let unityRepository: UnityRepository = ({
     deleteById: null,
@@ -27,17 +27,10 @@ describe("Update unity use case unit tests", () => {
     checkExistByName: null,
   } as unknown) as UnityRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     unity = initUnity();
 
-    deleteUnityUseCase = new DeleteUnityUseCase(
-      unityRepository,
-      userRepository
-    );
+    deleteUnityUseCase = new DeleteUnityUseCase(unityRepository);
 
     spyOn(unityRepository, "deleteById").and.returnValue(
       "L'unité a bien été supprimé"
@@ -48,7 +41,7 @@ describe("Update unity use case unit tests", () => {
     spyOn(unityRepository, "checkExistInRecipes").and.returnValue(false);
     spyOn(unityRepository, "checkExistByName").and.returnValue(false);
     spyOn(unityRepository, "findById").and.returnValue(true);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: string = await deleteUnityUseCase.execute(
       unity.idUnite,
       user
@@ -70,7 +63,7 @@ describe("Update unity use case unit tests", () => {
 
   it("deleteUnityUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await deleteUnityUseCase.execute(unity.idUnite, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -83,7 +76,7 @@ describe("Update unity use case unit tests", () => {
   it("deleteUnityUseCase should throw a parameter exception when the idUnity is null", async () => {
     unity.idUnite = null;
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.idUnite, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -96,7 +89,7 @@ describe("Update unity use case unit tests", () => {
   it("deleteUnityUseCase should throw a parameter exception when the unity doesn't exist", async () => {
     try {
       spyOn(unityRepository, "findById").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.idUnite, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -108,7 +101,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(unityRepository, "checkExistInRecipes").and.returnValue(true);
       spyOn(unityRepository, "findById").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.idUnite, user);
     } catch (e) {
       const a: BusinessException = e;

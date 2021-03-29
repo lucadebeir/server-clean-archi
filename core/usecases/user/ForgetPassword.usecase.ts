@@ -1,4 +1,4 @@
-import { UserRepository } from "../../ports/repositories/User.repository";
+import UserRepository from "../../ports/repositories/User.repository";
 
 export default class ForgetPasswordUseCase {
   constructor(private userRepository: UserRepository) {}

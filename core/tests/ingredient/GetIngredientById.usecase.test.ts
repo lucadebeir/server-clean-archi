@@ -1,9 +1,8 @@
-import unity from "../../../adaptater/primaries/rest/endpoints/Unity";
 import Ingredient from "../../domain/Ingredient";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import GetIngredientByIdUseCase from "../../usecases/ingredient/GetIngredientById.usecase";
 
 const initIngredient = (): Ingredient => {
@@ -17,21 +16,16 @@ const initIngredient = (): Ingredient => {
 describe("get ingredient by id use case unit tests", () => {
   let getIngredientByIdUseCase: GetIngredientByIdUseCase;
 
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
   let ingredient: Ingredient;
 
   let ingredientRepository: IngredientRepository = ({
     findById: null,
   } as unknown) as IngredientRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     getIngredientByIdUseCase = new GetIngredientByIdUseCase(
-      ingredientRepository,
-      userRepository
+      ingredientRepository
     );
 
     ingredient = initIngredient();
@@ -47,7 +41,7 @@ describe("get ingredient by id use case unit tests", () => {
 
   it("getUnityByIdUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await getIngredientByIdUseCase.execute(ingredient.idIngredient, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -72,7 +66,7 @@ describe("get ingredient by id use case unit tests", () => {
   });
 
   it("getIngredientByIdUseCase should return ingredient when idIngredient is 1", async () => {
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Ingredient = await getIngredientByIdUseCase.execute(
       ingredient.idIngredient,
       user
@@ -83,7 +77,7 @@ describe("get ingredient by id use case unit tests", () => {
 
   it("should throw an error when id is missing", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await getIngredientByIdUseCase.execute(null, user);
     } catch (e) {
       const a: BusinessException = e;

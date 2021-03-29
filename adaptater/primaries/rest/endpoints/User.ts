@@ -9,7 +9,7 @@ user.use(cors());
 import UserConfig from "../config/UserConfig";
 const userConfig = new UserConfig();
 
-const refreshTokenSecret = 'yourrefreshtokensecrethere';
+const refreshTokenSecret = "yourrefreshtokensecrethere";
 let refreshTokens: any[] = [];
 
 //Register for an user
@@ -30,7 +30,7 @@ user.post("/register", (req, res) => {
     rand +
     "&pseudo=" +
     userData.pseudo;
-    
+
   userConfig
     .registerUseCase()
     .execute(userData, link)
@@ -40,8 +40,8 @@ user.post("/register", (req, res) => {
       });
       res.json(accessToken);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -57,13 +57,13 @@ user.post("/login", (req, res) => {
       let refreshToken = jwt.sign(user.dataValues, refreshTokenSecret);
       refreshTokens.push(refreshToken);
 
-      return ({
+      res.json({
         accessToken,
-        refreshToken
+        refreshToken,
       });
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -75,8 +75,8 @@ user.get("/profile", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -88,8 +88,8 @@ user.get("/pseudo/:pseudo", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -101,8 +101,8 @@ user.get("/abonne", authenticateJWT, (req, res) => {
     .then((users: any) => {
       res.json(users);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -114,8 +114,8 @@ user.put("/password/:pseudo", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -135,8 +135,8 @@ user.put("/profil/:pseudo", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -148,8 +148,8 @@ user.delete("/:pseudo", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -161,8 +161,8 @@ user.post("/valid-password-token", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -174,8 +174,8 @@ user.post("/new-password", (req, res) => {
     .then((user: any) => {
       res.json(user);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -187,8 +187,8 @@ user.get("/pseudos", (req, res) => {
     .then((pseudos: any) => {
       res.json(pseudos);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -200,16 +200,16 @@ user.get("/emails", (req, res) => {
     .then((emails: any) => {
       res.json(emails);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
 //logout
 user.post("/logout", (req, res) => {
   const { token } = req.body;
-  refreshTokens = refreshTokens.filter(t => t !== token);
+  refreshTokens = refreshTokens.filter((t) => t !== token);
   res.send("Logout successful");
-})
+});
 
 export = user;

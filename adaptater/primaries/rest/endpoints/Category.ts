@@ -15,8 +15,8 @@ category.get("/all", authenticateJWT, (req, res) => {
     .then((categories: any) => {
       res.json(categories);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -28,8 +28,8 @@ category.get("/rest/recipes/:id", authenticateJWT, (req, res) => {
     .then((categories: any) => {
       res.json(categories);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -41,8 +41,8 @@ category.get("/:id/recipes", authenticateJWT, (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -54,8 +54,8 @@ category.get("/:id/recipes/views", authenticateJWT, (req, res) => {
     .then((recipes: any) => {
       res.json(recipes);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -70,8 +70,8 @@ category.post("/add", authenticateJWT, (req, res) => {
     .then((category: any) => {
       res.json(category);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -83,8 +83,8 @@ category.delete("/:id", authenticateJWT, (req, res) => {
     .then((category: any) => {
       res.json(category);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -100,8 +100,8 @@ category.post("/update", authenticateJWT, (req, res) => {
     .then((category: any) => {
       res.json(category);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

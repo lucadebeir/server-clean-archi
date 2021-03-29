@@ -14,8 +14,8 @@ ingredient.get("/all", (req, res) => {
     .then((ingredients: any) => {
       res.json(ingredients);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ ingredient.get("/:id", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -40,8 +40,8 @@ ingredient.get("/rest/asc", (req, res) => {
     .then((ingredients: any) => {
       res.json(ingredients);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -53,8 +53,8 @@ ingredient.get("/rest/recipe/:id", (req, res) => {
     .then((ingredients: any) => {
       res.json(ingredients);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -69,8 +69,8 @@ ingredient.post("/add", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -82,8 +82,8 @@ ingredient.delete("/:id", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -99,8 +99,8 @@ ingredient.post("/update", (req, res) => {
     .then((ingredient: any) => {
       res.json(ingredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

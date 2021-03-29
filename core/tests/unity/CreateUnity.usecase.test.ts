@@ -1,10 +1,10 @@
 import Unity from "../../domain/Unity";
-import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import * as Utils from "../../utils/token.service";
 import CreateUnityUseCase from "../../usecases/unity/CreateUnity.usecase";
+import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
@@ -17,24 +17,17 @@ describe("Create unity use case unit tests", () => {
   let createUnityUseCase: CreateUnityUseCase;
 
   let unity: Unity;
-  let user: User = new User();
+  let user: TokenDomain = new TokenDomain();
 
   let unityRepository: UnityRepository = ({
     create: null,
     checkExistByName: null,
   } as unknown) as UnityRepository;
 
-  let userRepository: UserRepository = ({
-    isAdmin: null,
-  } as unknown) as UserRepository;
-
   beforeEach(() => {
     unity = initUnity();
 
-    createUnityUseCase = new CreateUnityUseCase(
-      unityRepository,
-      userRepository
-    );
+    createUnityUseCase = new CreateUnityUseCase(unityRepository);
 
     spyOn(unityRepository, "create").and.callFake((unity: Unity) => {
       if (unity) {
@@ -47,7 +40,7 @@ describe("Create unity use case unit tests", () => {
 
   it("createUnityUseCase should return unity when it succeeded", async () => {
     spyOn(unityRepository, "checkExistByName").and.returnValue(false);
-    spyOn(userRepository, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Unity = await createUnityUseCase.execute(unity, user);
     expect(result).toBeDefined();
     expect(result.idUnite).toBe(1);
@@ -67,7 +60,7 @@ describe("Create unity use case unit tests", () => {
 
   it("createUnityUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
       await createUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -79,7 +72,7 @@ describe("Create unity use case unit tests", () => {
 
   it("createUnityUseCase should throw a parameter exception when the unity is null", async () => {
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(undefined, user);
     } catch (e) {
       const a: TechnicalException = e;
@@ -90,7 +83,7 @@ describe("Create unity use case unit tests", () => {
   it("createUnityUseCase should throw a parameter exception when the libelleUnity is null", async () => {
     unity.libelleUnite = null;
     try {
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -102,7 +95,7 @@ describe("Create unity use case unit tests", () => {
     unity.libelleUnite = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(unityRepository, "checkExistByName").and.returnValue(false);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;
@@ -115,7 +108,7 @@ describe("Create unity use case unit tests", () => {
   it("createUnityUseCase should throw a parameter exception when the libelleUnity already exists", async () => {
     try {
       spyOn(unityRepository, "checkExistByName").and.returnValue(true);
-      spyOn(userRepository, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
     } catch (e) {
       const a: BusinessException = e;

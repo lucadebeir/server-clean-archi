@@ -14,8 +14,8 @@ image.get("/:id", (req, res) => {
     .then((image: any) => {
       res.json(image);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -27,8 +27,8 @@ image.get("/recipe/:id", (req, res) => {
     .then((image: any) => {
       res.json(image);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

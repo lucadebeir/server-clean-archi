@@ -14,8 +14,8 @@ useIngredient.get("/add", (req, res) => {
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -33,8 +33,8 @@ useIngredient.put("/ingredient/recipe/:idRecette", (req, res) => {
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -46,8 +46,8 @@ useIngredient.delete("/:idRecette/:idIngredient", (req, res) => {
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

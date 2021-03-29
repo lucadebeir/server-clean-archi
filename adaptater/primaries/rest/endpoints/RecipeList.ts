@@ -14,8 +14,8 @@ recipeList.get("/:pseudo", (req, res) => {
     .then((recipeList: any) => {
       res.json(recipeList);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -32,8 +32,8 @@ recipeList.post("/add", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -45,8 +45,8 @@ recipeList.post("/update", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -58,8 +58,8 @@ recipeList.delete("/delete", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 
@@ -71,8 +71,8 @@ recipeList.delete("/delete/all", (req, res) => {
     .then((recipe: any) => {
       res.json(recipe);
     })
-    .catch((err: string) => {
-      res.send("error: " + err);
+    .catch((err: Error) => {
+      res.send(err.message);
     });
 });
 

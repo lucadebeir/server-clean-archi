@@ -1,25 +1,24 @@
 import Category from "../../domain/Category.domain";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class GetCategoriesNotInRecipeUseCase {
   constructor(
     private categoryRepository: CategoryRepository,
-    private userRepository: UserRepository,
     private recipeRepository: RecipeRepository
   ) {}
 
-  async execute(id: any, user: User): Promise<Category[]> {
+  async execute(id: any, user: TokenDomain): Promise<Category[]> {
     this.checkBusinessRules(id, user);
     return await this.categoryRepository.findCategoriesNotInRecipe(id);
   }
 
-  private checkBusinessRules(id: any, user: User): void {
-    if (this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(id: any, user: TokenDomain): void {
+    if (isAdmin(user)) {
       if (id) {
         this.recipeRepository.findById(id).then((recipe) => {
           if (!recipe) {

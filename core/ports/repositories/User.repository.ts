@@ -1,6 +1,6 @@
 import User from "../../domain/User";
 
-export interface UserRepository {
+export default interface UserRepository {
   register(user: User): Promise<string>;
   login(pseudo: any, password: any): Promise<string>;
   existByPseudo(pseudo: any): Promise<boolean>;
@@ -23,7 +23,4 @@ export interface UserRepository {
   sendFromContact(email: any, subject: any, message: any): Promise<string>;
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
-
-  isAdmin(user: User): Promise<boolean>;
-  isLogin(user: User): Promise<boolean>;
 }

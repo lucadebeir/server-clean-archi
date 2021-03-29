@@ -1,23 +1,20 @@
 import Recipe from "../../domain/Recipe";
-import User from "../../domain/User";
+import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { UserRepository } from "../../ports/repositories/User.repository";
+import { isAdmin } from "../../utils/token.service";
 
 export default class GetRecipesByIdCategoryPerToNbViewUseCase {
-  constructor(
-    private categoryRepository: CategoryRepository,
-    private userRepository: UserRepository
-  ) {} //constructeur avec l'interface
+  constructor(private categoryRepository: CategoryRepository) {} //constructeur avec l'interface
 
-  async execute(id: any, user: User): Promise<Recipe[]> {
+  async execute(id: any, user: TokenDomain): Promise<Recipe[]> {
     this.checkBusinessRules(id, user);
     return await this.categoryRepository.getRecipesByIdCategoryPerToNbView(id);
   }
 
-  private checkBusinessRules(id: any, user: User): void {
-    if (this.userRepository.isAdmin(user)) {
+  private checkBusinessRules(id: any, user: TokenDomain): void {
+    if (isAdmin(user)) {
       if (id) {
         if (!this.categoryRepository.existById(id)) {
           throw new BusinessException("Cette catégorie n'existe pas");
