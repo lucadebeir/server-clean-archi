@@ -4,13 +4,20 @@ import cors from "cors";
 useIngredient.use(cors());
 
 import UseIngredientConfig from "../config/UseIngredientConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const useIngredientConfig = new UseIngredientConfig();
 
 //ajouter un ingrédient à une recette
-useIngredient.get("/add", (req, res) => {
+useIngredient.get("/add", authenticateJWT, (req, res) => {
+  const data: any = {
+    idRecette: req.params.idRecette,
+    idIngredient: req.body.idIngredient,
+    qte: req.body.qte,
+    idUnite: req.body.idUnite,
+  };
   useIngredientConfig
     .addIngredientToRecipeUseCase()
-    .execute(req.body)
+    .execute(data, req.body.user)
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })
@@ -20,7 +27,7 @@ useIngredient.get("/add", (req, res) => {
 });
 
 //modifier qte et unite d'un ingredient dans une recette
-useIngredient.put("/ingredient/recipe/:idRecette", (req, res) => {
+useIngredient.put("/ingredient/recipe/:idRecette", authenticateJWT, (req, res) => {
   const data: any = {
     idRecette: req.params.idRecette,
     idIngredient: req.body.idIngredient,
@@ -29,7 +36,7 @@ useIngredient.put("/ingredient/recipe/:idRecette", (req, res) => {
   };
   useIngredientConfig
     .updateIngredientFromRecipeUseCase()
-    .execute(data)
+    .execute(data, req.body.user)
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })
@@ -39,10 +46,10 @@ useIngredient.put("/ingredient/recipe/:idRecette", (req, res) => {
 });
 
 //supprimer un ingrédient d'une recette
-useIngredient.delete("/:idRecette/:idIngredient", (req, res) => {
+useIngredient.delete("/:idRecette/:idIngredient", authenticateJWT, (req, res) => {
   useIngredientConfig
     .deleteIngredientFromRecipeUseCase()
-    .execute(req.params.idRecette, req.params.idIngredient)
+    .execute(req.params.idRecette, req.params.idIngredient, req.body.user)
     .then((useIngredient: any) => {
       res.json(useIngredient);
     })

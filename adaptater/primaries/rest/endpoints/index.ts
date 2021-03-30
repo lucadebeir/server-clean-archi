@@ -22,7 +22,7 @@ const routes = Router();
 routes.use("/recipes", recipesRoute);
 routes.use("/categories", categoriesRoute);
 routes.use("/ingredients", ingredientsRoute);
-routes.use("/unites", unitiesRoute);
+routes.use("/unities", unitiesRoute);
 routes.use("/commentaires", commentairesRoute);
 routes.use("/favoris", favoriRoute);
 routes.use("/menu", menuRoute);
