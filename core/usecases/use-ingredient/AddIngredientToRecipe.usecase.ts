@@ -58,7 +58,7 @@ export default class AddIngredientToRecipeUseCase {
         }
         if (this.useIngredientRepository.check(useIngredient)) {
           throw new BusinessException(
-            "Cette ingrédient existe déjà dans cette recette"
+            "Cet ingrédient existe déjà dans cette recette"
           );
         }
       } else {

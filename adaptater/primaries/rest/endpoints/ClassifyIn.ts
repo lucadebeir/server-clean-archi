@@ -4,17 +4,18 @@ import cors from "cors";
 classify.use(cors());
 
 import ClassifyInConfig from "../config/ClassifyInConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const classifyInConfig = new ClassifyInConfig();
 
 //ajouter une catégorie à une recette
-classify.post("/:idRecette", (req, res) => {
+classify.post("/:idRecette", authenticateJWT, (req, res) => {
   const data = {
     idRecette: req.params.idRecette,
     idCategorie: req.body.idCategorie,
   };
   classifyInConfig
     .addCategoryToRecipeUseCase()
-    .execute(data)
+    .execute(data, req.body.user)
     .then((result: any) => {
       res.json(result);
     })

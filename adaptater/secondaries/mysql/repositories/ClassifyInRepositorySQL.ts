@@ -3,6 +3,9 @@ import ClassifyInRepository from "../../../../core/ports/repositories/ClassifyIn
 import ClassifyInSequelize from "../entities/ClassifyIn.model";
 
 export default class ClassifyInRepositorySQL implements ClassifyInRepository {
+    check(classify: ClassifyIn): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
     addCategoryToRecipe(classify: ClassifyIn): Promise<string> {
         return ClassifyInSequelize.findOne({
             where: {

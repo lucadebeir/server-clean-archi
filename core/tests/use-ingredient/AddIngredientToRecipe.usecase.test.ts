@@ -211,7 +211,7 @@ describe("Add ingredient to recipe use case unit tests", () => {
       await addIngredientToRecipeUseCase.execute(useIngredient, token);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Cette ingrédient existe déjà dans cette recette");
+      expect(a.message).toBe("Cet ingrédient existe déjà dans cette recette");
     }
   });
 });
