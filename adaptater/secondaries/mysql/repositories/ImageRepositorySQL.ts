@@ -21,7 +21,7 @@ export default class ImageRepositorySQL implements ImageRepository {
       });
   }
 
-  findByRecette(id: any): Promise<ImageDomain[]> {
+  findByRecette(id: any): Promise<ImageDomain> {
     return ImageSequelize.findOne({
       include: [
         {
