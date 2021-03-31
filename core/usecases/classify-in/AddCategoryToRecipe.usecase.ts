@@ -30,7 +30,7 @@ export default class AddCategoryToRecipeUseCase {
         }
         if (
           !classify.idRecette ||
-          !this.recipeRepository.findById(classify.idRecette)
+          !this.recipeRepository.existById(classify.idRecette)
         ) {
           throw new BusinessException("La recette doit exister");
         }

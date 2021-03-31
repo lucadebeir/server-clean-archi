@@ -4,7 +4,10 @@ import ImageSequelize from "../entities/Image.model";
 import RecipeSequelize from "../entities/Recipe.model";
 
 export default class ImageRepositorySQL implements ImageRepository {
-  uploadImage(file: any): Promise<string> {
+  checkExistByName(name: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  uploadImage(file: any): Promise<ImageDomain> {
     throw new Error("Method not implemented.");
   }
   findById(id: any): Promise<ImageDomain> {

@@ -3,9 +3,9 @@ import * as Utils from "../../utils/token.service";
 import TokenDomain from "../../domain/Token.domain";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import ClassifyIn from "../../domain/ClassifyIn";
-import AddCategoryToRecipeUseCase from "../../usecases/classify-in/AddCategoryToRecipe.usecase";
 import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
 import CategoryRepository from "../../ports/repositories/Category.repository";
+import DeleteCategoryFromRecipeUseCase from "../../usecases/classify-in/DeleteCategoryFromRecipe.usecase";
 
 const initClassifyIn = (): ClassifyIn => {
   const classifyIn = new ClassifyIn();
@@ -15,14 +15,14 @@ const initClassifyIn = (): ClassifyIn => {
   return classifyIn;
 };
 
-describe("Add category to recipe use case unit tests", () => {
-  let addCategoryToRecipeUseCase: AddCategoryToRecipeUseCase;
+describe("Delete category from recipe use case unit tests", () => {
+  let deleteCategoryFromRecipeUseCase: DeleteCategoryFromRecipeUseCase;
 
   let classifyIn: ClassifyIn;
   let token: TokenDomain = new TokenDomain();
 
   let classifyInRepository: ClassifyInRepository = ({
-    addCategoryToRecipe: null,
+    deleteCategoryFromRecipe: null,
     check: null,
   } as unknown) as ClassifyInRepository;
 
@@ -37,16 +37,16 @@ describe("Add category to recipe use case unit tests", () => {
   beforeEach(() => {
     classifyIn = initClassifyIn();
 
-    addCategoryToRecipeUseCase = new AddCategoryToRecipeUseCase(
+    deleteCategoryFromRecipeUseCase = new DeleteCategoryFromRecipeUseCase(
         classifyInRepository,
       categoryRepository,
       recipeRepository
     );
 
-    spyOn(classifyInRepository, "addCategoryToRecipe").and.callFake(
+    spyOn(classifyInRepository, "deleteCategoryFromRecipe").and.callFake(
       (classifyIn: ClassifyIn) => {
         if (classifyIn) {
-          const result: string = "La catégorie a bien été associé à la recette";
+          const result: string = "La catégorie a bien été dissocié à la recette";
           return new Promise((resolve, reject) => resolve(result));
         }
         return new Promise((resolve, reject) => resolve(null));
@@ -54,22 +54,22 @@ describe("Add category to recipe use case unit tests", () => {
     );
   });
 
-  it("addCategoryToRecipeUseCase should return string when it succeeded", async () => {
+  it("deleteCategoryFromRecipeUseCase should return string when it succeeded", async () => {
     spyOn(categoryRepository, "existById").and.returnValue(true);
     spyOn(recipeRepository, "existById").and.returnValue(true);
     spyOn(Utils, "isAdmin").and.returnValue(true);
-    spyOn(classifyInRepository, "check").and.returnValue(false);
-    const result: string = await addCategoryToRecipeUseCase.execute(
+    spyOn(classifyInRepository, "check").and.returnValue(true);
+    const result: string = await deleteCategoryFromRecipeUseCase.execute(
       classifyIn,
       token
     );
     expect(result).toBeDefined();
-    expect(result).toBe("La catégorie a bien été associé à la recette");
+    expect(result).toBe("La catégorie a bien été dissocié à la recette");
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the user is null", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      await addCategoryToRecipeUseCase.execute(classifyIn, undefined);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, undefined);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -78,10 +78,10 @@ describe("Add category to recipe use case unit tests", () => {
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -90,62 +90,62 @@ describe("Add category to recipe use case unit tests", () => {
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the idCategory is undefined", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the idCategory is undefined", async () => {
     classifyIn.idCategorie = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie doit exister");
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
     classifyIn.idRecette = undefined;
     try {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the category doesn't exist", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the category doesn't exist", async () => {
     try {
       spyOn(categoryRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie doit exister");
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when the recipe doesn't exist", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when the recipe doesn't exist", async () => {
     try {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
   });
 
-  it("addCategoryToRecipeUseCase should throw a parameter exception when category already exist on this recipe", async () => {
+  it("deleteCategoryFromRecipeUseCase should throw a parameter exception when category already exist on this recipe", async () => {
     try {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(classifyInRepository, "check").and.returnValue(true);
-      await addCategoryToRecipeUseCase.execute(classifyIn, token);
+      spyOn(classifyInRepository, "check").and.returnValue(false);
+      await deleteCategoryFromRecipeUseCase.execute(classifyIn, token);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Cette catégorie existe déjà dans cette recette");
+      expect(a.message).toBe("L'association de la recette et de la catégorie n'existe pas");
     }
   });
 });
