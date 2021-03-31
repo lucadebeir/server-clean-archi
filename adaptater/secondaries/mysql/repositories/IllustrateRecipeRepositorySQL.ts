@@ -1,12 +1,16 @@
+import IllustrateRecipeDomain from "../../../../core/domain/IllustrateRecipe.domain";
 import IllustrateRecipeRepository from "../../../../core/ports/repositories/IllustrateRecipe.repository";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 
 export default class IllustrateRecipeRepositorySQL
   implements IllustrateRecipeRepository {
-  addToRecette(idImage: any, idRecipe: any): Promise<string> {
+  check(illustrateRecipe: IllustrateRecipeDomain): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  addToRecette(illustrateRecipe: IllustrateRecipeDomain): Promise<string> {
     const data = {
-      idImage: idImage,
-      idRecipe: idRecipe,
+      idImage: illustrateRecipe.idImage,
+      idRecipe: illustrateRecipe.idRecette,
     };
     return IllustrateRecipeSequelize.create(data)
       .then(() => {
@@ -17,10 +21,10 @@ export default class IllustrateRecipeRepositorySQL
       });
   }
 
-  updateFromRecipe(idImage: any, idRecipe: any): Promise<string> {
+  updateFromRecipe(illustrateRecipe: IllustrateRecipeDomain): Promise<string> {
     return IllustrateRecipeSequelize.update(
-      { idImage: idImage },
-      { where: { idRecette: idRecipe } }
+      { idImage: illustrateRecipe.idImage },
+      { where: { idRecette: illustrateRecipe.idRecette } }
     )
       .then(() => {
         return "Image modifiée avec succès";

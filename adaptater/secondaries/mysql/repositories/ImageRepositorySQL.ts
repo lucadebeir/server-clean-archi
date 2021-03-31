@@ -4,6 +4,12 @@ import ImageSequelize from "../entities/Image.model";
 import RecipeSequelize from "../entities/Recipe.model";
 
 export default class ImageRepositorySQL implements ImageRepository {
+  existById(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  deleteById(id: any): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
   checkExistByName(name: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

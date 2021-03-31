@@ -7,4 +7,5 @@ export default interface ImageRepository {
   deleteById(id: any): Promise<string>;
 
   checkExistByName(name: any): Promise<boolean>;
+  existById(id: any): Promise<boolean>;
 }
