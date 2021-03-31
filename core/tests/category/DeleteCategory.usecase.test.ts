@@ -31,9 +31,13 @@ describe("Delete category use case unit tests", () => {
 
     deleteCategoryUseCase = new DeleteCategoryUseCase(categoryRepository);
 
-    spyOn(categoryRepository, "deleteById").and.returnValue(
-      "La catégorie a bien été supprimé"
-    );
+    spyOn(categoryRepository, "deleteById").and.callFake((id: any) => {
+      if (id) {
+        const result: string = "La catégorie a bien été supprimé";
+        return new Promise((resolve, reject) => resolve(result));
+      }
+      return new Promise((resolve, reject) => resolve(null));
+    });
   });
 
   it("deleteCategoryUseCase should return message when it succeeded", async () => {

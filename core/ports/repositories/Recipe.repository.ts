@@ -18,4 +18,6 @@ export default interface RecipeRepository {
   create(recipe: Recipe): Promise<Recipe>;
 
   existById(id: any): Promise<boolean>;
+  useInMenu(id: any): Promise<boolean>;
+  useInRecipeList(id: any): Promise<boolean>;
 }

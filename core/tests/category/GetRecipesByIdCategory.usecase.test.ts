@@ -5,6 +5,7 @@ import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import * as Utils from "../../utils/token.service";
 import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByIdCategory.usecase";
+import sortArray from "sort-array";
 
 const initCategories = (): Category => {
   const category = new Category();
@@ -21,7 +22,7 @@ const initRecipe = (): Recipe[] => {
 
   const recipe2 = new Recipe();
   recipe2.idRecette = 2;
-  recipe.datePublication = new Date("2020-04-16 14:24:57");
+  recipe2.datePublication = new Date("2020-04-16 14:24:57");
 
   const list = [recipe, recipe2];
 
@@ -70,6 +71,9 @@ describe("Get recipes by id category use case unit tests", () => {
     expect(result.length).toBe(2);
     //attendre la nouvelle dépendance pour typescript
     //expect(result).toBeSortedBy("datePublication");
+    expect(result.map((a) => a.datePublication).sort()).toEqual(
+      recipes.map((a) => a.datePublication).sort()
+    );
     expect(result).toBe(recipes);
   });
 
