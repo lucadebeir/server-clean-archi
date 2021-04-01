@@ -14,6 +14,12 @@ import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
+  useInMenu(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  useInRecipeList(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   existById(id: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

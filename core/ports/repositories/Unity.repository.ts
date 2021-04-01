@@ -10,4 +10,6 @@ export default interface UnityRepository {
 
   checkExistByName(name: any): Promise<boolean>;
   checkExistInRecipes(id: any): Promise<boolean>;
+
+  existById(id: any): Promise<boolean>;
 }

@@ -17,6 +17,6 @@ export default class ClassifyInConfig {
     }
 
     public deleteCategoryFromRecipeUseCase(): DeleteCategoryFromRecipeUseCase {
-        return new DeleteCategoryFromRecipeUseCase(this.classifyInRepository);
+        return new DeleteCategoryFromRecipeUseCase(this.classifyInRepository, this.categoryRepository, this.recipeRepository);
     }
 }

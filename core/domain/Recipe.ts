@@ -1,6 +1,9 @@
 import { Time } from "@angular/common";
 import Category from "./Category.domain";
+import ClassifyIn from "./ClassifyIn";
+import ImageDomain from "./Image.domain";
 import Ingredient from "./Ingredient";
+import UseIngredient from "./UseIngredient";
 
 export default class Recipe {
   idRecette?: number;
@@ -11,15 +14,12 @@ export default class Recipe {
   etapes?: string;
   nbrePart?: number;
   libellePart?: string;
-  tempsPreparation?: Time;
-  tempsCuisson?: Time;
+  tempsPreparation?: string;
+  tempsCuisson?: string;
   astuce?: string;
-  lienImage?: any;
-  idImage?: number;
-  ingredients?: Ingredient[];
-  globalTime?: string;
+  images?: ImageDomain[];
+  utiliserIngredients?: UseIngredient[];
+  classerDans?: ClassifyIn[];
   categories?: Category[];
-  idMenu?: number;
   mot?: string;
-  vege?: boolean;
 }

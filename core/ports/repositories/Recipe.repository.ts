@@ -15,9 +15,10 @@ export default interface RecipeRepository {
   updateNbView(id: any): Promise<string>;
   deleteById(id: any): Promise<string>;
 
-  create(recipe: Recipe): Promise<Recipe>;
+  create(recipe?: Recipe): Promise<Recipe>;
 
   existById(id: any): Promise<boolean>;
+  existByName(name: any): Promise<boolean>;
   useInMenu(id: any): Promise<boolean>;
   useInRecipeList(id: any): Promise<boolean>;
 }
