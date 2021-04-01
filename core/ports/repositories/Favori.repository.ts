@@ -5,4 +5,6 @@ export default interface FavoriRepository {
   findByIdUser(id: any): Promise<Favori[]>;
   findByIdUserPerToCategory(id: any, idCategorie: any): Promise<Favori[]>;
   deleteById(id: any, pseudo: any): Promise<string>;
+
+  check(favori: Favori): Promise<boolean>;
 }

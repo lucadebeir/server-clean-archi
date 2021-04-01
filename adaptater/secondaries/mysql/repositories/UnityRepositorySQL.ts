@@ -5,6 +5,9 @@ import UnitySequelize from "../entities/Unity.model";
 import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class UnityRepositorySQL implements UnityRepository {
+  existById(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   create(unityToCreate: Unity): Promise<Unity> {
     return UnitySequelize.findOne({
       where: {

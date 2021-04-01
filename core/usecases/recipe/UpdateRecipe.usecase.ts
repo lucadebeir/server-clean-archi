@@ -6,9 +6,9 @@ import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { isLogin } from "../../utils/token.service";
+import { isAdmin } from "../../utils/token.service";
 
-export default class CreateRecipeUseCase {
+export default class UpdateRecipeUseCase {
   constructor(
     private recipeRepository: RecipeRepository,
     private categoryRepository: CategoryRepository,
@@ -18,12 +18,12 @@ export default class CreateRecipeUseCase {
 
   async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
-    return await this.recipeRepository.create(recipe);
+    return await this.recipeRepository.update(recipe);
   }
 
   private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {
-    if (token && isLogin(token)) {
-      if (recipe) {
+    if (token && isAdmin(token)) {
+      if (recipe?.idRecette) {
         this.checkIfValueIsEmpty(recipe.nomRecette, "nomRecette");
         this.checkIfValueIsEmpty(recipe.libellePart, "libellePart");
         this.checkIfValueIsEmpty(recipe.nbrePart, "nbrePart");
@@ -46,33 +46,39 @@ export default class CreateRecipeUseCase {
             "Il faut sélectionner au moins un ingrédient pour créer une recette"
           );
         } else {
-          recipe.utiliserIngredients?.map((ingredient) => {
-            if (ingredient.qte && ingredient.qte <= 0) {
+          recipe.utiliserIngredients?.map((useIngredient) => {
+            if (useIngredient.qte && useIngredient.qte <= 0) {
               throw new BusinessException(
                 "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
               );
             }
 
-            if (!this.ingredientRepository.existById(ingredient.idIngredient)) {
+            if (
+              !this.ingredientRepository.existById(
+                useIngredient.ingredient?.idIngredient
+              )
+            ) {
               throw new BusinessException(
-                "L'ingrédient " + ingredient.idIngredient + " n'existe pas"
+                "L'ingrédient " +
+                  useIngredient.ingredient?.idIngredient +
+                  " n'existe pas"
               );
             }
 
-            if (!this.unityRepository.existById(ingredient.idUnite)) {
+            if (!this.unityRepository.existById(useIngredient.unite?.idUnite)) {
               throw new BusinessException(
-                "L'unité " + ingredient.idUnite + " n'existe pas"
+                "L'unité " + useIngredient.unite?.idUnite + " n'existe pas"
               );
             }
           });
         }
 
-        if (recipe.classerDans?.length == 0 || !recipe.classerDans) {
+        if (recipe.categories?.length == 0 || !recipe.categories) {
           throw new BusinessException(
             "Il faut sélectionner au moins une catégorie pour créer une recette"
           );
         } else {
-          recipe.classerDans?.map((category) => {
+          recipe.categories?.map((category) => {
             if (!this.categoryRepository.existById(category.idCategorie)) {
               throw new BusinessException(
                 "La catégorie " + category.idCategorie + " n'existe pas"
@@ -88,7 +94,7 @@ export default class CreateRecipeUseCase {
         }
       } else {
         throw new TechnicalException(
-          "Un objet de type Recette est requis pour créer une recette"
+          "Un identifiant est requis pour modifier une recette"
         );
       }
     } else {

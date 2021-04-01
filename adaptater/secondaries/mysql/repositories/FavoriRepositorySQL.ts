@@ -5,6 +5,9 @@ import RecipeSequelize from "../entities/Recipe.model";
 import CategorySequelize from "../entities/Category.model";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
+  check(favori: Favori): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   create(favoriToCreate: Favori): Promise<string> {
     return FavoriSequelize.findOne({
       where: {

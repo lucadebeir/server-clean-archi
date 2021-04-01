@@ -5,7 +5,6 @@ import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import * as Utils from "../../utils/token.service";
 import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByIdCategory.usecase";
-import sortArray from "sort-array";
 
 const initCategories = (): Category => {
   const category = new Category();
