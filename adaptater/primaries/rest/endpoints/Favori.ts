@@ -4,6 +4,7 @@ import cors from "cors";
 favori.use(cors());
 
 import FavoriConfig from "../config/FavoriConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const favoriConfig = new FavoriConfig();
 
 //ajouter aux favoris
@@ -24,10 +25,10 @@ favori.post("/add", (req, res) => {
 });
 
 //récupérer les favoris de l'utilisateur
-favori.get("/recipe/:pseudo", (req, res) => {
+favori.get("/recipe/:pseudo", authenticateJWT, (req, res) => {
   favoriConfig
     .getFavorisByIdUser()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((favoris: any) => {
       res.json(favoris);
     })

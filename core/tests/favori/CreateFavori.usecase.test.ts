@@ -1,9 +1,7 @@
-import Category from "../../domain/Category.domain";
 import Favori from "../../domain/Favori";
 import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
-import CategoryRepository from "../../ports/repositories/Category.repository";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import CreateFavoriUseCase from "../../usecases/favori/CreateFavori.usecase";

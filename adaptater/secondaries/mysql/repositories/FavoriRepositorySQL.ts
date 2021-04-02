@@ -114,16 +114,16 @@ export default class FavoriRepositorySQL implements FavoriRepository {
       });
   }
 
-  deleteById(id: any, pseudo: any): Promise<string> {
+  deleteById(favori: Favori): Promise<string> {
     FavoriSequelize.destroy({
       where: {
-        idRecette: id,
-        pseudo: pseudo,
+        idRecette: favori.idRecette,
+        pseudo: favori.pseudo,
       },
     });
     return RecipeSequelize.findOne({
       where: {
-        idRecette: id,
+        idRecette: favori.idRecette,
       },
     })
       .then((recipe) => {
@@ -134,7 +134,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
             },
             {
               where: {
-                idRecette: id,
+                idRecette: favori.idRecette,
               },
             }
           );
