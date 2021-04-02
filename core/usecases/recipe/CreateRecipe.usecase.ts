@@ -6,7 +6,7 @@ import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { isLogin } from "../../utils/token.service";
+import { isAdmin } from "../../utils/token.service";
 
 export default class CreateRecipeUseCase {
   constructor(
@@ -22,7 +22,7 @@ export default class CreateRecipeUseCase {
   }
 
   private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {
-    if (token && isLogin(token)) {
+    if (token && isAdmin(token)) {
       if (recipe) {
         this.checkIfValueIsEmpty(recipe.nomRecette, "nomRecette");
         this.checkIfValueIsEmpty(recipe.libellePart, "libellePart");

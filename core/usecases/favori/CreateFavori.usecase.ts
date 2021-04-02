@@ -1,11 +1,10 @@
-import commentaire from "../../../adaptater/primaries/rest/endpoints/Commentaire";
 import Favori from "../../domain/Favori";
 import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import { isLogin } from "../../utils/token.service";
 
 export default class CreateFavoriUseCase {
   constructor(
@@ -19,7 +18,7 @@ export default class CreateFavoriUseCase {
   }
 
   private checkBusinessRules(favori?: Favori, token?: TokenDomain): void {
-    if (token && isAdmin(token)) {
+    if (token && isLogin(token)) {
       if (favori) {
         if (
           !favori.idRecette ||

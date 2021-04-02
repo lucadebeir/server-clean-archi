@@ -21,7 +21,7 @@ describe("Create favori use case unit tests", () => {
   let createFavoriUseCase: CreateFavoriUseCase;
 
   let favori: Favori;
-  let user: TokenDomain = new TokenDomain();
+  let token: TokenDomain = new TokenDomain();
 
   let favoriRepository: FavoriRepository = ({
     create: null,
@@ -54,32 +54,32 @@ describe("Create favori use case unit tests", () => {
     spyOn(favoriRepository, "check").and.returnValue(false);
     spyOn(Utils, "isLogin").and.returnValue(true);
     spyOn(recipeRepository, "existById").and.returnValue(true);
-    const result: string = await createFavoriUseCase.execute(favori);
+    const result: string = await createFavoriUseCase.execute(favori, token);
     expect(result).toBeDefined();
     expect(result).toBe(
       "La recette est bien ajoutée aux favoris de l'utilisateur"
     );
   });
 
-  it("updateCategoryUseCase should throw a parameter exception when the user is null", async () => {
+  it("updateCategoryUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await createFavoriUseCase.execute(favori, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
+        "Vous n'avez pas le droit de créer cette ressource"
       );
     }
   });
 
-  it("updateCategoryUseCase should throw a parameter exception when the user is not login", async () => {
+  it("updateCategoryUseCase should throw a parameter exception when the token is not login", async () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
-      await createFavoriUseCase.execute(favori, user);
+      await createFavoriUseCase.execute(favori, token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
+        "Vous n'avez pas le droit de créer cette ressource"
       );
     }
   });
@@ -88,7 +88,7 @@ describe("Create favori use case unit tests", () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
-      await createFavoriUseCase.execute(favori, user);
+      await createFavoriUseCase.execute(favori, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
@@ -100,7 +100,7 @@ describe("Create favori use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(favoriRepository, "check").and.returnValue(true);
-      await createFavoriUseCase.execute(favori, user);
+      await createFavoriUseCase.execute(favori, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
