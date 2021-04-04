@@ -8,14 +8,14 @@ import { authenticateJWT } from "../middleware/auth.middleware";
 const favoriConfig = new FavoriConfig();
 
 //ajouter aux favoris
-favori.post("/add", (req, res) => {
+favori.post("/add", authenticateJWT, (req, res) => {
   const favoriData = {
     idRecette: req.body.idRecette,
     pseudo: req.body.pseudo,
   };
   favoriConfig
     .createFavoriUseCase()
-    .execute(favoriData)
+    .execute(favoriData, req.body.user)
     .then((favori: any) => {
       res.json(favori);
     })
@@ -38,10 +38,10 @@ favori.get("/recipe/:pseudo", authenticateJWT, (req, res) => {
 });
 
 //récupérer les favoris de l'utilisateur selon une catégorie
-favori.get("/recipe/:pseudo/category/:id", (req, res) => {
+favori.get("/recipe/:pseudo/category/:id", authenticateJWT, (req, res) => {
   favoriConfig
-    .getFavorisByIdUserPerToCategorieUseCase()
-    .execute(req.params.pseudo, req.params.id)
+    .getFavorisByIdUserPerToCategoryUseCase()
+    .execute(req.params.pseudo, req.params.id, req.body.user)
     .then((favoris: any) => {
       res.json(favoris);
     })
@@ -51,10 +51,10 @@ favori.get("/recipe/:pseudo/category/:id", (req, res) => {
 });
 
 //supprimer un favoris
-favori.delete("/:id/:pseudo", (req, res) => {
+favori.delete("/:id/:pseudo", authenticateJWT, (req, res) => {
   favoriConfig
     .deleteFavoriUseCase()
-    .execute(req.params.id, req.params.pseudo)
+    .execute(req.params.id, req.params.pseudo, req.body.user)
     .then((favori: any) => {
       res.json(favori);
     })

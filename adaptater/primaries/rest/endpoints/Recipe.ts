@@ -4,6 +4,7 @@ import cors from "cors";
 recipe.use(cors());
 
 import RecipeConfig from "../config/RecipeConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const recipeConfig = new RecipeConfig();
 
 //Récupérer toutes les recettes
@@ -123,10 +124,10 @@ recipe.get("/popular", (req, res) => {
 });
 
 //créer une recette
-recipe.post("/add", (req, res) => {
+recipe.post("/add", authenticateJWT, (req, res) => {
   recipeConfig
     .createRecipeUseCase()
-    .execute(req.body)
+    .execute(req.body, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })

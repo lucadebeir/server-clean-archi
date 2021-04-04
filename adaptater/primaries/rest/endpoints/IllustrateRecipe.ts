@@ -4,13 +4,18 @@ import cors from "cors";
 illustrate.use(cors());
 
 import IllustrateRecipeConfig from "../config/IllustrateRecipeConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const illustrateRecipeConfig = new IllustrateRecipeConfig();
 
-//Récupére une image selon son id
-illustrate.get("/add", (req, res) => {
+//Ajouter une image à une recette
+illustrate.get("/add", authenticateJWT, (req, res) => {
+  const data: any = {
+    idImage: req.body.idImage,
+    idRecette: req.body.idRecette,
+  };
   illustrateRecipeConfig
     .addImageToRecipeUseCase()
-    .execute(req.body.idImage, req.body.idRecette)
+    .execute(data, req.body.user)
     .then((image: any) => {
       res.json(image);
     })
@@ -19,11 +24,15 @@ illustrate.get("/add", (req, res) => {
     });
 });
 
-//Récupére une image selon l'id d'une recette
-illustrate.get("/update", (req, res) => {
+//Modifier l'image d'une recette
+illustrate.get("/update", authenticateJWT, (req, res) => {
+  const data: any = {
+    idImage: req.body.idImage,
+    idRecette: req.body.idRecette,
+  };
   illustrateRecipeConfig
     .updateImageFromRecipeUseCase()
-    .execute(req.body.idImage, req.body.idRecette)
+    .execute(data, req.body.user)
     .then((image: any) => {
       res.json(image);
     })
