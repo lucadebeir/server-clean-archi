@@ -1,7 +1,8 @@
 import Recipe from "./Recipe";
+import HashMap from "hashmap";
 
 export default class Menu {
-  petitDej?: Recipe;
-  repas?: Recipe;
-  douceur?: Recipe;
+  map?: HashMap<number, Recipe> = new HashMap();
+  idMenu?: number;
+  idRecette?: number;
 }

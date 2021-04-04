@@ -22,4 +22,5 @@ export default class Recipe {
   classerDans?: ClassifyIn[];
   categories?: Category[];
   mot?: string;
+  menu?: number;
 }

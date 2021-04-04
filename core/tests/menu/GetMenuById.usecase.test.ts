@@ -1,4 +1,3 @@
-import recipe from "../../../adaptater/primaries/rest/endpoints/Recipe";
 import Menu from "../../domain/Menu";
 import Recipe from "../../domain/Recipe";
 import TokenDomain from "../../domain/Token.domain";
@@ -17,11 +16,12 @@ const initRecipe = (): Recipe => {
 };
 
 const initMenu = (): Menu => {
-    const menu = new Menu();
-    menu.douceur = initRecipe();
+  const menu = new Menu();
+  menu.idMenu = 1;
+  menu.idRecette = 1;
 
-    return menu;
-}
+  return menu;
+};
 
 describe("Get menu by id use case unit tests", () => {
   let getMenuBydIdUseCase: GetMenuBydIdUseCase;
@@ -32,7 +32,7 @@ describe("Get menu by id use case unit tests", () => {
 
   let menuRepository: MenuRepository = ({
     findById: null,
-    existById: null
+    existById: null,
   } as unknown) as MenuRepository;
 
   beforeEach(() => {
@@ -52,8 +52,11 @@ describe("Get menu by id use case unit tests", () => {
 
   it("getMenuBydIdUseCase should return recipe when it succeeded", async () => {
     spyOn(menuRepository, "existById").and.returnValue(true);
-    const result: Recipe = await getMenuBydIdUseCase.execute(3, token);
     spyOn(Utils, "isAdmin").and.returnValue(true);
+    const result: Recipe = await getMenuBydIdUseCase.execute(
+      menu.idMenu,
+      token
+    );
     expect(result).toBeDefined();
     expect(result.idRecette).toBe(1);
     expect(result.nomRecette).toBe("Lasagnes");
@@ -61,29 +64,36 @@ describe("Get menu by id use case unit tests", () => {
 
   it("getMenuBydIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
-      await getMenuBydIdUseCase.execute(3, undefined);
+      await getMenuBydIdUseCase.execute(menu.idMenu, undefined);
     } catch (e) {
       const a: TechnicalException = e;
-      expect(a.message).toBe("Vous n'avez pas le droit d'accéder à cette ressource");
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
     }
   });
 
   it("getMenuBydIdUseCase should throw a parameter exception when the user is not an admin", async () => {
     try {
-        spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getMenuBydIdUseCase.execute(3, undefined);
+      spyOn(Utils, "isAdmin").and.returnValue(false);
+      await getMenuBydIdUseCase.execute(menu.idMenu, token);
     } catch (e) {
       const a: TechnicalException = e;
-      expect(a.message).toBe("Vous n'avez pas le droit d'accéder à cette ressource");
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
     }
   });
 
   it("getMenuBydIdUseCase should throw a parameter exception when the id is null", async () => {
     try {
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await getMenuBydIdUseCase.execute(undefined, token);
     } catch (e) {
-      const a: TechnicalException = e;
-      expect(a.message).toBe("L'identifiant d'une recette du menu est obligatoire");
+      const a: BusinessException = e;
+      expect(a.message).toBe(
+        "L'identifiant d'une recette du menu est obligatoire"
+      );
     }
   });
 
@@ -91,10 +101,14 @@ describe("Get menu by id use case unit tests", () => {
     try {
       spyOn(menuRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await getMenuBydIdUseCase.execute(3, token);
+      await getMenuBydIdUseCase.execute(menu.idMenu, token);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("L'identifiant 3 ne correspond à aucune ressource existante");
+      expect(a.message).toBe(
+        "L'identifiant " +
+          menu.idMenu +
+          " ne correspond à aucune ressource existante"
+      );
     }
   });
 });

@@ -1,4 +1,3 @@
-import Menu from "../../../../core/domain/Menu";
 import Recipe from "../../../../core/domain/Recipe";
 import MenuRepository from "../../../../core/ports/repositories/Menu.repository";
 import MenuSequelize from "../entities/Menu.model";
@@ -7,7 +6,10 @@ import ImageSequelize from "../entities/Image.model";
 import CategorySequelize from "../entities/Category.model";
 
 export default class MenuRepositorySQL implements MenuRepository {
-  findMenu(): Promise<Menu> {
+  existById(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  findMenu(): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [
         {
