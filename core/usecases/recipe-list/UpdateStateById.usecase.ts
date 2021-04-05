@@ -1,10 +1,44 @@
 import RecipeList from "../../domain/RecipeList";
+import TokenDomain from "../../domain/Token.domain";
+import { BusinessException } from "../../exceptions/BusinessException";
+import { TechnicalException } from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
+import UserRepository from "../../ports/repositories/User.repository";
+import { isLogin } from "../../utils/token.service";
 
 export default class UpdateStateByIdUseCase {
-  constructor(private recipeListRepository: RecipeListRepository) {}
+  constructor(
+    private recipeListRepository: RecipeListRepository,
+    private userRepository: UserRepository
+  ) {}
 
-  async execute(state: boolean, id: any, pseudo: any): Promise<RecipeList> {
-    return await this.recipeListRepository.updateState(state, id, pseudo);
+  async execute(recipe: RecipeList, token?: TokenDomain): Promise<string> {
+    this.checkBusinessRules(recipe, token);
+    return await this.recipeListRepository.updateState(recipe);
+  }
+
+  private checkBusinessRules(recipe: RecipeList, token?: TokenDomain): void {
+    if (!token || !isLogin(token)) {
+      throw new TechnicalException(
+        "Vous n'avez pas le droit de modifier cette ressource"
+      );
+    } else {
+      if (recipe) {
+        if (recipe.pseudoUser) {
+          if (!this.userRepository.existByPseudo(recipe.pseudoUser)) {
+            throw new BusinessException("L'utilisateur n'existe pas");
+          }
+          if (token.pseudo !== recipe.pseudoUser) {
+            throw new TechnicalException("Problème technique");
+          }
+        } else {
+          throw new BusinessException(
+            "Le pseudo d'un utilisateur est obligatoire"
+          );
+        }
+      } else {
+        throw new BusinessException("La recette à modifier est obligatoire");
+      }
+    }
   }
 }

@@ -3,6 +3,12 @@ import RecipeListRepository from "../../../../core/ports/repositories/RecipeList
 import RecipeListSequelize from "../entities/RecipeList.model";
 
 export default class RecipeListRepositorySQL implements RecipeListRepository {
+  existByName(name: any, pseudo: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  existById(id: any, pseudo: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   findById(pseudo: any): Promise<RecipeList[]> {
     return RecipeListSequelize.findAll({
       where: {
@@ -51,23 +57,28 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
       });
   }
 
-  updateState(state: boolean, id: any, pseudo: any): Promise<RecipeList> {
+  updateState(recipe: RecipeList): Promise<string> {
     return RecipeListSequelize.findOne({
       where: {
-        idRecipeList: id,
-        pseudoUser: pseudo,
+        idRecipeList: recipe.idRecipeList,
+        pseudoUser: recipe.pseudoUser,
       },
     }).then((recipeList) => {
       if (!recipeList) {
         throw new Error("Problème technique");
       } else {
         return RecipeListSequelize.update(
-          { complet: state },
-          { where: { idRecipeList: id, pseudoUser: pseudo } }
+          { complet: recipe.complet },
+          {
+            where: {
+              idRecipeList: recipe.idRecipeList,
+              pseudoUser: recipe.pseudoUser,
+            },
+          }
         )
           .then((recipe) => {
             if (recipe) {
-              return recipeList;
+              return "L'état de la recette a bien été  modifié";
             } else {
               throw new Error("Problème technique");
             }

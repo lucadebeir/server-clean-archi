@@ -1,0 +1,131 @@
+import RecipeList from "../../domain/RecipeList";
+import TokenDomain from "../../domain/Token.domain";
+import User from "../../domain/User";
+import { BusinessException } from "../../exceptions/BusinessException";
+import { TechnicalException } from "../../exceptions/TechnicalException";
+import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
+import UserRepository from "../../ports/repositories/User.repository";
+import UpdateStateByIdUseCase from "../../usecases/recipe-list/UpdateStateById.usecase";
+import * as Utils from "../../utils/token.service";
+
+const initRecipeList = (): RecipeList => {
+  const recipeList = new RecipeList();
+  recipeList.idRecipeList = 1;
+  recipeList.nomRecette = "Lasagnes";
+  recipeList.pseudoUser = "luca";
+  recipeList.complet = false;
+  recipeList.idRecette = 1;
+
+  return recipeList;
+};
+
+const initToken = (): TokenDomain => {
+  const token = new TokenDomain();
+  token.pseudo = "luca";
+
+  return token;
+};
+
+describe("Update state by id use case unit tests", () => {
+  let updateStateByIdUseCase: UpdateStateByIdUseCase;
+
+  let recipeList: RecipeList;
+  let token: TokenDomain;
+
+  let recipeListRepository: RecipeListRepository = ({
+    updateState: null,
+  } as unknown) as RecipeListRepository;
+
+  let userRepository: UserRepository = ({
+    existByPseudo: null,
+  } as unknown) as UserRepository;
+
+  beforeEach(() => {
+    recipeList = initRecipeList();
+    token = initToken();
+
+    updateStateByIdUseCase = new UpdateStateByIdUseCase(
+      recipeListRepository,
+      userRepository
+    );
+
+    spyOn(recipeListRepository, "updateState").and.callFake(
+      (recipeList: RecipeList) => {
+        if (recipeList) {
+          const result: string = "L'état de la recette a bien été modifié";
+          return new Promise((resolve, reject) => resolve(result));
+        }
+        return new Promise((resolve, reject) => resolve(null));
+      }
+    );
+  });
+
+  it("updateStateByIdUseCase should return list of recipe when it succeeded", async () => {
+    spyOn(Utils, "isLogin").and.returnValue(true);
+    spyOn(userRepository, "existByPseudo").and.returnValue(true);
+    const result: string = await updateStateByIdUseCase.execute(
+      recipeList,
+      token
+    );
+    expect(result).toBeDefined();
+    expect(result).toStrictEqual("L'état de la recette a bien été modifié");
+  });
+
+  it("updateStateByIdUseCase should throw a parameter exception when the token is undefined", async () => {
+    try {
+      await updateStateByIdUseCase.execute(recipeList, undefined);
+    } catch (e) {
+      const a: TechnicalException = e;
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit de modifier cette ressource"
+      );
+    }
+  });
+
+  it("updateStateByIdUseCase should throw a parameter exception when the user is not an user", async () => {
+    try {
+      spyOn(Utils, "isLogin").and.returnValue(false);
+      await updateStateByIdUseCase.execute(recipeList, token);
+    } catch (e) {
+      const a: TechnicalException = e;
+      expect(a.message).toBe(
+        "Vous n'avez pas le droit de modifier cette ressource"
+      );
+    }
+  });
+
+  it("updateStateByIdUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
+    recipeList.pseudoUser = "lucas";
+    try {
+      spyOn(Utils, "isLogin").and.returnValue(true);
+      spyOn(userRepository, "existByPseudo").and.returnValue(true);
+      await updateStateByIdUseCase.execute(recipeList, token);
+    } catch (e) {
+      const a: TechnicalException = e;
+      expect(a.message).toBe("Problème technique");
+    }
+  });
+
+  it("updateStateByIdUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
+    recipeList.pseudoUser = undefined;
+    try {
+      spyOn(Utils, "isLogin").and.returnValue(true);
+      spyOn(userRepository, "existByPseudo").and.returnValue(true);
+      await updateStateByIdUseCase.execute(recipeList, token);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe("Le pseudo d'un utilisateur est obligatoire");
+    }
+  });
+
+  it("updateStateByIdUseCase should throw a parameter exception when the pseudo doesnt exist", async () => {
+    try {
+      spyOn(Utils, "isLogin").and.returnValue(true);
+      spyOn(userRepository, "existByPseudo").and.returnValue(false);
+      await updateStateByIdUseCase.execute(recipeList, token);
+    } catch (e) {
+      const a: BusinessException = e;
+      expect(a.message).toBe("L'utilisateur n'existe pas");
+    }
+  });
+});
