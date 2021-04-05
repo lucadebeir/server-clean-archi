@@ -4,13 +4,14 @@ import cors from "cors";
 recipeList.use(cors());
 
 import RecipeListConfig from "../config/RecipeListConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const recipeListConfig = new RecipeListConfig();
 
 //récupérer le recipeList du moment d'un utilisateur
-recipeList.get("/:pseudo", (req, res) => {
+recipeList.get("/:pseudo", authenticateJWT, (req, res) => {
   recipeListConfig
     .getRecipeListByIdUseCase()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((recipeList: any) => {
       res.json(recipeList);
     })
@@ -20,7 +21,7 @@ recipeList.get("/:pseudo", (req, res) => {
 });
 
 //ajout d'une recette à la recipeList
-recipeList.post("/add", (req, res) => {
+recipeList.post("/add", authenticateJWT, (req, res) => {
   const recipeListData = {
     nomRecette: req.body.nomRecette,
     pseudoUser: req.body.pseudoUser,
@@ -28,7 +29,7 @@ recipeList.post("/add", (req, res) => {
   };
   recipeListConfig
     .addRecipeToRecipeListUseCase()
-    .execute(recipeListData)
+    .execute(recipeListData, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })
@@ -38,10 +39,17 @@ recipeList.post("/add", (req, res) => {
 });
 
 //update état d'une recette de la liste
-recipeList.post("/update", (req, res) => {
+recipeList.post("/update", authenticateJWT, (req, res) => {
+  const recipeListData = {
+    idRecipeList: req.body.idRecipeList,
+    nomRecette: req.body.nomRecette,
+    pseudoUser: req.body.pseudoUser,
+    idRecette: req.body.idRecette,
+    complet: req.body.complet,
+  };
   recipeListConfig
     .updateStateByIdUseCase()
-    .execute(req.body.complet, req.body.idRecipeList, req.body.pseudoUser)
+    .execute(recipeListData, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })
@@ -51,10 +59,10 @@ recipeList.post("/update", (req, res) => {
 });
 
 //suppression d'une recette de la liste
-recipeList.delete("/delete", (req, res) => {
+recipeList.delete("/delete", authenticateJWT, (req, res) => {
   recipeListConfig
     .deleteByIdUseCase()
-    .execute(req.body.idRecipeList, req.body.pseudoUser)
+    .execute(req.body.idRecipeList, req.body.pseudoUser, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })
@@ -64,10 +72,10 @@ recipeList.delete("/delete", (req, res) => {
 });
 
 //suppression de toutes les recettes de la liste
-recipeList.delete("/delete/all", (req, res) => {
+recipeList.delete("/delete/all", authenticateJWT, (req, res) => {
   recipeListConfig
     .deleteAllUseCase()
-    .execute(req.body.pseudoUser)
+    .execute(req.body.pseudoUser, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })
