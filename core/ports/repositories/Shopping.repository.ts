@@ -5,8 +5,13 @@ export default interface ShoppingRepository {
   findById(pseudo: any): Promise<Shopping[]>;
   findIngredientsNotInShoppingListById(pseudo: any): Promise<Ingredient[]>;
 
-  addIngredientToShoppingList(pseudo: any, name: string): Promise<string>;
-  addIngredientsOfRecipeToShoppingList(pseudo: any, list: any): Promise<string>;
+  addIngredientToShoppingList(shopping: Shopping): Promise<string>;
+  addIngredientsOfRecipeToShoppingList(
+    pseudo: any,
+    list: Ingredient[]
+  ): Promise<string>;
 
-  deleteById(id: any, pseudo: any): Promise<string>;
+  deleteById(id: any): Promise<string>;
+
+  exist(pseudo: any, name: any): Promise<boolean>;
 }

@@ -2,11 +2,13 @@ import { Op, QueryTypes } from "sequelize";
 import Ingredient from "../../../../core/domain/Ingredient";
 import Shopping from "../../../../core/domain/Shopping";
 import ShoppingRepository from "../../../../core/ports/repositories/Shopping.repository";
-import db from "../config/db";
 import IngredientSequelize from "../entities/Ingredient.model";
 import ShoppingSequelize from "../entities/Shopping.model";
 
 export default class ShoppingRepositorySQL implements ShoppingRepository {
+  exist(pseudo: any, name: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   findById(pseudo: any): Promise<Shopping[]> {
     return ShoppingSequelize.findAll({
       where: {
@@ -59,15 +61,15 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       });
   }
 
-  addIngredientToShoppingList(pseudo: any, name: string): Promise<string> {
+  addIngredientToShoppingList(shopping: Shopping): Promise<string> {
     const listeCourseData = {
-      pseudo: pseudo,
-      nomIngredient: name,
+      pseudo: shopping.pseudo,
+      nomIngredient: shopping.nomIngredient,
     };
     return ShoppingSequelize.findOne({
       where: {
-        pseudo: pseudo,
-        nomIngredient: name,
+        pseudo: shopping.pseudo,
+        nomIngredient: shopping.nomIngredient,
       },
     })
       .then((ingredient) => {
@@ -85,7 +87,8 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
             });
         } else {
           throw new Error(
-            "Cet ingrédient se trouve déjà dans votre liste de course : " + name
+            "Cet ingrédient se trouve déjà dans votre liste de course : " +
+              shopping.nomIngredient
           );
         }
       })
@@ -140,11 +143,10 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
     }
   }
 
-  deleteById(id: any, pseudo: any): Promise<string> {
+  deleteById(id: any): Promise<string> {
     return ShoppingSequelize.destroy({
       where: {
-        nomIngredient: id,
-        pseudo: pseudo,
+        idIngredientList: id,
       },
     })
       .then(() => {

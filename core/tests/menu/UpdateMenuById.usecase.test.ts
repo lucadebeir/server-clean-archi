@@ -69,7 +69,7 @@ describe("Update menu by id use case unit tests", () => {
     }
   });
 
-  it("updateMenuByIdUseCase should throw a parameter exception when the user is not an admin", async () => {
+  it("updateMenuByIdUseCase should throw a parameter exception when the user is not connect", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateMenuByIdUseCase.execute(menu, token);

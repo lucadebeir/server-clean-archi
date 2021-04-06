@@ -59,10 +59,10 @@ shopping.post("/add", (req, res) => {
 });
 
 //supprimer un ingredient de la liste de course
-shopping.delete("/delete/:id/:pseudo", (req, res) => {
+shopping.delete("/delete/:id", (req, res) => {
   shoppingConfig
     .deleteById()
-    .execute(req.params.id, req.params.pseudo)
+    .execute(req.params.id)
     .then((ingredient: any) => {
       res.json(ingredient);
     })
