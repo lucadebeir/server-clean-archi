@@ -1,9 +1,10 @@
 import User from "../../domain/User";
 
 export default interface UserRepository {
-  register(user: User): Promise<string>;
+  register(user: User): Promise<User>;
   login(pseudo: any, password: any): Promise<string>;
   existByPseudo(pseudo: any): Promise<boolean>;
+  existByEmail(email: any): Promise<boolean>;
   findById(pseudo: any): Promise<User>;
 
   findAllAbonneUsers(): Promise<User[]>;

@@ -6,7 +6,10 @@ import ResetTokenSequelize from "../entities/ResetToken.model";
 import TokenDomain from "../../../../core/domain/Token.domain";
 
 export default class UserRepositorySQL implements UserRepository {
-  register(user: User): Promise<string> {
+  existByEmail(email: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  register(user: User): Promise<User> {
     const userData = {
       pseudo: user.pseudo,
       email: user.email,

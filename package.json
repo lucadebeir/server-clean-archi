@@ -9,11 +9,6 @@
     "build": "tsc",
     "test": "jest"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "jest-sorted"
-    ]
-  },
   "author": "lucadebeir",
   "license": "ISC",
   "dependencies": {
