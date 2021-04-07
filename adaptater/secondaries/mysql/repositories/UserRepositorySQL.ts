@@ -6,6 +6,9 @@ import ResetTokenSequelize from "../entities/ResetToken.model";
 import TokenDomain from "../../../../core/domain/Token.domain";
 
 export default class UserRepositorySQL implements UserRepository {
+  checkEmailConfirmed(pseudo: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
   existByEmail(email: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
@@ -48,7 +51,7 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  login(pseudo: any, password: any): Promise<string> {
+  login(pseudo: any, password: any): Promise<TokenDomain> {
     return UserSequelize.findOne({
       where: {
         pseudo: pseudo,

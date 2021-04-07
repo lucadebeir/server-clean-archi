@@ -1,8 +1,9 @@
+import TokenDomain from "../../domain/Token.domain";
 import User from "../../domain/User";
 
 export default interface UserRepository {
   register(user: User): Promise<User>;
-  login(pseudo: any, password: any): Promise<string>;
+  login(pseudo: any, password: any): Promise<TokenDomain>;
   existByPseudo(pseudo: any): Promise<boolean>;
   existByEmail(email: any): Promise<boolean>;
   findById(pseudo: any): Promise<User>;
@@ -24,4 +25,6 @@ export default interface UserRepository {
   sendFromContact(email: any, subject: any, message: any): Promise<string>;
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
+
+  checkEmailConfirmed(pseudo: any): Promise<boolean>;
 }
