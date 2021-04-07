@@ -1,6 +1,4 @@
 import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
-import * as Utils from "../../utils/token.service";
 import User from "../../domain/User";
 import RegisterUseCase from "../../usecases/user/Register.usecase";
 import UserRepository from "../../ports/repositories/User.repository";

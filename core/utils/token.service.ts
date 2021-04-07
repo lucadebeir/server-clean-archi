@@ -8,6 +8,10 @@ export const isLogin = (token: TokenDomain) => {
   return Date.now() < token.exp;
 };
 
+export const isExpired = (token: TokenDomain) => {
+  return Date.now() > token.exp;
+};
+
 /*export const isEmailValid = (email: string) => {
   return validate(email);
 };*/

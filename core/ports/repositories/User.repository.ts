@@ -20,7 +20,10 @@ export default interface UserRepository {
 
   forgetPassword(email: any): Promise<string>;
   checkValideToken(token: any): Promise<string>;
-  updatePasswordWithToken(token: any, newPassword: any): Promise<string>;
+  updatePasswordWithToken(
+    token?: TokenDomain,
+    newPassword?: any
+  ): Promise<string>;
 
   sendFromContact(email: any, subject: any, message: any): Promise<string>;
   findAllExistingEmails(): Promise<string[]>;
