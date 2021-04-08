@@ -28,7 +28,7 @@ describe("Create notification use case unit tests", () => {
   let notification: Notification;
   let token: TokenDomain;
   let date: string = Date.now().toString();
-  let list = ["vue", "abonne", "favori", "commentaire"];
+  let list = ["vue", "abonne", "favori", "commentaire", "user"];
 
   let notificationRepository: NotificationRepository = ({
     create: null,

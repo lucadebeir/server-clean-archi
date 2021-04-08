@@ -4,13 +4,14 @@ import cors from "cors";
 statistique.use(cors());
 
 import StatistiqueConfig from "../config/StatistiqueConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const statistiqueConfig = new StatistiqueConfig();
 
 //Récupère le nombre de vues total sur le site
-statistique.get("/views", (req, res) => {
+statistique.get("/views", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbViewsUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((result: any) => {
       res.json(result);
     })
@@ -20,10 +21,10 @@ statistique.get("/views", (req, res) => {
 });
 
 //Récupère le nombre de commentaires total sur le site
-statistique.get("/commentaires", (req, res) => {
+statistique.get("/commentaires", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbCommentairesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((result: any) => {
       res.json(result);
     })
@@ -33,10 +34,10 @@ statistique.get("/commentaires", (req, res) => {
 });
 
 //Récupérer le nombre d'utilisateurs sur le site
-statistique.get("/users", (req, res) => {
+statistique.get("/users", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbUsersUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((result: any) => {
       res.json(result);
     })
@@ -46,10 +47,10 @@ statistique.get("/users", (req, res) => {
 });
 
 //Récupérer le nombre d'abonnée à la newsletter
-statistique.get("/abonnes", (req, res) => {
+statistique.get("/abonnes", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbAbonnesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((result: any) => {
       res.json(result);
     })
@@ -59,10 +60,10 @@ statistique.get("/abonnes", (req, res) => {
 });
 
 //Récupérer les pseudo X les abonnements à la newsletter
-statistique.get("/users/abonnes", (req, res) => {
+statistique.get("/users/abonnes", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findUsersXAbonnesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((result: any) => {
       res.json(result);
     })
@@ -72,10 +73,10 @@ statistique.get("/users/abonnes", (req, res) => {
 });
 
 //Récupérer les 20 recettes les + vues du site
-statistique.get("/top/recipes", (req, res) => {
+statistique.get("/top/recipes", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findTop20BestRecipesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((recipes: any) => {
       res.json(recipes);
     })
@@ -85,10 +86,10 @@ statistique.get("/top/recipes", (req, res) => {
 });
 
 //Récupérer les 20 recettes les - vues du site
-statistique.get("/worst/recipes", (req, res) => {
+statistique.get("/worst/recipes", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findTop20WorstRecipesUseCase()
-    .execute()
+    .execute(req.body.user)
     .then((recipes: any) => {
       res.json(recipes);
     })
@@ -98,11 +99,11 @@ statistique.get("/worst/recipes", (req, res) => {
 });
 
 //Récupère les 20 recettes les + vues du mois
-statistique.get("/top/recipes/month", (req, res) => {
+statistique.get("/top/recipes/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findTop20BestRecipesOfTheMonthUseCase()
-    .execute()
-    .then((recipes: any) => {
+    .execute(req.body.user)
+    .then((recipes: { nomRecette: any; nbVues: any }[]) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
@@ -111,11 +112,11 @@ statistique.get("/top/recipes/month", (req, res) => {
 });
 
 //Récupère le nombre de vues/jour depuis les 30 derniers jours
-statistique.get("/views/month", (req, res) => {
+statistique.get("/views/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbViewsSince30DaysUseCase()
-    .execute()
-    .then((result: any) => {
+    .execute(req.body.user)
+    .then((result: { nbVues: any; date: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -124,11 +125,11 @@ statistique.get("/views/month", (req, res) => {
 });
 
 //Récupère le nombre de commentaires/jour depuis les 30 derniers jours
-statistique.get("/commentaires/month", (req, res) => {
+statistique.get("/commentaires/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbCommentairesSince30DaysUseCase()
-    .execute()
-    .then((result: any) => {
+    .execute(req.body.user)
+    .then((result: { nbCommentaires: any; date: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -137,11 +138,11 @@ statistique.get("/commentaires/month", (req, res) => {
 });
 
 //Récupérer le nombre de nouveaux users/mois sur l'année en cours
-statistique.get("/users/monthly", (req, res) => {
+statistique.get("/users/monthly", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbUsersMonthlyUseCase()
-    .execute()
-    .then((result: any) => {
+    .execute(req.body.user)
+    .then((result: { nbUsers: any; month: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -150,11 +151,11 @@ statistique.get("/users/monthly", (req, res) => {
 });
 
 //Récupérer le nombre de nouveaux abonnés/mois sur l'année en cours
-statistique.get("/abonnes/monthly", (req, res) => {
+statistique.get("/abonnes/monthly", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbAbonnesMonthlyUseCase()
-    .execute()
-    .then((result: any) => {
+    .execute(req.body.user)
+    .then((result: { nbAbonnes: any; month: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {

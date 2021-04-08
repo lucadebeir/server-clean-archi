@@ -8,7 +8,7 @@ import UserRepository from "../../ports/repositories/User.repository";
 import { isLogin } from "../../utils/token.service";
 
 export default class CreateNotificationUseCase {
-  typeList: any[] = ["vue", "abonne", "favori", "commentaire"];
+  typeList: any[] = ["vue", "abonne", "favori", "commentaire", "user"];
 
   constructor(
     private notificationRepository: NotificationRepository,
@@ -45,7 +45,7 @@ export default class CreateNotificationUseCase {
     if (notification.type) {
       if (this.typeList.indexOf(notification.type) == -1) {
         throw new BusinessException(
-          "Une notification doit être de type 'vue', 'abonne', 'favori' ou 'commentaire'"
+          "Une notification doit être de type 'vue', 'abonne', 'favori', 'user' ou 'commentaire'"
         );
       }
     } else {

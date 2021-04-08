@@ -1,16 +1,16 @@
 import StatistiqueRepository from "../../../../core/ports/repositories/Statistique.repository";
-import FindNbAbonnesUseCase from "../../../../core/usecases/statistiques/FindNbAbonnes.usecase";
-import FindNbAbonnesMonthlyUseCase from "../../../../core/usecases/statistiques/FindNbAbonnesMonthly.usecase";
-import FindNbCommentairesUseCase from "../../../../core/usecases/statistiques/FindNbCommentaires.usecase";
-import FindNbCommentairesSince30DaysUseCase from "../../../../core/usecases/statistiques/FindNbCommentairesSince30Days.usecase";
-import FindNbUsersUseCase from "../../../../core/usecases/statistiques/FindNbUsers.usecase";
-import FindUsersXAbonnesUseCase from "../../../../core/usecases/statistiques/FindNbUsersAndAbonnes.usecase";
-import FindNbUsersMonthlyUseCase from "../../../../core/usecases/statistiques/FindNbUsersMonthly.usecase";
-import FindNbViewsUseCase from "../../../../core/usecases/statistiques/FindNbViews.usecase";
-import FindNbViewsSince30DaysUseCase from "../../../../core/usecases/statistiques/FindNbViewsSince30Days.usecase";
-import FindTop20BestRecipesUseCase from "../../../../core/usecases/statistiques/FindTop20BestRecipes.usecase";
-import FindTop20BestRecipesOfTheMonthUseCase from "../../../../core/usecases/statistiques/FindTop20BestRecipesOfTheMonth.usecase";
-import FindTop20WorstRecipesUseCase from "../../../../core/usecases/statistiques/FindTop20WorstRecipes.usecase";
+import FindNbAbonnesUseCase from "../../../../core/usecases/statistique/FindNbAbonnes.usecase";
+import FindNbAbonnesMonthlyUseCase from "../../../../core/usecases/statistique/FindNbAbonnesMonthly.usecase";
+import FindNbCommentairesUseCase from "../../../../core/usecases/statistique/FindNbCommentaires.usecase";
+import FindNbCommentairesSince30DaysUseCase from "../../../../core/usecases/statistique/FindNbCommentairesSince30Days.usecase";
+import FindNbUsersUseCase from "../../../../core/usecases/statistique/FindNbUsers.usecase";
+import FindUsersXAbonnesUseCase from "../../../../core/usecases/statistique/FindNbUsersAndAbonnes.usecase";
+import FindNbUsersMonthlyUseCase from "../../../../core/usecases/statistique/FindNbUsersMonthly.usecase";
+import FindNbViewsUseCase from "../../../../core/usecases/statistique/FindNbViews.usecase";
+import FindNbViewsSince30DaysUseCase from "../../../../core/usecases/statistique/FindNbViewsSince30Days.usecase";
+import FindTop20BestRecipesUseCase from "../../../../core/usecases/statistique/FindTop20BestRecipes.usecase";
+import FindTop20BestRecipesOfTheMonthUseCase from "../../../../core/usecases/statistique/FindTop20BestRecipesOfTheMonth.usecase";
+import FindTop20WorstRecipesUseCase from "../../../../core/usecases/statistique/FindTop20WorstRecipes.usecase";
 import StatistiqueRepositorySQL from "../../../secondaries/mysql/repositories/StatistiqueRepositorySQL";
 
 export default class StatistiqueConfig {
@@ -29,7 +29,9 @@ export default class StatistiqueConfig {
   }
 
   public findTop20BestRecipesOfTheMonthUseCase(): FindTop20BestRecipesOfTheMonthUseCase {
-    return new FindTop20BestRecipesOfTheMonthUseCase(this.statistiqueRepository);
+    return new FindTop20BestRecipesOfTheMonthUseCase(
+      this.statistiqueRepository
+    );
   }
 
   public findNbViewsSince30DaysUseCase(): FindNbViewsSince30DaysUseCase {

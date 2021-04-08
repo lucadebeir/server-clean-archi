@@ -90,7 +90,9 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findTop20BestRecipesOfTheMonth(): Promise<any> {
+  findTop20BestRecipesOfTheMonth(): Promise<
+    { nomRecette: any; nbVues: any }[]
+  > {
     return RecipeSequelize.findAll({
       attributes: {
         include: [
@@ -126,7 +128,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       group: "idRecette",
       limit: 20,
     })
-      .then((resultat) => {
+      .then((resultat: any) => {
         return resultat;
       })
       .catch((err) => {
@@ -134,7 +136,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbViewsSince30Days(): Promise<number> {
+  findNbViewsSince30Days(): Promise<{ nbVues: any; date: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
@@ -164,11 +166,13 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbCommentairesSince30Days(): Promise<number> {
+  findNbCommentairesSince30Days(): Promise<
+    { nbCommentaires: any; date: any }[]
+  > {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
-          [fn("COUNT", col("*")), "nbVues"],
+          [fn("COUNT", col("*")), "nbCommentaires"],
           [fn("DATE", col("dateNotification")), "date"],
         ],
         exclude: [
@@ -194,7 +198,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbUsersMonthly(): Promise<number> {
+  findNbUsersMonthly(): Promise<{ nbUsers: any; month: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
@@ -223,7 +227,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbAbonnesMonthly(): Promise<number> {
+  findNbAbonnesMonthly(): Promise<{ nbAbonnes: any; month: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [

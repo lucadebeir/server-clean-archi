@@ -29,7 +29,7 @@ describe("Get all notifications enabled use case unit tests", () => {
 
   let notifications: Notification[];
   let token: TokenDomain;
-  let list = ["vue", "abonne", "favori", "commentaire"];
+  let list = ["vue", "abonne", "favori", "commentaire", "user"];
 
   let notificationRepository: NotificationRepository = ({
     findAllNotificationsEnabled: null,

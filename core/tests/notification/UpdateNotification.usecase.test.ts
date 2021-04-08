@@ -26,7 +26,7 @@ describe("Update notification use case unit tests", () => {
 
   let notification: Notification;
   let token: TokenDomain;
-  let list = ["vue", "abonne", "favori", "commentaire"];
+  let list = ["vue", "abonne", "favori", "commentaire", "user"];
 
   let notificationRepository: NotificationRepository = ({
     update: null,

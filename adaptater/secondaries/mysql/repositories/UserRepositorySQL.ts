@@ -7,7 +7,21 @@ import TokenDomain from "../../../../core/domain/Token.domain";
 
 export default class UserRepositorySQL implements UserRepository {
   checkEmailConfirmed(pseudo: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return UserSequelize.findOne({
+      where: {
+        pseudo: pseudo,
+      },
+    })
+      .then((user) => {
+        if (user?.emailConfirmed) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
   existByEmail(email: any): Promise<boolean> {
     throw new Error("Method not implemented.");

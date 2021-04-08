@@ -9,9 +9,11 @@ export default interface StatistiqueRepository {
   findUsersXAbonnes(): Promise<User[]>;
   findTop20BestRecipes(): Promise<Recipe[]>;
   findTop20WorstRecipes(): Promise<Recipe[]>;
-  findTop20BestRecipesOfTheMonth(): Promise<any>;
-  findNbViewsSince30Days(): Promise<number>;
-  findNbCommentairesSince30Days(): Promise<number>;
-  findNbUsersMonthly(): Promise<number>;
-  findNbAbonnesMonthly(): Promise<number>;
+  findTop20BestRecipesOfTheMonth(): Promise<{ nomRecette: any; nbVues: any }[]>;
+  findNbViewsSince30Days(): Promise<{ nbVues: any; date: any }[]>;
+  findNbCommentairesSince30Days(): Promise<
+    { nbCommentaires: any; date: any }[]
+  >;
+  findNbUsersMonthly(): Promise<{ nbUsers: any; month: any }[]>;
+  findNbAbonnesMonthly(): Promise<{ nbAbonnes: any; month: any }[]>;
 }

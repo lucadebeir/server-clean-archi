@@ -27,7 +27,7 @@ describe("Get all notifications use case unit tests", () => {
 
   let notifications: Notification[];
   let token: TokenDomain;
-  let list = ["vue", "abonne", "favori", "commentaire"];
+  let list = ["vue", "abonne", "favori", "commentaire", "user"];
 
   let notificationRepository: NotificationRepository = ({
     findAll: null,
