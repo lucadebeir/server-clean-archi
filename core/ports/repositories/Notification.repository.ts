@@ -6,4 +6,6 @@ export default interface NotificationRepository {
 
   create(notification: Notification): Promise<Notification>;
   update(id: any): Promise<string>;
+
+  existById(id: any): Promise<boolean>;
 }
