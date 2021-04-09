@@ -6,8 +6,23 @@ import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class UnityRepositorySQL implements UnityRepository {
   existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return UnitySequelize.findOne({
+      where: {
+        idUnite: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   create(unityToCreate: Unity): Promise<Unity> {
     return UnitySequelize.findOne({
       where: {

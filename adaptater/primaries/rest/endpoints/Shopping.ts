@@ -4,13 +4,14 @@ import cors from "cors";
 shopping.use(cors());
 
 import ShoppingConfig from "../config/ShoppingConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const shoppingConfig = new ShoppingConfig();
 
 //récupérer la liste de course de l'utilisateur
-shopping.get("/:pseudo", (req, res) => {
+shopping.get("/:pseudo", authenticateJWT, (req, res) => {
   shoppingConfig
     .getShoppingListByIdUseCase()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((list: any) => {
       res.json(list);
     })
@@ -20,10 +21,10 @@ shopping.get("/:pseudo", (req, res) => {
 });
 
 //récupérer les ingrédients non présents dans la liste de course de l'utilisateur
-shopping.get("/:pseudo/rest", (req, res) => {
+shopping.get("/:pseudo/rest", authenticateJWT, (req, res) => {
   shoppingConfig
     .getIngredientsNotInShoppingListByIdUseCase()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((list: any) => {
       res.json(list);
     })
@@ -33,10 +34,14 @@ shopping.get("/:pseudo/rest", (req, res) => {
 });
 
 //ajouter un ingrédient à la liste de course
-shopping.post("/add/ingredient", (req, res) => {
+shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
+  const shoppingData: any = {
+    pseudo: req.body.pseudo,
+    nomIngredient: req.body.nomIngredient,
+  };
   shoppingConfig
     .addIngredientToShoppingList()
-    .execute(req.body.pseudo, req.body.nomIngredient)
+    .execute(shoppingData, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })
@@ -46,10 +51,10 @@ shopping.post("/add/ingredient", (req, res) => {
 });
 
 //ajouter les ingrédients d'une recette à la liste de course
-shopping.post("/add", (req, res) => {
+shopping.post("/add", authenticateJWT, (req, res) => {
   shoppingConfig
     .addIngredientsOfRecipeToShoppingList()
-    .execute(req.body.pseudo, req.body.listIngredients)
+    .execute(req.body.pseudo, req.body.listIngredients, req.body.user)
     .then((ingredients: any) => {
       res.json(ingredients);
     })
@@ -59,10 +64,10 @@ shopping.post("/add", (req, res) => {
 });
 
 //supprimer un ingredient de la liste de course
-shopping.delete("/delete/:id", (req, res) => {
+shopping.delete("/delete/:id", authenticateJWT, (req, res) => {
   shoppingConfig
     .deleteById()
-    .execute(req.params.id)
+    .execute(req.params.id, req.body.user)
     .then((ingredient: any) => {
       res.json(ingredient);
     })

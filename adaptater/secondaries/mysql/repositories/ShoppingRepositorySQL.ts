@@ -7,8 +7,24 @@ import ShoppingSequelize from "../entities/Shopping.model";
 
 export default class ShoppingRepositorySQL implements ShoppingRepository {
   exist(pseudo: any, name: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return ShoppingSequelize.findOne({
+      where: {
+        pseudo: pseudo,
+        nomIngredient: name,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   findById(pseudo: any): Promise<Shopping[]> {
     return ShoppingSequelize.findAll({
       where: {

@@ -7,8 +7,23 @@ import CategorySequelize from "../entities/Category.model";
 
 export default class MenuRepositorySQL implements MenuRepository {
   existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return MenuSequelize.findOne({
+      where: {
+        idMenu: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   findMenu(): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [

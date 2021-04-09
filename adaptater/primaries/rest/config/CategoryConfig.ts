@@ -11,8 +11,8 @@ import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/Categ
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class CategoryConfig {
-  public categoryRepository: CategoryRepository = new CategoryRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private categoryRepository: CategoryRepository = new CategoryRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public getAllCategoriesUseCase(): GetAllCategoriesUseCase {
     return new GetAllCategoriesUseCase(this.categoryRepository);

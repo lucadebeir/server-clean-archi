@@ -4,11 +4,42 @@ import RecipeListSequelize from "../entities/RecipeList.model";
 
 export default class RecipeListRepositorySQL implements RecipeListRepository {
   existByName(name: any, pseudo: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return RecipeListSequelize.findOne({
+      where: {
+        pseudoUser: pseudo,
+        nomRecette: name,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
-  existById(id: any, pseudo: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  existById(id: any): Promise<boolean> {
+    return RecipeListSequelize.findOne({
+      where: {
+        idRecette: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   findById(pseudo: any): Promise<RecipeList[]> {
     return RecipeListSequelize.findAll({
       where: {

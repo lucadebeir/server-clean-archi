@@ -8,15 +8,23 @@ import ClassifyInRepositorySQL from "../../../secondaries/mysql/repositories/Cla
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class ClassifyInConfig {
-    public classifyInRepository: ClassifyInRepository = new ClassifyInRepositorySQL();
-    public categoryRepository: CategoryRepository = new CategoryRepositorySQL();
-    public recipeRepository:  RecipeRepository = new RecipeRepositorySQL();
+  private classifyInRepository: ClassifyInRepository = new ClassifyInRepositorySQL();
+  private categoryRepository: CategoryRepository = new CategoryRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
-    public addCategoryToRecipeUseCase(): AddCategoryToRecipeUseCase {
-        return new AddCategoryToRecipeUseCase(this.classifyInRepository, this.categoryRepository, this.recipeRepository);
-    }
+  public addCategoryToRecipeUseCase(): AddCategoryToRecipeUseCase {
+    return new AddCategoryToRecipeUseCase(
+      this.classifyInRepository,
+      this.categoryRepository,
+      this.recipeRepository
+    );
+  }
 
-    public deleteCategoryFromRecipeUseCase(): DeleteCategoryFromRecipeUseCase {
-        return new DeleteCategoryFromRecipeUseCase(this.classifyInRepository, this.categoryRepository, this.recipeRepository);
-    }
+  public deleteCategoryFromRecipeUseCase(): DeleteCategoryFromRecipeUseCase {
+    return new DeleteCategoryFromRecipeUseCase(
+      this.classifyInRepository,
+      this.categoryRepository,
+      this.recipeRepository
+    );
+  }
 }

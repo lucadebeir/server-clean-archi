@@ -11,8 +11,8 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class IngredientConfig {
-  public ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public getAllIngredientsUseCase(): GetAllIngredientsUseCase {
     return new GetAllIngredientsUseCase(this.ingredientRepository);

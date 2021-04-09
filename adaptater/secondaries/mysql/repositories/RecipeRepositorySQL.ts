@@ -17,18 +17,51 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe?: Recipe): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
+
   existByName(name: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return RecipeSequelize.findOne({
+      where: {
+        nomRecette: name,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   useInMenu(id: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
+
   useInRecipeList(id: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
+
   existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return RecipeSequelize.findOne({
+      where: {
+        idRecette: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   findAll(order: string): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [

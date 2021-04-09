@@ -6,8 +6,8 @@ import ImageRepositorySQL from "../../../secondaries/mysql/repositories/ImageRep
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class CategoryConfig {
-  public imageRepository: ImageRepository = new ImageRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private imageRepository: ImageRepository = new ImageRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public findImageByIdUseCase(): FindImageByIdUseCase {
     return new FindImageByIdUseCase(this.imageRepository);

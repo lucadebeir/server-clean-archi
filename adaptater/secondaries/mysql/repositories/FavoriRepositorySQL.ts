@@ -6,8 +6,24 @@ import CategorySequelize from "../entities/Category.model";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
   check(favori: Favori): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return FavoriSequelize.findOne({
+      where: {
+        idRecette: favori.idRecette,
+        pseudo: favori.pseudo,
+      },
+    })
+      .then((favori) => {
+        if (favori) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   create(favoriToCreate: Favori): Promise<string> {
     return FavoriSequelize.findOne({
       where: {

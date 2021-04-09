@@ -7,7 +7,7 @@ import UpdateUnityUseCase from "../../../../core/usecases/unity/UpdateUnity.usec
 import UnityRepositorySQL from "../../../secondaries/mysql/repositories/UnityRepositorySQL";
 
 export default class UnityConfig {
-  public unityRepository: UnityRepository = new UnityRepositorySQL();
+  private unityRepository: UnityRepository = new UnityRepositorySQL();
 
   public getAllUnitiesUseCase(): GetAllUnitiesUseCase {
     return new GetAllUnitiesUseCase(this.unityRepository);

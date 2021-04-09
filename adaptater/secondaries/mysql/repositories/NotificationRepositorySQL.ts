@@ -5,8 +5,23 @@ import NotificationSequelize from "../entities/Notification.model";
 export default class NotificationRepositorySQL
   implements NotificationRepository {
   existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return NotificationSequelize.findOne({
+      where: {
+        idNotification: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   findAll(): Promise<Notification[]> {
     return NotificationSequelize.findAll({
       order: [["dateNotification", "DESC"]],

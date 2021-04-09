@@ -7,8 +7,8 @@ import MenuRepositorySQL from "../../../secondaries/mysql/repositories/MenuRepos
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class MenuConfig {
-  public menuRepository: MenuRepository = new MenuRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private menuRepository: MenuRepository = new MenuRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public getMenuUseCase(): GetMenuUseCase {
     return new GetMenuUseCase(this.menuRepository);

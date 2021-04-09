@@ -11,20 +11,34 @@ import UnityRepositorySQL from "../../../secondaries/mysql/repositories/UnityRep
 import UseIngredientRepositorySQL from "../../../secondaries/mysql/repositories/UseIngredientRepositorySQL";
 
 export default class UseIngredientConfig {
-  public useIngredientRepository: UseIngredientRepository = new UseIngredientRepositorySQL();
-  public unityRepository: UnityRepository = new UnityRepositorySQL();
-  public ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private useIngredientRepository: UseIngredientRepository = new UseIngredientRepositorySQL();
+  private unityRepository: UnityRepository = new UnityRepositorySQL();
+  private ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public addIngredientToRecipeUseCase(): AddIngredientToRecipeUseCase {
-    return new AddIngredientToRecipeUseCase(this.useIngredientRepository, this.unityRepository, this.ingredientRepository, this.recipeRepository);
+    return new AddIngredientToRecipeUseCase(
+      this.useIngredientRepository,
+      this.unityRepository,
+      this.ingredientRepository,
+      this.recipeRepository
+    );
   }
 
   public updateIngredientFromRecipeUseCase(): UpdateIngredientFromRecipeUseCase {
-    return new UpdateIngredientFromRecipeUseCase(this.useIngredientRepository, this.unityRepository, this.ingredientRepository, this.recipeRepository);
+    return new UpdateIngredientFromRecipeUseCase(
+      this.useIngredientRepository,
+      this.unityRepository,
+      this.ingredientRepository,
+      this.recipeRepository
+    );
   }
 
   public deleteIngredientFromRecipeUseCase(): DeleteIngredientFromRecipeUseCase {
-    return new DeleteIngredientFromRecipeUseCase(this.useIngredientRepository, this.ingredientRepository, this.recipeRepository);
+    return new DeleteIngredientFromRecipeUseCase(
+      this.useIngredientRepository,
+      this.ingredientRepository,
+      this.recipeRepository
+    );
   }
 }

@@ -9,7 +9,7 @@ import RecipeListRepositorySQL from "../../../secondaries/mysql/repositories/Rec
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class RecipeListConfig {
-  public recipeListRepository: RecipeListRepository = new RecipeListRepositorySQL();
+  private recipeListRepository: RecipeListRepository = new RecipeListRepositorySQL();
   private userRepository: UserRepository = new UserRepositorySQL();
 
   public addRecipeToRecipeListUseCase(): AddRecipeToRecipeListUseCase {

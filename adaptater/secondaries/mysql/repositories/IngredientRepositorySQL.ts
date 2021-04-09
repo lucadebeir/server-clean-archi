@@ -6,14 +6,45 @@ import UseIngredientSequelize from "../entities/UseIngredient.model";
 
 export default class IngredientRepositorySQL implements IngredientRepository {
   existById(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return IngredientSequelize.findOne({
+      where: {
+        idIngredient: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   checkExistInRecipes(id: any): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
+
   checkExistByName(name: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return IngredientSequelize.findOne({
+      where: {
+        nomIngredient: name,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   create(ingredientToCreate: Ingredient): Promise<Ingredient> {
     return IngredientSequelize.findOne({
       where: {
@@ -139,7 +170,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
       },
     })
       .then(() => {
-        return "Ingredient deleted!";
+        return "L'ingrédient a bien été supprimé";
       })
       .catch((err) => {
         throw new Error(err);

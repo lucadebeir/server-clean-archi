@@ -68,10 +68,10 @@ user.post("/login", (req, res) => {
 });
 
 //Find an user per to his id
-user.get("/profile", (req, res) => {
+user.get("/profile", authenticateJWT, (req, res) => {
   userConfig
     .getUserByIdUseCase()
-    .execute(sanitizeHtml(req.body.pseudo))
+    .execute(sanitizeHtml(req.body.pseudo), req.body.user)
     .then((user: any) => {
       res.json(user);
     })
@@ -107,10 +107,16 @@ user.get("/abonne", authenticateJWT, (req, res) => {
 });
 
 //changement mdp (put pour modifier)
-user.put("/password/:pseudo", (req, res) => {
+user.put("/password/:pseudo", authenticateJWT, (req, res) => {
   userConfig
     .updatePasswordUseCase()
-    .execute(req.params.pseudo, req.body.mdp, req.body.newmdp, req.body.mdp2)
+    .execute(
+      req.params.pseudo,
+      req.body.mdp,
+      req.body.newmdp,
+      req.body.mdp2,
+      req.body.user
+    )
     .then((user: any) => {
       res.json(user);
     })
@@ -120,7 +126,7 @@ user.put("/password/:pseudo", (req, res) => {
 });
 
 //modifier les informations du profil d'un utilisateur
-user.put("/profil/:pseudo", (req, res) => {
+user.put("/profil/:pseudo", authenticateJWT, (req, res) => {
   const userData = {
     pseudo: sanitizeHtml(req.params.pseudo),
     email: sanitizeHtml(req.body.email),
@@ -131,7 +137,7 @@ user.put("/profil/:pseudo", (req, res) => {
   };
   userConfig
     .updateUserUseCase()
-    .execute(userData)
+    .execute(userData, req.body.user)
     .then((user: any) => {
       res.json(user);
     })
@@ -141,10 +147,10 @@ user.put("/profil/:pseudo", (req, res) => {
 });
 
 //supprimer un compte selon le pseudo d'un utilisateur
-user.delete("/:pseudo", (req, res) => {
+user.delete("/:pseudo", authenticateJWT, (req, res) => {
   userConfig
     .deleteUserUseCase()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((user: any) => {
       res.json(user);
     })

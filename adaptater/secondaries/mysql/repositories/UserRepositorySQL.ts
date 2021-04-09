@@ -23,9 +23,25 @@ export default class UserRepositorySQL implements UserRepository {
         throw new Error(err);
       });
   }
+
   existByEmail(email: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return UserSequelize.findOne({
+      where: {
+        email: email,
+      },
+    })
+      .then((user) => {
+        if (user) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+
   register(user: User): Promise<User> {
     const userData = {
       pseudo: user.pseudo,
@@ -96,13 +112,17 @@ export default class UserRepositorySQL implements UserRepository {
       where: {
         pseudo: pseudo,
       },
-    }).then((user) => {
-      if (user) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    })
+      .then((user) => {
+        if (user) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   findById(pseudo: any): Promise<User> {

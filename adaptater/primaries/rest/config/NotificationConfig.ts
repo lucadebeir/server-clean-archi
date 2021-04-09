@@ -10,7 +10,7 @@ import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeR
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class NotificationConfig {
-  public notificationRepository: NotificationRepository = new NotificationRepositorySQL();
+  private notificationRepository: NotificationRepository = new NotificationRepositorySQL();
   private userRepository: UserRepository = new UserRepositorySQL();
   private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 

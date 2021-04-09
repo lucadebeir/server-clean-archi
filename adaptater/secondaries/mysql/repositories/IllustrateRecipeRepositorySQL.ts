@@ -4,9 +4,6 @@ import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 
 export default class IllustrateRecipeRepositorySQL
   implements IllustrateRecipeRepository {
-  check(illustrateRecipe: IllustrateRecipeDomain): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
   addToRecette(illustrateRecipe: IllustrateRecipeDomain): Promise<string> {
     const data = {
       idImage: illustrateRecipe.idImage,
@@ -28,6 +25,25 @@ export default class IllustrateRecipeRepositorySQL
     )
       .then(() => {
         return "Image modifiée avec succès";
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  check(illustrateRecipe: IllustrateRecipeDomain): Promise<boolean> {
+    return IllustrateRecipeSequelize.findOne({
+      where: {
+        idRecette: illustrateRecipe.idRecette,
+        idImage: illustrateRecipe.idImage,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
       })
       .catch((err) => {
         throw new Error(err);

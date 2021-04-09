@@ -10,8 +10,8 @@ import FavoriRepositorySQL from "../../../secondaries/mysql/repositories/FavoriR
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
 export default class FavoriConfig {
-  public favoriRepository: FavoriRepository = new FavoriRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private favoriRepository: FavoriRepository = new FavoriRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
   private categoryRepository: CategoryRepository = new CategoryRepositorySQL();
 
   public createFavoriUseCase(): CreateFavoriUseCase {

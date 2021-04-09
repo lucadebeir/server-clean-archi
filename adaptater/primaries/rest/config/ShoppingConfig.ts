@@ -9,7 +9,7 @@ import ShoppingRepositorySQL from "../../../secondaries/mysql/repositories/Shopp
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class ShoppingConfig {
-  public shoppingRepository: ShoppingRepository = new ShoppingRepositorySQL();
+  private shoppingRepository: ShoppingRepository = new ShoppingRepositorySQL();
   private userRepository: UserRepository = new UserRepositorySQL();
 
   public addIngredientToShoppingList(): AddIngredientToShoppingListUseCase {

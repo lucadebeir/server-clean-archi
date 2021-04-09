@@ -16,10 +16,10 @@ import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeR
 import UnityRepositorySQL from "../../../secondaries/mysql/repositories/UnityRepositorySQL";
 
 export default class RecipeConfig {
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
-  public categoryRepository: CategoryRepository = new CategoryRepositorySQL();
-  public ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
-  public unityRepository: UnityRepository = new UnityRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+  private categoryRepository: CategoryRepository = new CategoryRepositorySQL();
+  private ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
+  private unityRepository: UnityRepository = new UnityRepositorySQL();
 
   public getAllRecipeUseCase(): GetAllRecipesUseCase {
     return new GetAllRecipesUseCase(this.recipeRepository);

@@ -7,16 +7,24 @@ import IllustrateRecipeRepositorySQL from "../../../secondaries/mysql/repositori
 import ImageRepositorySQL from "../../../secondaries/mysql/repositories/ImageRepositorySQL";
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 
-export default class CategoryConfig {
-  public illustrateRecipeRepository: IllustrateRecipeRepository = new IllustrateRecipeRepositorySQL();
-  public imageRepository: ImageRepository = new ImageRepositorySQL();
-  public recipeRepository: RecipeRepository = new RecipeRepositorySQL();
+export default class IllustrateRecipeConfig {
+  private illustrateRecipeRepository: IllustrateRecipeRepository = new IllustrateRecipeRepositorySQL();
+  private imageRepository: ImageRepository = new ImageRepositorySQL();
+  private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
   public addImageToRecipeUseCase(): AddImageToRecipeUseCase {
-    return new AddImageToRecipeUseCase(this.illustrateRecipeRepository, this.imageRepository, this.recipeRepository);
+    return new AddImageToRecipeUseCase(
+      this.illustrateRecipeRepository,
+      this.imageRepository,
+      this.recipeRepository
+    );
   }
 
   public updateImageFromRecipeUseCase(): UpdateImageFromRecipeUseCase {
-    return new UpdateImageFromRecipeUseCase(this.illustrateRecipeRepository, this.imageRepository, this.recipeRepository);
+    return new UpdateImageFromRecipeUseCase(
+      this.illustrateRecipeRepository,
+      this.imageRepository,
+      this.recipeRepository
+    );
   }
 }

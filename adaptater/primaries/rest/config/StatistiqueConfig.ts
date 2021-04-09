@@ -14,7 +14,7 @@ import FindTop20WorstRecipesUseCase from "../../../../core/usecases/statistique/
 import StatistiqueRepositorySQL from "../../../secondaries/mysql/repositories/StatistiqueRepositorySQL";
 
 export default class StatistiqueConfig {
-  public statistiqueRepository: StatistiqueRepository = new StatistiqueRepositorySQL();
+  private statistiqueRepository: StatistiqueRepository = new StatistiqueRepositorySQL();
 
   public findNbViewsUseCase(): FindNbViewsUseCase {
     return new FindNbViewsUseCase(this.statistiqueRepository);

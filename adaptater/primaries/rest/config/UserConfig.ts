@@ -18,8 +18,8 @@ import MailingRepositoryGmail from "../../../secondaries/mail/implementations/Ma
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class UserConfig {
-  public userRepository: UserRepository = new UserRepositorySQL();
-  public mailingRepository: MailingRepository = new MailingRepositoryGmail();
+  private userRepository: UserRepository = new UserRepositorySQL();
+  private mailingRepository: MailingRepository = new MailingRepositoryGmail();
 
   public checkValideTokenUseCase(): CheckValideTokenUseCase {
     return new CheckValideTokenUseCase(this.userRepository);

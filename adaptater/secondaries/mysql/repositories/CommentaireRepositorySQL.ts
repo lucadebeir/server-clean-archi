@@ -135,4 +135,22 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
         throw new Error(err);
       });
   }
+
+  existById(id: any): Promise<boolean> {
+    return CommentaireSequelize.findOne({
+      where: {
+        idCommentaire: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
 }

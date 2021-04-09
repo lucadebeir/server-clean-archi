@@ -25,14 +25,14 @@ classify.post("/:idRecette", authenticateJWT, (req, res) => {
 });
 
 //supprimer une recette d'une catégorie
-classify.delete("/:idRecette", (req, res) => {
+classify.delete("/:idRecette", authenticateJWT, (req, res) => {
   const data = {
     idRecette: req.params.idRecette,
     idCategorie: req.body.idCategorie,
   };
   classifyInConfig
     .addCategoryToRecipeUseCase()
-    .execute(data)
+    .execute(data, req.body.user)
     .then((result: any) => {
       res.json(result);
     })

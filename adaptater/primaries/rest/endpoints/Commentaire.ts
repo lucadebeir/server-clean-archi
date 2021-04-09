@@ -4,10 +4,11 @@ import cors from "cors";
 commentaire.use(cors());
 
 import CommentaireConfig from "../config/CommentaireConfig";
+import { authenticateJWT } from "../middleware/auth.middleware";
 const commentaireConfig = new CommentaireConfig();
 
 //ajout commentaire
-commentaire.post("/add", (req, res) => {
+commentaire.post("/add", authenticateJWT, (req, res) => {
   const commentaire = {
     message: req.body.message,
     dateCommentaire: new Date().toDateString(),
@@ -17,7 +18,7 @@ commentaire.post("/add", (req, res) => {
   };
   commentaireConfig
     .createCommentaireUseCase()
-    .execute(commentaire)
+    .execute(commentaire, req.body.user)
     .then((commentaires: any) => {
       res.json(commentaires);
     })
@@ -27,8 +28,9 @@ commentaire.post("/add", (req, res) => {
 });
 
 //modifier commentaire
-commentaire.post("/update", (req, res) => {
+commentaire.post("/update", authenticateJWT, (req, res) => {
   const commentaireData = {
+    idCommentaire: req.body.idCommentaire,
     message: req.body.message,
     dateCommentaire: req.body.dateCommentaire,
     ecritPar: req.body.ecritPar,
@@ -37,7 +39,7 @@ commentaire.post("/update", (req, res) => {
   };
   commentaireConfig
     .updateCommentaireUseCase()
-    .execute(commentaireData)
+    .execute(commentaireData, req.body.user)
     .then((commentaire: any) => {
       res.json(commentaire);
     })
@@ -73,10 +75,10 @@ commentaire.get("/recipe/:id/reponse/:idCommentaire", (req, res) => {
 });
 
 //Récupérer les commentaires d'un utilisateur
-commentaire.get("/user/:pseudo", (req, res) => {
+commentaire.get("/user/:pseudo", authenticateJWT, (req, res) => {
   commentaireConfig
     .getAllCommentairesByIdUser()
-    .execute(req.params.pseudo)
+    .execute(req.params.pseudo, req.body.user)
     .then((commentaires) => {
       res.json(commentaires);
     })
@@ -86,10 +88,18 @@ commentaire.get("/user/:pseudo", (req, res) => {
 });
 
 //supprimer un commentaire
-commentaire.delete("/:id", (req, res) => {
+commentaire.delete("/:id", authenticateJWT, (req, res) => {
+  const commentaireData: any = {
+    idCommentaire: req.params.id,
+    message: req.body.message,
+    dateCommentaire: req.body.dateCommentaire,
+    ecritPar: req.body.ecritPar,
+    concerne: req.body.concerne,
+    parent: req.body.parent,
+  };
   commentaireConfig
     .deleteCommentaireUseCase()
-    .execute(req.params.id)
+    .execute(commentaireData, req.body.user)
     .then((commentaire) => {
       res.json(commentaire);
     })
