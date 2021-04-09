@@ -1,7 +1,5 @@
 import Recipe from "../../../../core/domain/Recipe";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
-import db from "../config/db";
-import { col, Op, QueryTypes } from "sequelize";
 import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category.domain";
 import Ingredient from "../../../../core/domain/Ingredient";
@@ -12,10 +10,20 @@ import UnitySequelize from "../entities/Unity.model";
 import UseIngredientSequelize from "../entities/UseIngredient.model";
 import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
+import MenuSequelize from "../entities/Menu.model";
+import RecipeListSequelize from "../entities/RecipeList.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
-  update(recipe?: Recipe): Promise<Recipe> {
-    throw new Error("Method not implemented.");
+  update(recipe: Recipe): Promise<Recipe> {
+    return RecipeSequelize.update(recipe, {
+      where: { idRecette: recipe.idRecette },
+    })
+      .then(() => {
+        return recipe;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   existByName(name: any): Promise<boolean> {
@@ -37,11 +45,39 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   }
 
   useInMenu(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return MenuSequelize.findOne({
+      where: {
+        idRecette: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   useInRecipeList(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return RecipeListSequelize.findOne({
+      where: {
+        idRecette: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   existById(id: any): Promise<boolean> {

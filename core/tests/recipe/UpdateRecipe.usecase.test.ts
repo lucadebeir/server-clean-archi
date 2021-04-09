@@ -145,18 +145,6 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the recipe is null", async () => {
-    try {
-      spyOn(Utils, "isAdmin").and.returnValues(true);
-      await updateRecipeUseCase.execute(undefined, user);
-    } catch (e) {
-      const a: TechnicalException = e;
-      expect(a.message).toBe(
-        "Un identifiant est requis pour modifier une recette"
-      );
-    }
-  });
-
   it("updateRecipeUseCase should throw a parameter exception when the name of recipe is already used", async () => {
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(true);

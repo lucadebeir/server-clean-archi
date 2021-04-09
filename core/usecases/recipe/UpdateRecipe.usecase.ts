@@ -16,7 +16,7 @@ export default class UpdateRecipeUseCase {
     private unityRepository: UnityRepository
   ) {} //constructeur avec l'interface
 
-  async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
+  async execute(recipe: Recipe, token?: TokenDomain): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
     return await this.recipeRepository.update(recipe);
   }

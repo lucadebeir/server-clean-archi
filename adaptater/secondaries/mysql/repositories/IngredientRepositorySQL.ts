@@ -24,7 +24,21 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   }
 
   checkExistInRecipes(id: any): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    return UseIngredientSequelize.findOne({
+      where: {
+        idIngredient: id,
+      },
+    })
+      .then((result: any) => {
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   checkExistByName(name: any): Promise<boolean> {
