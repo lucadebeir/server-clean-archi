@@ -1,10 +1,34 @@
 import Commentaire from "../../domain/Commentaire";
+import TokenDomain from "../../domain/Token.domain";
+import { BusinessException } from "../../exceptions/BusinessException";
+import { TechnicalException } from "../../exceptions/TechnicalException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
+import UserRepository from "../../ports/repositories/User.repository";
+import { isLogin } from "../../utils/token.service";
 
 export default class GetAllCommentairesByIdUserUseCase {
-  constructor(private commentaireRepository: CommentaireRepository) {}
+  constructor(private commentaireRepository: CommentaireRepository, private userRepository: UserRepository) {}
 
-  async execute(id: any): Promise<Commentaire[]> {
-    return await this.commentaireRepository.findAllCommentairesByIdUser(id);
+  async execute(pseudo: any, token?: TokenDomain): Promise<Commentaire[]> {
+    this.checkBusinessRules(pseudo, token);
+    return await this.commentaireRepository.findAllCommentairesByIdUser(pseudo);
+  }
+
+  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+    if(token && isLogin(token)) {
+      if(pseudo) {
+        if(this.userRepository.existByPseudo(pseudo)) {
+          if(pseudo !== token.pseudo) {
+            throw new BusinessException("La personne connectée n'est pas la personne correspondant au pseudo en question")
+          }
+        } else {
+          throw new BusinessException("L'utilisateur n'existe pas")
+        }
+      } else {
+        throw new BusinessException("L'identifiant d'un utilisateur est obligatoire")
+      }
+    } else {
+      throw new TechnicalException("Vous n'avez pas accès à ces ressources")
+    }
   }
 }

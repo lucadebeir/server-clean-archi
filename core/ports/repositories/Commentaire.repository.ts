@@ -11,4 +11,6 @@ export default interface CommentaireRepository {
 
   deleteById(id: any): Promise<string>;
   update(commentaire: Commentaire): Promise<Commentaire>;
+
+  existById(id: any): Promise<boolean>;
 }
