@@ -87,26 +87,12 @@ export default class MenuRepositorySQL implements MenuRepository {
   }
 
   updateById(id: any, idRecette: any): Promise<string> {
-    return MenuSequelize.findOne({
-      where: {
-        idMenu: id,
-      },
-    })
-      .then((menu: any) => {
-        if (menu) {
-          return MenuSequelize.update(
-            { idRecette: idRecette },
-            { where: { idMenu: id } }
-          )
-            .then((recipe: any) => {
-              return recipe;
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
-        } else {
-          throw new Error("Mauvais identifiant");
-        }
+    return MenuSequelize.update(
+      { idRecette: idRecette },
+      { where: { idMenu: id } }
+    )
+      .then((recipe: any) => {
+        return recipe;
       })
       .catch((err) => {
         throw new Error(err);

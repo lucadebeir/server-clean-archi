@@ -9,26 +9,12 @@ import RecipeSequelize from "../entities/Recipe.model";
 
 export default class CategoryRepositorySQL implements CategoryRepository {
   create(categoryToCreate: Category): Promise<Category> {
-    return CategorySequelize.findOne({
-      where: {
-        libelleCategorie: categoryToCreate.libelleCategorie,
-      },
-    })
-      .then((category) => {
-        if (!category) {
-          return CategorySequelize.create(categoryToCreate)
-            .then((categoryCreate) => {
-              if (categoryCreate) {
-                return categoryCreate;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+    return CategorySequelize.create(categoryToCreate)
+      .then((categoryCreate) => {
+        if (categoryCreate) {
+          return categoryCreate;
         } else {
-          throw new Error("Cet catégorie existe déjà");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -160,29 +146,15 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   }
 
   update(categoryToUpdate: Category): Promise<Category> {
-    return CategorySequelize.findOne({
-      where: {
-        libelleCategorie: categoryToUpdate.libelleCategorie,
-      },
-    })
+    return CategorySequelize.update(
+      { libelleCategorie: categoryToUpdate.libelleCategorie },
+      { where: { idCategorie: categoryToUpdate.idCategorie } }
+    )
       .then((category) => {
-        if (!category) {
-          return CategorySequelize.update(
-            { libelleCategorie: categoryToUpdate.libelleCategorie },
-            { where: { idCategorie: categoryToUpdate.idCategorie } }
-          )
-            .then((category) => {
-              if (category) {
-                return categoryToUpdate;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+        if (category) {
+          return categoryToUpdate;
         } else {
-          throw new Error("Cet catégorie existe déjà");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {

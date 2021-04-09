@@ -22,12 +22,7 @@ export default class UpdatePasswordUseCase {
       confirmNewPassword,
       token
     );
-    return this.userRepository.updatePassword(
-      pseudo,
-      oldPassword,
-      newPassword,
-      confirmNewPassword
-    );
+    return this.userRepository.updatePassword(pseudo, newPassword);
   }
 
   private checkBusinessRules(

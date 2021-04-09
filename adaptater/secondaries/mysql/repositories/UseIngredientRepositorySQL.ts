@@ -24,27 +24,12 @@ export default class UseIngredientRepositorySQL
   }
 
   addIngredientToRecipe(useIngredientToAdd: UseIngredient): Promise<string> {
-    return UseIngredientSequelize.findOne({
-      where: {
-        idIngredient: useIngredientToAdd.idIngredient,
-        idRecette: useIngredientToAdd.idRecette,
-      },
-    })
-      .then((useIngredient) => {
+    return UseIngredientSequelize.create(useIngredientToAdd)
+      .then((useIngredient: any) => {
         if (useIngredient) {
-          throw new Error("L'ingrédient est déjà présent dans cette recette");
+          return useIngredient;
         } else {
-          return UseIngredientSequelize.create(useIngredientToAdd)
-            .then((useIngredient: any) => {
-              if (useIngredient) {
-                return useIngredient;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -53,35 +38,20 @@ export default class UseIngredientRepositorySQL
   }
 
   update(useIngredientToUpdate: UseIngredient): Promise<string> {
-    return UseIngredientSequelize.findOne({
-      where: {
-        idIngredient: useIngredientToUpdate.idIngredient,
-        idRecette: useIngredientToUpdate.idRecette,
+    return UseIngredientSequelize.update(
+      {
+        qte: useIngredientToUpdate.qte,
+        idUnite: useIngredientToUpdate.idUnite,
       },
-    })
-      .then((useIngredient) => {
-        if (useIngredient) {
-          throw new Error("L'ingrédient est déjà présent dans cette recette");
-        } else {
-          return UseIngredientSequelize.update(
-            {
-              qte: useIngredientToUpdate.qte,
-              idUnite: useIngredientToUpdate.idUnite,
-            },
-            {
-              where: {
-                idRecette: useIngredientToUpdate.idRecette,
-                idIngredient: useIngredientToUpdate.idIngredient,
-              },
-            }
-          )
-            .then(() => {
-              return "Unité modifié !";
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
-        }
+      {
+        where: {
+          idRecette: useIngredientToUpdate.idRecette,
+          idIngredient: useIngredientToUpdate.idIngredient,
+        },
+      }
+    )
+      .then(() => {
+        return "Unité modifié !";
       })
       .catch((err) => {
         throw new Error(err);

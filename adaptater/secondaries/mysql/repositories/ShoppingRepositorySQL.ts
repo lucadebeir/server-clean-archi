@@ -82,30 +82,12 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       pseudo: shopping.pseudo,
       nomIngredient: shopping.nomIngredient,
     };
-    return ShoppingSequelize.findOne({
-      where: {
-        pseudo: shopping.pseudo,
-        nomIngredient: shopping.nomIngredient,
-      },
-    })
-      .then((ingredient) => {
-        if (!ingredient) {
-          return ShoppingSequelize.create(listeCourseData)
-            .then((shopping) => {
-              if (shopping) {
-                return "L'ingrédient a bien été ajouté";
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+    return ShoppingSequelize.create(listeCourseData)
+      .then((shopping) => {
+        if (shopping) {
+          return "L'ingrédient a bien été ajouté";
         } else {
-          throw new Error(
-            "Cet ingrédient se trouve déjà dans votre liste de course : " +
-              shopping.nomIngredient
-          );
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -124,30 +106,12 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
           nomIngredient: list[i].nomIngredient,
         };
 
-        return ShoppingSequelize.findOne({
-          where: {
-            pseudo: pseudo,
-            nomIngredient: list[i].nomIngredient,
-          },
-        })
-          .then((ingredient) => {
-            if (!ingredient) {
-              return ShoppingSequelize.create(listeCourseData)
-                .then((shopping) => {
-                  if (shopping) {
-                    return "Les ingrédients de la recette ont bien été ajouté";
-                  } else {
-                    throw new Error("Problème technique");
-                  }
-                })
-                .catch((err) => {
-                  throw new Error(err);
-                });
+        return ShoppingSequelize.create(listeCourseData)
+          .then((shopping) => {
+            if (shopping) {
+              return "Les ingrédients de la recette ont bien été ajouté";
             } else {
-              throw new Error(
-                "Cet ingrédient se trouve déjà dans votre liste de course : " +
-                  list[i].nomIngredient
-              );
+              throw new Error("Problème technique");
             }
           })
           .catch((err) => {

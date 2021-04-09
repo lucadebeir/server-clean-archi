@@ -51,30 +51,11 @@ export default class UserRepositorySQL implements UserRepository {
       admin: user.admin,
       abonneNews: user.abonneNews,
     };
-
-    return UserSequelize.findOne({
-      where: {
-        pseudo: user.pseudo,
-      },
-    })
+    const hash = bcrypt.hashSync(userData.mdp, 10);
+    userData.mdp = hash;
+    return UserSequelize.create(userData)
       .then((user: any) => {
-        if (!user) {
-          if (userData.mdp === userData.mdp2) {
-            const hash = bcrypt.hashSync(userData.mdp, 10);
-            userData.mdp = hash;
-            return UserSequelize.create(userData)
-              .then((user: any) => {
-                return user;
-              })
-              .catch((err) => {
-                throw new Error(err);
-              });
-          } else {
-            throw new Error("Les mots de passe ne sont pas identiques.");
-          }
-        } else {
-          throw new Error("L'utilisateur existe déjà");
-        }
+        return user;
       })
       .catch((err) => {
         throw new Error(err);
@@ -161,44 +142,14 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  updatePassword(
-    pseudo: any,
-    oldPassword: any,
-    newPassword: any,
-    confirmNewPassword: any
-  ): Promise<User> {
-    return UserSequelize.findOne({
-      where: {
-        pseudo: pseudo,
-      },
-    })
+  updatePassword(pseudo: any, newPassword: any): Promise<User> {
+    const hash = bcrypt.hashSync(newPassword, 10);
+    return UserSequelize.update({ mdp: hash }, { where: { pseudo: pseudo } })
       .then((user: any) => {
-        if (!user) {
-          throw new Error("Il n'y aucun utilisateur avec ce pseudo");
+        if (user) {
+          return user;
         } else {
-          if (bcrypt.compareSync(oldPassword, user.mdp)) {
-            if (newPassword === confirmNewPassword) {
-              const hash = bcrypt.hashSync(newPassword, 10);
-              return UserSequelize.update(
-                { mdp: hash },
-                { where: { pseudo: pseudo } }
-              )
-                .then((user: any) => {
-                  if (user) {
-                    return user;
-                  } else {
-                    throw new Error("Problème technique");
-                  }
-                })
-                .catch((err) => {
-                  throw new Error(err);
-                });
-            } else {
-              throw new Error("Les deux mots de passe ne sont pas identiques.");
-            }
-          } else {
-            throw new Error("Mot de passe incorrect!");
-          }
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -207,32 +158,18 @@ export default class UserRepositorySQL implements UserRepository {
   }
 
   update(user: User): Promise<User> {
-    return UserSequelize.findOne({
-      where: {
-        pseudo: user.pseudo,
+    return UserSequelize.update(
+      {
+        email: user.email,
+        abonneNews: user.abonneNews,
       },
-    })
-      .then((user) => {
-        if (user) {
-          return UserSequelize.update(
-            {
-              email: user.email,
-              abonneNews: user.abonneNews,
-            },
-            { where: { pseudo: user.pseudo } }
-          )
-            .then((userUpdate) => {
-              if (userUpdate) {
-                return user;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+      { where: { pseudo: user.pseudo } }
+    )
+      .then((userUpdate) => {
+        if (userUpdate) {
+          return user;
         } else {
-          throw new Error("Pas d'utilisateur avec ce pseudo");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {

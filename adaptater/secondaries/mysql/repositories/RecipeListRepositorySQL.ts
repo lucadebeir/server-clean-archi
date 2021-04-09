@@ -59,28 +59,12 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   }
 
   addRecipe(recipeToAdd: RecipeList): Promise<RecipeList> {
-    return RecipeListSequelize.findOne({
-      where: {
-        nomRecette: recipeToAdd.nomRecette,
-      },
-    })
-      .then((recipe) => {
-        if (!recipe) {
-          return RecipeListSequelize.create(recipeToAdd)
-            .then((recipeList) => {
-              if (recipeList) {
-                return recipeList;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+    return RecipeListSequelize.create(recipeToAdd)
+      .then((recipeList) => {
+        if (recipeList) {
+          return recipeList;
         } else {
-          throw new Error(
-            "Cet recette existe déjà dans votre liste de recettes de la semaine"
-          );
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -89,36 +73,25 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   }
 
   updateState(recipe: RecipeList): Promise<string> {
-    return RecipeListSequelize.findOne({
-      where: {
-        idRecipeList: recipe.idRecipeList,
-        pseudoUser: recipe.pseudoUser,
-      },
-    }).then((recipeList) => {
-      if (!recipeList) {
-        throw new Error("Problème technique");
-      } else {
-        return RecipeListSequelize.update(
-          { complet: recipe.complet },
-          {
-            where: {
-              idRecipeList: recipe.idRecipeList,
-              pseudoUser: recipe.pseudoUser,
-            },
-          }
-        )
-          .then((recipe) => {
-            if (recipe) {
-              return "L'état de la recette a bien été  modifié";
-            } else {
-              throw new Error("Problème technique");
-            }
-          })
-          .catch((err) => {
-            throw new Error(err);
-          });
+    return RecipeListSequelize.update(
+      { complet: recipe.complet },
+      {
+        where: {
+          idRecipeList: recipe.idRecipeList,
+          pseudoUser: recipe.pseudoUser,
+        },
       }
-    });
+    )
+      .then((recipe) => {
+        if (recipe) {
+          return "L'état de la recette a bien été  modifié";
+        } else {
+          throw new Error("Problème technique");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   deleteById(id: any, pseudo: any): Promise<string> {

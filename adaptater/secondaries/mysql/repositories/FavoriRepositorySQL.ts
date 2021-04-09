@@ -25,42 +25,27 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   }
 
   create(favoriToCreate: Favori): Promise<string> {
-    return FavoriSequelize.findOne({
+    RecipeSequelize.findOne({
       where: {
         idRecette: favoriToCreate.idRecette,
-        pseudo: favoriToCreate.pseudo,
       },
-    })
-      .then((favori) => {
-        if (!favori) {
-          RecipeSequelize.findOne({
-            where: {
-              idRecette: favoriToCreate.idRecette,
-            },
-          }).then((recipe) => {
-            if (recipe?.nbFavoris) {
-              RecipeSequelize.update(
-                { nbFavoris: recipe.nbFavoris + 1 },
-                { where: { idRecette: favoriToCreate.idRecette } }
-              );
-            } else {
-              throw new Error("Cette recette n'existe pas.");
-            }
-          });
+    }).then((recipe) => {
+      if (recipe?.nbFavoris) {
+        RecipeSequelize.update(
+          { nbFavoris: recipe.nbFavoris + 1 },
+          { where: { idRecette: favoriToCreate.idRecette } }
+        );
+      } else {
+        throw new Error("Cette recette n'existe pas.");
+      }
+    });
 
-          return FavoriSequelize.create(favoriToCreate)
-            .then((favoriCreate) => {
-              if (favoriCreate) {
-                return "Ajouté aux favoris !";
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+    return FavoriSequelize.create(favoriToCreate)
+      .then((favoriCreate) => {
+        if (favoriCreate) {
+          return "Ajouté aux favoris !";
         } else {
-          throw new Error("Cette recette est déjà dans les favoris.");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {

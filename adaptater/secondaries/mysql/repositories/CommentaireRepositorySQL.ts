@@ -98,37 +98,22 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   }
 
   update(commentaireToUpdate: Commentaire): Promise<Commentaire> {
-    return CommentaireSequelize.findOne({
-      where: {
-        concerne: commentaireToUpdate.concerne,
-        ecritPar: commentaireToUpdate.ecritPar,
+    return CommentaireSequelize.update(
+      {
+        message: commentaireToUpdate.message,
       },
-    })
+      {
+        where: {
+          concerne: commentaireToUpdate.concerne,
+          ecritPar: commentaireToUpdate.ecritPar,
+        },
+      }
+    )
       .then((commentaire) => {
-        if (!commentaire) {
-          return CommentaireSequelize.update(
-            {
-              message: commentaireToUpdate.message,
-            },
-            {
-              where: {
-                concerne: commentaireToUpdate.concerne,
-                ecritPar: commentaireToUpdate.ecritPar,
-              },
-            }
-          )
-            .then((commentaire) => {
-              if (commentaire) {
-                return commentaireToUpdate;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+        if (commentaire) {
+          return commentaireToUpdate;
         } else {
-          throw new Error("Ce commentaire existe déjà");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {

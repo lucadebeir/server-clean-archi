@@ -60,26 +60,12 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   }
 
   create(ingredientToCreate: Ingredient): Promise<Ingredient> {
-    return IngredientSequelize.findOne({
-      where: {
-        nomIngredient: ingredientToCreate.nomIngredient,
-      },
-    })
-      .then((ingredient) => {
-        if (!ingredient) {
-          return IngredientSequelize.create(ingredientToCreate)
-            .then((ingredientCreate) => {
-              if (ingredientCreate) {
-                return ingredientCreate;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+    return IngredientSequelize.create(ingredientToCreate)
+      .then((ingredientCreate) => {
+        if (ingredientCreate) {
+          return ingredientCreate;
         } else {
-          throw new Error("Cet ingrédient existe déjà");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {
@@ -192,29 +178,15 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   }
 
   update(ingredientToUpdate: Ingredient): any {
-    return IngredientSequelize.findOne({
-      where: {
-        nomIngredient: ingredientToUpdate.nomIngredient,
-      },
-    })
+    return IngredientSequelize.update(
+      { nomIngredient: ingredientToUpdate.nomIngredient },
+      { where: { idIngredient: ingredientToUpdate.idIngredient } }
+    )
       .then((ingredient) => {
-        if (!ingredient) {
-          return IngredientSequelize.update(
-            { nomIngredient: ingredientToUpdate.nomIngredient },
-            { where: { idIngredient: ingredientToUpdate.idIngredient } }
-          )
-            .then((ingredient) => {
-              if (ingredient) {
-                return ingredientToUpdate;
-              } else {
-                throw new Error("Problème technique");
-              }
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
+        if (ingredient) {
+          return ingredientToUpdate;
         } else {
-          throw new Error("Cet ingrédient existe déjà");
+          throw new Error("Problème technique");
         }
       })
       .catch((err) => {

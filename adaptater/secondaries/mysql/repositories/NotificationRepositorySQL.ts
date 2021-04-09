@@ -72,26 +72,12 @@ export default class NotificationRepositorySQL
   }
 
   update(id: any): Promise<string> {
-    return NotificationSequelize.findOne({
-      where: {
-        idNotification: id,
-      },
-    })
-      .then((notif) => {
-        if (notif) {
-          return NotificationSequelize.update(
-            { enabled: false },
-            { where: { idNotification: id } }
-          )
-            .then(() => {
-              return "Notification modifiée";
-            })
-            .catch((err) => {
-              throw new Error(err);
-            });
-        } else {
-          throw new Error("Il n'y a aucune notification avec cet identifiant");
-        }
+    return NotificationSequelize.update(
+      { enabled: false },
+      { where: { idNotification: id } }
+    )
+      .then(() => {
+        return "Notification modifiée";
       })
       .catch((err) => {
         throw new Error(err);
