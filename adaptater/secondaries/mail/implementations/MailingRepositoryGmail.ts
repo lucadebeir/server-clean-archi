@@ -117,8 +117,8 @@ export default class MailingRepositoryGmail implements MailingRepository {
     ejs.renderFile(filePath, data, {}, (e, content) => {
       if (e) return e;
       const mailOptions = {
-        from: environment.AUTH_USER,
-        to: data.email,
+        from: data.email,
+        to: environment.AUTH_USER,
         subject: data.subject,
         html: content,
       };

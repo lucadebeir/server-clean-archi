@@ -2,6 +2,7 @@ import Recipe from "../../domain/Recipe";
 import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
@@ -14,10 +15,12 @@ export default class CreateRecipeUseCase {
     private categoryRepository: CategoryRepository,
     private ingredientRepository: IngredientRepository,
     private unityRepository: UnityRepository
-  ) {} //constructeur avec l'interface
+  ) //private mailingRepository: MailingRepository
+  {} //constructeur avec l'interface
 
   async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
+    //.sendMailWhenNewRecipe(recipe);
     return await this.recipeRepository.create(recipe);
   }
 

@@ -9,6 +9,7 @@ export default interface UserRepository {
   findById(pseudo: any): Promise<User>;
 
   findAllAbonneUsers(): Promise<User[]>;
+  findAllAbonneMailUsers(): Promise<{ name: any; address: any }[]>;
   updatePassword(pseudo: any, newPassword: any): Promise<User>;
   update(user: User): Promise<User>;
   deleteById(pseudo: any): Promise<string>;

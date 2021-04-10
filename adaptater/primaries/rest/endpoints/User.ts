@@ -97,7 +97,20 @@ user.get("/pseudo/:pseudo", (req, res) => {
 user.get("/abonne", authenticateJWT, (req, res) => {
   userConfig
     .getAllAbonneUsersUseCase()
-    .execute()
+    .execute(req.body.user)
+    .then((users: any) => {
+      res.json(users);
+    })
+    .catch((err: Error) => {
+      res.send(err.message);
+    });
+});
+
+//Récupère tous les abonnés
+user.get("/abonne/mail", authenticateJWT, (req, res) => {
+  userConfig
+    .getAllAbonneMailUsersUseCase()
+    .execute(req.body.user)
     .then((users: any) => {
       res.json(users);
     })

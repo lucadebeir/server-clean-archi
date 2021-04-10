@@ -4,6 +4,7 @@ import CheckValideTokenUseCase from "../../../../core/usecases/user/CheckValideT
 import DeleteUserUseCase from "../../../../core/usecases/user/DeleteUser.usecase";
 import ExistByPseudoUseCase from "../../../../core/usecases/user/ExistByPseudo.usecase";
 import ForgetPasswordUseCase from "../../../../core/usecases/user/ForgetPassword.usecase";
+import GetAllAbonneMailUsersUseCase from "../../../../core/usecases/user/GetAllAbonneMailUsers.usecase";
 import GetAllAbonneUsersUseCase from "../../../../core/usecases/user/GetAllAbonneUsers.usecase";
 import GetAllExistingEmailsUseCase from "../../../../core/usecases/user/GetAllExistingEmails.usecase";
 import GetAllExistingPseudoUseCase from "../../../../core/usecases/user/GetAllExistingPseudo.usecase";
@@ -39,6 +40,10 @@ export default class UserConfig {
 
   public getAllAbonneUsersUseCase(): GetAllAbonneUsersUseCase {
     return new GetAllAbonneUsersUseCase(this.userRepository);
+  }
+
+  public getAllAbonneMailUsersUseCase(): GetAllAbonneMailUsersUseCase {
+    return new GetAllAbonneMailUsersUseCase(this.userRepository);
   }
 
   public getAllExistingEmailsUseCase(): GetAllExistingEmailsUseCase {

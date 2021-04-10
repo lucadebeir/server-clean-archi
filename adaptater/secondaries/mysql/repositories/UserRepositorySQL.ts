@@ -142,6 +142,38 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
+  findAllAbonneMailUsers(): Promise<{ name: any; address: any }[]> {
+    return UserSequelize.findAll({
+      attributes: {
+        include: [
+          ["pseudo", "name"],
+          ["email", "address"],
+        ],
+        exclude: [
+          "pseudo",
+          "email",
+          "emailConfirmed",
+          "admin",
+          "abonneNews",
+          "mdp",
+        ],
+      },
+      where: {
+        abonneNews: true,
+      },
+    })
+      .then((users: any) => {
+        if (users.length != 0) {
+          return users;
+        } else {
+          throw new Error("Il n'y a aucun abonné à la newsletter !");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
   updatePassword(pseudo: any, newPassword: any): Promise<User> {
     const hash = bcrypt.hashSync(newPassword, 10);
     return UserSequelize.update({ mdp: hash }, { where: { pseudo: pseudo } })
