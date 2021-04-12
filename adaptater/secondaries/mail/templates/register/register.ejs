@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta charset="utf-8" />
+    <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width" />
+    <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting" />
+    <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <title></title>
+    <!-- The title tag shows in email notifications, like Android 4.4. -->
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      rel="stylesheet"
+      type="text/css"
+      href="./register.css"
+    />
+  </head>
+
+  <body
+    width="100%"
+    style="margin: 0; padding: 0 !important; background-color: #f1f1f1"
+  >
+    <div style="width: 100%; background-color: #f1f1f1">
+      <div style="max-width: 600px; margin: 0 auto" class="email-container">
+        <!-- BEGIN BODY -->
+        <table
+          text-align="center"
+          role="presentation"
+          cellspacing="0"
+          cellpadding="0"
+          width="100%"
+          style="margin: auto"
+        >
+          <!-- end tr -->
+          <tr>
+            <td
+              valign="middle"
+              class="hero bg_white"
+              style="padding: 3em 0 2em 0"
+            >
+              <a href="http://marinesrecipes.fr">
+                <img
+                  src="cid:logo"
+                  alt=""
+                  style="
+                    width: 300px;
+                    max-width: 600px;
+                    height: auto;
+                    margin: auto;
+                    display: block;
+                  "
+                />
+              </a>
+            </td>
+          </tr>
+          <!-- end tr -->
+          <tr>
+            <td
+              valign="middle"
+              class="hero bg_white"
+              style="padding: 2em 0 4em 0"
+            >
+              <table>
+                <tr>
+                  <td>
+                    <div
+                      class="text"
+                      style="padding: 0 2.5em; text-align: center"
+                    >
+                      <h2>Bienvenue sur Marine's Recipes</h2>
+                      <br />
+                      <h3>
+                        Salut <%= pseudo %>, vous vous êtes récemment inscrit
+                        sur Marine's Recipe, cliquez sur le lien suivant pour
+                        vérifier votre adresse mail :
+                      </h3>
+                      <p>
+                        <a href="<%= link %>" class="btn btn-primary"
+                          >Vérifier mon mail</a
+                        >
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- end tr -->
+          <!-- 1 Column Text + Button : END -->
+        </table>
+        <table
+          text-align="center"
+          role="presentation"
+          cellspacing="0"
+          cellpadding="0"
+          width="100%"
+          style="margin: auto"
+        >
+          <tr>
+            <td valign="middle" class="bg_light footer email-section">
+              <table>
+                <tr>
+                  <td valign="top" width="100%" style="padding-top: 20px">
+                    <table
+                      role="presentation"
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td style="text-align: center">
+                          <h2>
+                            <a
+                              id="hastag"
+                              href="https://www.instagram.com/explore/tags/marinesrecipes/"
+                            >
+                              #marinesrecipes
+                            </a>
+                          </h2>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td valign="middle" class="bg_light email-section">
+              <table>
+                <tr>
+                  <td valign="top" width="100%" style="padding-top: 20px">
+                    <table
+                      role="presentation"
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td style="text-align: center">
+                          <h3>Vérifie tes spams !</h3>
+                          <p style="padding: 1em">
+                            Si tu ne veux pas rater les autres surprises qui
+                            arrivent très prochainement, fais glisser mon mail
+                            dans ta boite principale et ajoute moi à tes
+                            contacts pour bien la recevoir.
+                          </p>
+                          <div class="social">
+                            <a
+                              href="https://www.facebook.com/groups/260441525501682"
+                              ><img
+                                src="images/facebook.png"
+                                alt=""
+                                style="height: auto; width: 60px"
+                            /></a>
+                            <a
+                              id="message"
+                              href="https://www.instagram.com/marineteroitin/?hl=fr"
+                              ><img
+                                src="images/instagram.png"
+                                alt=""
+                                style="height: auto; width: 60px"
+                            /></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- end: tr -->
+          <tr>
+            <td
+              class="bg_light"
+              style="text-align: center; padding-bottom: 1em"
+            >
+              <p style="padding: 1em">
+                Si vous ne souhaitez plus être informé des nouveautés de
+                Marine's Recipes,
+                <a href="#" style="color: rgba(0, 0, 0, 0.8)"
+                  >désinscrivez-vous ici.</a
+                >
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

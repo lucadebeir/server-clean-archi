@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <!-- utf-8 works for most cases -->
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Use the latest (edge) version of IE rendering engine -->
@@ -16,13 +16,18 @@
     <!-- Disable auto-scale in iOS 10 Mail entirely -->
     <title></title>
     <!-- The title tag shows in email notifications, like Android 4.4. -->
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      rel="stylesheet"
+      type="text/css"
+      href="./new-recipe.css"
+    />
 
-    <!-- CSS Reset : BEGIN -->
     <style>
       /* What it does: Remove spaces around the email design added by some email clients. */
       /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
@@ -94,33 +99,11 @@
         display: none !important;
       }
 
-      /* What it does: Removes right gutter in Gmail iOS app: https://github.com/TedGoas/Cerberus/issues/89  */
-      /* Create one of these media queries for each additional viewport size you'd like to fix */
-
-      /* iPhone 4, 4S, 5, 5S, 5C, and 5SE */
-      @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
-        u ~ div .email-container {
-          min-width: 320px !important;
-        }
+      img {
+        align-content: space-between;
+        margin: 0 20px;
       }
-      /* iPhone 6, 6S, 7, 8, and X */
-      @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
-        u ~ div .email-container {
-          min-width: 375px !important;
-        }
-      }
-      /* iPhone 6+, 7+, and 8+ */
-      @media only screen and (min-device-width: 414px) {
-        u ~ div .email-container {
-          min-width: 414px !important;
-        }
-      }
-    </style>
 
-    <!-- CSS Reset : END -->
-
-    <!-- Progressive Enhancements : BEGIN -->
-    <style>
       .primary {
         background: #30e3ca;
       }
@@ -266,19 +249,6 @@
     style="margin: 0; padding: 0 !important; background-color: #f1f1f1"
   >
     <div style="width: 100%; background-color: #f1f1f1">
-      <div
-        style="
-          display: none;
-          font-size: 1px;
-          max-height: 0px;
-          max-width: 0px;
-          opacity: 0;
-          overflow: hidden;
-          font-family: sans-serif;
-        "
-      >
-        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
-      </div>
       <div style="max-width: 600px; margin: 0 auto" class="email-container">
         <!-- BEGIN BODY -->
         <table
@@ -296,19 +266,20 @@
               class="hero bg_white"
               style="padding: 3em 0 2em 0"
             >
-              <a href="http://marinesrecipes.fr">
-                <img
-                  src="images/logo.jpeg"
-                  alt=""
-                  style="
-                    width: 300px;
-                    max-width: 600px;
-                    height: auto;
-                    margin: auto;
-                    display: block;
-                  "
-                />
-              </a>
+              <div style="text-align: center">
+                <a href="http://marinesrecipes.fr">
+                  <img
+                    src="cid:logo"
+                    alt=""
+                    style="
+                      width: 300px;
+                      max-width: 600px;
+                      height: auto;
+                      text-align: center;
+                    "
+                  />
+                </a>
+              </div>
             </td>
           </tr>
           <!-- end tr -->
@@ -325,16 +296,41 @@
                       class="text"
                       style="padding: 0 2.5em; text-align: center"
                     >
-                      <h2>S'il vous plait, vérifiez votre adresse mail</h2>
+                      <h2>
+                        Une nouvelle recette est disponible sur Marine's recipes
+                        !
+                      </h2>
+                      <br />
+                      <div style="text-align: center">
+                        <a href="<%= link %>">
+                          <img
+                            src="cid:image"
+                            alt=""
+                            style="
+                              width: 300px;
+                              max-width: 600px;
+                              height: auto;
+                              text-align: center;
+                            "
+                          />
+                        </a>
+                      </div>
+
                       <br />
                       <h3>
-                        Salut <%= pseudo %>, vous vous êtes récemment inscrit
-                        sur Marine's Recipe, cliquez sur le lien suivant pour
-                        vérifier votre adresse mail :
+                        Salut <%= pseudo %>, viens vite voir la dernière recette
+                        publiée sur Marine's Recipe !
                       </h3>
+                      <br />
+                      <h4><%= mot %></h4>
+                      <br />
+                      <h5>
+                        Clique sur le lien suivant pour aller voir cette recette
+                        :
+                      </h5>
                       <p>
                         <a href="<%= link %>" class="btn btn-primary"
-                          >Vérifier mon mail</a
+                          ><%= nomRecette %></a
                         >
                       </p>
                     </div>
@@ -383,19 +379,66 @@
               </table>
             </td>
           </tr>
+          <tr>
+            <td valign="middle" class="bg_light email-section">
+              <table>
+                <tr>
+                  <td valign="top" width="100%" style="padding-top: 20px">
+                    <table
+                      role="presentation"
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td style="text-align: center">
+                          <h3>Vérifie tes spams !</h3>
+                          <p style="padding: 1em">
+                            Si tu ne veux pas rater les autres surprises qui
+                            arrivent très prochainement, fais glisser mon mail
+                            dans ta boite principale et ajoute moi à tes
+                            contacts pour bien la recevoir.
+                          </p>
+                          <div class="social" style="text-align: center">
+                            <a
+                              href="https://www.facebook.com/groups/260441525501682"
+                              ><img
+                                src="cid:facebook"
+                                alt=""
+                                style="height: auto; width: 60px"
+                            /></a>
+                            <a
+                              id="message"
+                              href="https://www.instagram.com/marineteroitin/?hl=fr"
+                              ><img
+                                src="cid:instagram"
+                                alt=""
+                                style="height: auto; width: 60px"
+                            /></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
           <!-- end: tr -->
           <tr>
             <td
               class="bg_light"
               style="text-align: center; padding-bottom: 1em"
             >
-              <p style="padding: 1em">
-                Si vous ne souhaitez plus être informé des nouveautés de
-                Marine's Recipes,
-                <a href="#" style="color: rgba(0, 0, 0, 0.8)"
-                  >désinscrivez-vous ici.</a
-                >
-              </p>
+              <div>
+                <p style="padding: 1em">
+                  Si vous ne souhaitez plus être informé des nouveautés de
+                  Marine's Recipes,
+                  <a href="#" style="color: rgba(0, 0, 0, 0.8)"
+                    >désinscrivez-vous ici.</a
+                  >
+                </p>
+              </div>
             </td>
           </tr>
         </table>

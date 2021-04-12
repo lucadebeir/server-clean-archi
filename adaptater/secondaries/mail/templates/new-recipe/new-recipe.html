@@ -21,8 +21,13 @@
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      rel="stylesheet"
+      type="text/css"
+      href="./new-recipe.css"
+    />
 
-    <!-- CSS Reset : BEGIN -->
     <style>
       /* What it does: Remove spaces around the email design added by some email clients. */
       /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
@@ -115,12 +120,12 @@
           min-width: 414px !important;
         }
       }
-    </style>
 
-    <!-- CSS Reset : END -->
+      img {
+        align-content: space-between;
+        margin: 0 20px;
+      }
 
-    <!-- Progressive Enhancements : BEGIN -->
-    <style>
       .primary {
         background: #30e3ca;
       }
@@ -266,19 +271,6 @@
     style="margin: 0; padding: 0 !important; background-color: #f1f1f1"
   >
     <div style="width: 100%; background-color: #f1f1f1">
-      <div
-        style="
-          display: none;
-          font-size: 1px;
-          max-height: 0px;
-          max-width: 0px;
-          opacity: 0;
-          overflow: hidden;
-          font-family: sans-serif;
-        "
-      >
-        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
-      </div>
       <div style="max-width: 600px; margin: 0 auto" class="email-container">
         <!-- BEGIN BODY -->
         <table
@@ -298,19 +290,20 @@
             >
               <a href="http://marinesrecipes.fr">
                 <img
-                  src="cid:logo"
+                  src="../images/logo.jpeg"
                   alt=""
                   style="
                     width: 300px;
                     max-width: 600px;
                     height: auto;
+                    display: block;
                     margin: auto;
-                    display: flex;
                   "
                 />
               </a>
             </td>
           </tr>
+          <!-- end tr -->
           <tr>
             <td
               valign="middle"
@@ -324,16 +317,39 @@
                       class="text"
                       style="padding: 0 2.5em; text-align: center"
                     >
-                      <h2>S'il vous plait, vérifiez votre adresse mail</h2>
+                      <h2>
+                        Une nouvelle recette est disponible sur Marine's recipes
+                        !
+                      </h2>
+                      <br />
+                      <a href="<%= link %>">
+                        <img
+                          src="cid:image"
+                          alt=""
+                          style="
+                            width: 300px;
+                            max-width: 600px;
+                            height: auto;
+                            display: block;
+                            margin: auto;
+                          "
+                        />
+                      </a>
                       <br />
                       <h3>
-                        Salut <%= pseudo %>, vous vous êtes récemment inscrit
-                        sur Marine's Recipe, cliquez sur le lien suivant pour
-                        vérifier votre adresse mail :
+                        Salut <%= pseudo %>, viens vite voir la dernière recette
+                        publiée sur Marine's Recipe !
                       </h3>
+                      <br />
+                      <h4><%= mot %></h4>
+                      <br />
+                      <h5>
+                        Clique sur le lien suivant pour aller voir cette recette
+                        :
+                      </h5>
                       <p>
                         <a href="<%= link %>" class="btn btn-primary"
-                          >Vérifier mon mail</a
+                          ><%= nomRecette %></a
                         >
                       </p>
                     </div>
@@ -382,6 +398,62 @@
               </table>
             </td>
           </tr>
+          <tr>
+            <td valign="middle" class="bg_light email-section">
+              <table>
+                <tr>
+                  <td valign="top" width="100%" style="padding-top: 20px">
+                    <table
+                      role="presentation"
+                      cellspacing="0"
+                      cellpadding="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td style="text-align: center">
+                          <h3>Vérifie tes spams !</h3>
+                          <p style="padding: 1em">
+                            Si tu ne veux pas rater les autres surprises qui
+                            arrivent très prochainement, fais glisser mon mail
+                            dans ta boite principale et ajoute moi à tes
+                            contacts pour bien la recevoir.
+                          </p>
+                          <div class="social" style="text-align: center">
+                            <a
+                              href="https://www.facebook.com/groups/260441525501682"
+                              ><img
+                                src="../images/facebook.png"
+                                alt=""
+                                style="
+                                  height: auto;
+                                  width: 60px;
+                                  display: block;
+                                  margin: auto;
+                                "
+                            /></a>
+                            <a
+                              id="message"
+                              href="https://www.instagram.com/marineteroitin/?hl=fr"
+                              ><img
+                                src="../images/instagram.png"
+                                alt=""
+                                style="
+                                  height: auto;
+                                  width: 60px;
+                                  display: block;
+                                  margin: auto;
+                                "
+                            /></a>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- end: tr -->
           <tr>
             <td
               class="bg_light"

@@ -1,6 +1,6 @@
 export const TEMPLATES = {
   new_recipe: {
-    fileName: "new_recipe.ejs",
+    fileName: "new-recipe-test.ejs",
     subject: "Nouvelle recette sur Marine's Recipes",
   },
   register: {
@@ -8,7 +8,7 @@ export const TEMPLATES = {
     subject: "Confirmation de votre compte sur Marine's Recipes",
   },
   forget_password: {
-    fileName: "forget_password.ejs",
+    fileName: "forget-password.ejs",
     subject: "Mot de passe oublié sur Marine's recipes",
   },
   contact: {

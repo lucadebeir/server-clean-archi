@@ -7,6 +7,7 @@ import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
+import UserRepository from "../../ports/repositories/User.repository";
 import { isAdmin } from "../../utils/token.service";
 
 export default class CreateRecipeUseCase {
@@ -14,14 +15,31 @@ export default class CreateRecipeUseCase {
     private recipeRepository: RecipeRepository,
     private categoryRepository: CategoryRepository,
     private ingredientRepository: IngredientRepository,
-    private unityRepository: UnityRepository
-  ) //private mailingRepository: MailingRepository
-  {} //constructeur avec l'interface
+    private unityRepository: UnityRepository,
+    private mailingRepository: MailingRepository,
+    private userRepository: UserRepository //
+  ) {} //constructeur avec l'interface
 
   async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
+
     //.sendMailWhenNewRecipe(recipe);
-    return await this.recipeRepository.create(recipe);
+    const result = await this.recipeRepository
+      .create(recipe)
+      .then(async (result) => {
+        console.log(result);
+        this.userRepository.findAllAbonneMailUsers().then((users) => {
+          users.map((user) => {
+            const data = {
+              recipe: result,
+              user: user,
+            };
+            this.mailingRepository.sendMailWhenNewRecipe(data);
+          });
+        });
+        return result;
+      });
+    return result;
   }
 
   private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {

@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Demystifying Email Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style type="text/css">
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+      }
+      .btn.btn-primary {
+        border-radius: 5px;
+        background: #006838;
+        color: #ffffff;
+      }
+      .btn {
+        padding: 10px 15px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <table
+      role="presentation"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%"
+    >
+      <tr>
+        <td style="padding: 20px 0 30px 0">
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="600"
+            style="border-collapse: collapse; border: 1px solid #cccccc"
+          >
+            <tr>
+              <td align="center" style="padding: 40px 0 30px 0">
+                <img
+                  src="images/logo.jpeg"
+                  alt="Creating Email Magic."
+                  width="300"
+                  height="230"
+                  style="display: block"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                style="padding: 40px 30px 40px 30px; text-align: center"
+              >
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td style="color: #153643; font-family: Arial, sans-serif">
+                      <h1 style="font-size: 24px; margin: 0">
+                        Une nouvelle recette est disponible sur Marine's recipes
+                        !
+                      </h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="<%= link %>">
+                        <img
+                          src="cid:image"
+                          alt=""
+                          style="
+                            width: 300px;
+                            max-width: 600px;
+                            height: auto;
+                            display: block;
+                            margin: auto;
+                          "
+                        />
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+                        color: #153643;
+                        font-family: Arial, sans-serif;
+                        font-size: 16px;
+                        line-height: 24px;
+                        padding: 20px 0 30px 0;
+                      "
+                    >
+                      <h3>
+                        Salut <%= pseudo %>, viens vite voir la dernière recette
+                        publiée sur Marine's Recipe !
+                      </h3>
+                      <br />
+                      <h4><%= mot %></h4>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h5>
+                        Clique sur le lien suivant pour aller voir cette recette
+                        :
+                      </h5>
+                      <p>
+                        <a href="<%= link %>" class="btn btn-primary"
+                          ><%= nomRecette %></a
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                  <!--<tr>
+                    <td>
+                      <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        width="100%"
+                        style="border-collapse: collapse"
+                      >
+                        <tr>
+                          <td width="260" valign="top">
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              width="100%"
+                              style="border-collapse: collapse"
+                            >
+                              <tr>
+                                <td>
+                                  <img
+                                    src="images/left.gif"
+                                    alt=""
+                                    width="100%"
+                                    height="140"
+                                    style="display: block"
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td
+                                  style="
+                                    color: #153643;
+                                    font-family: Arial, sans-serif;
+                                    font-size: 16px;
+                                    line-height: 24px;
+                                    padding: 25px 0 0 0;
+                                  "
+                                >
+                                  <p style="margin: 0">
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. In tempus adipiscing felis,
+                                    sit amet blandit ipsum volutpat sed. Morbi
+                                    porttitor, eget accumsan dictum, nisi libero
+                                    ultricies ipsum, in posuere mauris neque at
+                                    erat.
+                                  </p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td style="font-size: 0; line-height: 0" width="20">
+                            &nbsp;
+                          </td>
+                          <td width="260" valign="top">
+                            <table
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              width="100%"
+                              style="border-collapse: collapse"
+                            >
+                              <tr>
+                                <td>
+                                  <img
+                                    src="images/right.gif"
+                                    alt=""
+                                    width="100%"
+                                    height="140"
+                                    style="display: block"
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td
+                                  style="
+                                    color: #153643;
+                                    font-family: Arial, sans-serif;
+                                    font-size: 16px;
+                                    line-height: 24px;
+                                    padding: 25px 0 0 0;
+                                  "
+                                >
+                                  <p style="margin: 0">
+                                    Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit. In tempus adipiscing felis,
+                                    sit amet blandit ipsum volutpat sed. Morbi
+                                    porttitor, eget accumsan dictum, nisi libero
+                                    ultricies ipsum, in posuere mauris neque at
+                                    erat.
+                                  </p>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>-->
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  color: #153643;
+                  font-family: Arial, sans-serif;
+                  padding: 20px 30px;
+                  font-size: 16px;
+                "
+              >
+                <h6 style="font-size: 24px; margin: 0">Vérifie tes spams !</h6>
+                <p>
+                  Si tu ne veux pas rater les autres surprises qui arrivent très
+                  prochainement, fais glisser mon mail dans ta boite principale
+                  et ajoute moi à tes contacts pour bien la recevoir.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#e8232b" style="padding: 30px 30px">
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td
+                      style="
+                        color: #ffffff;
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                      "
+                    >
+                      <p style="padding: 1em">
+                        Si vous ne souhaitez plus être informé des nouveautés de
+                        Marine's Recipes,
+                        <a href="#" style="color: #006838; font-weight: bold"
+                          >désinscrivez-vous ici.</a
+                        >
+                      </p>
+                    </td>
+                    <td align="right">
+                      <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="border-collapse: collapse"
+                      >
+                        <tr>
+                          <td>
+                            <a
+                              href="https://www.facebook.com/groups/260441525501682"
+                            >
+                              <img
+                                src="images/facebook.png"
+                                alt="Facebook."
+                                width="38"
+                                height="38"
+                                style="display: block"
+                                border="0"
+                              />
+                            </a>
+                          </td>
+                          <td style="font-size: 0; line-height: 0" width="20">
+                            &nbsp;
+                          </td>
+                          <td>
+                            <a
+                              href="https://www.instagram.com/marineteroitin/?hl=fr"
+                            >
+                              <img
+                                src="images/instagram.png"
+                                alt="Instagram."
+                                width="38"
+                                height="38"
+                                style="display: block"
+                                border="0"
+                              />
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr align="center">
+                    <td
+                      style="
+                        color: #ffffff;
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                      "
+                    >
+                      <h2>
+                        <a
+                          style="color: #006838; font-weight: bold"
+                          href="https://www.instagram.com/explore/tags/marinesrecipes/"
+                        >
+                          #marinesrecipes
+                        </a>
+                      </h2>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

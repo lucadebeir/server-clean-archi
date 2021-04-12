@@ -7,6 +7,7 @@ import { TEMPLATES } from "./Template";
 import User from "../../../../core/domain/User";
 
 const environment: any = getEnvironment();
+console.log(smtpTransport);
 
 export default class MailingRepositoryGmail implements MailingRepository {
   sendMail(data: any): void {
@@ -33,16 +34,45 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailWhenNewRecipe(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/${TEMPLATES["new_recipe"].fileName}`
+      `../templates/new-recipe/${TEMPLATES["new_recipe"].fileName}`
     );
 
-    ejs.renderFile(filePath, data, {}, (e, content) => {
+    const dataForTemplate = {
+      link: "http://marinesrecipes.fr/recipe/" + data.recipe.idRecette,
+      pseudo: data.user.get("name"),
+      nomRecette: data.recipe.nomRecette,
+      mot: data.recipe.mot,
+    };
+
+    ejs.renderFile(filePath, dataForTemplate, {}, (e, content) => {
       if (e) return e;
       const mailOptions = {
         from: environment.AUTH_USER,
-        to: data.email,
+        to: data.user.get("address"),
         subject: TEMPLATES["new_recipe"].subject,
         html: content,
+        attachments: [
+          {
+            filename: "logo.jpeg",
+            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            cid: "logo",
+          },
+          {
+            filename: "facebook.png",
+            path: path.join(__dirname, `../templates/images/facebook.png`),
+            cid: "facebook",
+          },
+          {
+            filename: "instagram.jpeg",
+            path: path.join(__dirname, `../templates/images/instagram.png`),
+            cid: "instagram",
+          },
+          {
+            filename: data.recipe.images[0].nameImage,
+            path: data.recipe.images[0].lienImage,
+            cid: "image",
+          },
+        ],
       };
 
       smtpTransport.sendMail(mailOptions, (err, info) => {
@@ -55,7 +85,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailAfterRegister(user: User, link: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/${TEMPLATES["register"].fileName}`
+      `../templates/register/${TEMPLATES["register"].fileName}`
     );
 
     const data = {
@@ -89,7 +119,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailWhenUserForgetPassword(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/${TEMPLATES["forget_password"].fileName}`
+      `../templates/forget-password/${TEMPLATES["forget_password"].fileName}`
     );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
