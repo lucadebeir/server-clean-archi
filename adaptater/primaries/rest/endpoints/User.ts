@@ -211,6 +211,19 @@ user.post("/new-password", (req, res) => {
     });
 });
 
+//envoie du message page contact
+user.post("/contact", (req, res) => {
+  userConfig
+    .sendFromContactUseCase()
+    .execute(req.body.email, req.body.subject, req.body.message)
+    .then((user: any) => {
+      res.json(user);
+    })
+    .catch((err: Error) => {
+      res.send(err.message);
+    });
+});
+
 //renvoie tous les pseudos existants
 user.get("/pseudos", (req, res) => {
   userConfig

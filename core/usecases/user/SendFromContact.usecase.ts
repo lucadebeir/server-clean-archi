@@ -1,12 +1,21 @@
 import { BusinessException } from "../../exceptions/BusinessException";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 
 export default class SendFromContactUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private mailingRepository: MailingRepository
+  ) {}
 
-  async execute(email: any, subject: any, message: any): Promise<string> {
+  async execute(email: any, subject: any, message: any): Promise<void> {
     this.checkBusinessRules(email, subject, message);
-    return this.userRepository.sendFromContact(email, subject, message);
+
+    this.mailingRepository.sendMailFromContact({
+      email: email,
+      subject: subject,
+      message: message,
+    });
   }
 
   private checkBusinessRules(email: any, subject: any, message: any): void {

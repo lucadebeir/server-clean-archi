@@ -5,5 +5,5 @@ export default interface MailingRepository {
   sendMailWhenNewRecipe(data: any): void;
   sendMailAfterRegister(user: User, link: any): void;
   sendMailWhenUserForgetPassword(data: any): void;
-  sendMailFromContact(data: any): void;
+  sendMailFromContact(data: any): any;
 }

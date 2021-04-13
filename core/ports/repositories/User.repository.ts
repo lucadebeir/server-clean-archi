@@ -21,7 +21,6 @@ export default interface UserRepository {
     newPassword?: any
   ): Promise<string>;
 
-  sendFromContact(email: any, subject: any, message: any): Promise<string>;
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
 

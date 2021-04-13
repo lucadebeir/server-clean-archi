@@ -70,7 +70,10 @@ export default class UserConfig {
   }
 
   public sendFromContactUseCase(): SendFromContactUseCase {
-    return new SendFromContactUseCase(this.userRepository);
+    return new SendFromContactUseCase(
+      this.userRepository,
+      this.mailingRepository
+    );
   }
 
   public updatePasswordUseCase(): UpdatePasswordUseCase {

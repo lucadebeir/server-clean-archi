@@ -1,7 +1,6 @@
 import { BusinessException } from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import { TechnicalException } from "../../exceptions/TechnicalException";
 import ForgetPasswordUseCase from "../../usecases/user/ForgetPassword.usecase";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
 

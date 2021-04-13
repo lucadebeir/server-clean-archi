@@ -167,7 +167,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailFromContact(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/${TEMPLATES["contact"].fileName}`
+      `../templates/contact/${TEMPLATES["contact"].fileName}`
     );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
@@ -177,6 +177,23 @@ export default class MailingRepositoryGmail implements MailingRepository {
         to: environment.AUTH_USER,
         subject: data.subject,
         html: content,
+        attachments: [
+          {
+            filename: "logo.jpeg",
+            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            cid: "logo",
+          },
+          {
+            filename: "facebook.png",
+            path: path.join(__dirname, `../templates/images/facebook.png`),
+            cid: "facebook",
+          },
+          {
+            filename: "instagram.jpeg",
+            path: path.join(__dirname, `../templates/images/instagram.png`),
+            cid: "instagram",
+          },
+        ],
       };
 
       smtpTransport.sendMail(mailOptions, (err, info) => {

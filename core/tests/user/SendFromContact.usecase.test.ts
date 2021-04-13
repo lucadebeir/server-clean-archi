@@ -5,49 +5,41 @@ import TokenDomain from "../../domain/Token.domain";
 import * as Utils from "../../utils/token.service";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import SendFromContactUseCase from "../../usecases/user/SendFromContact.usecase";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 
 describe("Update password use case unit tests", () => {
   let sendFromContactUseCase: SendFromContactUseCase;
 
-  let name: string;
   let email: string;
   let subject: string;
   let message: string;
-  let token: TokenDomain;
 
   let userRepository: UserRepository = ({
     sendFromContact: null,
   } as unknown) as UserRepository;
+
+  let mailingRepository: MailingRepository = ({
+    sendMailFromContact: null,
+  } as unknown) as MailingRepository;
 
   beforeEach(() => {
     email = "l.debeir@me.com";
     subject = "Boite à question";
     message = "Aaaaaaa";
 
-    sendFromContactUseCase = new SendFromContactUseCase(userRepository);
-
-    spyOn(userRepository, "sendFromContact").and.callFake(
-      (email: any, subject: any, message: any) => {
-        if (email && subject && message) {
-          const result: string =
-            "L'utilisateur envoie un mail aux administrateurs";
-          return new Promise((resolve, reject) => resolve(result));
-        }
-        return new Promise((resolve, reject) => resolve(null));
-      }
+    sendFromContactUseCase = new SendFromContactUseCase(
+      userRepository,
+      mailingRepository
     );
   });
 
   it("sendFromContactUseCase should return string when it succeeded", async () => {
-    const result: string = await sendFromContactUseCase.execute(
+    const result: void = await sendFromContactUseCase.execute(
       email,
       subject,
       message
     );
-    expect(result).toBeDefined();
-    expect(result).toStrictEqual(
-      "L'utilisateur envoie un mail aux administrateurs"
-    );
+    expect(result).toBeCalled();
   });
 
   it("sendFromContactUseCase should throw a parameter exception when the email is undefined", async () => {

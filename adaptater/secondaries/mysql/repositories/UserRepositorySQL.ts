@@ -324,10 +324,6 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  sendFromContact(email: any, subject: any, message: any): Promise<string> {
-    throw new Error("Method not implemented.");
-  }
-
   findAllExistingEmails(): Promise<string[]> {
     return UserSequelize.findAll({
       attributes: ["email"],
