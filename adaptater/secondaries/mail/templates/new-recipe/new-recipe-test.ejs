@@ -4,7 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Demystifying Email Design</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <style type="text/css">
       a[x-apple-data-detectors] {
         color: inherit !important;
@@ -20,7 +23,7 @@
       }
     </style>
   </head>
-  <body style="margin: 0; padding: 0">
+  <body style="margin: 0; padding: 0; background-color: #ffffff">
     <table
       role="presentation"
       border="0"
@@ -62,13 +65,20 @@
                   style="border-collapse: collapse"
                 >
                   <tr>
-                    <td style="color: #153643; font-family: Arial, sans-serif">
+                    <td
+                      style="
+                        color: #153643;
+                        font-family: Arial, sans-serif;
+                        padding: 20px 0 30px 0;
+                      "
+                    >
                       <h1 style="font-size: 24px; margin: 0">
                         Une nouvelle recette est disponible sur Marine's recipes
                         !
                       </h1>
                     </td>
                   </tr>
+                  <br />
                   <tr>
                     <td align="center">
                       <a href="<%= link %>">
@@ -100,15 +110,18 @@
                   </tr>
                   <tr>
                     <td>
-                      <h5>
+                      <h4>
                         Clique sur le lien suivant pour aller voir cette recette
                         :
-                      </h5>
-                      <p>
-                        <a href="<%= link %>" class="btn btn-primary"
+                      </h4>
+                      <h4>
+                        <a
+                          href="<%= link %>"
+                          class="btn btn-primary"
+                          style="text-decoration: none"
                           ><%= nomRecette %></a
                         >
-                      </p>
+                      </h4>
                     </td>
                   </tr>
                 </table>
@@ -133,13 +146,7 @@
             </tr>
             <tr>
               <td bgcolor="#e8232b" style="padding: 30px 30px">
-                <table
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  width="100%"
-                  style="border-collapse: collapse"
-                >
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td
                       style="
@@ -156,24 +163,22 @@
                         >
                       </p>
                     </td>
-                    <td align="right">
-                      <table
-                        border="0"
-                        cellpadding="0"
-                        cellspacing="0"
-                        style="border-collapse: collapse"
-                      >
+                    <td align="right" style="padding: 20px 0 0 0">
+                      <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td align="center">
+                          <td
+                            align="center"
+                            width="37"
+                            style="text-align: center; padding: 0 10px 0 10px"
+                          >
                             <a
                               href="https://www.facebook.com/groups/260441525501682"
                             >
                               <img
                                 src="cid:facebook"
-                                alt="Facebook."
-                                style="display: block"
-                                width="38"
-                                height="38"
+                                width="37"
+                                height="37"
+                                alt="Facebook"
                                 border="0"
                               />
                             </a>
@@ -181,16 +186,18 @@
                           <td style="font-size: 0; line-height: 0" width="20">
                             &nbsp;
                           </td>
-                          <td>
+                          <td
+                            width="37"
+                            style="text-align: center; padding: 0 10px 0 10px"
+                          >
                             <a
                               href="https://www.instagram.com/marineteroitin/?hl=fr"
                             >
                               <img
                                 src="cid:instagram"
-                                alt="Instagram."
-                                style="display: block"
-                                width="38"
-                                height="38"
+                                width="37"
+                                height="37"
+                                alt="Instagram"
                                 border="0"
                               />
                             </a>

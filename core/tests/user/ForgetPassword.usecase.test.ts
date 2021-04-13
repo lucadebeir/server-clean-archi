@@ -3,6 +3,7 @@ import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
 import { TechnicalException } from "../../exceptions/TechnicalException";
 import ForgetPasswordUseCase from "../../usecases/user/ForgetPassword.usecase";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 
 const initUser = (): User => {
   const user = new User();
@@ -21,13 +22,21 @@ describe("Forget password use case unit tests", () => {
     existByEmail: null,
   } as unknown) as UserRepository;
 
+  let mailingRepository: MailingRepository;
+
   beforeEach(() => {
     user = initUser();
-    forgetPasswordUseCase = new ForgetPasswordUseCase(userRepository);
+    forgetPasswordUseCase = new ForgetPasswordUseCase(
+      userRepository,
+      mailingRepository
+    );
 
     spyOn(userRepository, "forgetPassword").and.callFake((pseudo: any) => {
       if (pseudo) {
-        const result: string = "Email bien envoyé";
+        const result: { pseudo: any; resettoken: any } = {
+          pseudo: "luca",
+          resettoken: "dfdgd654GEvfzvsc",
+        };
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -36,9 +45,13 @@ describe("Forget password use case unit tests", () => {
 
   it("forgetPasswordUseCase should return string when it succeeded", async () => {
     spyOn(userRepository, "existByEmail").and.returnValue(true);
-    const result: string = await forgetPasswordUseCase.execute(user.email);
+    const result: {
+      pseudo: any;
+      resettoken: any;
+    } = await forgetPasswordUseCase.execute(user.email);
     expect(result).toBeDefined();
-    expect(result).toStrictEqual("Email bien envoyé");
+    expect(result.pseudo).toStrictEqual("luca");
+    expect(result.resettoken).toBeDefined();
   });
 
   it("forgetPasswordUseCase should throw a parameter exception when the email is undefined", async () => {

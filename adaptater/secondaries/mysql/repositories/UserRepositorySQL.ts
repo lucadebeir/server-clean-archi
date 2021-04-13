@@ -4,6 +4,7 @@ import UserSequelize from "../entities/User.model";
 import bcrypt from "bcrypt";
 import ResetTokenSequelize from "../entities/ResetToken.model";
 import TokenDomain from "../../../../core/domain/Token.domain";
+import crypto from "crypto";
 
 export default class UserRepositorySQL implements UserRepository {
   checkEmailConfirmed(pseudo: any): Promise<boolean> {
@@ -223,8 +224,31 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  forgetPassword(email: any): Promise<string> {
-    throw new Error("Method not implemented.");
+  forgetPassword(email: any): Promise<{ pseudo: any; resettoken: any }> {
+    return UserSequelize.findOne({
+      where: {
+        email: email,
+      },
+    })
+      .then((user: any) => {
+        if (user) {
+          var resettoken = {
+            userId: user.pseudo,
+            resettoken: crypto.randomBytes(16).toString("hex"),
+          };
+          return ResetTokenSequelize.create(resettoken).then(() => {
+            return {
+              pseudo: resettoken.userId,
+              resettoken: resettoken.resettoken,
+            };
+          });
+        } else {
+          throw new Error("Problème technique");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   checkValideToken(token: any): Promise<string> {

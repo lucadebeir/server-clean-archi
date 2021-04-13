@@ -7,7 +7,6 @@ import { TEMPLATES } from "./Template";
 import User from "../../../../core/domain/User";
 
 const environment: any = getEnvironment();
-console.log(smtpTransport);
 
 export default class MailingRepositoryGmail implements MailingRepository {
   sendMail(data: any): void {
@@ -106,6 +105,16 @@ export default class MailingRepositoryGmail implements MailingRepository {
             path: path.join(__dirname, `../templates/images/logo.jpeg`),
             cid: "logo",
           },
+          {
+            filename: "facebook.png",
+            path: path.join(__dirname, `../templates/images/facebook.png`),
+            cid: "facebook",
+          },
+          {
+            filename: "instagram.jpeg",
+            path: path.join(__dirname, `../templates/images/instagram.png`),
+            cid: "instagram",
+          },
         ],
       };
 
@@ -129,6 +138,23 @@ export default class MailingRepositoryGmail implements MailingRepository {
         to: data.email,
         subject: TEMPLATES["forget_password"].subject,
         html: content,
+        attachments: [
+          {
+            filename: "logo.jpeg",
+            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            cid: "logo",
+          },
+          {
+            filename: "facebook.png",
+            path: path.join(__dirname, `../templates/images/facebook.png`),
+            cid: "facebook",
+          },
+          {
+            filename: "instagram.jpeg",
+            path: path.join(__dirname, `../templates/images/instagram.png`),
+            cid: "instagram",
+          },
+        ],
       };
 
       smtpTransport.sendMail(mailOptions, (err, info) => {

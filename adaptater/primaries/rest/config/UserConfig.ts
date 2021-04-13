@@ -35,7 +35,10 @@ export default class UserConfig {
   }
 
   public forgetPasswordUseCase(): ForgetPasswordUseCase {
-    return new ForgetPasswordUseCase(this.userRepository);
+    return new ForgetPasswordUseCase(
+      this.userRepository,
+      this.mailingRepository
+    );
   }
 
   public getAllAbonneUsersUseCase(): GetAllAbonneUsersUseCase {

@@ -172,6 +172,19 @@ user.delete("/:pseudo", authenticateJWT, (req, res) => {
     });
 });
 
+//oublie du mot de passe
+user.post("/req-reset-password", (req, res) => {
+  userConfig
+    .forgetPasswordUseCase()
+    .execute(req.body.email)
+    .then((user: any) => {
+      res.json(user);
+    })
+    .catch((err: Error) => {
+      res.send(err.message);
+    });
+});
+
 //check du token pour changement de mot de passe
 user.post("/valid-password-token", (req, res) => {
   userConfig

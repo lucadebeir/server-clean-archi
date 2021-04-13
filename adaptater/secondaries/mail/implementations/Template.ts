@@ -1,6 +1,6 @@
 export const TEMPLATES = {
   new_recipe: {
-    fileName: "new-recipe-test.ejs",
+    fileName: "new-recipe.ejs",
     subject: "Nouvelle recette sur Marine's Recipes",
   },
   register: {

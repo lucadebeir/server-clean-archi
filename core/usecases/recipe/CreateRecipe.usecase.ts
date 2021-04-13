@@ -23,7 +23,6 @@ export default class CreateRecipeUseCase {
   async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
 
-    //.sendMailWhenNewRecipe(recipe);
     const result = await this.recipeRepository
       .create(recipe)
       .then(async (result) => {
