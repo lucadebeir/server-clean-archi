@@ -1,7 +1,6 @@
 //déclaration de l'application
 import express from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
 //import sanitizer from "express-sanitizer";
 
 const app = express();
@@ -11,9 +10,9 @@ const port = process.env.PORT || 3000;
 
 //déclaration de ce que l'app utilise comme module
 //app.use(sanitizer());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 //routes
 import routes from "./endpoints/index";

@@ -43,9 +43,13 @@ export default class ImageRepositorySQL implements ImageRepository {
       },
     })
       .then((result: any) => {
+        console.log(result);
+
         if (result) {
+          console.log("here");
           return true;
         } else {
+          console.log("here1");
           return false;
         }
       })
@@ -54,8 +58,14 @@ export default class ImageRepositorySQL implements ImageRepository {
       });
   }
 
-  uploadImage(file: any): Promise<ImageDomain> {
-    throw new Error("Method not implemented.");
+  uploadImage(image: ImageDomain): Promise<ImageDomain> {
+    return ImageSequelize.create(image)
+      .then((result: ImageDomain) => {
+        return result;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   findById(id: any): Promise<ImageDomain> {

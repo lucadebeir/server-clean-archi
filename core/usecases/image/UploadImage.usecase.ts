@@ -13,16 +13,22 @@ export default class UploadImageUseCase {
   }
 
   private checkBusinessRules(file: any, token?: TokenDomain): void {
-    if(token && isAdmin(token)) {
+    if (token && isAdmin(token)) {
       if (file) {
-        if(this.imageRepository.checkExistByName(file)) {
-          throw new BusinessException("Cette image existe déjà")
-        }
+        this.imageRepository.checkExistByName(file.nameImage).then((result) => {
+          if (result) {
+            throw new BusinessException("Cette image existe déjà");
+          }
+        });
       } else {
-        throw new BusinessException("Une image est obligatoire pour pouvoir la télécharger");
+        throw new BusinessException(
+          "Une image est obligatoire pour pouvoir la télécharger"
+        );
       }
     } else {
-      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource")
+      throw new BusinessException(
+        "Vous n'avez pas le droit d'accéder à cette ressource"
+      );
     }
   }
 }
