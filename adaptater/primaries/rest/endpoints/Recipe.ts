@@ -136,4 +136,30 @@ recipe.post("/add", authenticateJWT, (req, res) => {
     });
 });
 
+//modifier une recette
+recipe.post("/update/:id", authenticateJWT, (req, res) => {
+  recipeConfig
+    .updateRecipeUseCase()
+    .execute(req.body, req.body.user)
+    .then((recipe: any) => {
+      res.json(recipe);
+    })
+    .catch((err: Error) => {
+      res.send(err.message);
+    });
+});
+
+//supprimer une recette
+recipe.delete("/:id", authenticateJWT, (req, res) => {
+  recipeConfig
+    .deleteRecipeUseCase()
+    .execute(req.params.id, req.body.user)
+    .then((recipe: any) => {
+      res.json(recipe);
+    })
+    .catch((err: Error) => {
+      res.send(err.message);
+    });
+});
+
 export default recipe;

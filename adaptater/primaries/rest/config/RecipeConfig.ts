@@ -5,6 +5,7 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import UnityRepository from "../../../../core/ports/repositories/Unity.repository";
 import UserRepository from "../../../../core/ports/repositories/User.repository";
 import CreateRecipeUseCase from "../../../../core/usecases/recipe/CreateRecipe.usecase";
+import DeleteRecipeUseCase from "../../../../core/usecases/recipe/DeleteRecipe.usecase";
 import GetAllPerToNbViewUseCase from "../../../../core/usecases/recipe/GetAllPerToNbView.usecase";
 import GetAllRecipesUseCase from "../../../../core/usecases/recipe/GetAllRecipes.usecase";
 import GetCategoriesByIdRecipeUseCase from "../../../../core/usecases/recipe/GetCategoriesByIdRecipe.usecase";
@@ -12,6 +13,7 @@ import GetIngredientsByIdRecipeUseCase from "../../../../core/usecases/recipe/Ge
 import GetLatestRecipesUseCase from "../../../../core/usecases/recipe/GetLatestRecipes.usecase";
 import GetMostPopularRecipesUseCase from "../../../../core/usecases/recipe/GetMostPopularRecipes.usecase";
 import GetRecipeByIdUseCase from "../../../../core/usecases/recipe/GetRecipeById.usecase";
+import UpdateRecipeUseCase from "../../../../core/usecases/recipe/UpdateRecipe.usecase";
 import MailingRepositoryGmail from "../../../secondaries/mail/implementations/MailingRepositoryGmail";
 import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/CategoryRepositorySQL";
 import IngredientRepositorySQL from "../../../secondaries/mysql/repositories/IngredientRepositorySQL";
@@ -64,5 +66,18 @@ export default class RecipeConfig {
       this.mailingRepository,
       this.userRepository
     );
+  }
+
+  public updateRecipeUseCase(): UpdateRecipeUseCase {
+    return new UpdateRecipeUseCase(
+      this.recipeRepository,
+      this.categoryRepository,
+      this.ingredientRepository,
+      this.unityRepository
+    );
+  }
+
+  public deleteRecipeUseCase(): DeleteRecipeUseCase {
+    return new DeleteRecipeUseCase(this.recipeRepository);
   }
 }
