@@ -16,7 +16,7 @@ notification.get("/all", authenticateJWT, (req, res) => {
       res.json(notifs);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ notification.get("/all/enabled", authenticateJWT, (req, res) => {
       res.json(notifs);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -42,7 +42,7 @@ notification.post("/add", authenticateJWT, (req, res) => {
       res.json(notif);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -55,7 +55,7 @@ notification.post("/:id", authenticateJWT, (req, res) => {
       res.json(notif);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

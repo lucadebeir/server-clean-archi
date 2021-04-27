@@ -64,6 +64,7 @@ export default class UserRepositorySQL implements UserRepository {
   }
 
   login(pseudo: any, password: any): Promise<TokenDomain> {
+    console.log(pseudo, password);
     return UserSequelize.findOne({
       where: {
         pseudo: pseudo,

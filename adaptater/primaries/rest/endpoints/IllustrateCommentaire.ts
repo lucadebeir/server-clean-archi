@@ -20,7 +20,7 @@ illustrateCommentaire.get("/add", authenticateJWT, (req, res) => {
       res.json(image);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -37,7 +37,7 @@ illustrateCommentaire.get("/update", authenticateJWT, (req, res) => {
       res.json(image);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

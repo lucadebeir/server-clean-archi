@@ -16,7 +16,7 @@ statistique.get("/views", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ statistique.get("/commentaires", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -42,7 +42,7 @@ statistique.get("/users", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -55,7 +55,7 @@ statistique.get("/abonnes", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -68,7 +68,7 @@ statistique.get("/users/abonnes", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -81,7 +81,7 @@ statistique.get("/top/recipes", authenticateJWT, (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -94,7 +94,7 @@ statistique.get("/worst/recipes", authenticateJWT, (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -107,7 +107,7 @@ statistique.get("/top/recipes/month", authenticateJWT, (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -120,7 +120,7 @@ statistique.get("/views/month", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -133,7 +133,7 @@ statistique.get("/commentaires/month", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -146,7 +146,7 @@ statistique.get("/users/monthly", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -159,7 +159,7 @@ statistique.get("/abonnes/monthly", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

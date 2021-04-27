@@ -32,6 +32,21 @@ export default class MenuRepositorySQL implements MenuRepository {
           attributes: ["idMenu"],
           required: true,
         },
+        {
+          model: ImageSequelize,
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: CategorySequelize,
+          as: "categories",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
       ],
     })
       .then((menu: any) => {

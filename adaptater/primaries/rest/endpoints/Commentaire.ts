@@ -23,7 +23,7 @@ commentaire.post("/add", authenticateJWT, (req, res) => {
       res.json(commentaires);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -44,7 +44,7 @@ commentaire.post("/update", authenticateJWT, (req, res) => {
       res.json(commentaire);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -57,7 +57,7 @@ commentaire.get("/recipe/:id", (req, res) => {
       res.json(commentaires);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -70,7 +70,7 @@ commentaire.get("/recipe/:id/reponse/:idCommentaire", (req, res) => {
       res.json(commentaires);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -83,7 +83,7 @@ commentaire.get("/user/:pseudo", authenticateJWT, (req, res) => {
       res.json(commentaires);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -104,7 +104,7 @@ commentaire.delete("/:id", authenticateJWT, (req, res) => {
       res.json(commentaire);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

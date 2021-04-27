@@ -38,7 +38,7 @@ image.get("/:id", (req, res) => {
       res.json(image);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -51,7 +51,7 @@ image.get("/recipe/:id", (req, res) => {
       res.json(image);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -73,7 +73,7 @@ image.post(
         res.json(image);
       })
       .catch((err: Error) => {
-        res.send(err.message);
+        res.json({ error: err.message });
       });
   }
 );
@@ -88,7 +88,7 @@ image.post("/delete/:id", authenticateJWT, (req, res) => {
       res.json(image);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

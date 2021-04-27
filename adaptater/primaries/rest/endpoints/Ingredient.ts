@@ -16,7 +16,7 @@ ingredient.get("/all", authenticateJWT, (req, res) => {
       res.json(ingredients);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ ingredient.get("/:id", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -42,7 +42,7 @@ ingredient.get("/rest/asc", authenticateJWT, (req, res) => {
       res.json(ingredients);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -55,7 +55,7 @@ ingredient.get("/rest/recipe/:id", authenticateJWT, (req, res) => {
       res.json(ingredients);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -71,7 +71,7 @@ ingredient.post("/add", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -84,7 +84,7 @@ ingredient.delete("/:id", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -101,7 +101,7 @@ ingredient.post("/update", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

@@ -16,7 +16,7 @@ recipeList.get("/:pseudo", authenticateJWT, (req, res) => {
       res.json(recipeList);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -34,7 +34,7 @@ recipeList.post("/add", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -54,7 +54,7 @@ recipeList.post("/update", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -67,7 +67,7 @@ recipeList.delete("/delete", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -80,7 +80,7 @@ recipeList.delete("/delete/all", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

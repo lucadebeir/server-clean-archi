@@ -16,7 +16,7 @@ recipe.get("/all", (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ recipe.get("/all/asc", (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -42,7 +42,7 @@ recipe.get("/all/desc/views", (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -59,7 +59,7 @@ recipe.get("/get/:id", (req, res) => {
       }
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -76,7 +76,7 @@ recipe.get("/:id/ingredients", (req, res) => {
       }
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -93,7 +93,7 @@ recipe.get("/:id/categories", (req, res) => {
       }
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -106,7 +106,7 @@ recipe.get("/latest", (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -119,7 +119,7 @@ recipe.get("/popular", (req, res) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -132,7 +132,7 @@ recipe.post("/add", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -145,7 +145,7 @@ recipe.post("/update/:id", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -158,7 +158,7 @@ recipe.delete("/:id", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

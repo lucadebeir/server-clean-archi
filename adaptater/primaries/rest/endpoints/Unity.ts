@@ -16,7 +16,7 @@ unity.get("/all", authenticateJWT, (req, res) => {
       res.json(unities);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ unity.get("/:id", authenticateJWT, (req, res) => {
       res.json(unity);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -45,7 +45,7 @@ unity.post("/add", authenticateJWT, (req, res) => {
       res.json(unity);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -58,7 +58,7 @@ unity.delete("/:id", authenticateJWT, (req, res) => {
       res.json(unity);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -75,7 +75,7 @@ unity.post("/update", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

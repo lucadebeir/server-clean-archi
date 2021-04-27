@@ -11,7 +11,7 @@ mailing.post("/", (req, res) => {
     mailingRepository.sendMail(req.query);
     res.status(200).json({ message: "email sent successfully" });
   } catch (err: any) {
-    res.send(err.message);
+    res.json({ error: err.message });
   }
 });
 

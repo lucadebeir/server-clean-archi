@@ -10,49 +10,68 @@ export default class RegisterUseCase {
   ) {}
 
   execute(user: User, link: any): Promise<User> {
-    this.checkBusinessRules(user);
-    this.mailingRepository.sendMailAfterRegister(user, link);
-    return this.userRepository.register(user);
+    return this.checkBusinessRules(user).then(() => {
+      this.mailingRepository.sendMailAfterRegister(user, link);
+      return this.userRepository.register(user);
+    });
   }
 
-  private checkBusinessRules(user: User): void {
+  private checkBusinessRules(user: User): Promise<void> {
     if (
       user.pseudo &&
       this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
       this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)
     ) {
-      if (this.userRepository.existByPseudo(user.pseudo)) {
-        throw new BusinessException(
-          "Un utilisateur existe déjà avec ce pseudo"
-        );
-      }
-      if (
-        user.email &&
-        this.checkIfValueIsValid(59, user.email, "email", false)
-      ) {
-        if (this.userRepository.existByEmail(user.email)) {
-          throw new BusinessException(
-            "Un utilisateur existe déjà avec cet email"
-          );
-        }
-        if (user.mdp) {
-          if (user.mdp2) {
-            if (user.mdp2 !== user.mdp) {
-              throw new BusinessException(
-                "Le mot de passe et la confirmation du mot de passe sont différents"
-              );
-            }
-          } else {
+      return this.userRepository
+        .existByPseudo(user.pseudo)
+        .then((pseudo) => {
+          if (pseudo) {
             throw new BusinessException(
-              "La confirmation du mot de passe est obligatoire"
+              "Un utilisateur existe déjà avec ce pseudo"
             );
+          } else {
+            if (
+              user.email &&
+              this.checkIfValueIsValid(59, user.email, "email", false)
+            ) {
+              this.userRepository
+                .existByEmail(user.email)
+                .then((email) => {
+                  if (email) {
+                    throw new BusinessException(
+                      "Un utilisateur existe déjà avec cet email"
+                    );
+                  } else {
+                    if (user.mdp) {
+                      if (user.mdp2) {
+                        if (user.mdp2 !== user.mdp) {
+                          throw new BusinessException(
+                            "Le mot de passe et la confirmation du mot de passe sont différents"
+                          );
+                        }
+                      } else {
+                        throw new BusinessException(
+                          "La confirmation du mot de passe est obligatoire"
+                        );
+                      }
+                    } else {
+                      throw new BusinessException(
+                        "Le mot de passe est obligatoire"
+                      );
+                    }
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              throw new BusinessException("L'email est obligatoire");
+            }
           }
-        } else {
-          throw new BusinessException("Le mot de passe est obligatoire");
-        }
-      } else {
-        throw new BusinessException("L'email est obligatoire");
-      }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       throw new BusinessException("Le pseudo est obligatoire");
     }

@@ -20,7 +20,7 @@ classify.post("/:idRecette", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -37,7 +37,7 @@ classify.delete("/:idRecette", authenticateJWT, (req, res) => {
       res.json(result);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

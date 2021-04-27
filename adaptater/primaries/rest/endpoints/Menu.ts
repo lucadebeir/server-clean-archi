@@ -16,7 +16,7 @@ menu.get("", (req, res) => {
       res.json(menu);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ menu.get("/:id", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -46,7 +46,7 @@ menu.post("/:id", authenticateJWT, (req, res) => {
       res.json(recipe);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

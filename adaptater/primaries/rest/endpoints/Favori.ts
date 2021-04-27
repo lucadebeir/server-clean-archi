@@ -20,7 +20,7 @@ favori.post("/add", authenticateJWT, (req, res) => {
       res.json(favori);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -33,7 +33,7 @@ favori.get("/recipe/:pseudo", authenticateJWT, (req, res) => {
       res.json(favoris);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -46,7 +46,7 @@ favori.get("/recipe/:pseudo/category/:id", authenticateJWT, (req, res) => {
       res.json(favoris);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -59,7 +59,7 @@ favori.delete("/:id/:pseudo", authenticateJWT, (req, res) => {
       res.json(favori);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

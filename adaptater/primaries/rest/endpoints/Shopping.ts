@@ -16,7 +16,7 @@ shopping.get("/:pseudo", authenticateJWT, (req, res) => {
       res.json(list);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -29,7 +29,7 @@ shopping.get("/:pseudo/rest", authenticateJWT, (req, res) => {
       res.json(list);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -46,7 +46,7 @@ shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -59,7 +59,7 @@ shopping.post("/add", authenticateJWT, (req, res) => {
       res.json(ingredients);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -72,7 +72,7 @@ shopping.delete("/delete/:id", authenticateJWT, (req, res) => {
       res.json(ingredient);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

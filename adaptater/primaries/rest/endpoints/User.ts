@@ -41,15 +41,17 @@ user.post("/register", (req, res) => {
       res.json(accessToken);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      console.log(err);
+      res.json({ error: err.message });
     });
 });
 
 //Login
-user.post("/login", (req, res) => {
+user.post("/login", (req, res, next) => {
+  console.log(req.body);
   userConfig
     .loginUseCase()
-    .execute(sanitizeHtml(req.body.pseudo), sanitizeHtml(req.body.mdp))
+    .execute(sanitizeHtml(req.body.pseudo), sanitizeHtml(req.body.password))
     .then((user: any) => {
       let accessToken = jwt.sign(user.dataValues, "secret", {
         expiresIn: "1d",
@@ -57,13 +59,14 @@ user.post("/login", (req, res) => {
       let refreshToken = jwt.sign(user.dataValues, refreshTokenSecret);
       refreshTokens.push(refreshToken);
 
+      console.log(accessToken);
       res.json({
         accessToken,
         refreshToken,
       });
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -76,7 +79,7 @@ user.get("/profile", authenticateJWT, (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -89,7 +92,7 @@ user.get("/pseudo/:pseudo", (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -102,7 +105,7 @@ user.get("/abonne", authenticateJWT, (req, res) => {
       res.json(users);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -115,7 +118,7 @@ user.get("/abonne/mail", authenticateJWT, (req, res) => {
       res.json(users);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -134,7 +137,7 @@ user.put("/password/:pseudo", authenticateJWT, (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -155,7 +158,7 @@ user.put("/profil/:pseudo", authenticateJWT, (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -168,7 +171,7 @@ user.delete("/:pseudo", authenticateJWT, (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -181,7 +184,7 @@ user.post("/req-reset-password", (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -194,7 +197,7 @@ user.post("/valid-password-token", (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -207,7 +210,7 @@ user.post("/new-password", (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -220,7 +223,7 @@ user.post("/contact", (req, res) => {
       res.json(user);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -233,7 +236,7 @@ user.get("/pseudos", (req, res) => {
       res.json(pseudos);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 
@@ -246,7 +249,7 @@ user.get("/emails", (req, res) => {
       res.json(emails);
     })
     .catch((err: Error) => {
-      res.send(err.message);
+      res.json({ error: err.message });
     });
 });
 

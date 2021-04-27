@@ -12,20 +12,35 @@ export default class LoginUseCase {
 
   private checkBusinessRules(pseudo: any, password: any): void {
     if (pseudo) {
-      if (!this.userRepository.existByPseudo(pseudo)) {
-        throw new BusinessException(
-          "Aucun utilisateur n'existe avec ce pseudo"
-        );
-      }
-      if (password) {
-        if (!this.userRepository.checkEmailConfirmed(pseudo)) {
-          throw new BusinessException(
-            "L'email de l'utilisateur n'est pas confirmé"
-          );
-        }
-      } else {
-        throw new BusinessException("Le mot de passe est obligatoire");
-      }
+      this.userRepository
+        .existByPseudo(pseudo)
+        .then((res) => {
+          if (res) {
+            if (password) {
+              this.userRepository
+                .checkEmailConfirmed(pseudo)
+                .then((check) => {
+                  if (!check) {
+                    throw new BusinessException(
+                      "L'email de l'utilisateur n'est pas confirmé"
+                    );
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              throw new BusinessException("Le mot de passe est obligatoire");
+            }
+          } else {
+            throw new BusinessException(
+              "Aucun utilisateur n'existe avec ce pseudo"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       throw new BusinessException("Le pseudo est obligatoire");
     }
