@@ -26,7 +26,6 @@ describe("Get all categories use case unit tests", () => {
   let getAllCategoriesUseCase: GetAllCategoriesUseCase;
 
   let list: Category[];
-  let user: TokenDomain = new TokenDomain();
 
   let categoryRepository: CategoryRepository = ({
     findAll: null,
@@ -44,22 +43,9 @@ describe("Get all categories use case unit tests", () => {
   });
 
   it("getAllCategoriesUseCase should return categories when it succeeded", async () => {
-    spyOn(Utils, "isAdmin").and.returnValue(true);
-    const result: Category[] = await getAllCategoriesUseCase.execute(user);
+    const result: Category[] = await getAllCategoriesUseCase.execute();
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(list);
-  });
-
-  it("getAllCategoriesUseCase should throw a parameter exception when the user is not admin", async () => {
-    try {
-      spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getAllCategoriesUseCase.execute(user);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
-    }
   });
 });

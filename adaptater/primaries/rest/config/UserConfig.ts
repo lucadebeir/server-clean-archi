@@ -9,6 +9,8 @@ import GetAllAbonneUsersUseCase from "../../../../core/usecases/user/GetAllAbonn
 import GetAllExistingEmailsUseCase from "../../../../core/usecases/user/GetAllExistingEmails.usecase";
 import GetAllExistingPseudoUseCase from "../../../../core/usecases/user/GetAllExistingPseudo.usecase";
 import GetUserByIdUseCase from "../../../../core/usecases/user/GetUserById.usecase";
+import GoogleLoginUseCase from "../../../../core/usecases/user/GoogleLogin.usecase";
+import GoogleRegisterUseCase from "../../../../core/usecases/user/GoogleRegister.usecase";
 import LoginUseCase from "../../../../core/usecases/user/Login.usecase";
 import RegisterUseCase from "../../../../core/usecases/user/Register.usecase";
 import SendFromContactUseCase from "../../../../core/usecases/user/SendFromContact.usecase";
@@ -65,8 +67,16 @@ export default class UserConfig {
     return new LoginUseCase(this.userRepository);
   }
 
+  public gLoginUseCase(): GoogleLoginUseCase {
+    return new GoogleLoginUseCase(this.userRepository);
+  }
+
   public registerUseCase(): RegisterUseCase {
     return new RegisterUseCase(this.userRepository, this.mailingRepository);
+  }
+
+  public gRegisterUseCase(): GoogleRegisterUseCase {
+    return new GoogleRegisterUseCase(this.userRepository);
   }
 
   public sendFromContactUseCase(): SendFromContactUseCase {

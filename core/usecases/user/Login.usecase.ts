@@ -5,20 +5,20 @@ import UserRepository from "../../ports/repositories/User.repository";
 export default class LoginUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(pseudo: any, password: any): Promise<TokenDomain> {
-    this.checkBusinessRules(pseudo, password);
-    return this.userRepository.login(pseudo, password);
+  async execute(email: any, password: any): Promise<TokenDomain> {
+    this.checkBusinessRules(email, password);
+    return this.userRepository.login(email, password);
   }
 
-  private checkBusinessRules(pseudo: any, password: any): void {
-    if (pseudo) {
+  private checkBusinessRules(email: any, password: any): void {
+    if (email) {
       this.userRepository
-        .existByPseudo(pseudo)
+        .existByEmail(email)
         .then((res) => {
           if (res) {
             if (password) {
               this.userRepository
-                .checkEmailConfirmed(pseudo)
+                .checkEmailConfirmed(email)
                 .then((check) => {
                   if (!check) {
                     throw new BusinessException(
@@ -34,7 +34,7 @@ export default class LoginUseCase {
             }
           } else {
             throw new BusinessException(
-              "Aucun utilisateur n'existe avec ce pseudo"
+              "Aucun utilisateur n'existe avec cet email"
             );
           }
         })
@@ -42,7 +42,7 @@ export default class LoginUseCase {
           console.log(err);
         });
     } else {
-      throw new BusinessException("Le pseudo est obligatoire");
+      throw new BusinessException("L'email est obligatoire");
     }
   }
 }

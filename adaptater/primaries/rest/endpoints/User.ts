@@ -46,12 +46,43 @@ user.post("/register", (req, res) => {
     });
 });
 
+//Google register for an user
+user.post("/gregister", (req, res) => {
+  const userData: any = {
+    pseudo: sanitizeHtml(req.body.pseudo),
+    email: sanitizeHtml(req.body.email),
+    abonneNews: req.body.abonneNews,
+  };
+  const rand = Math.floor(Math.random() * 100 + 54);
+  const link =
+    "http://" +
+    req.get("host") +
+    "/server/verify?id=" +
+    rand +
+    "&pseudo=" +
+    userData.pseudo;
+
+  userConfig
+    .registerUseCase()
+    .execute(userData, link)
+    .then((user: any) => {
+      let accessToken = jwt.sign(user.dataValues, "secret", {
+        expiresIn: "1d",
+      });
+      res.json(accessToken);
+    })
+    .catch((err: Error) => {
+      console.log(err);
+      res.json({ error: err.message });
+    });
+});
+
 //Login
-user.post("/login", (req, res, next) => {
+user.post("/login", (req, res) => {
   console.log(req.body);
   userConfig
     .loginUseCase()
-    .execute(sanitizeHtml(req.body.pseudo), sanitizeHtml(req.body.password))
+    .execute(sanitizeHtml(req.body.email), sanitizeHtml(req.body.password))
     .then((user: any) => {
       let accessToken = jwt.sign(user.dataValues, "secret", {
         expiresIn: "1d",
@@ -70,11 +101,34 @@ user.post("/login", (req, res, next) => {
     });
 });
 
+//Google login
+user.post("/glogin", (req, res) => {
+  console.log(req.body);
+  userConfig
+    .gLoginUseCase()
+    .execute(req.body.token)
+    .then((user: any) => {
+      let accessToken = jwt.sign(user.dataValues, "secret", {
+        expiresIn: "1d",
+      });
+      let refreshToken = jwt.sign(user.dataValues, refreshTokenSecret);
+      refreshTokens.push(refreshToken);
+
+      res.json({
+        accessToken,
+        refreshToken,
+      });
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
 //Find an user per to his id
-user.get("/profile", authenticateJWT, (req, res) => {
+user.get("/profile/:pseudo", authenticateJWT, (req, res) => {
   userConfig
     .getUserByIdUseCase()
-    .execute(sanitizeHtml(req.body.pseudo), req.body.user)
+    .execute(req.params.pseudo, req.body.user)
     .then((user: any) => {
       res.json(user);
     })

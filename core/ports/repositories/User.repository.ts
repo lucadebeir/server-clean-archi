@@ -3,7 +3,9 @@ import User from "../../domain/User";
 
 export default interface UserRepository {
   register(user: User): Promise<User>;
-  login(pseudo: any, password: any): Promise<TokenDomain>;
+  gRegister(user: User): Promise<User>;
+  login(email: any, password: any): Promise<TokenDomain>;
+  gLogin(token: any): Promise<TokenDomain>;
   existByPseudo(pseudo: any): Promise<boolean>;
   existByEmail(email: any): Promise<boolean>;
   findById(pseudo: any): Promise<User>;

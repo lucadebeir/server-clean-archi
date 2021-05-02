@@ -6,7 +6,7 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initUser = (): User => {
   const user = new User();
-  user.pseudo = "luca";
+  user.email = "luca.debeir@gmail.com";
   user.mdp = "muca";
 
   return user;
@@ -27,7 +27,7 @@ describe("Login user use case unit tests", () => {
 
   let userRepository: UserRepository = ({
     login: null,
-    existByPseudo: null,
+    existByEmail: null,
     checkEmailConfirmed: null,
   } as unknown) as UserRepository;
 
@@ -37,45 +37,43 @@ describe("Login user use case unit tests", () => {
 
     loginUseCase = new LoginUseCase(userRepository);
 
-    spyOn(userRepository, "login").and.callFake(
-      (pseudo: any, password: any) => {
-        if (pseudo && password) {
-          const result: TokenDomain = token;
-          return new Promise((resolve, reject) => resolve(result));
-        }
-        return new Promise((resolve, reject) => resolve(null));
+    spyOn(userRepository, "login").and.callFake((email: any, password: any) => {
+      if (email && password) {
+        const result: TokenDomain = token;
+        return new Promise((resolve, reject) => resolve(result));
       }
-    );
+      return new Promise((resolve, reject) => resolve(null));
+    });
   });
 
   it("loginUseCase should return token when it succeeded", async () => {
-    spyOn(userRepository, "existByPseudo").and.returnValue(true);
+    spyOn(userRepository, "existByEmail").and.returnValue(true);
     spyOn(userRepository, "checkEmailConfirmed").and.returnValue(true);
     const result: TokenDomain = await loginUseCase.execute(
-      user.pseudo,
+      user.email,
       user.mdp
     );
     expect(result).toBeDefined();
-    expect(result.pseudo).toStrictEqual("luca");
+    expect(result.email).toStrictEqual("luca.debeir@gmail.com");
   });
 
-  it("loginUseCase should throw a parameter exception when the pseudo already exists", async () => {
+  it("loginUseCase should throw a parameter exception when the email already exists", async () => {
     try {
-      spyOn(userRepository, "existByPseudo").and.returnValue(false);
-      await loginUseCase.execute(user.pseudo, user.mdp);
+      spyOn(userRepository, "existByEmail").and.returnValue(false);
+      await loginUseCase.execute(user.email, user.mdp);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Aucun utilisateur n'existe avec ce pseudo");
+      expect(a.message).toBe("Aucun utilisateur n'existe avec cet email");
     }
   });
 
-  it("loginUseCase should throw a parameter exception when the pseudo is undefined", async () => {
-    user.pseudo = undefined;
+  it("loginUseCase should throw a parameter exception when the email is undefined", async () => {
+    user.email = undefined;
     try {
-      await loginUseCase.execute(user.pseudo, user.mdp);
+      await loginUseCase.execute(user.email, user.mdp);
     } catch (e) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Le pseudo est obligatoire");
+      expect(a.message).toBe("L'email est obligatoire");
     }
   });
 

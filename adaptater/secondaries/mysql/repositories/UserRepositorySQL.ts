@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import ResetTokenSequelize from "../entities/ResetToken.model";
 import TokenDomain from "../../../../core/domain/Token.domain";
 import crypto from "crypto";
+import { LoginTicket, TokenPayload, OAuth2Client } from "google-auth-library";
 
 export default class UserRepositorySQL implements UserRepository {
   checkEmailConfirmed(pseudo: any): Promise<boolean> {
@@ -44,7 +45,7 @@ export default class UserRepositorySQL implements UserRepository {
   }
 
   register(user: User): Promise<User> {
-    const userData = {
+    const userData: any = {
       pseudo: user.pseudo,
       email: user.email,
       mdp: user.mdp,
@@ -63,16 +64,32 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  login(pseudo: any, password: any): Promise<TokenDomain> {
-    console.log(pseudo, password);
+  gRegister(user: User): Promise<User> {
+    const userData: any = {
+      pseudo: user.pseudo,
+      googleId: user.googleId,
+      email: user.email,
+      abonneNews: user.abonneNews,
+    };
+    return UserSequelize.create(userData)
+      .then((user: any) => {
+        return user;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  login(email: any, password: any): Promise<TokenDomain> {
+    console.log(email, password);
     return UserSequelize.findOne({
       where: {
-        pseudo: pseudo,
+        email: email,
       },
     })
       .then((user: any) => {
         if (!user) {
-          throw new Error("Mot de passe et/ou pseudo incorrect");
+          throw new Error("Mot de passe et/ou email incorrect");
         } else if (!user.emailConfirmed) {
           throw new Error(
             "Vous devez vérifier votre adresse mail avant de pouvoir vous connecter ! :)"
@@ -81,13 +98,49 @@ export default class UserRepositorySQL implements UserRepository {
           if (bcrypt.compareSync(password, user.mdp)) {
             return user;
           } else {
-            throw new Error("Mot de passe et/ou pseudo incorrect");
+            throw new Error("Mot de passe et/ou email incorrect");
           }
         }
       })
       .catch((err) => {
         throw new Error(err);
       });
+  }
+
+  async gLogin(token: any): Promise<TokenDomain> {
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    if (payload) {
+      return UserSequelize.findOne({
+        where: {
+          email: payload.email,
+        },
+      })
+        .then((user: any) => {
+          if (!user) {
+            throw new Error("Email incorrect");
+          } else {
+            if (user.googleId !== payload.sub) {
+              throw new Error("GoogleId non valide");
+            } else if (!user.emailConfirmed) {
+              throw new Error(
+                "Vous devez vérifier votre adresse mail avant de pouvoir vous connecter ! :)"
+              );
+            } else {
+              return user;
+            }
+          }
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+    } else {
+      throw new Error("");
+    }
   }
 
   existByPseudo(pseudo: any): Promise<boolean> {

@@ -16,7 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 
 //routes
 import routes from "./endpoints/index";
+import path from "path";
 app.use(routes);
+
+//Serve only the static files form the dist directory
+app.use(express.static(__dirname + "/dist/angular"));
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname + "/dist/angular/index.html"));
+});
 
 //lancement serveur
 app.listen(port, function () {
