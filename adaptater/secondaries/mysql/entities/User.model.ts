@@ -17,6 +17,10 @@ function UserFactory(sequelize: Sequelize): UserStatic {
         primaryKey: true,
         autoIncrement: false,
       },
+      googleId: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
       email: {
         type: DataTypes.STRING,
       },

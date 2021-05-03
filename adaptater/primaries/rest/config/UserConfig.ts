@@ -76,7 +76,10 @@ export default class UserConfig {
   }
 
   public gRegisterUseCase(): GoogleRegisterUseCase {
-    return new GoogleRegisterUseCase(this.userRepository);
+    return new GoogleRegisterUseCase(
+      this.userRepository,
+      this.mailingRepository
+    );
   }
 
   public sendFromContactUseCase(): SendFromContactUseCase {

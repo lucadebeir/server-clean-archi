@@ -1,53 +1,46 @@
 import User from "../../domain/User";
 import { BusinessException } from "../../exceptions/BusinessException";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 
 export default class GoogleRegisterUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private mailingRepository: MailingRepository
+  ) {}
 
-  async execute(user: User): Promise<User> {
-    this.checkBusinessRules(user);
+  async execute(user: User, link: any): Promise<User> {
+    await this.checkBusinessRules(user);
+    //this.mailingRepository.sendMailAfterRegister(user, link);
     return this.userRepository.gRegister(user);
   }
 
-  private checkBusinessRules(user: User): Promise<void> {
+  private async checkBusinessRules(user: User): Promise<void> {
     if (
       user.pseudo &&
       this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
       this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)
     ) {
-      return this.userRepository
-        .existByPseudo(user.pseudo)
-        .then((pseudo) => {
-          if (pseudo) {
+      const checkPseudo = await this.userRepository.existByPseudo(user.pseudo);
+      if (checkPseudo) {
+        throw new BusinessException(
+          "Un utilisateur existe déjà avec ce pseudo"
+        );
+      } else {
+        if (
+          user.email &&
+          this.checkIfValueIsValid(59, user.email, "email", false)
+        ) {
+          const checkEmail = await this.userRepository.existByEmail(user.email);
+          if (checkEmail) {
             throw new BusinessException(
-              "Un utilisateur existe déjà avec ce pseudo"
+              "Un utilisateur existe déjà avec cet email"
             );
-          } else {
-            if (
-              user.email &&
-              this.checkIfValueIsValid(59, user.email, "email", false)
-            ) {
-              this.userRepository
-                .existByEmail(user.email)
-                .then((email) => {
-                  if (email) {
-                    throw new BusinessException(
-                      "Un utilisateur existe déjà avec cet email"
-                    );
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            } else {
-              throw new BusinessException("L'email est obligatoire");
-            }
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        } else {
+          throw new BusinessException("L'email est obligatoire");
+        }
+      }
     } else {
       throw new BusinessException("Le pseudo est obligatoire");
     }

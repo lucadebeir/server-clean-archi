@@ -48,7 +48,9 @@ user.post("/register", (req, res) => {
 
 //Google register for an user
 user.post("/gregister", (req, res) => {
+  console.log(req.body);
   const userData: any = {
+    googleId: req.body.googleId,
     pseudo: sanitizeHtml(req.body.pseudo),
     email: sanitizeHtml(req.body.email),
     abonneNews: req.body.abonneNews,
@@ -63,7 +65,7 @@ user.post("/gregister", (req, res) => {
     userData.pseudo;
 
   userConfig
-    .registerUseCase()
+    .gRegisterUseCase()
     .execute(userData, link)
     .then((user: any) => {
       let accessToken = jwt.sign(user.dataValues, "secret", {
