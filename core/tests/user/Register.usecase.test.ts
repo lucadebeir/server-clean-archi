@@ -7,8 +7,8 @@ import MailingRepository from "../../ports/mailing/Mailing.repository";
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
-  user.mdp2 = "muca";
+  user.password = "muca";
+  user.confirmedPassword = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
 
@@ -152,7 +152,7 @@ describe("Register user use case unit tests", () => {
   });
 
   it("registerUseCase should throw a parameter exception when the password is undefined", async () => {
-    user.mdp = undefined;
+    user.password = undefined;
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
@@ -164,7 +164,7 @@ describe("Register user use case unit tests", () => {
   });
 
   it("registerUseCase should throw a parameter exception when the password confirmation is undefined", async () => {
-    user.mdp2 = undefined;
+    user.confirmedPassword = undefined;
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
@@ -176,7 +176,7 @@ describe("Register user use case unit tests", () => {
   });
 
   it("registerUseCase should throw a parameter exception when the password and the password confirmation are different", async () => {
-    user.mdp2 = "luca";
+    user.confirmedPassword = "luca";
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);

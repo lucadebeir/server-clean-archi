@@ -3,8 +3,8 @@ export default class User {
   googleId?: number;
   email?: string;
   emailConfirmed?: boolean;
-  mdp?: string;
-  mdp2?: string;
+  password?: string;
+  confirmedPassword?: string;
   admin!: boolean;
   abonneNews?: boolean;
 }
