@@ -9,72 +9,58 @@ export default class RegisterUseCase {
     private mailingRepository: MailingRepository
   ) {}
 
-  execute(user: User, link: any): Promise<User> {
-    return this.checkBusinessRules(user).then(() => {
-      this.mailingRepository.sendMailAfterRegister(user, link);
-      return this.userRepository.register(user);
-    });
+  async execute(user: User, link: any): Promise<User> {
+    await this.checkBusinessRules(user)
+    this.mailingRepository.sendMailAfterRegister(user, link);
+    return this.userRepository.register(user);
   }
 
-  private checkBusinessRules(user: User): Promise<void> {
-    if (
-      user.pseudo &&
-      this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
-      this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)
-    ) {
-      return this.userRepository
-        .existByPseudo(user.pseudo)
-        .then((pseudo) => {
-          if (pseudo) {
-            throw new BusinessException(
-              "Un utilisateur existe déjà avec ce pseudo"
-            );
-          } else {
-            if (
-              user.email &&
-              this.checkIfValueIsValid(59, user.email, "email", false)
-            ) {
-              this.userRepository
-                .existByEmail(user.email)
-                .then((email) => {
-                  if (email) {
-                    throw new BusinessException(
-                      "Un utilisateur existe déjà avec cet email"
-                    );
-                  } else {
-                    if (user.mdp) {
-                      if (user.mdp2) {
-                        if (user.mdp2 !== user.mdp) {
-                          throw new BusinessException(
-                            "Le mot de passe et la confirmation du mot de passe sont différents"
-                          );
-                        }
-                      } else {
+  private async checkBusinessRules(user: User): Promise<void> {
+
+      if (
+        user.pseudo &&
+        this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
+        this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)
+      ) {
+        if(await this.userRepository.existByPseudo(user.pseudo)) {
+          throw new BusinessException(
+            "Un utilisateur existe déjà avec ce pseudo"
+          );
+        } else {
+          if (user.email &&
+            this.checkIfValueIsValid(59, user.email, "email", false)
+              ) {
+                if(await this.userRepository.existByEmail(user.email)) {
+                  throw new BusinessException(
+                    "Un utilisateur existe déjà avec cet email"
+                  );
+                } else {
+                  if (user.password) {
+                    if (user.confirmedPassword) {
+                      if (user.confirmedPassword !== user.password) {
                         throw new BusinessException(
-                          "La confirmation du mot de passe est obligatoire"
+                          "Le mot de passe et la confirmation du mot de passe sont différents"
                         );
                       }
                     } else {
                       throw new BusinessException(
-                        "Le mot de passe est obligatoire"
+                        "La confirmation du mot de passe est obligatoire"
                       );
                     }
+                  } else {
+                    throw new BusinessException(
+                      "Le mot de passe est obligatoire"
+                    );
                   }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            } else {
-              throw new BusinessException("L'email est obligatoire");
-            }
+                }
+          } else {
+            throw new BusinessException("L'email est obligatoire");
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      throw new BusinessException("Le pseudo est obligatoire");
-    }
+        }
+      } else {
+        throw new BusinessException("Le pseudo est obligatoire");
+      }
+    
   }
 
   private checkIfValueIsValid(

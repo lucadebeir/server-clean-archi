@@ -17,8 +17,8 @@ user.post("/register", (req, res) => {
   const userData = {
     pseudo: sanitizeHtml(req.body.pseudo),
     email: sanitizeHtml(req.body.email),
-    mdp: sanitizeHtml(req.body.mdp),
-    mdp2: sanitizeHtml(req.body.mdp2),
+    password: sanitizeHtml(req.body.password),
+    confirmedPassword: sanitizeHtml(req.body.confirmedPassword),
     admin: req.body.admin,
     abonneNews: req.body.abonneNews,
   };

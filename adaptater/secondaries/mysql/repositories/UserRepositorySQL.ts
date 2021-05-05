@@ -48,8 +48,8 @@ export default class UserRepositorySQL implements UserRepository {
     const userData: any = {
       pseudo: user.pseudo,
       email: user.email,
-      mdp: user.mdp,
-      mdp2: user.mdp2,
+      mdp: user.password,
+      mdp2: user.confirmedPassword,
       admin: user.admin,
       abonneNews: user.abonneNews,
     };
@@ -231,7 +231,7 @@ export default class UserRepositorySQL implements UserRepository {
 
   updatePassword(pseudo: any, newPassword: any): Promise<User> {
     const hash = bcrypt.hashSync(newPassword, 10);
-    return UserSequelize.update({ mdp: hash }, { where: { pseudo: pseudo } })
+    return UserSequelize.update({ password: hash }, { where: { pseudo: pseudo } })
       .then((user: any) => {
         if (user) {
           return user;
@@ -346,7 +346,7 @@ export default class UserRepositorySQL implements UserRepository {
               } else {
                 const hash = bcrypt.hashSync(newPassword, 10);
                 return UserSequelize.update(
-                  { mdp: hash },
+                  { password: hash },
                   { where: { pseudo: userEmail.pseudo } }
                 )
                   .then(() => {

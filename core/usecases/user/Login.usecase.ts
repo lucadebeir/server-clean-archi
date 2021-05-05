@@ -6,43 +6,31 @@ export default class LoginUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(email: any, password: any): Promise<TokenDomain> {
-    this.checkBusinessRules(email, password);
+    await this.checkBusinessRules(email, password);
     return this.userRepository.login(email, password);
   }
 
-  private checkBusinessRules(email: any, password: any): void {
-    if (email) {
-      this.userRepository
-        .existByEmail(email)
-        .then((res) => {
-          if (res) {
-            if (password) {
-              this.userRepository
-                .checkEmailConfirmed(email)
-                .then((check) => {
-                  if (!check) {
-                    throw new BusinessException(
-                      "L'email de l'utilisateur n'est pas confirmé"
-                    );
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            } else {
-              throw new BusinessException("Le mot de passe est obligatoire");
+  private async checkBusinessRules(email: any, password: any): Promise<void> {
+
+      if (email) {
+        if(await this.userRepository.existByEmail(email)) {
+          if (password) {
+            if(await !this.userRepository.checkEmailConfirmed(email)) {
+              throw new BusinessException(
+                "L'email de l'utilisateur n'est pas confirmé"
+              );
             }
           } else {
-            throw new BusinessException(
-              "Aucun utilisateur n'existe avec cet email"
-            );
+            throw new BusinessException("Le mot de passe est obligatoire");
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      throw new BusinessException("L'email est obligatoire");
-    }
+        } else {
+          throw new BusinessException(
+            "Aucun utilisateur n'existe avec cet email"
+          );
+        }
+      } else {
+        throw new BusinessException("L'email est obligatoire");
+      }
+    
   }
 }

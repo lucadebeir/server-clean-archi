@@ -7,7 +7,7 @@ import TokenDomain from "../../domain/Token.domain";
 const initUser = (): User => {
   const user = new User();
   user.email = "luca.debeir@gmail.com";
-  user.mdp = "muca";
+  user.password = "muca";
 
   return user;
 };
@@ -51,7 +51,7 @@ describe("Login user use case unit tests", () => {
     spyOn(userRepository, "checkEmailConfirmed").and.returnValue(true);
     const result: TokenDomain = await loginUseCase.execute(
       user.email,
-      user.mdp
+      user.password
     );
     expect(result).toBeDefined();
     expect(result.email).toStrictEqual("luca.debeir@gmail.com");
@@ -60,7 +60,7 @@ describe("Login user use case unit tests", () => {
   it("loginUseCase should throw a parameter exception when the email already exists", async () => {
     try {
       spyOn(userRepository, "existByEmail").and.returnValue(false);
-      await loginUseCase.execute(user.email, user.mdp);
+      await loginUseCase.execute(user.email, user.password);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Aucun utilisateur n'existe avec cet email");
@@ -70,7 +70,7 @@ describe("Login user use case unit tests", () => {
   it("loginUseCase should throw a parameter exception when the email is undefined", async () => {
     user.email = undefined;
     try {
-      await loginUseCase.execute(user.email, user.mdp);
+      await loginUseCase.execute(user.email, user.password);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'email est obligatoire");
@@ -78,10 +78,10 @@ describe("Login user use case unit tests", () => {
   });
 
   it("loginUseCase should throw a parameter exception when the password is undefined", async () => {
-    user.mdp = undefined;
+    user.password = undefined;
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
-      await loginUseCase.execute(user.pseudo, user.mdp);
+      await loginUseCase.execute(user.pseudo, user.password);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le mot de passe est obligatoire");
@@ -92,7 +92,7 @@ describe("Login user use case unit tests", () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(userRepository, "checkEmailConfirmed").and.returnValue(false);
-      await loginUseCase.execute(user.pseudo, user.mdp);
+      await loginUseCase.execute(user.pseudo, user.password);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'email de l'utilisateur n'est pas confirmé");
