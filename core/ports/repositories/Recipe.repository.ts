@@ -1,9 +1,10 @@
+import AllRecipes from "../../domain/AllRecipes";
 import Category from "../../domain/Category.domain";
 import Ingredient from "../../domain/Ingredient";
 import Recipe from "../../domain/Recipe";
 
 export default interface RecipeRepository {
-  findAll(order: string): Promise<Recipe[]>;
+  findAll(order: string, page: any, size: any): Promise<AllRecipes>;
   findAllPerToNbView(): Promise<Recipe[]>;
   findById(id: any): Promise<Recipe>;
 
