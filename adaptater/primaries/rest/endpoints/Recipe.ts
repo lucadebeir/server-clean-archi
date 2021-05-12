@@ -8,11 +8,10 @@ import { authenticateJWT } from "../middleware/auth.middleware";
 const recipeConfig = new RecipeConfig();
 
 //Récupérer toutes les recettes
-recipe.get("/all/:page/:size", (req, res) => {
-  const { page, size } = req.params;
+recipe.get("/all", (req, res) => {
   recipeConfig
     .getAllRecipeUseCase()
-    .execute("desc", req.params.page, req.params.size)
+    .execute("desc")
     .then((recipes: any) => {
       res.json(recipes);
     })
@@ -23,10 +22,9 @@ recipe.get("/all/:page/:size", (req, res) => {
 
 //Récupérer toutes les recettes dans l'ordre alphabétique
 recipe.get("/all/asc", (req, res) => {
-  const { page, size } = req.query;
   recipeConfig
     .getAllRecipeUseCase()
-    .execute("asc", page, size)
+    .execute("asc")
     .then((recipes: any) => {
       res.json(recipes);
     })

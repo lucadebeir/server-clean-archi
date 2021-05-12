@@ -12,23 +12,6 @@ import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 import MenuSequelize from "../entities/Menu.model";
 import RecipeListSequelize from "../entities/RecipeList.model";
-import AllRecipes from "../../../../core/domain/AllRecipes";
-
-const getPagination = (page: number, size: string | number) => {
-  const limit = size ? +size : 3;
-  const offset = page ? page * limit : 0;
-
-  return { limit, offset };
-};
-
-const getPagingData = (recipes: Recipe[], page: string | number, limit: number) => {
-  const currentPage = page ? +page : 0;
-  const totalPages = Math.ceil(recipes.length / limit);
-  const totalItems = recipes.length;
-  return { totalItems, recipes, totalPages, currentPage };
-};
-
-
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe: Recipe): Promise<Recipe> {
@@ -115,8 +98,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
       });
   }
 
-  findAll(order: string, page: any, size: any): Promise<AllRecipes> {
-    const { limit, offset } = getPagination(page, size);
+  findAll(order: string): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [
         {
@@ -153,14 +135,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
       ],
       order: [["datePublication", order]],
-      group: "idRecette",
-      limit, offset
     })
       .then((recipes: any) => {
         if (recipes.length != 0) {
-          console.log(recipes)
-          const response = getPagingData(recipes, page, limit);
-          return response;
+          return recipes;
         } else {
           throw new Error("Il n'y a pas de recettes");
         }
