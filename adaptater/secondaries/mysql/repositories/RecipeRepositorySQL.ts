@@ -12,6 +12,7 @@ import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 import MenuSequelize from "../entities/Menu.model";
 import RecipeListSequelize from "../entities/RecipeList.model";
+import EtapeSequelize from "../entities/Etape.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe: Recipe): Promise<Recipe> {
@@ -133,6 +134,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             attributes: [],
           },
         },
+        {
+          model: EtapeSequelize,
+          required: true,
+        },
       ],
       order: [["datePublication", order]],
     })
@@ -181,6 +186,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             attributes: [],
           },
         },
+        {
+          model: EtapeSequelize,
+          required: true,
+        },
       ],
     })
       .then((recipe: any) => {
@@ -224,6 +233,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           through: {
             attributes: [],
           },
+        },
+        {
+          model: EtapeSequelize,
+          required: true,
         },
       ],
       order: [["nbVues", "DESC"]],
@@ -321,6 +334,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             attributes: [],
           },
         },
+        {
+          model: EtapeSequelize,
+          required: true,
+        },
       ],
       order: [["datePublication", "DESC"]],
       limit: 3,
@@ -366,6 +383,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           through: {
             attributes: [],
           },
+        },
+        {
+          model: EtapeSequelize,
+          required: true,
         },
       ],
       order: [["nbVues", "DESC"]],
@@ -431,6 +452,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         ImageSequelize,
         IllustrateRecipeSequelize,
         UseIngredientSequelize,
+        EtapeSequelize,
       ],
     })
       .then((recipeCreate) => {

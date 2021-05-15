@@ -1,6 +1,7 @@
 import RecipeListRepository from "../../../../core/ports/repositories/RecipeList.repository";
 import UserRepository from "../../../../core/ports/repositories/User.repository";
 import AddRecipeToRecipeListUseCase from "../../../../core/usecases/recipe-list/AddRecipeToRecipeList.usecase";
+import CheckExistRecipeByPseudoUseCase from "../../../../core/usecases/recipe-list/CheckExistRecipeByPseudo.usecase";
 import DeleteAllUseCase from "../../../../core/usecases/recipe-list/DeleteAll.usecase";
 import DeleteByIdUseCase from "../../../../core/usecases/recipe-list/DeleteById.usecase";
 import GetRecipeListByIdUseCase from "../../../../core/usecases/recipe-list/GetRecipeListById.usecase";
@@ -42,5 +43,12 @@ export default class RecipeListConfig {
 
   public deleteAllUseCase(): DeleteAllUseCase {
     return new DeleteAllUseCase(this.recipeListRepository, this.userRepository);
+  }
+
+  public checkExistRecipeByPseudoUseCase(): CheckExistRecipeByPseudoUseCase {
+    return new CheckExistRecipeByPseudoUseCase(
+      this.recipeListRepository,
+      this.userRepository
+    );
   }
 }

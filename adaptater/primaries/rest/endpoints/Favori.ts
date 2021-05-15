@@ -5,6 +5,7 @@ favori.use(cors());
 
 import FavoriConfig from "../config/FavoriConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import Favori from "../../../../core/domain/Favori";
 const favoriConfig = new FavoriConfig();
 
 //ajouter aux favoris
@@ -57,6 +58,21 @@ favori.delete("/:id/:pseudo", authenticateJWT, (req, res) => {
     .execute(req.params.id, req.params.pseudo, req.body.user)
     .then((favori: any) => {
       res.json(favori);
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
+//vérifie si un utilisateur a déjà cette recette en favori
+favori.get("/check/exist", authenticateJWT, (req, res) => {
+  const { id, pseudo } = req.query;
+  const favori = { idRecette: id, pseudo: pseudo } as Favori;
+  favoriConfig
+    .checkFavoriByPseudoUseCase()
+    .execute(favori, req.body.user)
+    .then((result: any) => {
+      res.json(result);
     })
     .catch((err: Error) => {
       res.json({ error: err.message });

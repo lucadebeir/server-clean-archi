@@ -20,6 +20,9 @@ function IngredientFactory(sequelize: Sequelize): IngredientStatic {
       nomIngredient: {
         type: DataTypes.STRING,
       },
+      lienImage: {
+        type: DataTypes.STRING,
+      },
     },
     {
       timestamps: false,

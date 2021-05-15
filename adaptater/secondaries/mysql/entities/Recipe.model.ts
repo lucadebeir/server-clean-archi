@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
+import EtapeSequelize from "./Etape.model";
 import FavoriSequelize from "./Favori.model";
 import MenuSequelize from "./Menu.model";
 import NotificationSequelize from "./Notification.model";
@@ -35,9 +36,6 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
       nbVues: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
-      },
-      etapes: {
-        type: DataTypes.TEXT,
       },
       nbrePart: {
         type: DataTypes.INTEGER,
@@ -88,6 +86,14 @@ MenuSequelize.belongsTo(RecipeSequelize, {
   foreignKey: { name: "idRecette" },
 });
 RecipeSequelize.hasMany(MenuSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+//association 0:N avec les etapes
+EtapeSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(EtapeSequelize, {
   foreignKey: { name: "idRecette" },
 });
 
