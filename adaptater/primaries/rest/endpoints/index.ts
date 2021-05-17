@@ -17,6 +17,7 @@ import imageRoute from "./Image";
 import illustrateRoute from "./IllustrateRecipe";
 import mailingRoute from "./Mailing";
 import illustrateCommentaireRoute from "./IllustrateCommentaire";
+import notationConfig from "./Notation";
 
 const routes = Router();
 
@@ -38,5 +39,6 @@ routes.use("/images", imageRoute);
 routes.use("/illustrate/recipe", illustrateRoute);
 routes.use("/illustrate/commentaire", illustrateCommentaireRoute);
 routes.use("/mailing", mailingRoute);
+routes.use("/notation", notationConfig);
 
 export default routes;

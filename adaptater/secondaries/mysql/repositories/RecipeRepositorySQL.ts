@@ -13,6 +13,7 @@ import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 import MenuSequelize from "../entities/Menu.model";
 import RecipeListSequelize from "../entities/RecipeList.model";
 import EtapeSequelize from "../entities/Etape.model";
+import NotationSequelize from "../entities/Notation.model";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe: Recipe): Promise<Recipe> {
@@ -136,7 +137,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: EtapeSequelize,
-          required: true,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
         },
       ],
       order: [["datePublication", order]],
@@ -188,7 +194,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: EtapeSequelize,
-          required: true,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          as: "notations",
         },
       ],
     })
@@ -236,7 +247,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: EtapeSequelize,
-          required: true,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
         },
       ],
       order: [["nbVues", "DESC"]],
@@ -336,7 +352,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: EtapeSequelize,
-          required: true,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
         },
       ],
       order: [["datePublication", "DESC"]],
@@ -386,7 +407,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: EtapeSequelize,
-          required: true,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
         },
       ],
       order: [["nbVues", "DESC"]],

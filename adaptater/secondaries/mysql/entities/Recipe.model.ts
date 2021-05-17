@@ -4,6 +4,7 @@ import db from "../config/db";
 import EtapeSequelize from "./Etape.model";
 import FavoriSequelize from "./Favori.model";
 import MenuSequelize from "./Menu.model";
+import NotationSequelize from "./Notation.model";
 import NotificationSequelize from "./Notification.model";
 
 interface RecipeModel extends Model<Recipe>, Recipe {}
@@ -94,6 +95,14 @@ EtapeSequelize.belongsTo(RecipeSequelize, {
   foreignKey: { name: "idRecette" },
 });
 RecipeSequelize.hasMany(EtapeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+
+//association 0:N avec les notations
+NotationSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "idRecette" },
+});
+RecipeSequelize.hasMany(NotationSequelize, {
   foreignKey: { name: "idRecette" },
 });
 

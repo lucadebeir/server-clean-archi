@@ -1,8 +1,6 @@
-import { Time } from "@angular/common";
 import Category from "./Category.domain";
 import ClassifyIn from "./ClassifyIn";
 import ImageDomain from "./Image.domain";
-import Ingredient from "./Ingredient";
 import UseIngredient from "./UseIngredient";
 
 export default class Recipe {
@@ -23,4 +21,5 @@ export default class Recipe {
   categories?: Category[];
   mot?: string;
   menu?: number;
+  note?: number;
 }
