@@ -162,6 +162,19 @@ recipe.post("/update/:id", authenticateJWT, (req, res) => {
     });
 });
 
+//incrémente le nombre de vues de +1
+recipe.post("/update/views/:id", (req, res) => {
+  recipeConfig
+    .updateNbViewsUseCase()
+    .execute(req.params.id)
+    .then((recipe: any) => {
+      res.json(recipe);
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
 //supprimer une recette
 recipe.delete("/:id", authenticateJWT, (req, res) => {
   recipeConfig

@@ -14,6 +14,7 @@ import GetLatestRecipesUseCase from "../../../../core/usecases/recipe/GetLatestR
 import GetMostPopularRecipesUseCase from "../../../../core/usecases/recipe/GetMostPopularRecipes.usecase";
 import GetRecipeByIdUseCase from "../../../../core/usecases/recipe/GetRecipeById.usecase";
 import ResearchFilterUseCase from "../../../../core/usecases/recipe/ResearchFilter.usecase";
+import UpdateNbViewsUseCase from "../../../../core/usecases/recipe/UpdateNbViews.usecase";
 import UpdateRecipeUseCase from "../../../../core/usecases/recipe/UpdateRecipe.usecase";
 import MailingRepositoryGmail from "../../../secondaries/mail/implementations/MailingRepositoryGmail";
 import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/CategoryRepositorySQL";
@@ -77,6 +78,10 @@ export default class RecipeConfig {
       this.ingredientRepository,
       this.unityRepository
     );
+  }
+
+  public updateNbViewsUseCase(): UpdateNbViewsUseCase {
+    return new UpdateNbViewsUseCase(this.recipeRepository);
   }
 
   public deleteRecipeUseCase(): DeleteRecipeUseCase {
