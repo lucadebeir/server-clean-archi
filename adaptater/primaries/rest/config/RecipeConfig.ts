@@ -13,6 +13,7 @@ import GetIngredientsByIdRecipeUseCase from "../../../../core/usecases/recipe/Ge
 import GetLatestRecipesUseCase from "../../../../core/usecases/recipe/GetLatestRecipes.usecase";
 import GetMostPopularRecipesUseCase from "../../../../core/usecases/recipe/GetMostPopularRecipes.usecase";
 import GetRecipeByIdUseCase from "../../../../core/usecases/recipe/GetRecipeById.usecase";
+import ResearchFilterUseCase from "../../../../core/usecases/recipe/ResearchFilter.usecase";
 import UpdateRecipeUseCase from "../../../../core/usecases/recipe/UpdateRecipe.usecase";
 import MailingRepositoryGmail from "../../../secondaries/mail/implementations/MailingRepositoryGmail";
 import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/CategoryRepositorySQL";
@@ -24,7 +25,8 @@ import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepos
 export default class RecipeConfig {
   private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
   private categoryRepository: CategoryRepository = new CategoryRepositorySQL();
-  private ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
+  private ingredientRepository: IngredientRepository =
+    new IngredientRepositorySQL();
   private unityRepository: UnityRepository = new UnityRepositorySQL();
   private mailingRepository: MailingRepository = new MailingRepositoryGmail();
   private userRepository: UserRepository = new UserRepositorySQL();
@@ -79,5 +81,9 @@ export default class RecipeConfig {
 
   public deleteRecipeUseCase(): DeleteRecipeUseCase {
     return new DeleteRecipeUseCase(this.recipeRepository);
+  }
+
+  public researchFilterUseCase(): ResearchFilterUseCase {
+    return new ResearchFilterUseCase(this.recipeRepository);
   }
 }

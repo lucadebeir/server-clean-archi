@@ -1,6 +1,7 @@
 import Category from "../../domain/Category.domain";
 import Ingredient from "../../domain/Ingredient";
 import Recipe from "../../domain/Recipe";
+import RecipesFilterDomain from "../../domain/RecipesFilter.domain";
 
 export default interface RecipeRepository {
   findAll(order: string): Promise<Recipe[]>;
@@ -22,4 +23,6 @@ export default interface RecipeRepository {
   existByName(name: any): Promise<boolean>;
   useInMenu(id: any): Promise<boolean>;
   useInRecipeList(id: any): Promise<boolean>;
+
+  research(data: RecipesFilterDomain): Promise<Recipe[]>;
 }

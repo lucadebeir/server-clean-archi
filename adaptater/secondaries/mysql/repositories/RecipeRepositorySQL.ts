@@ -1,4 +1,5 @@
 import Recipe from "../../../../core/domain/Recipe";
+import RecipesFilterDomain from "../../../../core/domain/RecipesFilter.domain";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category.domain";
@@ -14,6 +15,8 @@ import MenuSequelize from "../entities/Menu.model";
 import RecipeListSequelize from "../entities/RecipeList.model";
 import EtapeSequelize from "../entities/Etape.model";
 import NotationSequelize from "../entities/Notation.model";
+import CommentaireSequelize from "../entities/Commentaire.model";
+import { fn, col, Op } from "sequelize";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe: Recipe): Promise<Recipe> {
@@ -200,6 +203,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           model: NotationSequelize,
           required: false,
           as: "notations",
+        },
+        {
+          model: CommentaireSequelize,
+          required: false,
         },
       ],
     })
@@ -489,6 +496,74 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         }
       })
       .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
+  research(data: RecipesFilterDomain): Promise<Recipe[]> {
+    return RecipeSequelize.findAll({
+      /*attributes: {
+        include: [[fn('sum', col('tempsPreparation + tempsCuisson')), , 'sum']]
+      },
+      where: {
+        sum : {
+          [Op.lt]: data.time[0].value
+        }
+      },*/
+      include: [
+        {
+          model: CategorySequelize,
+          //attributes: ["libelleCategorie"],
+          as: "categories",
+          required: true,
+          through: {
+            attributes: [],
+          },
+          where: { idCategorie: { [Op.in]: data.idsCategories } },
+        },
+        {
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+              //attributes: ["nomIngredient"]
+            },
+            {
+              model: UnitySequelize,
+              //attributes: ["libelleUnite"]
+            },
+          ],
+        },
+        {
+          model: ImageSequelize,
+          as: "images",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: EtapeSequelize,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
+        },
+      ],
+      order: [[data.popular ? "nbVues" : "datePublication", "desc"]],
+    })
+      .then((recipes: any) => {
+        if (recipes.length != 0) {
+          return recipes;
+        } else {
+          throw new Error("Il n'y a pas de recettes");
+        }
+      })
+      .catch((err: string | undefined) => {
         throw new Error(err);
       });
   }

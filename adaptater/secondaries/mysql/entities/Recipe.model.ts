@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
+import CommentaireSequelize from "./Commentaire.model";
 import EtapeSequelize from "./Etape.model";
 import FavoriSequelize from "./Favori.model";
 import MenuSequelize from "./Menu.model";
@@ -104,6 +105,14 @@ NotationSequelize.belongsTo(RecipeSequelize, {
 });
 RecipeSequelize.hasMany(NotationSequelize, {
   foreignKey: { name: "idRecette" },
+});
+
+//association 0:N avec les commentaires
+CommentaireSequelize.belongsTo(RecipeSequelize, {
+  foreignKey: { name: "concerne" },
+});
+RecipeSequelize.hasMany(CommentaireSequelize, {
+  foreignKey: { name: "concerne" },
 });
 
 export = RecipeSequelize;

@@ -46,6 +46,19 @@ recipe.get("/all/desc/views", (req, res) => {
     });
 });
 
+//Research
+recipe.post("/research/filter", (req, res) => {
+  recipeConfig
+    .researchFilterUseCase()
+    .execute(req.body)
+    .then((recipes: any) => {
+      res.json(recipes);
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
 //Récupérer la recette depuis son identifiant
 recipe.get("/get/:id", (req, res) => {
   recipeConfig
