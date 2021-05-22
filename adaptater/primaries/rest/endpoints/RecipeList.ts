@@ -62,7 +62,7 @@ recipeList.post("/update", authenticateJWT, (req, res) => {
 recipeList.delete("/delete", authenticateJWT, (req, res) => {
   recipeListConfig
     .deleteByIdUseCase()
-    .execute(req.body.idRecipeList, req.body.pseudoUser, req.body.user)
+    .execute(req.body.id, req.body.pseudo, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })

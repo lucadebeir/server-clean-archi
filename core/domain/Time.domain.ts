@@ -1,5 +1,5 @@
 export default class TimeDomain {
-  name?: string;
-  filter?: boolean;
-  value?: number;
+  name: string;
+  filter: boolean;
+  value: number;
 }
