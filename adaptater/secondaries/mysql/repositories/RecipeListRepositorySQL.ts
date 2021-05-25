@@ -3,6 +3,28 @@ import RecipeListRepository from "../../../../core/ports/repositories/RecipeList
 import RecipeListSequelize from "../entities/RecipeList.model";
 
 export default class RecipeListRepositorySQL implements RecipeListRepository {
+  updateDay(recipe: RecipeList): Promise<string> {
+    return RecipeListSequelize.update(
+      { day: recipe.day },
+      {
+        where: {
+          idRecipeList: recipe.idRecipeList,
+          pseudoUser: recipe.pseudoUser,
+        },
+      }
+    )
+      .then((recipe) => {
+        if (recipe) {
+          return "Le jour de la recette a bien été modifié";
+        } else {
+          throw new Error("Problème technique");
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+
   existByName(name: any, pseudo: any): Promise<boolean> {
     return RecipeListSequelize.findOne({
       where: {
@@ -12,8 +34,11 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
     })
       .then((result: any) => {
         if (result) {
+          console.log("lol");
           return true;
         } else {
+          console.log(false);
+
           return false;
         }
       })
@@ -84,7 +109,7 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
     )
       .then((recipe) => {
         if (recipe) {
-          return "L'état de la recette a bien été  modifié";
+          return "L'état de la recette a bien été modifié";
         } else {
           throw new Error("Problème technique");
         }

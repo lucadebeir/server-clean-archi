@@ -58,6 +58,27 @@ recipeList.post("/update", authenticateJWT, (req, res) => {
     });
 });
 
+//update état d'une recette de la liste
+recipeList.post("/update/week", authenticateJWT, (req, res) => {
+  const recipeListData = {
+    idRecipeList: req.body.idRecipeList,
+    nomRecette: req.body.nomRecette,
+    pseudoUser: req.body.pseudoUser,
+    idRecette: req.body.idRecette,
+    complet: req.body.complet,
+    day: req.body.day,
+  };
+  recipeListConfig
+    .updateDayByIdUseCase()
+    .execute(recipeListData, req.body.user)
+    .then((recipe: any) => {
+      res.json(recipe);
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
 //suppression d'une recette de la liste
 recipeList.delete("/delete", authenticateJWT, (req, res) => {
   recipeListConfig
@@ -73,9 +94,10 @@ recipeList.delete("/delete", authenticateJWT, (req, res) => {
 
 //suppression de toutes les recettes de la liste
 recipeList.delete("/delete/all", authenticateJWT, (req, res) => {
+  console.log(req.body);
   recipeListConfig
     .deleteAllUseCase()
-    .execute(req.body.pseudoUser, req.body.user)
+    .execute(req.body.pseudo, req.body.user)
     .then((recipe: any) => {
       res.json(recipe);
     })

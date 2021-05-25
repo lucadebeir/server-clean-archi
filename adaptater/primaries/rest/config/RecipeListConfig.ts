@@ -6,11 +6,13 @@ import DeleteAllUseCase from "../../../../core/usecases/recipe-list/DeleteAll.us
 import DeleteByIdUseCase from "../../../../core/usecases/recipe-list/DeleteById.usecase";
 import GetRecipeListByIdUseCase from "../../../../core/usecases/recipe-list/GetRecipeListById.usecase";
 import UpdateStateByIdUseCase from "../../../../core/usecases/recipe-list/UpdateStateById.usecase";
+import UpdateDayByIdUseCase from "../../../../core/usecases/recipe-list/UpdateDayById.usecase";
 import RecipeListRepositorySQL from "../../../secondaries/mysql/repositories/RecipeListRepositorySQL";
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
 export default class RecipeListConfig {
-  private recipeListRepository: RecipeListRepository = new RecipeListRepositorySQL();
+  private recipeListRepository: RecipeListRepository =
+    new RecipeListRepositorySQL();
   private userRepository: UserRepository = new UserRepositorySQL();
 
   public addRecipeToRecipeListUseCase(): AddRecipeToRecipeListUseCase {
@@ -29,6 +31,13 @@ export default class RecipeListConfig {
 
   public updateStateByIdUseCase(): UpdateStateByIdUseCase {
     return new UpdateStateByIdUseCase(
+      this.recipeListRepository,
+      this.userRepository
+    );
+  }
+
+  public updateDayByIdUseCase(): UpdateDayByIdUseCase {
+    return new UpdateDayByIdUseCase(
       this.recipeListRepository,
       this.userRepository
     );

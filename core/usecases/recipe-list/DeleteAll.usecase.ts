@@ -12,18 +12,21 @@ export default class DeleteAllUseCase {
   ) {}
 
   async execute(pseudo: any, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(pseudo, token);
+    await this.checkBusinessRules(pseudo, token);
     return await this.recipeListRepository.deleteAll(pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private async checkBusinessRules(
+    pseudo: any,
+    token?: TokenDomain
+  ): Promise<void> {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(
         "Vous n'avez pas le droit de supprimer ces ressources"
       );
     } else {
       if (pseudo) {
-        if (!this.userRepository.existByPseudo(pseudo)) {
+        if (await !this.userRepository.existByPseudo(pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
         if (token.pseudo !== pseudo) {

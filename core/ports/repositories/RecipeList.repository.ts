@@ -4,6 +4,7 @@ export default interface RecipeListRepository {
   findById(pseudo: any): Promise<RecipeList[]>;
   addRecipe(recipe: RecipeList): Promise<RecipeList>;
   updateState(recipe: RecipeList): Promise<string>;
+  updateDay(recipe: RecipeList): Promise<string>;
 
   deleteById(id: any, pseudo: any): Promise<string>;
   deleteAll(pseudo: any): Promise<string>;

@@ -3,8 +3,85 @@ import FavoriRepository from "../../../../core/ports/repositories/Favori.reposit
 import FavoriSequelize from "../entities/Favori.model";
 import RecipeSequelize from "../entities/Recipe.model";
 import CategorySequelize from "../entities/Category.model";
+import Recipe from "../../../../core/domain/Recipe";
+import EtapeSequelize from "../entities/Etape.model";
+import ImageSequelize from "../entities/Image.model";
+import IngredientSequelize from "../entities/Ingredient.model";
+import NotationSequelize from "../entities/Notation.model";
+import UnitySequelize from "../entities/Unity.model";
+import UseIngredientSequelize from "../entities/UseIngredient.model";
+import RecipesFilterDomain from "../../../../core/domain/RecipesFilter.domain";
+import { Op } from "sequelize";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
+  research(data: RecipesFilterDomain, pseudo: string): Promise<Recipe[]> {
+    return RecipeSequelize.findAll({
+      include: [
+        {
+          model: FavoriSequelize,
+          attributes: [],
+          required: true,
+          where: {
+            pseudo: pseudo,
+          },
+        },
+        {
+          model: CategorySequelize,
+          //attributes: ["libelleCategorie"],
+          as: "categories",
+          required: true,
+          through: {
+            attributes: [],
+          },
+          where: { idCategorie: { [Op.in]: data.idsCategories } },
+        },
+        {
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+              //attributes: ["nomIngredient"]
+            },
+            {
+              model: UnitySequelize,
+              //attributes: ["libelleUnite"]
+            },
+          ],
+        },
+        {
+          model: ImageSequelize,
+          as: "images",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: EtapeSequelize,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
+        },
+      ],
+      order: [[data.popular ? "nbVues" : "datePublication", "desc"]],
+    })
+      .then((recipes: any) => {
+        if (recipes.length != 0) {
+          return recipes;
+        } else {
+          throw new Error("Il n'y a pas de recettes");
+        }
+      })
+      .catch((err: string | undefined) => {
+        throw new Error(err);
+      });
+  }
+
   check(favori: Favori): Promise<boolean> {
     return FavoriSequelize.findOne({
       where: {
@@ -53,7 +130,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
       });
   }
 
-  findByIdUser(pseudo: any): Promise<Favori[]> {
+  findByIdUser(pseudo: any): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [
         {
@@ -63,6 +140,47 @@ export default class FavoriRepositorySQL implements FavoriRepository {
           where: {
             pseudo: pseudo,
           },
+        },
+        {
+          model: CategorySequelize,
+          //attributes: ["libelleCategorie"],
+          as: "categories",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: UseIngredientSequelize,
+          attributes: ["qte"],
+          required: true,
+          include: [
+            {
+              model: IngredientSequelize,
+              //attributes: ["nomIngredient"]
+            },
+            {
+              model: UnitySequelize,
+              //attributes: ["libelleUnite"]
+            },
+          ],
+        },
+        {
+          model: ImageSequelize,
+          as: "images",
+          required: true,
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: EtapeSequelize,
+          required: false,
+        },
+        {
+          model: NotationSequelize,
+          required: false,
+          attributes: ["note"],
         },
       ],
       order: [["datePublication", "DESC"]],

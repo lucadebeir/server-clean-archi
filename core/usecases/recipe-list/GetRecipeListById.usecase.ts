@@ -27,7 +27,7 @@ export default class GetRecipeListByIdUseCase {
         if (!this.userRepository.existByPseudo(pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
-        if (token.pseudo !== pseudo) {
+        if (token.pseudo !== pseudo && pseudo !== process.env.PSEUDO_MARINE) {
           throw new TechnicalException("Problème technique");
         }
       } else {

@@ -30,6 +30,9 @@ function RecipeListFactory(sequelize: Sequelize): RecipeListStatic {
       complet: {
         type: DataTypes.BOOLEAN,
       },
+      day: {
+        type: DataTypes.INTEGER,
+      },
     },
     {
       timestamps: false,

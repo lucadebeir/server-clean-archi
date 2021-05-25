@@ -4,9 +4,11 @@ import cors from "cors";
 favori.use(cors());
 
 import FavoriConfig from "../config/FavoriConfig";
+import RecipeConfig from "../config/RecipeConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
 import Favori from "../../../../core/domain/Favori";
 const favoriConfig = new FavoriConfig();
+const recipeConfig = new RecipeConfig();
 
 //ajouter aux favoris
 favori.post("/add", authenticateJWT, (req, res) => {
@@ -73,6 +75,19 @@ favori.get("/check/exist", authenticateJWT, (req, res) => {
     .execute(favori, req.body.user)
     .then((result: any) => {
       res.json(result);
+    })
+    .catch((err: Error) => {
+      res.json({ error: err.message });
+    });
+});
+
+//Research
+favori.post("/research/filter", authenticateJWT, (req, res) => {
+  recipeConfig
+    .researchFilterUseCase()
+    .execute(req.body, req.body.user)
+    .then((recipes: any) => {
+      res.json(recipes);
     })
     .catch((err: Error) => {
       res.json({ error: err.message });

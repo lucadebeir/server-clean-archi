@@ -4,4 +4,5 @@ export default class RecipeList {
   pseudoUser?: string;
   idRecette?: number;
   complet?: boolean;
+  day?: number;
 }

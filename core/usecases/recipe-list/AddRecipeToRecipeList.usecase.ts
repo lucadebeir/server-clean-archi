@@ -13,25 +13,28 @@ export default class AddRecipeToRecipeListUseCase {
   ) {}
 
   async execute(recipe: RecipeList, token?: TokenDomain): Promise<RecipeList> {
-    this.checkBusinessRules(recipe, token);
+    await this.checkBusinessRules(recipe, token);
     return await this.recipeListRepository.addRecipe(recipe);
   }
 
-  private checkBusinessRules(recipe: RecipeList, token?: TokenDomain): void {
+  private async checkBusinessRules(
+    recipe: RecipeList,
+    token?: TokenDomain
+  ): Promise<void> {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(
         "Vous n'avez pas le droit d'ajouter cette ressource"
       );
     } else {
       if (recipe.pseudoUser) {
-        if (!this.userRepository.existByPseudo(recipe.pseudoUser)) {
+        if (await !this.userRepository.existByPseudo(recipe.pseudoUser)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
         if (token.pseudo !== recipe.pseudoUser) {
           throw new TechnicalException("Problème technique");
         }
         if (
-          this.recipeListRepository.existByName(
+          await this.recipeListRepository.existByName(
             recipe.nomRecette,
             recipe.pseudoUser
           )

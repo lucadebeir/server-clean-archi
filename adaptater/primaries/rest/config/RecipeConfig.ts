@@ -1,5 +1,6 @@
 import MailingRepository from "../../../../core/ports/mailing/Mailing.repository";
 import CategoryRepository from "../../../../core/ports/repositories/Category.repository";
+import FavoriRepository from "../../../../core/ports/repositories/Favori.repository";
 import IngredientRepository from "../../../../core/ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import UnityRepository from "../../../../core/ports/repositories/Unity.repository";
@@ -18,6 +19,7 @@ import UpdateNbViewsUseCase from "../../../../core/usecases/recipe/UpdateNbViews
 import UpdateRecipeUseCase from "../../../../core/usecases/recipe/UpdateRecipe.usecase";
 import MailingRepositoryGmail from "../../../secondaries/mail/implementations/MailingRepositoryGmail";
 import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/CategoryRepositorySQL";
+import FavoriRepositorySQL from "../../../secondaries/mysql/repositories/FavoriRepositorySQL";
 import IngredientRepositorySQL from "../../../secondaries/mysql/repositories/IngredientRepositorySQL";
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
 import UnityRepositorySQL from "../../../secondaries/mysql/repositories/UnityRepositorySQL";
@@ -31,6 +33,7 @@ export default class RecipeConfig {
   private unityRepository: UnityRepository = new UnityRepositorySQL();
   private mailingRepository: MailingRepository = new MailingRepositoryGmail();
   private userRepository: UserRepository = new UserRepositorySQL();
+  private favoriRepository: FavoriRepository = new FavoriRepositorySQL();
 
   public getAllRecipeUseCase(): GetAllRecipesUseCase {
     return new GetAllRecipesUseCase(this.recipeRepository);
@@ -89,6 +92,9 @@ export default class RecipeConfig {
   }
 
   public researchFilterUseCase(): ResearchFilterUseCase {
-    return new ResearchFilterUseCase(this.recipeRepository);
+    return new ResearchFilterUseCase(
+      this.recipeRepository,
+      this.favoriRepository
+    );
   }
 }

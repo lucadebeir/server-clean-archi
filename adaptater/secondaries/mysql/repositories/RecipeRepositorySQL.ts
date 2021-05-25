@@ -502,14 +502,6 @@ export default class RecipeRepositorySQL implements RecipeRepository {
 
   research(data: RecipesFilterDomain): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
-      /*attributes: {
-        include: [[fn('sum', col('tempsPreparation + tempsCuisson')), , 'sum']]
-      },
-      where: {
-        sum : {
-          [Op.lt]: data.time[0].value
-        }
-      },*/
       include: [
         {
           model: CategorySequelize,
