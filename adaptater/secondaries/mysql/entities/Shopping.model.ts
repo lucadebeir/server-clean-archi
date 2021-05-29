@@ -13,18 +13,31 @@ function ShoppingFactory(sequelize: Sequelize): ShoppingStatic {
   return <ShoppingStatic>sequelize.define(
     "liste_de_course",
     {
-      idIngredient: {
-        type: DataTypes.INTEGER,
-      },
-      pseudo: {
-        type: DataTypes.STRING,
-      },
       idIngredientList: {
         type: DataTypes.INTEGER,
         primaryKey: true,
       },
+      pseudo: {
+        type: DataTypes.STRING,
+      },
+      idIngredient: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: IngredientSequelize,
+          key: "idIngredient",
+        },
+      },
       nomIngredient: {
         type: DataTypes.STRING,
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      idUnite: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {
@@ -34,13 +47,5 @@ function ShoppingFactory(sequelize: Sequelize): ShoppingStatic {
 }
 
 const ShoppingSequelize = ShoppingFactory(db.sequelize);
-
-//association 0:N avec les ingredients
-IngredientSequelize.belongsTo(ShoppingSequelize, {
-  foreignKey: { name: "idIngredient" },
-});
-ShoppingSequelize.hasMany(IngredientSequelize, {
-  foreignKey: { name: "idIngredient" },
-});
 
 export = ShoppingSequelize;

@@ -26,6 +26,7 @@ recipeList.post("/add", authenticateJWT, (req, res) => {
     nomRecette: req.body.nomRecette,
     pseudoUser: req.body.pseudoUser,
     idRecette: req.body.idRecette,
+    day: req.body.day,
   };
   recipeListConfig
     .addRecipeToRecipeListUseCase()
@@ -46,6 +47,7 @@ recipeList.post("/update", authenticateJWT, (req, res) => {
     pseudoUser: req.body.pseudoUser,
     idRecette: req.body.idRecette,
     complet: req.body.complet,
+    day: req.body.day,
   };
   recipeListConfig
     .updateStateByIdUseCase()

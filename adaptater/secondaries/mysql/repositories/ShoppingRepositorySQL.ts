@@ -4,6 +4,7 @@ import Shopping from "../../../../core/domain/Shopping";
 import ShoppingRepository from "../../../../core/ports/repositories/Shopping.repository";
 import IngredientSequelize from "../entities/Ingredient.model";
 import ShoppingSequelize from "../entities/Shopping.model";
+import UnitySequelize from "../entities/Unity.model";
 
 export default class ShoppingRepositorySQL implements ShoppingRepository {
   exist(pseudo: any, name: any): Promise<boolean> {
@@ -32,6 +33,16 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       },
       order: [["nomIngredient", "ASC"]],
       type: QueryTypes.SELECT,
+      include: [
+        {
+          model: IngredientSequelize,
+          required: false,
+        },
+        {
+          model: UnitySequelize,
+          required: false,
+        },
+      ],
     })
       .then((list) => {
         if (list.length != 0) {
@@ -103,6 +114,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       for (let i = 0; i < list.length; i++) {
         const listeCourseData = {
           pseudo: pseudo,
+          idIngredient: list[i].idIngredient,
           nomIngredient: list[i].nomIngredient,
         };
 
@@ -130,7 +142,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       },
     })
       .then(() => {
-        return "Ingredient deleted!";
+        return "Ingredient supprimé avec succès !";
       })
       .catch((err) => {
         throw new Error(err);

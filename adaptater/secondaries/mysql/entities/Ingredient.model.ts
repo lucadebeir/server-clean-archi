@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, BuildOptions, Model } from "sequelize";
 import db from "../config/db";
 import Ingredient from "../../../../core/domain/Ingredient";
+import ShoppingSequelize from "./Shopping.model";
 
 interface IngredientModel extends Model<Ingredient>, Ingredient {}
 
@@ -32,5 +33,13 @@ function IngredientFactory(sequelize: Sequelize): IngredientStatic {
 }
 
 const IngredientSequelize = IngredientFactory(db.sequelize);
+
+//association 0:N avec les ingredients
+IngredientSequelize.hasMany(ShoppingSequelize, {
+  foreignKey: "idIngredient",
+});
+ShoppingSequelize.belongsTo(IngredientSequelize, {
+  foreignKey: "idIngredient",
+});
 
 export = IngredientSequelize;

@@ -54,7 +54,7 @@ shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
 shopping.post("/add", authenticateJWT, (req, res) => {
   shoppingConfig
     .addIngredientsOfRecipeToShoppingList()
-    .execute(req.body.pseudo, req.body.listIngredients, req.body.user)
+    .execute(req.body.pseudo, req.body.list, req.body.user)
     .then((ingredients: any) => {
       res.json(ingredients);
     })

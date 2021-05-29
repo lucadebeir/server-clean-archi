@@ -179,14 +179,14 @@ user.get("/abonne/mail", authenticateJWT, (req, res) => {
 });
 
 //changement mdp (put pour modifier)
-user.put("/password/:pseudo", authenticateJWT, (req, res) => {
+user.post("/password/:pseudo", authenticateJWT, (req, res) => {
   userConfig
     .updatePasswordUseCase()
     .execute(
       req.params.pseudo,
-      req.body.mdp,
-      req.body.newmdp,
-      req.body.mdp2,
+      req.body.oldPassword,
+      req.body.newPassword,
+      req.body.confirmNewPassword,
       req.body.user
     )
     .then((user: any) => {

@@ -1,6 +1,4 @@
-import shopping from "../../../adaptater/primaries/rest/endpoints/Shopping";
 import Ingredient from "../../domain/Ingredient";
-import Shopping from "../../domain/Shopping";
 import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import { TechnicalException } from "../../exceptions/TechnicalException";
@@ -19,7 +17,7 @@ export default class AddIngredientsOfRecipeToShoppingListUseCase {
     list: Ingredient[],
     token?: TokenDomain
   ): Promise<string> {
-    list = this.checkBusinessRules(pseudo, list, token);
+    list = await this.checkBusinessRules(pseudo, list, token);
     return await this.shoppingRepository.addIngredientsOfRecipeToShoppingList(
       pseudo,
       list
@@ -35,8 +33,11 @@ export default class AddIngredientsOfRecipeToShoppingListUseCase {
       if (pseudo) {
         if (this.userRepository.existByPseudo(pseudo)) {
           return list.filter(
-            (ingredient) =>
-              !this.shoppingRepository.exist(pseudo, ingredient.nomIngredient)
+            async (ingredient) =>
+              await !this.shoppingRepository.exist(
+                pseudo,
+                ingredient.nomIngredient
+              )
           );
         } else {
           throw new BusinessException(

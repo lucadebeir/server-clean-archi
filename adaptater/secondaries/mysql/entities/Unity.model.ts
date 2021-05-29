@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, Model, BuildOptions } from "sequelize";
 import Unity from "../../../../core/domain/Unity";
 import db from "../config/db";
+import ShoppingSequelize from "./Shopping.model";
 
 interface UnityModel extends Model<Unity>, Unity {}
 
@@ -29,5 +30,13 @@ function UnityFactory(sequelize: Sequelize): UnityStatic {
 }
 
 const UnitySequelize = UnityFactory(db.sequelize);
+
+//association 0:N avec les ingredients
+UnitySequelize.hasMany(ShoppingSequelize, {
+  foreignKey: "idUnite",
+});
+ShoppingSequelize.belongsTo(UnitySequelize, {
+  foreignKey: "idUnite",
+});
 
 export = UnitySequelize;

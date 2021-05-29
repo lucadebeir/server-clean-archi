@@ -22,6 +22,8 @@ export default class UpdateDayByIdUseCase {
     recipe: RecipeList,
     token?: TokenDomain
   ): Promise<void> {
+    let days: number[] = [0, 1, 2, 3, 4, 5, 6];
+
     if (!token || !isLogin(token)) {
       throw new TechnicalException(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -34,6 +36,9 @@ export default class UpdateDayByIdUseCase {
           }
           if (token.pseudo !== recipe.pseudoUser) {
             throw new TechnicalException("Problème technique");
+          }
+          if (recipe.day && !days.includes(recipe.day)) {
+            throw new BusinessException("Jour définie non valide");
           }
         } else {
           throw new BusinessException(

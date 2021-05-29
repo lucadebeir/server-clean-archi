@@ -15,7 +15,7 @@ export default class UpdatePasswordUseCase {
     confirmNewPassword: any,
     token?: TokenDomain
   ): Promise<User> {
-    this.checkBusinessRules(
+    await this.checkBusinessRules(
       pseudo,
       oldPassword,
       newPassword,
@@ -25,16 +25,16 @@ export default class UpdatePasswordUseCase {
     return this.userRepository.updatePassword(pseudo, newPassword);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     pseudo: any,
     oldPassword: any,
     newPassword: any,
     confirmNewPassword: any,
     token?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (token && isLogin(token)) {
       if (pseudo) {
-        if (!this.userRepository.existByPseudo(pseudo)) {
+        if (await !this.userRepository.existByPseudo(pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         } else {
           if (token.pseudo != pseudo) {
