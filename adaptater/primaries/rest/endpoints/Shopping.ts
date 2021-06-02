@@ -35,9 +35,13 @@ shopping.get("/:pseudo/rest", authenticateJWT, (req, res) => {
 
 //ajouter un ingrédient à la liste de course
 shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
+  console.log(req.body);
   const shoppingData: any = {
     pseudo: req.body.pseudo,
-    nomIngredient: req.body.nomIngredient,
+    idIngredient: req.body.idIngredient,
+    name: req.body.name,
+    quantity: req.body.quantity,
+    idUnite: req.body.idUnite,
   };
   shoppingConfig
     .addIngredientToShoppingList()

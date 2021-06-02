@@ -13,32 +13,50 @@ export default class AddIngredientToShoppingListUseCase {
   ) {}
 
   async execute(shopping: Shopping, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(shopping, token);
+    console.log(shopping);
+    await this.checkBusinessRules(shopping, token);
     return await this.shoppingRepository.addIngredientToShoppingList(shopping);
   }
 
-  private checkBusinessRules(shopping: Shopping, token?: TokenDomain): void {
+  private async checkBusinessRules(
+    shopping: Shopping,
+    token?: TokenDomain
+  ): Promise<void> {
+    console.log(shopping);
     if (token && isLogin(token)) {
       if (shopping.pseudo) {
-        if (this.userRepository.existByPseudo(shopping.pseudo)) {
-          if (shopping.nomIngredient) {
+        if (await this.userRepository.existByPseudo(shopping.pseudo)) {
+          if (shopping.name) {
             if (
-              this.shoppingRepository.exist(
+              await this.shoppingRepository.exist(
                 shopping.pseudo,
-                shopping.nomIngredient
+                shopping.name
               )
             ) {
               throw new BusinessException(
                 "L'ingrédient " +
-                  shopping.nomIngredient +
+                  shopping.name +
                   " se trouve déjà dans la liste de courses de l'utilisateur " +
                   shopping.pseudo
               );
             }
-            if (shopping.nomIngredient.length > 40) {
+            if (shopping.name.length > 40) {
               throw new BusinessException(
                 "Le nom d'un ingrédient ne doit pas dépasser 40 caractères"
               );
+            }
+            if (shopping.quantity) {
+              if (shopping.quantity <= 0) {
+                throw new BusinessException(
+                  "La quantité doit être strictement supérieur à 0"
+                );
+              } else {
+                if (!shopping.idUnite) {
+                  throw new BusinessException("L'unité est obligatoire");
+                }
+              }
+            } else {
+              throw new BusinessException("La quantité est obligatoire");
             }
           } else {
             throw new BusinessException(

@@ -203,7 +203,6 @@ user.put("/profil/:pseudo", authenticateJWT, (req, res) => {
     pseudo: sanitizeHtml(req.params.pseudo),
     email: sanitizeHtml(req.body.email),
     mdp: sanitizeHtml(req.body.mdp),
-    mdp2: sanitizeHtml(req.body.mdp2),
     admin: req.body.admin,
     abonneNews: req.body.abonneNews,
   };

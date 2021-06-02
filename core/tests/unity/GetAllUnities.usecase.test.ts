@@ -28,9 +28,9 @@ describe("Get all unities use case unit tests", () => {
   let list: Unity[];
   let user: TokenDomain = new TokenDomain();
 
-  let unityRepository: UnityRepository = ({
+  let unityRepository: UnityRepository = {
     findAll: null,
-  } as unknown) as UnityRepository;
+  } as unknown as UnityRepository;
 
   beforeEach(() => {
     list = initUnities();
@@ -44,16 +44,16 @@ describe("Get all unities use case unit tests", () => {
   });
 
   it("getAllUnitiesUseCase should return unities when it succeeded", async () => {
-    spyOn(Utils, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isLogin").and.returnValue(true);
     const result: Unity[] = await getAllUnitiesUseCase.execute(user);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(list);
   });
 
-  it("getAllUnitiesUseCase should throw a parameter exception when the user is not admin", async () => {
+  it("getAllUnitiesUseCase should throw a parameter exception when the user is not connected", async () => {
     try {
-      spyOn(Utils, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllUnitiesUseCase.execute(user);
     } catch (e) {
       const a: BusinessException = e;

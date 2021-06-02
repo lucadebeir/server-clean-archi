@@ -2,7 +2,7 @@ import TokenDomain from "../../domain/Token.domain";
 import Unity from "../../domain/Unity";
 import { BusinessException } from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { isAdmin } from "../../utils/token.service";
+import { isLogin } from "../../utils/token.service";
 
 export default class GetAllUnitiesUseCase {
   constructor(private unityRepository: UnityRepository) {}
@@ -13,7 +13,7 @@ export default class GetAllUnitiesUseCase {
   }
 
   private checkBusinessRules(user: TokenDomain): void {
-    if (!isAdmin(user)) {
+    if (!isLogin(user)) {
       throw new BusinessException(
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );

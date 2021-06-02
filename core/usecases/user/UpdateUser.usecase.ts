@@ -9,36 +9,29 @@ export default class UpdateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(user: User, token?: TokenDomain): Promise<User> {
-    this.checkBusinessRules(user, token);
+    await this.checkBusinessRules(user, token);
     return this.userRepository.update(user);
   }
 
-  private checkBusinessRules(user: User, token?: TokenDomain): void {
+  private async checkBusinessRules(
+    user: User,
+    token?: TokenDomain
+  ): Promise<void> {
     if (token && isLogin(token)) {
       if (
-        user.pseudo &&
-        this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
-        this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)
+        user.email &&
+        this.checkIfValueIsValid(59, user.email, "email", false)
       ) {
-        if (this.userRepository.existByPseudo(user.pseudo)) {
+        if (
+          (await this.userRepository.existByEmail(user.email)) &&
+          token.email != user.email
+        ) {
           throw new BusinessException(
-            "Un utilisateur existe déjà avec ce pseudo"
+            "Un utilisateur existe déjà avec cet email"
           );
         }
-        if (
-          user.email &&
-          this.checkIfValueIsValid(59, user.email, "email", false)
-        ) {
-          if (this.userRepository.existByEmail(user.email)) {
-            throw new BusinessException(
-              "Un utilisateur existe déjà avec cet email"
-            );
-          }
-        } else {
-          throw new BusinessException("L'email est obligatoire");
-        }
       } else {
-        throw new BusinessException("Le pseudo est obligatoire");
+        throw new BusinessException("L'email est obligatoire");
       }
     } else {
       throw new TechnicalException(

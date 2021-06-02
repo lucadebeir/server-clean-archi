@@ -11,7 +11,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
     return ShoppingSequelize.findOne({
       where: {
         pseudo: pseudo,
-        nomIngredient: name,
+        name: name,
       },
     })
       .then((result: any) => {
@@ -31,7 +31,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       where: {
         pseudo: pseudo,
       },
-      order: [["nomIngredient", "ASC"]],
+      order: [["name", "ASC"]],
       type: QueryTypes.SELECT,
       include: [
         {
@@ -91,7 +91,9 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   addIngredientToShoppingList(shopping: Shopping): Promise<string> {
     const listeCourseData = {
       pseudo: shopping.pseudo,
-      nomIngredient: shopping.nomIngredient,
+      name: shopping.name,
+      quantity: shopping.quantity,
+      idUnite: shopping.idUnite,
     };
     return ShoppingSequelize.create(listeCourseData)
       .then((shopping) => {
@@ -115,7 +117,9 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
         const listeCourseData = {
           pseudo: pseudo,
           idIngredient: list[i].idIngredient,
-          nomIngredient: list[i].nomIngredient,
+          name: list[i].name,
+          quantity: list[i].quantity,
+          idUnite: list[i].idUnity,
         };
 
         return ShoppingSequelize.create(listeCourseData)

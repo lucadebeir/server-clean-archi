@@ -2,7 +2,7 @@ import Ingredient from "../../domain/Ingredient";
 import TokenDomain from "../../domain/Token.domain";
 import { BusinessException } from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { isAdmin } from "../../utils/token.service";
+import { isLogin } from "../../utils/token.service";
 
 export default class GetAllIngredientsUseCase {
   constructor(private ingredientRepository: IngredientRepository) {} //constructeur avec l'interface
@@ -13,7 +13,7 @@ export default class GetAllIngredientsUseCase {
   }
 
   private checkBusinessRules(token?: TokenDomain): void {
-    if (!token || !isAdmin(token)) {
+    if (!token || !isLogin(token)) {
       throw new BusinessException(
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );

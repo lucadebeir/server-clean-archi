@@ -25,9 +25,9 @@ describe("Get all ingredients use case unit tests", () => {
   let list: Ingredient[];
   let user: TokenDomain = new TokenDomain();
 
-  let ingredientRepository: IngredientRepository = ({
+  let ingredientRepository: IngredientRepository = {
     findAll: null,
-  } as unknown) as IngredientRepository;
+  } as unknown as IngredientRepository;
 
   beforeEach(() => {
     list = initIngredients();
@@ -43,16 +43,16 @@ describe("Get all ingredients use case unit tests", () => {
   });
 
   it("getAllIngredientsUseCase should return ingredients when it succeeded", async () => {
-    spyOn(Utils, "isAdmin").and.returnValue(true);
+    spyOn(Utils, "isLogin").and.returnValue(true);
     const result: Ingredient[] = await getAllIngredientsUseCase.execute(user);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(list);
   });
 
-  it("getAllIngredientsUseCase should throw a parameter exception when the user is not admin", async () => {
+  it("getAllIngredientsUseCase should throw a parameter exception when the user is not connected", async () => {
     try {
-      spyOn(Utils, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllIngredientsUseCase.execute(user);
     } catch (e) {
       const a: BusinessException = e;
@@ -64,7 +64,7 @@ describe("Get all ingredients use case unit tests", () => {
 
   it("getAllIngredientsUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      spyOn(Utils, "isAdmin").and.returnValue(false);
+      spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllIngredientsUseCase.execute(undefined);
     } catch (e) {
       const a: BusinessException = e;

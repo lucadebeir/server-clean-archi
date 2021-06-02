@@ -28,7 +28,7 @@ function ShoppingFactory(sequelize: Sequelize): ShoppingStatic {
           key: "idIngredient",
         },
       },
-      nomIngredient: {
+      name: {
         type: DataTypes.STRING,
       },
       quantity: {
