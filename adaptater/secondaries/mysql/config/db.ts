@@ -4,11 +4,11 @@ import { getEnvironment } from "./environmentFile";
 const environment: any = getEnvironment();
 
 const sequelize = new Sequelize(
-  "marinesrecipes_bd",
-  "201428",
-  "Luka-12021996",
+  environment.DB_NAME,
+  environment.DB_USER,
+  environment.DB_PASSWORD,
   {
-    host: "mysql-marinesrecipes.alwaysdata.net",
+    host: environment.DB_HOST,
     port: environment.PORT ? environment.PORT : null,
     dialect: "mysql",
 

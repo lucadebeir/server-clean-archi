@@ -1,9 +1,28 @@
 import Category from "../../../../core/domain/Category.domain";
 import Ingredient from "../../../../core/domain/Ingredient";
 import Recipe from "../../../../core/domain/Recipe";
+import RecipesFilterDomain from "../../../../core/domain/RecipesFilter.domain";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 
 export default class RepositoryRecipeMongoDB implements RecipeRepository {
+  update(recipe: Recipe): Promise<Recipe> {
+    throw new Error("Method not implemented.");
+  }
+  existById(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  existByName(name: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  useInMenu(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  useInRecipeList(id: any): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  research(data: RecipesFilterDomain): Promise<Recipe[]> {
+    throw new Error("Method not implemented.");
+  }
   findAllPerToNbView(): Promise<Recipe[]> {
     throw new Error("Method not implemented.");
   }
@@ -28,7 +47,10 @@ export default class RepositoryRecipeMongoDB implements RecipeRepository {
   create(recipe: Recipe): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
-  insertIngredientsAndCategories(id: any, categories: Category[]): Promise<Recipe> {
+  insertIngredientsAndCategories(
+    id: any,
+    categories: Category[]
+  ): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
   findAll(): Promise<Recipe[]> {
