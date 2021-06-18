@@ -97,29 +97,6 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
     }
   });
 
-  it("addIngredientToShoppingListUseCase should throw a parameter exception when the pseudo is undefined", async () => {
-    shopping.pseudo = undefined;
-    try {
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
-    }
-  });
-
-  it("addIngredientToShoppingListUseCase should throw a parameter exception when the name of ingredient is undefined", async () => {
-    shopping.name = undefined;
-    try {
-      spyOn(userRepository, "existByPseudo").and.returnValue(true);
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("Le nom d'un ingrédient est obligatoire");
-    }
-  });
-
   it("addIngredientToShoppingListUseCase should throw a parameter exception when the pseudo doesn't exist", async () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);

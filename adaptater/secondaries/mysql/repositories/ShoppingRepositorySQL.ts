@@ -89,7 +89,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   }
 
   addIngredientToShoppingList(shopping: Shopping): Promise<string> {
-    const listeCourseData = {
+    const listeCourseData: Shopping = {
       pseudo: shopping.pseudo,
       name: shopping.name,
       quantity: shopping.quantity,
@@ -114,7 +114,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   ): Promise<any> {
     if (list.length != 0) {
       for (let i = 0; i < list.length; i++) {
-        const listeCourseData = {
+        const listeCourseData: Shopping = {
           pseudo: pseudo,
           idIngredient: list[i].idIngredient,
           name: list[i].name,
