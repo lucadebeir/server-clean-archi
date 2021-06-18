@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 //import sanitizer from "express-sanitizer";
+import serverless from "serverless-http";
 
 const app = express();
 
@@ -16,17 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 
 //routes
 import routes from "./endpoints/index";
-import path from "path";
+//import path from "path";
 app.use(routes);
 
 //Serve only the static files form the dist directory
-app.use(express.static(__dirname + "/dist/angular"));
+/*app.use(express.static(__dirname + "/dist/angular"));
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname + "/dist/angular/index.html"));
-});
+});*/
 
 //lancement serveur
 app.listen(port, function () {
   console.log("Server is running on port " + port);
   console.log(process.env.NODE_ENV);
 });
+
+module.exports = app;
+module.exports.handler = serverless(app);
