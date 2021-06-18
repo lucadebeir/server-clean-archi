@@ -2,7 +2,6 @@
 import express from "express";
 import cors from "cors";
 //import sanitizer from "express-sanitizer";
-import serverless from "serverless-http";
 
 const app = express();
 
