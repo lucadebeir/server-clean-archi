@@ -8,7 +8,7 @@ import GetAllAbonneUsersUseCase from "../../usecases/user/GetAllAbonneUsers.usec
 const initUsers = (): User[] => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
   user.emailConfirmed = true;
@@ -16,7 +16,7 @@ const initUsers = (): User[] => {
 
   const user2 = new User();
   user2.pseudo = "lucas";
-  user2.mdp = "muca";
+  user2.password = "muca";
   user2.abonneNews = true;
   user2.email = "lucas.debeir@gmail.com";
   user2.emailConfirmed = true;
@@ -31,9 +31,9 @@ describe("Get all abonne users use case unit tests", () => {
   let users: User[];
   let token: TokenDomain = new TokenDomain();
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     findAllAbonneUsers: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     users = initUsers();

@@ -15,6 +15,8 @@ import UnityRepository from "../../ports/repositories/Unity.repository";
 import Category from "../../domain/Category.domain";
 import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
+import UserRepository from "../../ports/repositories/User.repository";
+import MailingRepository from "../../ports/mailing/Mailing.repository";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
@@ -123,22 +125,25 @@ describe("Create recipe use case unit tests", () => {
   let image: ImageDomain[];
   let user: TokenDomain = new TokenDomain();
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     create: null,
     existByName: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
-  let ingredientRepository: IngredientRepository = ({
+  let ingredientRepository: IngredientRepository = {
     existById: null,
-  } as unknown) as IngredientRepository;
+  } as unknown as IngredientRepository;
 
-  let unityRepository: UnityRepository = ({
+  let unityRepository: UnityRepository = {
     existById: null,
-  } as unknown) as UnityRepository;
+  } as unknown as UnityRepository;
+
+  let userRepository: UserRepository;
+  let mailingRepository: MailingRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
@@ -154,7 +159,9 @@ describe("Create recipe use case unit tests", () => {
       recipeRepository,
       categoryRepository,
       ingredientRepository,
-      unityRepository
+      unityRepository,
+      mailingRepository,
+      userRepository
     );
 
     spyOn(recipeRepository, "create").and.callFake((recipe: Recipe) => {

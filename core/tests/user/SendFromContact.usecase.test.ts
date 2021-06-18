@@ -1,9 +1,5 @@
 import { BusinessException } from "../../exceptions/BusinessException";
-import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import TokenDomain from "../../domain/Token.domain";
-import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
 import SendFromContactUseCase from "../../usecases/user/SendFromContact.usecase";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
 
@@ -14,13 +10,13 @@ describe("Update password use case unit tests", () => {
   let subject: string;
   let message: string;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     sendFromContact: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
-  let mailingRepository: MailingRepository = ({
+  let mailingRepository: MailingRepository = {
     sendMailFromContact: null,
-  } as unknown) as MailingRepository;
+  } as unknown as MailingRepository;
 
   beforeEach(() => {
     email = "l.debeir@me.com";

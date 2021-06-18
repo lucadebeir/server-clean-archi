@@ -9,7 +9,7 @@ import GetUserByIdUseCase from "../../usecases/user/GetUserById.usecase";
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
   user.emailConfirmed = true;
@@ -31,10 +31,10 @@ describe("Get user by id use case unit tests", () => {
   let user: User;
   let token: TokenDomain;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     findById: null,
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     user = initUser();

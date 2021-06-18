@@ -9,7 +9,7 @@ import UpdatePasswordUseCase from "../../usecases/user/UpdatePassword.usecase";
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
   user.emailConfirmed = true;
@@ -35,10 +35,10 @@ describe("Update password use case unit tests", () => {
   let newPassword: string;
   let confirmNewPassword: string;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     updatePassword: null,
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     user = initUser();
@@ -69,7 +69,7 @@ describe("Update password use case unit tests", () => {
     spyOn(userRepository, "existByPseudo").and.returnValue(true);
     const result: User = await updatePasswordUseCase.execute(
       user.pseudo,
-      user.mdp,
+      user.password,
       newPassword,
       confirmNewPassword,
       token
@@ -82,7 +82,7 @@ describe("Update password use case unit tests", () => {
     try {
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         undefined
@@ -100,7 +100,7 @@ describe("Update password use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token
@@ -118,7 +118,7 @@ describe("Update password use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await updatePasswordUseCase.execute(
         undefined,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token
@@ -135,7 +135,7 @@ describe("Update password use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token
@@ -153,7 +153,7 @@ describe("Update password use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token
@@ -167,13 +167,13 @@ describe("Update password use case unit tests", () => {
   });
 
   it("updatePasswordUseCase should throw a parameter exception when the oldpassword is not good", async () => {
-    user.mdp = "lala";
+    user.password = "lala";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token
@@ -191,7 +191,7 @@ describe("Update password use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await updatePasswordUseCase.execute(
         user.pseudo,
-        user.mdp,
+        user.password,
         newPassword,
         confirmNewPassword,
         token

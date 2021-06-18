@@ -11,7 +11,7 @@ import * as Utils from "../../utils/token.service";
 const initShoppingList = (): Shopping => {
   const shopping = new Shopping();
   shopping.idIngredientList = 1;
-  shopping.nomIngredient = "Tomates";
+  shopping.name = "Tomates";
   shopping.pseudo = "luca";
 
   return shopping;
@@ -31,13 +31,13 @@ describe("Delete element from recipe list by id use case unit tests", () => {
   let token: TokenDomain = new TokenDomain();
   let user: User;
 
-  let shoppingRepository: ShoppingRepository = ({
+  let shoppingRepository: ShoppingRepository = {
     deleteById: null,
-  } as unknown) as ShoppingRepository;
+  } as unknown as ShoppingRepository;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     shoppingList = initShoppingList();

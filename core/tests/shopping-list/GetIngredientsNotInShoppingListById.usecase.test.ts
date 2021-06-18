@@ -12,12 +12,12 @@ import * as Utils from "../../utils/token.service";
 const initShoppingList = (): Shopping[] => {
   const shooping = new Shopping();
   shooping.idIngredientList = 1;
-  shooping.nomIngredient = "Tomates";
+  shooping.name = "Tomates";
   shooping.pseudo = "luca";
 
   const shooping2 = new Shopping();
   shooping2.idIngredientList = 2;
-  shooping2.nomIngredient = "Carottes";
+  shooping2.name = "Carottes";
   shooping2.pseudo = "luca";
 
   const list = [shooping, shooping2];
@@ -54,30 +54,31 @@ describe("Get shopping list by pseudo use case unit tests", () => {
   let token: TokenDomain = new TokenDomain();
   let user: User;
 
-  let shoppingRepository: ShoppingRepository = ({
+  let shoppingRepository: ShoppingRepository = {
     findIngredientsNotInShoppingListById: null,
-  } as unknown) as ShoppingRepository;
+  } as unknown as ShoppingRepository;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     shoppingList = initShoppingList();
     ingredients = initIngredients();
     user = initUser();
 
-    getIngredientsNotInShoppingListByIdUseCase = new GetIngredientsNotInShoppingListByIdUseCase(
-      shoppingRepository,
-      userRepository
-    );
+    getIngredientsNotInShoppingListByIdUseCase =
+      new GetIngredientsNotInShoppingListByIdUseCase(
+        shoppingRepository,
+        userRepository
+      );
 
     spyOn(
       shoppingRepository,
       "findIngredientsNotInShoppingListById"
     ).and.callFake((pseudo: any) => {
       if (pseudo) {
-        const result: Shopping[] = ingredients;
+        const result: Ingredient[] = ingredients;
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -87,10 +88,11 @@ describe("Get shopping list by pseudo use case unit tests", () => {
   it("getIngredientsNotInShoppingListByIdUseCase should return shopping list when it succeeded", async () => {
     spyOn(userRepository, "existByPseudo").and.returnValue(true);
     spyOn(Utils, "isLogin").and.returnValue(true);
-    const result: Shopping[] = await getIngredientsNotInShoppingListByIdUseCase.execute(
-      user.pseudo,
-      token
-    );
+    const result: Ingredient[] =
+      await getIngredientsNotInShoppingListByIdUseCase.execute(
+        user.pseudo,
+        token
+      );
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toHaveLength(2);

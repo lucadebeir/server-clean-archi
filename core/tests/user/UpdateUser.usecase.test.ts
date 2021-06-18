@@ -9,7 +9,7 @@ import { TechnicalException } from "../../exceptions/TechnicalException";
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
   user.emailConfirmed = true;
@@ -24,11 +24,11 @@ describe("Update user use case unit tests", () => {
   let user: User;
   let token: TokenDomain = new TokenDomain();
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     update: null,
     existByPseudo: null,
     existByEmail: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     user = initUser();

@@ -9,7 +9,7 @@ import UpdatePasswordWithTokenUseCase from "../../usecases/user/UpdatePasswordWi
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
 
   return user;
 };
@@ -28,9 +28,9 @@ describe("Update password with token use case unit tests", () => {
   let user: User;
   let token: TokenDomain;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     updatePasswordWithToken: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     user = initUser();
@@ -55,7 +55,7 @@ describe("Update password with token use case unit tests", () => {
     spyOn(Utils, "isExpired").and.returnValue(false);
     const result: string = await updatePasswordWithTokenUseCase.execute(
       token,
-      user.mdp
+      user.password
     );
     expect(result).toBeDefined();
     expect(result).toStrictEqual(
@@ -75,7 +75,7 @@ describe("Update password with token use case unit tests", () => {
 
   it("updatePasswordWithTokenUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
-      await updatePasswordWithTokenUseCase.execute(undefined, user.mdp);
+      await updatePasswordWithTokenUseCase.execute(undefined, user.password);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -87,7 +87,7 @@ describe("Update password with token use case unit tests", () => {
   it("updatePasswordWithTokenUseCase should throw a parameter exception when the token is expired", async () => {
     try {
       spyOn(Utils, "isExpired").and.returnValue(true);
-      await updatePasswordWithTokenUseCase.execute(token, user.mdp);
+      await updatePasswordWithTokenUseCase.execute(token, user.password);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(

@@ -10,7 +10,7 @@ import * as Utils from "../../utils/token.service";
 
 const initShopping = (): Shopping => {
   const shopping = new Shopping();
-  shopping.nomIngredient = "Tomates";
+  shopping.name = "Tomates";
   shopping.pseudo = "luca";
 
   return shopping;
@@ -30,14 +30,14 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
   let token: TokenDomain = new TokenDomain();
   let user: User;
 
-  let shoppingRepository: ShoppingRepository = ({
+  let shoppingRepository: ShoppingRepository = {
     addIngredientToShoppingList: null,
     exist: null,
-  } as unknown) as ShoppingRepository;
+  } as unknown as ShoppingRepository;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     shopping = initShopping();
@@ -109,7 +109,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
   });
 
   it("addIngredientToShoppingListUseCase should throw a parameter exception when the name of ingredient is undefined", async () => {
-    shopping.nomIngredient = undefined;
+    shopping.name = undefined;
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(Utils, "isLogin").and.returnValue(true);
@@ -145,7 +145,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'ingrédient " +
-          shopping.nomIngredient +
+          shopping.name +
           " se trouve déjà dans la liste de courses de l'utilisateur " +
           shopping.pseudo
       );
@@ -153,7 +153,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
   });
 
   it("addIngredientToShoppingListUseCase should throw a parameter exception when the name of ingredient is too long (length superior to 40 characters)", async () => {
-    shopping.nomIngredient =
+    shopping.name =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);

@@ -9,7 +9,7 @@ import DeleteUserUseCase from "../../usecases/user/DeleteUser.usecase";
 const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
-  user.mdp = "muca";
+  user.password = "muca";
   user.abonneNews = true;
   user.email = "luca.debeir@gmail.com";
   user.emailConfirmed = true;
@@ -31,10 +31,10 @@ describe("Delete user use case unit tests", () => {
   let user: User;
   let token: TokenDomain;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     deleteById: null,
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     user = initUser();

@@ -11,12 +11,12 @@ import * as Utils from "../../utils/token.service";
 const initShoppingList = (): Shopping[] => {
   const shopping = new Shopping();
   shopping.idIngredientList = 1;
-  shopping.nomIngredient = "Tomates";
+  shopping.name = "Tomates";
   shopping.pseudo = "luca";
 
   const shopping2 = new Shopping();
   shopping2.idIngredientList = 2;
-  shopping2.nomIngredient = "Carottes";
+  shopping2.name = "Carottes";
   shopping2.pseudo = "luca";
 
   const list = [shopping, shopping2];
@@ -38,13 +38,13 @@ describe("Get shopping list by pseudo use case unit tests", () => {
   let token: TokenDomain = new TokenDomain();
   let user: User;
 
-  let shoppingRepository: ShoppingRepository = ({
+  let shoppingRepository: ShoppingRepository = {
     findById: null,
-  } as unknown) as ShoppingRepository;
+  } as unknown as ShoppingRepository;
 
-  let userRepository: UserRepository = ({
+  let userRepository: UserRepository = {
     existByPseudo: null,
-  } as unknown) as UserRepository;
+  } as unknown as UserRepository;
 
   beforeEach(() => {
     shoppingList = initShoppingList();
