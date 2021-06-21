@@ -1,7 +1,0 @@
-version: "2"
-
-services:
-  gitlab:
-    image: "gitlab/gitlab-ce:latest"
-    ports:
-      - "80:80"
