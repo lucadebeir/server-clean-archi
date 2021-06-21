@@ -1,24 +1,9 @@
-image: node:latest
-
-before_script:
-  - apt-get update -qq && apt-get install
-
 stages:
-  - staging
-  - production
+  - build
 
-staging:
-  type: deploy
-  stage: staging
+Compile:
+  stage: build
+  tags:
+    - typescript
   script:
-    - tsc --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-  only:
-    - staging
-
-production:
-  type: deploy
-  stage: production
-  script:
-    - ts-node-dev node_modules ./adaptater/primaries/rest/server.ts --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-  only:
-    - master
+    - tsc ./adaptater/primaries/rest/server.ts
