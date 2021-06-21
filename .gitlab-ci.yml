@@ -1,5 +1,8 @@
 image: node:latest
 
+before_script:
+  - apt-get update -qq && apt-get install
+
 stages:
   - staging
   - production
