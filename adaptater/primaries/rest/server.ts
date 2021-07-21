@@ -8,6 +8,9 @@ const app = express();
 //déclaration du port
 const port = process.env.PORT || 3000;
 
+//pour utiliser les variables d'environnement
+require("dotenv").config();
+
 //déclaration de ce que l'app utilise comme module
 //app.use(sanitizer());
 app.use(express.json());
@@ -43,10 +46,10 @@ app.use((req, res, next) => {
 });
 
 //Serve only the static files form the dist directory
-app.use(express.static(__dirname + "/dist"));
+/*app.use(express.static(__dirname + "/dist"));
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname + "/dist/index.html"));
-});
+});*/
 
 //lancement serveur
 app.listen(port, function () {

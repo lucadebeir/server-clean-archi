@@ -1,28 +1,21 @@
 image: node:latest
 
-before_script:
-  - apt-get update -qy
-  - apt-get install -y ruby-dev
-  - gem install dpl
+    stages:
+      - build
+      - test
 
-stages:
-  - staging
-  - production
+    cache:
+      paths:
+        - node_modules/
 
-staging:
-  type: deploy
-  stage: staging
-  image: ruby:latest
-  script:
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-  only:
-    - staging
+    install_dependencies:
+      stage: build
+      script:
+        - npm install
+      artifacts:
+        paths:
+          - node_modules/
 
-production:
-  type: deploy
-  stage: production
-  image: ruby:latest
-  script:
-    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-  only:
-    - master
+    testing_testing:
+      stage: test
+      script: npm test
