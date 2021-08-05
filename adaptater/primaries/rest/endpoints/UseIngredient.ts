@@ -10,7 +10,7 @@ const useIngredientConfig = new UseIngredientConfig();
 //ajouter un ingrédient à une recette
 useIngredient.get("/add", authenticateJWT, (req, res) => {
   const data: any = {
-    idRecette: req.params.idRecette,
+    idRecette: req.body.idRecette,
     idIngredient: req.body.idIngredient,
     qte: req.body.qte,
     idUnite: req.body.idUnite,

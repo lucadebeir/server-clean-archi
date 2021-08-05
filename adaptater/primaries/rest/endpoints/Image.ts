@@ -64,7 +64,7 @@ image.post(
     const imageUrl = await uploadImage(req.file);
     const data = {
       lienImage: imageUrl,
-      nameImage: req.file.originalname,
+      nameImage: req.file?.originalname,
     };
     imageConfig
       .uploadImageUseCase()
