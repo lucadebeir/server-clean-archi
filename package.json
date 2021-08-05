@@ -4,7 +4,7 @@
   "description": "Server de Marine's Recipe en clean architecture",
   "main": "serveur.js",
   "scripts": {
-    "start": "ts-node-dev --ignore-watch node_modules ./adaptater/primaries/rest/server.ts",
+    "start": "ts-node ./adaptater/primaries/rest/server.ts",
     "start:dev": "ts-node-dev --ignore-watch node_modules ./adaptater/primaries/rest/server.ts",
     "build": "tsc",
     "test": "jest"
