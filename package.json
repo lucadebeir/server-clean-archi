@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com:marinesrecipes/server-clean-archi.git"
+    "url": "git+ssh://git@github.com:Marine-s-Recipes/server-clean-archi.git"
   },
   "author": "lucadebeir",
   "license": "ISC",
