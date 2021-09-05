@@ -6,7 +6,7 @@ import { isAdmin } from "../../utils/token.service";
 export default class FindNbUsersMonthlyUseCase {
   constructor(private statistiqueRepository: StatistiqueRepository) {}
 
-  async execute(token?: TokenDomain): Promise<{ nbUsers: any; month: any }[]> {
+  async execute(token?: TokenDomain): Promise<{ number_users: any; month: any }[]> {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findNbUsersMonthly();
   }

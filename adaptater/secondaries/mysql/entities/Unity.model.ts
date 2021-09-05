@@ -11,20 +11,20 @@ type UnityStatic = typeof Model & {
 
 function UnityFactory(sequelize: Sequelize): UnityStatic {
   return <UnityStatic>sequelize.define(
-    "unites",
+    "units",
     {
-      idUnite: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      libelleUnite: {
+      name: {
         type: DataTypes.STRING,
       },
     },
     {
       timestamps: false,
-      tableName: "unites",
+      tableName: "units",
     }
   );
 }
@@ -33,10 +33,10 @@ const UnitySequelize = UnityFactory(db.sequelize);
 
 //association 0:N avec les ingredients
 UnitySequelize.hasMany(ShoppingSequelize, {
-  foreignKey: "idUnite",
+  foreignKey: "id",
 });
 ShoppingSequelize.belongsTo(UnitySequelize, {
-  foreignKey: "idUnite",
+  foreignKey: "id_unit",
 });
 
 export = UnitySequelize;

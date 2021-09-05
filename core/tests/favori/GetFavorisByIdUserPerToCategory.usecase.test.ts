@@ -11,11 +11,11 @@ import * as Utils from "../../utils/token.service";
 
 const initFavori = (): Favori[] => {
   const favori = new Favori();
-  favori.idRecette = 1;
+  favori.id_recipe = 1;
   favori.pseudo = "luca";
 
   const favori2 = new Favori();
-  favori2.idRecette = 2;
+  favori2.id_recipe = 2;
   favori2.pseudo = "luca";
 
   const list: Favori[] = [favori, favori2];
@@ -39,7 +39,7 @@ const initUser = (): User => {
 
 const initCategory = (): Category => {
   const category = new Category();
-  category.idCategorie = 1;
+  category.id = 1;
 
   return category;
 }
@@ -83,7 +83,7 @@ describe("Get favoris by id user per to category use case unit tests", () => {
   it("getFavorisByIdUserPerToCategoryUseCase should return message when it succeeded", async () => {
     spyOn(Utils, "isLogin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
-    const result: Favori[] = await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.idCategorie,  token);
+    const result: Favori[] = await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.id,  token);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toHaveLength(2);
@@ -94,7 +94,7 @@ describe("Get favoris by id user per to category use case unit tests", () => {
 
   it("getFavorisByIdUserPerToCategoryUseCase should throw a parameter exception when the token is null", async () => {
     try {
-      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.idCategorie,  undefined);
+      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.id,  undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -106,7 +106,7 @@ describe("Get favoris by id user per to category use case unit tests", () => {
   it("getFavorisByIdUserPerToCategoryUseCase should throw a parameter exception when the token is not login", async () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
-      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.idCategorie,  token);
+      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.id,  token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -119,7 +119,7 @@ describe("Get favoris by id user per to category use case unit tests", () => {
       user.pseudo = "lucas";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
-      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.idCategorie,  token);
+      await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.id,  token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -132,11 +132,11 @@ describe("Get favoris by id user per to category use case unit tests", () => {
   try {
     spyOn(Utils, "isLogin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(false);
-    await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.idCategorie, token);
+    await getFavorisByIdUserPerToCategoryUseCase.execute(user.pseudo, category.id, token);
   } catch (e) {
     const a: BusinessException = e;
     expect(a.message).toBe(
-      "La catégorie avec l'identifiant " + category.idCategorie + " n'existe pas"
+      "La catégorie avec l'identifiant " + category.id + " n'existe pas"
     );
   }
 });});

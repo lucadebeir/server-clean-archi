@@ -13,19 +13,19 @@ export default class UpdateMenuByIdUseCase {
   ) {}
 
   async execute(menu: Menu, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(menu, token);
-    return await this.menuRepository.updateById(menu.idMenu, menu.idRecette);
+    await this.checkBusinessRules(menu, token);
+    return await this.menuRepository.updateById(menu.id, menu.id_recipe);
   }
 
-  private checkBusinessRules(menu: Menu, token?: TokenDomain): void {
+  private async checkBusinessRules(menu: Menu, token?: TokenDomain): Promise<void> {
     if (token && isAdmin(token)) {
-      if (menu.idMenu) {
-        if (this.menuRepository.existById(menu.idMenu)) {
-          if (menu.idRecette) {
-            if (!this.recipeRepository.existById(menu.idRecette)) {
+      if (menu.id) {
+        if (await this.menuRepository.existById(menu.id)) {
+          if (menu.id_recipe) {
+            if (await !this.recipeRepository.existById(menu.id_recipe)) {
               throw new BusinessException(
                 "L'identifiant de recette " +
-                  menu.idMenu +
+                  menu.id +
                   " ne correspond à aucune ressource existante"
               );
             }
@@ -37,7 +37,7 @@ export default class UpdateMenuByIdUseCase {
         } else {
           throw new BusinessException(
             "L'identifiant de menu " +
-              menu.idMenu +
+              menu.id +
               " ne correspond à aucune ressource existante"
           );
         }

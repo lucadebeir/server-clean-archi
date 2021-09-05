@@ -10,7 +10,7 @@ export default class DeleteFavoriUseCase {
 
   async execute(id: any, pseudo: any, token?: TokenDomain): Promise<string> {
     const favori: Favori = {
-      idRecette: id,
+      id_recipe: id,
       pseudo: pseudo
     }
     this.checkBusinessRules(favori, token);

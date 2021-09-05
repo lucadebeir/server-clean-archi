@@ -11,7 +11,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
     return ShoppingSequelize.findOne({
       where: {
         pseudo: pseudo,
-        name: name,
+        name_ingredient: name,
       },
     })
       .then((result: any) => {
@@ -31,7 +31,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       where: {
         pseudo: pseudo,
       },
-      order: [["name", "ASC"]],
+      order: [["name_ingredient", "ASC"]],
       type: QueryTypes.SELECT,
       include: [
         {
@@ -64,11 +64,11 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
     })
       .then((data: any) => {
         let array = data.map((item: any) =>
-          item.idIngredient ? item.idIngredient : ""
+          item.id_ingredient ? item.id_ingredient : ""
         );
         return IngredientSequelize.findAll({
           where: {
-            idIngredient: {
+            id: {
               [Op.notIn]: array,
             },
           },
@@ -91,9 +91,9 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   addIngredientToShoppingList(shopping: Shopping): Promise<string> {
     const listeCourseData: Shopping = {
       pseudo: shopping.pseudo,
-      name: shopping.name,
+      name_ingredient: shopping.name_ingredient,
       quantity: shopping.quantity,
-      idUnite: shopping.idUnite,
+      id_unit: shopping.id_unit,
     };
     return ShoppingSequelize.create(listeCourseData)
       .then((shopping) => {
@@ -116,10 +116,10 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       for (let i = 0; i < list.length; i++) {
         const listeCourseData: Shopping = {
           pseudo: pseudo,
-          idIngredient: list[i].idIngredient,
-          name: list[i].name,
+          id_ingredient: list[i].id_ingredient,
+          name_ingredient: list[i].name_ingredient,
           quantity: list[i].quantity,
-          idUnite: list[i].idUnity,
+          id_unit: list[i].id_unit,
         };
 
         return ShoppingSequelize.create(listeCourseData)
@@ -142,7 +142,7 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   deleteById(id: any): Promise<string> {
     return ShoppingSequelize.destroy({
       where: {
-        idIngredientList: id,
+        id: id,
       },
     })
       .then(() => {

@@ -8,7 +8,7 @@ export default class FindNbCommentairesSince30DaysUseCase {
 
   async execute(
     token?: TokenDomain
-  ): Promise<{ nbCommentaires: any; date: any }[]> {
+  ): Promise<{ number_commentaires: any; date: any }[]> {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findNbCommentairesSince30Days();
   }

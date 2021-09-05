@@ -5,15 +5,16 @@ commentaire.use(cors());
 
 import CommentaireConfig from "../config/CommentaireConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import Commentaire from "../../../../core/domain/Commentaire";
 const commentaireConfig = new CommentaireConfig();
 
 //ajout commentaire
 commentaire.post("/add", authenticateJWT, (req, res) => {
-  const commentaire = {
+  const commentaire: Commentaire = {
     message: req.body.message,
-    dateCommentaire: new Date().toDateString(),
-    ecritPar: req.body.ecritPar,
-    concerne: req.body.concerne,
+    date: new Date().toDateString(),
+    pseudo: req.body.ecritPar,
+    id_recipe: req.body.concerne,
     parent: req.body.parent,
   };
   commentaireConfig
@@ -29,12 +30,12 @@ commentaire.post("/add", authenticateJWT, (req, res) => {
 
 //modifier commentaire
 commentaire.post("/update", authenticateJWT, (req, res) => {
-  const commentaireData = {
-    idCommentaire: req.body.idCommentaire,
+  const commentaireData: Commentaire = {
+    id: req.body.idCommentaire,
     message: req.body.message,
-    dateCommentaire: req.body.dateCommentaire,
-    ecritPar: req.body.ecritPar,
-    concerne: req.body.concerne,
+    date: req.body.dateCommentaire,
+    pseudo: req.body.ecritPar,
+    id_recipe: req.body.concerne,
     parent: req.body.parent,
   };
   commentaireConfig
@@ -89,12 +90,12 @@ commentaire.get("/user/:pseudo", authenticateJWT, (req, res) => {
 
 //supprimer un commentaire
 commentaire.delete("/:id", authenticateJWT, (req, res) => {
-  const commentaireData: any = {
-    idCommentaire: req.params.id,
+  const commentaireData: Commentaire = {
+    id: parseInt(req.params.id),
     message: req.body.message,
-    dateCommentaire: req.body.dateCommentaire,
-    ecritPar: req.body.ecritPar,
-    concerne: req.body.concerne,
+    date: req.body.dateCommentaire,
+    pseudo: req.body.ecritPar,
+    id_recipe: req.body.concerne,
     parent: req.body.parent,
   };
   commentaireConfig

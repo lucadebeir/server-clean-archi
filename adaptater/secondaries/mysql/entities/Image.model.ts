@@ -12,15 +12,15 @@ function ImageFactory(sequelize: Sequelize): ImageStatic {
   return <ImageStatic>sequelize.define(
     "images",
     {
-      idImage: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      lienImage: {
+      link: {
         type: DataTypes.STRING,
       },
-      nameImage: {
+      name: {
         type: DataTypes.STRING,
       },
     },

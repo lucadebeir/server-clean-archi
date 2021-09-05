@@ -7,18 +7,18 @@ export default class GetAllChildrenCommentairesByIdRecipeUseCase {
   constructor(private commentaireRepository: CommentaireRepository, private recipeRepository: RecipeRepository) {}
 
   async execute(id: any, idCommentaire: any): Promise<Commentaire[]> {
-    this.checkBusinessRules(id, idCommentaire);
+    await this.checkBusinessRules(id, idCommentaire);
     return await this.commentaireRepository.findAllChildrenCommentairesByIdRecette(
       id,
       idCommentaire
     );
   }
 
-  private checkBusinessRules(id: any, idCommentaire: any): void {
+  private async checkBusinessRules(id: any, idCommentaire: any): Promise<void> {
     if(id) {
-      if(this.recipeRepository.existById(id)) {
+      if(await this.recipeRepository.existById(id)) {
         if(idCommentaire) {
-          if(!this.commentaireRepository.existById(idCommentaire)) {
+          if(await !this.commentaireRepository.existById(idCommentaire)) {
             throw new BusinessException("La commentaire n'existe pas");
           }
         } else {

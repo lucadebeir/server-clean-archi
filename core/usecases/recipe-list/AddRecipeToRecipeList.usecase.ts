@@ -26,27 +26,27 @@ export default class AddRecipeToRecipeListUseCase {
         "Vous n'avez pas le droit d'ajouter cette ressource"
       );
     } else {
-      if (recipe.pseudoUser) {
-        if (await !this.userRepository.existByPseudo(recipe.pseudoUser)) {
+      if (recipe.pseudo) {
+        if (await !this.userRepository.existByPseudo(recipe.pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
-        if (token.pseudo !== recipe.pseudoUser) {
+        if (token.pseudo !== recipe.pseudo) {
           throw new TechnicalException("Problème technique");
         }
         if (
           await this.recipeListRepository.existByName(
-            recipe.nomRecette,
-            recipe.pseudoUser
+            recipe.name_recipe,
+            recipe.pseudo
           )
         ) {
           throw new BusinessException(
             "La recette " +
-              recipe.nomRecette +
+              recipe.name_recipe +
               " se trouve déjà dans le menu de l'utilisateur " +
-              recipe.pseudoUser
+              recipe.pseudo
           );
         } else {
-          if (recipe.nomRecette && recipe.nomRecette?.length > 60) {
+          if (recipe.name_recipe && recipe.name_recipe?.length > 60) {
             throw new BusinessException(
               "Le nom d'une recette ne doit pas dépasser 60 caractères"
             );

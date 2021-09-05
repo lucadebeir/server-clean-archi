@@ -9,7 +9,7 @@ import UserSequelize from "../entities/User.model";
 
 export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findNbViews(): Promise<number> {
-    return RecipeSequelize.sum("nbVues")
+    return RecipeSequelize.sum("number_views")
       .then((resultat) => {
         return resultat;
       })
@@ -41,7 +41,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findNbAbonnes(): Promise<number> {
     return UserSequelize.count({
       where: {
-        abonneNews: true,
+        is_subscribed: true,
       },
     })
       .then((resultat) => {
@@ -54,7 +54,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
 
   findUsersXAbonnes(): Promise<User[]> {
     return UserSequelize.findAll({
-      attributes: ["pseudo", "abonneNews"],
+      attributes: ["pseudo", "is_subscribed"],
     })
       .then((users) => {
         return users;
@@ -67,7 +67,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findTop20BestRecipes(): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       limit: 20,
-      order: [["nbVues", "DESC"]],
+      order: [["number_views", "DESC"]],
     })
       .then((recipes) => {
         return recipes;
@@ -80,7 +80,7 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   findTop20WorstRecipes(): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       limit: 20,
-      order: [["nbVues", "ASC"]],
+      order: [["number_views", "ASC"]],
     })
       .then((recipes) => {
         return recipes;
@@ -91,23 +91,23 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findTop20BestRecipesOfTheMonth(): Promise<
-    { nomRecette: any; nbVues: any }[]
+    { name: any; number_views: any }[]
   > {
     return RecipeSequelize.findAll({
       attributes: {
         include: [
-          "nomRecette",
-          [fn("COUNT", col("notifications.idNotification")), "nbVues"],
+          "name",
+          [fn("COUNT", col("notifications.id")), "number_views"],
         ],
         exclude: [
-          "idRecette",
-          "nbFavoris",
-          "datePublication",
-          "etapes",
-          "nbrePart",
-          "libellePart",
-          "tempsPreparation",
-          "tempsCuisson",
+          "id",
+          "number_favoris",
+          "date",
+          "steps",
+          "number_portion",
+          "name_portion",
+          "preparation_time",
+          "preparation_rest",
           "astuce",
           "mot",
         ],
@@ -118,14 +118,14 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
           attributes: [],
           where: {
             type: "vue",
-            [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`),
+            [Op.and]: literal(`date > NOW() - INTERVAL 1 MONTH`),
           },
           duplicating: false,
           required: false,
         },
       ],
-      order: literal("nbVues DESC"),
-      group: "idRecette",
+      order: literal("number_views DESC"),
+      group: "id",
       limit: 20,
     })
       .then((resultat: any) => {
@@ -136,24 +136,24 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbViewsSince30Days(): Promise<{ nbVues: any; date: any }[]> {
+  findNbViewsSince30Days(): Promise<{ number_views: any; date: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
-          [fn("COUNT", col("*")), "nbVues"],
-          [fn("DATE", col("dateNotification")), "date"],
+          [fn("COUNT", col("*")), "number_views"],
+          [fn("DATE", col("date")), "date"],
         ],
         exclude: [
-          `idNotification`,
+          `id`,
           `type`,
           `pseudo`,
-          `idRecette`,
+          `id_recipe`,
           `enabled`,
-          `dateNotification`,
+          `date`,
         ],
       },
       where: {
-        [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`),
+        [Op.and]: literal(`date > NOW() - INTERVAL 1 MONTH`),
         type: "vue",
       },
       group: "date",
@@ -167,25 +167,25 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
   }
 
   findNbCommentairesSince30Days(): Promise<
-    { nbCommentaires: any; date: any }[]
+    { number_commentaires: any; date: any }[]
   > {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
-          [fn("COUNT", col("*")), "nbCommentaires"],
-          [fn("DATE", col("dateNotification")), "date"],
+          [fn("COUNT", col("*")), "number_commentaires"],
+          [fn("DATE", col("date")), "date"],
         ],
         exclude: [
-          `idNotification`,
+          `id`,
           `type`,
           `pseudo`,
-          `idRecette`,
+          `id_recipe`,
           `enabled`,
-          `dateNotification`,
+          `date`,
         ],
       },
       where: {
-        [Op.and]: literal(`dateNotification > NOW() - INTERVAL 1 MONTH`),
+        [Op.and]: literal(`date > NOW() - INTERVAL 1 MONTH`),
         type: "commentaire",
       },
       group: "date",
@@ -198,20 +198,20 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbUsersMonthly(): Promise<{ nbUsers: any; month: any }[]> {
+  findNbUsersMonthly(): Promise<{ number_users: any; month: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
-          [fn("COUNT", col("*")), "nbUsers"],
-          [fn("MONTH", col("dateNotification")), "month"],
+          [fn("COUNT", col("*")), "number_users"],
+          [fn("MONTH", col("date")), "month"],
         ],
         exclude: [
-          `idNotification`,
+          `id`,
           `type`,
           `pseudo`,
-          `idRecette`,
+          `id_recipe`,
           `enabled`,
-          `dateNotification`,
+          `date`,
         ],
       },
       where: {
@@ -227,20 +227,20 @@ export default class StatistiqueRepositorySQL implements StatistiqueRepository {
       });
   }
 
-  findNbAbonnesMonthly(): Promise<{ nbAbonnes: any; month: any }[]> {
+  findNbAbonnesMonthly(): Promise<{ number_subscribed: any; month: any }[]> {
     return NotificationSequelize.findAll({
       attributes: {
         include: [
-          [fn("COUNT", col("*")), "nbAbonnes"],
-          [fn("MONTH", col("dateNotification")), "month"],
+          [fn("COUNT", col("*")), "number_subscribed"],
+          [fn("MONTH", col("date")), "month"],
         ],
         exclude: [
-          `idNotification`,
+          `id`,
           `type`,
           `pseudo`,
-          `idRecette`,
+          `id_recipe`,
           `enabled`,
-          `dateNotification`,
+          `date`,
         ],
       },
       where: {

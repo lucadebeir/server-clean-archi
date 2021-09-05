@@ -8,7 +8,7 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initCategory = (): Category => {
   const category = new Category();
-  category.idCategorie = 1;
+  category.id = 1;
   category.libelleCategorie = "Douceur";
 
   return category;
@@ -49,7 +49,7 @@ describe("Update category use case unit tests", () => {
       category
     );
     expect(result).toBeDefined();
-    expect(result.idCategorie).toBeDefined();
+    expect(result.id).toBeDefined();
     expect(result.libelleCategorie).toBe("Douceur");
   });
 
@@ -75,7 +75,7 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the idCategory is null", async () => {
-    category.idCategorie = null;
+    category.id = null;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
@@ -88,7 +88,7 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the category doesnt exist", async () => {
-    category.idCategorie = null;
+    category.id = null;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(false);

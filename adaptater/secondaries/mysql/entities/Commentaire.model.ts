@@ -12,7 +12,7 @@ function CommentaireFactory(sequelize: Sequelize): CommentaireStatic {
   return <CommentaireStatic>sequelize.define(
     "commentaires",
     {
-      idCommentaire: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -20,19 +20,19 @@ function CommentaireFactory(sequelize: Sequelize): CommentaireStatic {
       message: {
         type: DataTypes.TEXT,
       },
-      dateCommentaire: {
+      date: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
-      ecritPar: {
+      pseudo: {
         type: DataTypes.STRING,
       },
-      concerne: {
+      id_recipe: {
         type: DataTypes.INTEGER,
       },
-      parent: {
+      /*parent: {
         type: DataTypes.INTEGER,
-      },
+      },*/
     },
     {
       timestamps: false,

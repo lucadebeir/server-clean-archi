@@ -3,6 +3,7 @@ import HashMap from "hashmap";
 
 export default class Menu {
   map?: HashMap<number, Recipe> = new HashMap();
-  idMenu?: number;
-  idRecette?: number;
+  id?: number;
+  id_recipe?: number;
+  name?: string;
 }

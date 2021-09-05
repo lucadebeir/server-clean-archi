@@ -10,10 +10,10 @@ import DeleteIngredientFromRecipeUseCase from "../../usecases/use-ingredient/Del
 
 const initUseIngredient = (): UseIngredient => {
   const useIngredient = new UseIngredient();
-  useIngredient.idUnite = 1;
-  useIngredient.idIngredient = 1;
-  useIngredient.idRecette = 1;
-  useIngredient.qte = 10;
+  useIngredient.id_unit = 1;
+  useIngredient.id_ingredient = 1;
+  useIngredient.id_recipe = 1;
+  useIngredient.quantity = 10;
 
   return useIngredient;
 };
@@ -63,8 +63,8 @@ describe("delete ingredient from recipe use case unit tests", () => {
     spyOn(recipeRepository, "findById").and.returnValue(true);
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: string = await deleteIngredientFromRecipeUseCase.execute(
-      useIngredient.idRecette,
-      useIngredient.idIngredient,
+      useIngredient.id_recipe,
+      useIngredient.id_ingredient,
       token
     );
     expect(result).toBeDefined();
@@ -74,8 +74,8 @@ describe("delete ingredient from recipe use case unit tests", () => {
   it("deleteIngredientFromRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         undefined
       );
     } catch (e) {
@@ -90,8 +90,8 @@ describe("delete ingredient from recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         token
       );
     } catch (e) {
@@ -103,12 +103,12 @@ describe("delete ingredient from recipe use case unit tests", () => {
   });
 
   it("deleteIngredientFromRecipeUseCase should throw a parameter exception when the idIngredient is undefined", async () => {
-    useIngredient.idIngredient = undefined;
+    useIngredient.id_ingredient = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         token
       );
     } catch (e) {
@@ -118,13 +118,13 @@ describe("delete ingredient from recipe use case unit tests", () => {
   });
 
   it("deleteIngredientFromRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
-    useIngredient.idRecette = undefined;
+    useIngredient.id_recipe = undefined;
     try {
       spyOn(ingredientRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         token
       );
     } catch (e) {
@@ -138,8 +138,8 @@ describe("delete ingredient from recipe use case unit tests", () => {
       spyOn(ingredientRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         token
       );
     } catch (e) {
@@ -154,8 +154,8 @@ describe("delete ingredient from recipe use case unit tests", () => {
       spyOn(recipeRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientFromRecipeUseCase.execute(
-        useIngredient.idRecette,
-        useIngredient.idIngredient,
+        useIngredient.id_recipe,
+        useIngredient.id_ingredient,
         token
       );
     } catch (e) {

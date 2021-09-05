@@ -9,10 +9,10 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipeList = (): RecipeList => {
   const recipeList = new RecipeList();
-  recipeList.nomRecette = "Lasagnes";
-  recipeList.pseudoUser = "luca";
-  recipeList.complet = false;
-  recipeList.idRecette = 1;
+  recipeList.name_recipe = "Lasagnes";
+  recipeList.pseudo = "luca";
+  recipeList.complete = false;
+  recipeList.id_recipe = 1;
 
   return recipeList;
 };
@@ -51,7 +51,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
     spyOn(recipeListRepository, "addRecipe").and.callFake(
       (recipeList: RecipeList) => {
         if (recipeList) {
-          const result: RecipeList = { ...recipeList, idRecipeList: 1 };
+          const result: RecipeList = { ...recipeList, id: 1 };
           return new Promise((resolve, reject) => resolve(result));
         }
         return new Promise((resolve, reject) => resolve(null));
@@ -94,7 +94,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
   });
 
   it("addRecipeToRecipeListUseCase should throw a parameter exception when the pseudo is null", async () => {
-    recipeList.pseudoUser = undefined;
+    recipeList.pseudo = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
@@ -105,7 +105,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
   });
 
   it("addRecipeToRecipeListUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
-    recipeList.pseudoUser = "lucas";
+    recipeList.pseudo = "lucas";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
@@ -137,15 +137,15 @@ describe("Add recipe to recipe list use case unit tests", () => {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
-          recipeList.nomRecette +
+          recipeList.name_recipe +
           " se trouve déjà dans le menu de l'utilisateur " +
-          recipeList.pseudoUser
+          recipeList.pseudo
       );
     }
   });
 
   it("addRecipeToRecipeListUseCase should throw a parameter exception when the name already exist on my menu", async () => {
-    recipeList.nomRecette =
+    recipeList.name_recipe =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);

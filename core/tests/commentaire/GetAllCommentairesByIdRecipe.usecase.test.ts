@@ -7,19 +7,19 @@ import RecipeRepository from "../../ports/repositories/Recipe.repository";
 
 const initCommentaires = (): Commentaire[] => {
   const commentaire = new Commentaire();
-  commentaire.idCommentaire = 1;
-  commentaire.concerne = 1;
+  commentaire.id = 1;
+  commentaire.id_recipe = 1;
 
   const commentaire2 = new Commentaire();
-  commentaire2.idCommentaire = 2;
-  commentaire2.concerne = 1
+  commentaire2.id = 2;
+  commentaire2.id_recipe = 1
 
   return [commentaire, commentaire2];
 };
 
 const initRecipe = (): Recipe => {
     const recipe = new Recipe();
-    recipe.idRecette = 1;
+    recipe.id = 1;
 
     return recipe;
 }
@@ -59,17 +59,17 @@ describe("Get all commentaires of a recipe use case unit tests", () => {
   it("getAllCommentairesByIdRecipeUseCase should return commentaires when it succeeded", async () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: Commentaire[] = await getAllCommentairesByIdRecipeUseCase.execute(
-      recipe.idRecette
+      recipe.id_recipe
     );
     expect(result).toBeDefined();
     expect(result.length).toStrictEqual(2);
-    expect(result.filter((x) => x.concerne === recipe.idRecette).length).toStrictEqual(result.length);
+    expect(result.filter((x) => x.id_recipe === recipe.id_recipe).length).toStrictEqual(result.length);
   });
 
   it("getAllCommentairesByIdRecipeUseCase should throw a parameter exception when the id of recipe is undefined", async () => {
-    recipe.idRecette = undefined;
+    recipe.id = undefined;
     try {
-      await getAllCommentairesByIdRecipeUseCase.execute(recipe.idRecette);
+      await getAllCommentairesByIdRecipeUseCase.execute(recipe.id_recipe);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'identifiant d'une recette est obligatoire");
@@ -79,7 +79,7 @@ describe("Get all commentaires of a recipe use case unit tests", () => {
   it("getAllCommentairesByIdRecipeUseCase should throw a parameter exception when the recipe doesn't exist", async () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
-      await getAllCommentairesByIdRecipeUseCase.execute(recipe.idRecette);
+      await getAllCommentairesByIdRecipeUseCase.execute(recipe.id_recipe);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe("La recette n'existe pas");

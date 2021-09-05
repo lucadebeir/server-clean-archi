@@ -7,9 +7,9 @@ import RecipeRepository from "../../ports/repositories/Recipe.repository";
 
 const initImage = (): ImageDomain => {
   const image = new ImageDomain();
-  image.idImage = 1;
-  image.nameImage = "wraps aux épinards.jpeg";
-  image.lienImage =
+  image.id = 1;
+  image.name = "wraps aux épinards.jpeg";
+  image.link =
     "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg";
 
   return image;
@@ -17,7 +17,7 @@ const initImage = (): ImageDomain => {
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
+  recipe.id = 1;
 
   return recipe;
 };
@@ -57,11 +57,11 @@ describe("get image by recette use case unit tests", () => {
   it("findImageByRecetteUseCase should return image when id is 1", async () => {
     spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: ImageDomain = await findImageByRecetteUseCase.execute(
-      recipe.idRecette
+      recipe.id_recipe
     );
-    expect(result.idImage).toBe(1);
-    expect(result.nameImage).toBe("wraps aux épinards.jpeg");
-    expect(result.lienImage).toBe(
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("wraps aux épinards.jpeg");
+    expect(result.link).toBe(
       "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"
     );
   });
@@ -78,7 +78,7 @@ describe("get image by recette use case unit tests", () => {
   it("findImageByRecetteUseCase should throw an error when recipe doesn't exist", async () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
-      await findImageByRecetteUseCase.execute(recipe.idRecette);
+      await findImageByRecetteUseCase.execute(recipe.id_recipe);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette n'existe pas");

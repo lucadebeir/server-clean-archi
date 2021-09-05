@@ -8,7 +8,7 @@ import CreateIngredientUseCase from "../../usecases/ingredient/CreateIngredient.
 
 const initIngredient = (): Ingredient => {
   const ingredient = new Ingredient();
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.name = "Cacahuètes";
 
   return ingredient;
 };
@@ -32,7 +32,7 @@ describe("Create ingredient use case unit tests", () => {
     spyOn(ingredientRepository, "create").and.callFake(
       (ingredient: Ingredient) => {
         if (ingredient) {
-          const result: Ingredient = { ...ingredient, idIngredient: 1 };
+          const result: Ingredient = { ...ingredient, id: 1 };
           return new Promise((resolve, reject) => resolve(result));
         }
         return new Promise((resolve, reject) => resolve(null));
@@ -48,8 +48,8 @@ describe("Create ingredient use case unit tests", () => {
       user
     );
     expect(result).toBeDefined();
-    expect(result.idIngredient).toBe(1);
-    expect(result.nomIngredient).toBe("Cacahuètes");
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("Cacahuètes");
   });
 
   it("createIngredientUseCase should throw a parameter exception when the user is null", async () => {
@@ -86,7 +86,7 @@ describe("Create ingredient use case unit tests", () => {
   });
 
   it("createIngredientUseCase should throw a parameter exception when the name is null", async () => {
-    ingredient.nomIngredient = undefined;
+    ingredient.name = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
@@ -97,7 +97,7 @@ describe("Create ingredient use case unit tests", () => {
   });
 
   it("createIngredientUseCase should throw a parameter exception when the name has more than 39 characters", async () => {
-    ingredient.nomIngredient =
+    ingredient.name =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);

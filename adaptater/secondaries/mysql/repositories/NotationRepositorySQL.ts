@@ -6,7 +6,7 @@ export default class NotationRepositorySQL implements NotationRepository {
   findByPseudo(idRecipe: number, pseudo: string): Promise<NotationDomain> {
     return NotationSequelize.findOne({
       where: {
-        idRecette: idRecipe,
+        id_recipe: idRecipe,
         pseudo: pseudo,
       },
     })

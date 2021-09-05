@@ -11,31 +11,31 @@ type ShoppingStatic = typeof Model & {
 
 function ShoppingFactory(sequelize: Sequelize): ShoppingStatic {
   return <ShoppingStatic>sequelize.define(
-    "liste_de_course",
+    "shopping_list",
     {
-      idIngredientList: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
       },
       pseudo: {
         type: DataTypes.STRING,
       },
-      idIngredient: {
+      id_ingredient: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
           model: IngredientSequelize,
-          key: "idIngredient",
+          key: "id",
         },
       },
-      name: {
+      name_ingredient: {
         type: DataTypes.STRING,
       },
       quantity: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      idUnite: {
+      id_unit: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },

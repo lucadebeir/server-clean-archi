@@ -36,8 +36,8 @@ export default class RegisterUseCase {
                   );
                 } else {
                   if (user.password) {
-                    if (user.confirmedPassword) {
-                      if (user.confirmedPassword !== user.password) {
+                    if (user.confirmed_password) {
+                      if (user.confirmed_password !== user.password) {
                         throw new BusinessException(
                           "Le mot de passe et la confirmation du mot de passe sont différents"
                         );

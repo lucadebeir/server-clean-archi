@@ -24,11 +24,11 @@ export default class UpdateStateByIdUseCase {
       );
     } else {
       if (recipe) {
-        if (recipe.pseudoUser) {
-          if (!this.userRepository.existByPseudo(recipe.pseudoUser)) {
+        if (recipe.pseudo) {
+          if (!this.userRepository.existByPseudo(recipe.pseudo)) {
             throw new BusinessException("L'utilisateur n'existe pas");
           }
-          if (token.pseudo !== recipe.pseudoUser) {
+          if (token.pseudo !== recipe.pseudo) {
             throw new TechnicalException("Problème technique");
           }
         } else {

@@ -23,31 +23,31 @@ export default class UpdateRecipeUseCase {
 
   private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {
     if (token && isAdmin(token)) {
-      if (recipe?.idRecette) {
-        this.checkIfValueIsEmpty(recipe.nomRecette, "nomRecette");
-        this.checkIfValueIsEmpty(recipe.libellePart, "libellePart");
-        this.checkIfValueIsEmpty(recipe.nbrePart, "nbrePart");
-        this.checkIfValueIsEmpty(recipe.tempsPreparation, "tempsPreparation");
+      if (recipe?.id) {
+        this.checkIfValueIsEmpty(recipe.name, "nomRecette");
+        this.checkIfValueIsEmpty(recipe.name_portion, "libellePart");
+        this.checkIfValueIsEmpty(recipe.number_portion, "nbrePart");
+        this.checkIfValueIsEmpty(recipe.preparation_time, "tempsPreparation");
 
-        this.checkIfValueIsValid(60, recipe.nomRecette, "nomRecette");
-        this.checkIfValueIsValid(50, recipe.libellePart, "libellePart");
+        this.checkIfValueIsValid(60, recipe.name, "nomRecette");
+        this.checkIfValueIsValid(50, recipe.name_portion, "libellePart");
 
-        if (recipe.nbrePart && recipe.nbrePart <= 0) {
+        if (recipe.number_portion && recipe.number_portion <= 0) {
           throw new BusinessException(
             "Le nombre de part doit être strictement supérieur à 0"
           );
         }
 
         if (
-          recipe.utiliserIngredients?.length == 0 ||
-          !recipe.utiliserIngredients
+          recipe.ingredients?.length == 0 ||
+          !recipe.ingredients
         ) {
           throw new BusinessException(
             "Il faut sélectionner au moins un ingrédient pour créer une recette"
           );
         } else {
-          recipe.utiliserIngredients?.map((useIngredient) => {
-            if (useIngredient.qte && useIngredient.qte <= 0) {
+          recipe.ingredients?.map((useIngredient) => {
+            if (useIngredient.quantity && useIngredient.quantity <= 0) {
               throw new BusinessException(
                 "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
               );
@@ -55,19 +55,19 @@ export default class UpdateRecipeUseCase {
 
             if (
               !this.ingredientRepository.existById(
-                useIngredient.ingredient?.idIngredient
+                useIngredient.ingredient?.id
               )
             ) {
               throw new BusinessException(
                 "L'ingrédient " +
-                  useIngredient.ingredient?.idIngredient +
+                  useIngredient.ingredient?.id +
                   " n'existe pas"
               );
             }
 
-            if (!this.unityRepository.existById(useIngredient.unite?.idUnite)) {
+            if (!this.unityRepository.existById(useIngredient.unite?.id)) {
               throw new BusinessException(
-                "L'unité " + useIngredient.unite?.idUnite + " n'existe pas"
+                "L'unité " + useIngredient.unite?.id + " n'existe pas"
               );
             }
           });
@@ -79,9 +79,9 @@ export default class UpdateRecipeUseCase {
           );
         } else {
           recipe.categories?.map((category) => {
-            if (!this.categoryRepository.existById(category.idCategorie)) {
+            if (!this.categoryRepository.existById(category.id)) {
               throw new BusinessException(
-                "La catégorie " + category.idCategorie + " n'existe pas"
+                "La catégorie " + category.id + " n'existe pas"
               );
             }
           });

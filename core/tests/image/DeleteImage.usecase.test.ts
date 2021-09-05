@@ -7,9 +7,9 @@ import DeleteImageUseCase from "../../usecases/image/DeleteImage.usecase";
 
 const initImage = (): ImageDomain => {
   const image = new ImageDomain();
-  image.idImage = 1;
-  image.nameImage = "wraps aux épinards.jpeg";
-  image.lienImage =
+  image.id = 1;
+  image.name = "wraps aux épinards.jpeg";
+  image.link =
     "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg";
 
   return image;
@@ -44,7 +44,7 @@ describe("delete image by id use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(imageRepository, "findById").and.returnValue(true);
     const result: string = await deleteImageUseCase.execute(
-      image.idImage,
+      image.id,
       token
     );
     expect(result).toBe("Cette image a bien été supprimé");
@@ -52,7 +52,7 @@ describe("delete image by id use case unit tests", () => {
 
   it("deleteImageUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      await deleteImageUseCase.execute(image.idImage, undefined);
+      await deleteImageUseCase.execute(image.id, undefined);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -64,7 +64,7 @@ describe("delete image by id use case unit tests", () => {
   it("deleteImageUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await deleteImageUseCase.execute(image.idImage, token);
+      await deleteImageUseCase.execute(image.id, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

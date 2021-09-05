@@ -9,7 +9,7 @@ import * as Utils from "../../utils/token.service";
 
 const initFavori = (): Favori => {
   const favori = new Favori();
-  favori.idRecette = 1;
+  favori.id_recipe = 1;
   favori.pseudo = "luca";
 
   return favori;

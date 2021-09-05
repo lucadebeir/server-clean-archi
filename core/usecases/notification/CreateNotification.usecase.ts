@@ -20,25 +20,25 @@ export default class CreateNotificationUseCase {
     notification: Notification,
     token?: TokenDomain
   ): Promise<Notification> {
-    this.checkBusinessRules(notification, token);
+    await this.checkBusinessRules(notification, token);
     return this.notificationRepository.create(notification);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     notification: Notification,
     token?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (notification.pseudo) {
       if (token && isLogin(token) && token.pseudo === notification.pseudo) {
-        if (!this.userRepository.existByPseudo(notification.pseudo)) {
+        if (await !this.userRepository.existByPseudo(notification.pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
       } else {
         throw new TechnicalException("Vous n'avez pas accès à cette ressource");
       }
     }
-    if (notification.idRecette) {
-      if (this.recipeRepository.existById(notification.idRecette)) {
+    if (notification.id_recipe) {
+      if (await this.recipeRepository.existById(notification.id_recipe)) {
         throw new BusinessException("La recette n'existe pas");
       }
     }

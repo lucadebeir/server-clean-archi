@@ -12,22 +12,22 @@ type ClassifyInStatic = typeof Model & {
 
 function ClassifyInFactory(sequelize: Sequelize): ClassifyInStatic {
   return <ClassifyInStatic>sequelize.define(
-    "classerDans",
+    "recipes__categories",
     {
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-          model: "recettes",
-          key: "idRecette",
+          model: "recipes",
+          key: "id",
         },
       },
-      idCategorie: {
+      id_category: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
           model: "categories",
-          key: "idCategorie",
+          key: "id",
         },
       },
     },
@@ -42,26 +42,26 @@ const ClassifyInSequelize = ClassifyInFactory(db.sequelize);
 
 RecipeSequelize.belongsToMany(CategorySequelize, {
   through: ClassifyInSequelize,
-  foreignKey: "idRecette",
+  foreignKey: "id_category",
   as: "categories",
 });
 CategorySequelize.belongsToMany(RecipeSequelize, {
   through: ClassifyInSequelize,
-  foreignKey: "idCategorie",
+  foreignKey: "id_recipe",
 });
 
 ClassifyInSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(ClassifyInSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id" },
 });
 
 ClassifyInSequelize.belongsTo(CategorySequelize, {
-  foreignKey: { name: "idCategorie" },
+  foreignKey: { name: "id_category" },
 });
 CategorySequelize.hasMany(ClassifyInSequelize, {
-  foreignKey: { name: "idCategorie" },
+  foreignKey: { name: "id" },
 });
 
 export = ClassifyInSequelize;

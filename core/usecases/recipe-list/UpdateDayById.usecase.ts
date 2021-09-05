@@ -30,11 +30,11 @@ export default class UpdateDayByIdUseCase {
       );
     } else {
       if (recipe) {
-        if (recipe.pseudoUser) {
-          if (await !this.userRepository.existByPseudo(recipe.pseudoUser)) {
+        if (recipe.pseudo) {
+          if (await !this.userRepository.existByPseudo(recipe.pseudo)) {
             throw new BusinessException("L'utilisateur n'existe pas");
           }
-          if (token.pseudo !== recipe.pseudoUser) {
+          if (token.pseudo !== recipe.pseudo) {
             throw new TechnicalException("Problème technique");
           }
           if (recipe.day && !days.includes(recipe.day)) {

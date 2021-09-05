@@ -103,7 +103,7 @@ statistique.get("/top/recipes/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findTop20BestRecipesOfTheMonthUseCase()
     .execute(req.body.user)
-    .then((recipes: { nomRecette: any; nbVues: any }[]) => {
+    .then((recipes: { name: any; number_views: any }[]) => {
       res.json(recipes);
     })
     .catch((err: Error) => {
@@ -116,7 +116,7 @@ statistique.get("/views/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbViewsSince30DaysUseCase()
     .execute(req.body.user)
-    .then((result: { nbVues: any; date: any }[]) => {
+    .then((result: { number_views: any; date: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -129,7 +129,7 @@ statistique.get("/commentaires/month", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbCommentairesSince30DaysUseCase()
     .execute(req.body.user)
-    .then((result: { nbCommentaires: any; date: any }[]) => {
+    .then((result: { number_commentaires: any; date: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -142,7 +142,7 @@ statistique.get("/users/monthly", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbUsersMonthlyUseCase()
     .execute(req.body.user)
-    .then((result: { nbUsers: any; month: any }[]) => {
+    .then((result: { number_users: any; month: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {
@@ -155,7 +155,7 @@ statistique.get("/abonnes/monthly", authenticateJWT, (req, res) => {
   statistiqueConfig
     .findNbAbonnesMonthlyUseCase()
     .execute(req.body.user)
-    .then((result: { nbAbonnes: any; month: any }[]) => {
+    .then((result: { number_subscribed: any; month: any }[]) => {
       res.json(result);
     })
     .catch((err: Error) => {

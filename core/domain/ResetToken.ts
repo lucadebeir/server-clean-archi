@@ -1,5 +1,7 @@
 export default class ResetToken {
-  userId?: string;
-  resettoken?: string;
-  createdAt?: Date;
+  id?: number;
+  pseudo?: string;
+  token?: string;
+  created_at?: Date;
+  updated_at?: Date;
 }

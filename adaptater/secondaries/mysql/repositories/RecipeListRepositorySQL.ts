@@ -8,8 +8,8 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
       { day: recipe.day },
       {
         where: {
-          idRecipeList: recipe.idRecipeList,
-          pseudoUser: recipe.pseudoUser,
+          id: recipe.id,
+          pseudo: recipe.pseudo,
         },
       }
     )
@@ -28,8 +28,8 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   existByName(name: any, pseudo: any): Promise<boolean> {
     return RecipeListSequelize.findOne({
       where: {
-        pseudoUser: pseudo,
-        nomRecette: name,
+        pseudo: pseudo,
+        name_recipe: name,
       },
     })
       .then((result: any) => {
@@ -50,7 +50,7 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   existById(id: any): Promise<boolean> {
     return RecipeListSequelize.findOne({
       where: {
-        idRecette: id,
+        id_recipe: id,
       },
     })
       .then((result: any) => {
@@ -68,7 +68,7 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   findById(pseudo: any): Promise<RecipeList[]> {
     return RecipeListSequelize.findAll({
       where: {
-        pseudoUser: pseudo,
+        pseudo: pseudo,
       },
     })
       .then((recipeList) => {
@@ -99,11 +99,11 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
 
   updateState(recipe: RecipeList): Promise<string> {
     return RecipeListSequelize.update(
-      { complet: recipe.complet },
+      { complete: recipe.complete },
       {
         where: {
-          idRecipeList: recipe.idRecipeList,
-          pseudoUser: recipe.pseudoUser,
+          id: recipe.id,
+          pseudo: recipe.pseudo,
         },
       }
     )
@@ -122,8 +122,8 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   deleteById(id: any, pseudo: any): Promise<string> {
     return RecipeListSequelize.destroy({
       where: {
-        idRecipeList: id,
-        pseudoUser: pseudo,
+        id: id,
+        pseudo: pseudo,
       },
     })
       .then(() => {
@@ -137,7 +137,7 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
   deleteAll(pseudo: any): Promise<string> {
     return RecipeListSequelize.destroy({
       where: {
-        pseudoUser: pseudo,
+        pseudo: pseudo,
       },
       truncate: true,
     })

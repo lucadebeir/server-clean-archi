@@ -9,8 +9,8 @@ import CategoryRepository from "../../ports/repositories/Category.repository";
 
 const initClassifyIn = (): ClassifyIn => {
   const classifyIn = new ClassifyIn();
-  classifyIn.idRecette = 1;
-  classifyIn.idCategorie = 1;
+  classifyIn.id_recipe = 1;
+  classifyIn.id_category = 1;
 
   return classifyIn;
 };
@@ -91,7 +91,7 @@ describe("Add category to recipe use case unit tests", () => {
   });
 
   it("addCategoryToRecipeUseCase should throw a parameter exception when the idCategory is undefined", async () => {
-    classifyIn.idCategorie = undefined;
+    classifyIn.id_category = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
@@ -102,7 +102,7 @@ describe("Add category to recipe use case unit tests", () => {
   });
 
   it("addCategoryToRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
-    classifyIn.idRecette = undefined;
+    classifyIn.id_recipe = undefined;
     try {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);

@@ -8,8 +8,8 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.nomRecette = "Lasagnes";
+  recipe.id = 1;
+  recipe.name = "Lasagnes";
 
   return recipe;
 };
@@ -48,7 +48,7 @@ describe("Delete recipe use case unit tests", () => {
     spyOn(recipeRepository, "useInRecipeList").and.returnValue(false);
 
     const result: string = await deleteRecipeUseCase.execute(
-      recipe.idRecette,
+      recipe.id_recipe,
       user
     );
     expect(result).toBeDefined();
@@ -58,7 +58,7 @@ describe("Delete recipe use case unit tests", () => {
   it("deleteRecipeUseCase should throw a parameter exception when the user is undefined", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteRecipeUseCase.execute(recipe.idRecette, undefined);
+      await deleteRecipeUseCase.execute(recipe.id_recipe, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -70,7 +70,7 @@ describe("Delete recipe use case unit tests", () => {
   it("deleteRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteRecipeUseCase.execute(recipe.idRecette, user);
+      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -93,7 +93,7 @@ describe("Delete recipe use case unit tests", () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.idRecette, user);
+      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");
@@ -105,12 +105,12 @@ describe("Delete recipe use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "useInMenu").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.idRecette, user);
+      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
-          recipe.idRecette +
+          recipe.id_recipe +
           " ne peut pas être supprimée car cette dernière est utilisée par le menu."
       );
     }
@@ -122,12 +122,12 @@ describe("Delete recipe use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "useInMenu").and.returnValue(false);
       spyOn(recipeRepository, "useInRecipeList").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.idRecette, user);
+      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
-          recipe.idRecette +
+          recipe.id_recipe +
           " ne peut pas être supprimée car cette dernière est utilisée par un menu de la semaine."
       );
     }

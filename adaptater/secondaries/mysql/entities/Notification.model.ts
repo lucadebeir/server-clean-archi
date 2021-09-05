@@ -10,9 +10,9 @@ type NotificationStatic = typeof Model & {
 
 function NotificationFactory(sequelize: Sequelize): NotificationStatic {
   return <NotificationStatic>sequelize.define(
-    "notification",
+    "notifications",
     {
-      idNotification: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -20,14 +20,14 @@ function NotificationFactory(sequelize: Sequelize): NotificationStatic {
       type: {
         type: DataTypes.TEXT,
       },
-      dateNotification: {
+      date: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
       pseudo: {
         type: DataTypes.STRING,
       },
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
       },
       enabled: {

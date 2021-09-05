@@ -10,11 +10,11 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipeList = (): RecipeList => {
   const recipeList = new RecipeList();
-  recipeList.idRecipeList = 1;
-  recipeList.nomRecette = "Lasagnes";
-  recipeList.pseudoUser = "luca";
-  recipeList.complet = false;
-  recipeList.idRecette = 1;
+  recipeList.id = 1;
+  recipeList.name_recipe = "Lasagnes";
+  recipeList.pseudo = "luca";
+  recipeList.complete = false;
+  recipeList.id_recipe = 1;
 
   return recipeList;
 };
@@ -95,7 +95,7 @@ describe("Update state by id use case unit tests", () => {
   });
 
   it("updateStateByIdUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
-    recipeList.pseudoUser = "lucas";
+    recipeList.pseudo = "lucas";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
@@ -107,7 +107,7 @@ describe("Update state by id use case unit tests", () => {
   });
 
   it("updateStateByIdUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
-    recipeList.pseudoUser = undefined;
+    recipeList.pseudo = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);

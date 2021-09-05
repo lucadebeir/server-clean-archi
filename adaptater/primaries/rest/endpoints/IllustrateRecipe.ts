@@ -10,8 +10,8 @@ const illustrateRecipeConfig = new IllustrateRecipeConfig();
 //Ajouter une image à une recette
 illustrate.get("/add", authenticateJWT, (req, res) => {
   const data: any = {
-    idImage: req.body.idImage,
-    idRecette: req.body.idRecette,
+    id_image: req.body.idImage,
+    id_recipe: req.body.idRecette,
   };
   illustrateRecipeConfig
     .addImageToRecipeUseCase()
@@ -27,8 +27,8 @@ illustrate.get("/add", authenticateJWT, (req, res) => {
 //Modifier l'image d'une recette
 illustrate.get("/update", authenticateJWT, (req, res) => {
   const data: any = {
-    idImage: req.body.idImage,
-    idRecette: req.body.idRecette,
+    id_image: req.body.idImage,
+    id_recipe: req.body.idRecette,
   };
   illustrateRecipeConfig
     .updateImageFromRecipeUseCase()

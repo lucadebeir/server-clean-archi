@@ -8,7 +8,7 @@ export default class FindNbAbonnesMonthlyUseCase {
 
   async execute(
     token?: TokenDomain
-  ): Promise<{ nbAbonnes: any; month: any }[]> {
+  ): Promise<{ number_subscribed: any; month: any }[]> {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findNbAbonnesMonthly();
   }

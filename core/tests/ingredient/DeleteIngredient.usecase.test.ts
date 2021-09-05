@@ -8,8 +8,8 @@ import * as Utils from "../../utils/token.service";
 
 const initIngredient = (): Ingredient => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   return ingredient;
 };
@@ -41,7 +41,7 @@ describe("Delete ingredient use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(ingredientRepository, "existById").and.returnValue(true);
     const result: string = await deleteIngredientUseCase.execute(
-      ingredient.idIngredient,
+      ingredient.id,
       user
     );
     expect(result).toBeDefined();
@@ -51,7 +51,7 @@ describe("Delete ingredient use case unit tests", () => {
   it("deleteIngredientUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteIngredientUseCase.execute(ingredient.idIngredient, user);
+      await deleteIngredientUseCase.execute(ingredient.id, user);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -63,7 +63,7 @@ describe("Delete ingredient use case unit tests", () => {
   it("deleteIngredientUseCase should throw a parameter exception when the user is null", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteIngredientUseCase.execute(ingredient.idIngredient, undefined);
+      await deleteIngredientUseCase.execute(ingredient.id, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -86,7 +86,7 @@ describe("Delete ingredient use case unit tests", () => {
     try {
       spyOn(ingredientRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteIngredientUseCase.execute(ingredient.idIngredient, user);
+      await deleteIngredientUseCase.execute(ingredient.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cet ingrédient n'existe pas");
@@ -98,7 +98,7 @@ describe("Delete ingredient use case unit tests", () => {
       spyOn(ingredientRepository, "checkExistInRecipes").and.returnValue(true);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteIngredientUseCase.execute(ingredient.idIngredient, user);
+      await deleteIngredientUseCase.execute(ingredient.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

@@ -10,12 +10,12 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 2;
-  ingredient2.nomIngredient = "Fromage";
+  ingredient2.id = 2;
+  ingredient2.name = "Fromage";
 
   const ingredients = [ingredient, ingredient2];
 
@@ -24,7 +24,7 @@ const initIngredients = (): Ingredient[] => {
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
+  recipe.id = 1;
 
   return recipe;
 };
@@ -68,7 +68,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: Ingredient[] = await getIngredientsNotInRecipeUseCase.execute(
-      recipe.idRecette,
+      recipe.id_recipe,
       user
     );
     expect(result.length).toBe(2);
@@ -81,7 +81,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
   it("getIngredientsNotInRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getIngredientsNotInRecipeUseCase.execute(recipe.idRecette, user);
+      await getIngredientsNotInRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -93,7 +93,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
   it("getIngredientsNotInRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await getIngredientsNotInRecipeUseCase.execute(
-        recipe.idRecette,
+        recipe.id_recipe,
         undefined
       );
     } catch (e) {
@@ -118,12 +118,12 @@ describe("get ingredients not in recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(false);
-      await getIngredientsNotInRecipeUseCase.execute(recipe.idRecette, user);
+      await getIngredientsNotInRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +
-          recipe.idRecette +
+          recipe.id_recipe +
           " ne correspond à aucune ressource existante."
       );
     }

@@ -10,10 +10,10 @@ import UpdateIngredientFromRecipeUseCase from "../../usecases/use-ingredient/Upd
 
 const initUseIngredient = (): UseIngredient => {
   const useIngredient = new UseIngredient();
-  useIngredient.idUnite = 1;
-  useIngredient.idIngredient = 1;
-  useIngredient.idRecette = 1;
-  useIngredient.qte = 10;
+  useIngredient.id_unit = 1;
+  useIngredient.id_ingredient = 1;
+  useIngredient.id_recipe = 1;
+  useIngredient.quantity = 10;
 
   return useIngredient;
 };
@@ -100,7 +100,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   });
 
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the idUnity is undefined", async () => {
-    useIngredient.idUnite = undefined;
+    useIngredient.id_unit = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
@@ -111,7 +111,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   });
 
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the idIngredient is undefined", async () => {
-    useIngredient.idIngredient = undefined;
+    useIngredient.id_ingredient = undefined;
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -123,7 +123,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   });
 
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
-    useIngredient.idRecette = undefined;
+    useIngredient.id_recipe = undefined;
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(ingredientRepository, "findById").and.returnValue(true);
@@ -172,7 +172,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   });
 
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the qte is undefined", async () => {
-    useIngredient.qte = undefined;
+    useIngredient.quantity = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(unityRepository, "findById").and.returnValue(true);
@@ -186,7 +186,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   });
 
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the qte is equal to 0", async () => {
-    useIngredient.qte = 0;
+    useIngredient.quantity = 0;
     try {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(ingredientRepository, "findById").and.returnValue(true);

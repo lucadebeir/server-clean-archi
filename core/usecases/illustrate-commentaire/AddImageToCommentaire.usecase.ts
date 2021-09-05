@@ -18,33 +18,33 @@ export default class AddImageToCommentaireUseCase {
     illustrateCommentaire: IllustrateCommentaireDomain,
     token?: TokenDomain
   ): Promise<string> {
-    this.checkBusinessRules(illustrateCommentaire, token);
+    await this.checkBusinessRules(illustrateCommentaire, token);
     return this.illustrateCommentaireRepository.addToCommentaire(
       illustrateCommentaire
     );
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     illustrateCommentaire: IllustrateCommentaireDomain,
     token?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (token && isLogin(token)) {
       if (illustrateCommentaire) {
         if (
-          !illustrateCommentaire.idImage ||
-          !this.imageRepository.existById(illustrateCommentaire.idImage)
+          !illustrateCommentaire.id_image ||
+          await !this.imageRepository.existById(illustrateCommentaire.id_image)
         ) {
           throw new BusinessException("L'image doit exister");
         }
         if (
-          !illustrateCommentaire.idCommentaire ||
-          !this.commentaireRepository.existById(
-            illustrateCommentaire.idCommentaire
+          !illustrateCommentaire.id_commentaire ||
+          await !this.commentaireRepository.existById(
+            illustrateCommentaire.id_commentaire
           )
         ) {
           throw new BusinessException("Le commentaire doit exister");
         }
-        if (this.illustrateCommentaireRepository.check(illustrateCommentaire)) {
+        if (await this.illustrateCommentaireRepository.check(illustrateCommentaire)) {
           throw new BusinessException(
             "Cette image est déjà associé à ce commentaire"
           );

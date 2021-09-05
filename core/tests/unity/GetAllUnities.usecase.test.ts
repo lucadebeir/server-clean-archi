@@ -7,12 +7,12 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initUnities = (): Unity[] => {
   const unity1 = new Unity();
-  unity1.idUnite = 1;
-  unity1.libelleUnite = "cl";
+  unity1.id = 1;
+  unity1.name = "cl";
 
   const unity2 = new Unity();
-  unity2.idUnite = 2;
-  unity2.libelleUnite = "g";
+  unity2.id = 2;
+  unity2.name = "g";
 
   const list = [];
 

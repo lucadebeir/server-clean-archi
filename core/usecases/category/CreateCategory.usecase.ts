@@ -9,20 +9,20 @@ export default class CreateCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
   async execute(category?: Category, user?: TokenDomain): Promise<Category> {
-    this.checkBusinessRules(category, user);
+    await this.checkBusinessRules(category, user);
     return await this.categoryRepository.create(category);
   }
 
-  private checkBusinessRules(category?: Category, user?: TokenDomain): void {
+  private async checkBusinessRules(category?: Category, user?: TokenDomain): Promise<void> {
     if (user && isAdmin(user)) {
       if (category) {
-        if (!category.libelleCategorie) {
+        if (!category.name) {
           throw new BusinessException(
             "Le libellé d'une catégorie est obligatoire"
           );
         } else {
           if (
-            this.categoryRepository.checkExistByName(category.libelleCategorie)
+            await this.categoryRepository.checkExistByName(category.name)
           ) {
             throw new BusinessException(
               "Ce libellé est déjà utilisé par une catégorie"

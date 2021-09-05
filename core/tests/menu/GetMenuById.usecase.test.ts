@@ -9,16 +9,16 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.nomRecette = "Lasagnes";
+  recipe.id = 1;
+  recipe.name = "Lasagnes";
 
   return recipe;
 };
 
 const initMenu = (): Menu => {
   const menu = new Menu();
-  menu.idMenu = 1;
-  menu.idRecette = 1;
+  menu.id = 1;
+  menu.id_recipe = 1;
 
   return menu;
 };
@@ -54,17 +54,17 @@ describe("Get menu by id use case unit tests", () => {
     spyOn(menuRepository, "existById").and.returnValue(true);
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Recipe = await getMenuBydIdUseCase.execute(
-      menu.idMenu,
+      menu.id,
       token
     );
     expect(result).toBeDefined();
-    expect(result.idRecette).toBe(1);
-    expect(result.nomRecette).toBe("Lasagnes");
+    expect(result.id_recipe).toBe(1);
+    expect(result.name).toBe("Lasagnes");
   });
 
   it("getMenuBydIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
-      await getMenuBydIdUseCase.execute(menu.idMenu, undefined);
+      await getMenuBydIdUseCase.execute(menu.id, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -76,7 +76,7 @@ describe("Get menu by id use case unit tests", () => {
   it("getMenuBydIdUseCase should throw a parameter exception when the user is not connect", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getMenuBydIdUseCase.execute(menu.idMenu, token);
+      await getMenuBydIdUseCase.execute(menu.id, token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -101,12 +101,12 @@ describe("Get menu by id use case unit tests", () => {
     try {
       spyOn(menuRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await getMenuBydIdUseCase.execute(menu.idMenu, token);
+      await getMenuBydIdUseCase.execute(menu.id, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +
-          menu.idMenu +
+          menu.id +
           " ne correspond à aucune ressource existante"
       );
     }

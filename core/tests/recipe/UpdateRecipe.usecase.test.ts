@@ -18,34 +18,34 @@ import Unity from "../../domain/Unity";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.nomRecette = "Lasagnes";
-  recipe.etapes = "1. Préchauffer le four à 180°C.";
-  recipe.nbrePart = 1;
-  recipe.libellePart = "Bocal";
-  recipe.tempsPreparation = date.format(new Date("00:08:00"), "hh:mm:ss");
-  recipe.tempsCuisson = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe.id = 1;
+  recipe.name = "Lasagnes";
+  recipe.steps = "1. Préchauffer le four à 180°C.";
+  recipe.number_portion = 1;
+  recipe.name_portion = "Bocal";
+  recipe.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe.rest_time = date.format(new Date("00:08:00"), "hh:mm:ss");
   recipe.astuce =
     "* Vous pouvez remplacer le beurre de cacahuètes par une autre purée d'oléagineux (amandes, cajou, noisettes..).";
   recipe.mot =
     "Un granola qui conviendra parfaitement aux fan de BANANA bread !";
-  recipe.nbVues = 0;
-  recipe.nbFavoris = 0;
-  recipe.datePublication = new Date("01/04/2021");
+  recipe.number_views = 0;
+  recipe.number_favorites = 0;
+  recipe.date = new Date("01/04/2021");
 
   const category = new Category();
-  category.idCategorie = 1;
+  category.id = 1;
   category.libelleCategorie = "Douceur";
 
   recipe.categories = [category];
 
-  recipe.utiliserIngredients = initUseIngredient();
+  recipe.ingredients = initUseIngredient();
 
   const image = new ImageDomain();
-  image.idImage = 1;
-  image.lienImage =
+  image.id = 1;
+  image.link =
     "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
-  image.nameImage = "IMG_20200903_103750_461311495694712.jpg";
+  image.name = "IMG_20200903_103750_461311495694712.jpg";
 
   recipe.images = [image];
 
@@ -55,12 +55,12 @@ const initRecipe = (): Recipe => {
 const initUseIngredient = (): UseIngredient[] => {
   const useIngredient = new UseIngredient();
   useIngredient.ingredient = new Ingredient();
-  useIngredient.ingredient.idIngredient = 1;
-  useIngredient.ingredient.nomIngredient = "Bolo";
+  useIngredient.ingredient.id = 1;
+  useIngredient.ingredient.name = "Bolo";
   useIngredient.unite = new Unity();
-  useIngredient.unite.idUnite = 1;
-  useIngredient.unite.libelleUnite = "g";
-  useIngredient.qte = 1;
+  useIngredient.unite.id = 1;
+  useIngredient.unite.name = "g";
+  useIngredient.quantity = 1;
 
   const list: UseIngredient[] = [useIngredient];
 
@@ -156,13 +156,13 @@ describe("Update recipe use case unit tests", () => {
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "La recette " + recipe.nomRecette + " existe déjà."
+        "La recette " + recipe.name + " existe déjà."
       );
     }
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the name of recipe is not defined", async () => {
-    recipe.nomRecette = undefined;
+    recipe.name = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
@@ -175,7 +175,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the libellePart of recipe is not defined", async () => {
-    recipe.libellePart = undefined;
+    recipe.name_portion = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
@@ -188,7 +188,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the nbrePart of recipe is not defined", async () => {
-    recipe.nbrePart = undefined;
+    recipe.number_portion = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
@@ -199,7 +199,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the tempsPreparation of recipe is not defined", async () => {
-    recipe.tempsPreparation = undefined;
+    recipe.preparation_time = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
@@ -212,7 +212,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the lenght of the name is greater than 60 caracters", async () => {
-    recipe.nomRecette =
+    recipe.name =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -226,7 +226,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the lenght of the libellePart is greater than 50 caracters", async () => {
-    recipe.libellePart =
+    recipe.name_portion =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
@@ -241,7 +241,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the nbrePart is less than 0", async () => {
-    recipe.nbrePart = -2;
+    recipe.number_portion = -2;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -258,7 +258,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the nbrePart is equal to 0", async () => {
-    recipe.nbrePart = 0;
+    recipe.number_portion = 0;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -275,8 +275,8 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity negative", async () => {
-    useIngredient[0].qte = -2;
-    recipe.utiliserIngredients = useIngredient;
+    useIngredient[0].quantity = -2;
+    recipe.ingredients = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -293,8 +293,8 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity null", async () => {
-    useIngredient[0].qte = 0;
-    recipe.utiliserIngredients = useIngredient;
+    useIngredient[0].quantity = 0;
+    recipe.ingredients = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -311,7 +311,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when useIngredients is empty", async () => {
-    recipe.utiliserIngredients = [];
+    recipe.ingredients = [];
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -325,7 +325,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when useIngredients is undefined", async () => {
-    recipe.utiliserIngredients = undefined;
+    recipe.ingredients = undefined;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);

@@ -16,39 +16,39 @@ type RecipeStatic = typeof Model & {
 
 function RecipeFactory(sequelize: Sequelize): RecipeStatic {
   return <RecipeStatic>sequelize.define(
-    "recettes",
+    "recipes",
     {
-      idRecette: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      nomRecette: {
+      name: {
         type: DataTypes.STRING,
       },
 
-      datePublication: {
+      date: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
-      nbFavoris: {
+      number_favorites: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      nbVues: {
+      number_views: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-      nbrePart: {
+      number_portion: {
         type: DataTypes.INTEGER,
       },
-      libellePart: {
+      name_portion: {
         type: DataTypes.STRING,
       },
-      tempsPreparation: {
+      preparation_time: {
         type: DataTypes.TIME,
       },
-      tempsCuisson: {
+      rest_time: {
         type: DataTypes.TIME,
       },
       astuce: {
@@ -60,7 +60,7 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
     },
     {
       timestamps: false,
-      tableName: "recettes",
+      tableName: "recipes",
     }
   );
 }
@@ -69,42 +69,42 @@ const RecipeSequelize = RecipeFactory(db.sequelize);
 
 //association 0:N avec les notifications
 NotificationSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(NotificationSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id" },
 });
 
 //association 0:N avec les favoris
 FavoriSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(FavoriSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id" },
 });
 
 //association 0:N avec le menu
 MenuSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(MenuSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id" },
 });
 
 //association 0:N avec les etapes
 EtapeSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(EtapeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "number" },
 });
 
 //association 0:N avec les notations
 NotationSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(NotationSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id" },
 });
 
 //association 0:N avec les commentaires

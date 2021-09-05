@@ -12,37 +12,37 @@ export default class UpdateIngredientUseCase {
     ingredient?: Ingredient,
     user?: TokenDomain
   ): Promise<Ingredient> {
-    this.checkBusinessRules(ingredient, user);
+    await this.checkBusinessRules(ingredient, user);
     return await this.ingredientRepository.update(ingredient);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     ingredient?: Ingredient,
     user?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (user && isAdmin(user)) {
       if (ingredient) {
-        if (!ingredient.idIngredient) {
+        if (!ingredient.id) {
           throw new TechnicalException(
             "L'identifiant d'un ingrédient est obligatoire pour pouvoir le modifier"
           );
         } else {
-          if (this.ingredientRepository.findById(ingredient.idIngredient)) {
-            if (!ingredient.nomIngredient) {
+          if (await this.ingredientRepository.findById(ingredient.id)) {
+            if (!ingredient.name) {
               throw new BusinessException(
                 "Le nom d'un ingrédient est obligatoire"
               );
             } else {
               if (
-                this.ingredientRepository.checkExistByName(
-                  ingredient.nomIngredient
+                await this.ingredientRepository.checkExistByName(
+                  ingredient.name
                 )
               ) {
                 throw new BusinessException(
                   "Ce nom est déjà utilisé par un ingrédient"
                 );
               }
-              if (ingredient.nomIngredient.length > 39) {
+              if (ingredient.name.length > 39) {
                 throw new BusinessException(
                   "Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères"
                 );

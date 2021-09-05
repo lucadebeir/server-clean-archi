@@ -1,8 +1,8 @@
 export default class Shopping {
+  id?: number;
   pseudo: string;
-  name: string;
-  idIngredient?: number;
-  idIngredientList?: number;
+  id_ingredient?: number;
+  name_ingredient: string;
   quantity: number;
-  idUnite: number;
+  id_unit: number;
 }

@@ -8,7 +8,7 @@ import * as Utils from "../../utils/token.service";
 
 const initCategory = (): Category => {
   const category = new Category();
-  category.idCategorie = 1;
+  category.id = 1;
   category.libelleCategorie = "Douceur";
 
   return category;
@@ -45,7 +45,7 @@ describe("Delete category use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: string = await deleteCategoryUseCase.execute(
-      category.idCategorie,
+      category.id,
       user
     );
     expect(result).toBeDefined();
@@ -79,7 +79,7 @@ describe("Delete category use case unit tests", () => {
       spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteCategoryUseCase.execute(category.idCategorie, user);
+      await deleteCategoryUseCase.execute(category.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette catégorie n'existe pas");
@@ -91,7 +91,7 @@ describe("Delete category use case unit tests", () => {
       spyOn(categoryRepository, "checkExistInRecipes").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteCategoryUseCase.execute(category.idCategorie, user);
+      await deleteCategoryUseCase.execute(category.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

@@ -62,7 +62,7 @@ category.get("/:id/recipes/views", authenticateJWT, (req, res) => {
 //Ajouter catégorie
 category.post("/add", authenticateJWT, (req, res) => {
   const categoryData = {
-    libelleCategorie: req.body.libelleCategorie,
+    name: req.body.libelleCategorie,
   };
   categoryConfig
     .createCategoryUseCase()
@@ -91,8 +91,8 @@ category.delete("/:id", authenticateJWT, (req, res) => {
 //modifier catégorie
 category.post("/update", authenticateJWT, (req, res) => {
   const categoryData = {
-    idCategorie: req.body.idCategorie,
-    libelleCategorie: req.body.libelleCategorie,
+    id: req.body.idCategorie,
+    name: req.body.libelleCategorie,
   };
   categoryConfig
     .updateCategoryUseCase()

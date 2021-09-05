@@ -9,8 +9,8 @@ import UpdateImageFromCommentaireUseCase from "../../usecases/illustrate-comment
 
 const initIllustrateCommentaire = (): IllustrateCommentaireDomain => {
   const illustrateCommentaire = new IllustrateCommentaireDomain();
-  illustrateCommentaire.idCommentaire = 1;
-  illustrateCommentaire.idImage = 1;
+  illustrateCommentaire.id_commentaire = 1;
+  illustrateCommentaire.id_image = 1;
 
   return illustrateCommentaire;
 };
@@ -98,7 +98,7 @@ describe("Add image to commentaire use case unit tests", () => {
   });
 
   it("updateImageFromCommentaireUseCase should throw a parameter exception when the idImage is undefined", async () => {
-    illustrateCommentaire.idImage = undefined;
+    illustrateCommentaire.id_image = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateImageFromCommentaireUseCase.execute(
@@ -112,7 +112,7 @@ describe("Add image to commentaire use case unit tests", () => {
   });
 
   it("updateImageFromCommentaireUseCase should throw a parameter exception when the idCommentaire is undefined", async () => {
-    illustrateCommentaire.idCommentaire = undefined;
+    illustrateCommentaire.id_commentaire = undefined;
     try {
       spyOn(imageRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);

@@ -8,7 +8,7 @@ import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByI
 
 const initCategories = (): Category => {
   const category = new Category();
-  category.idCategorie = 1;
+  category.id = 1;
   category.libelleCategorie = "Douceur";
 
   return category;
@@ -16,12 +16,12 @@ const initCategories = (): Category => {
 
 const initRecipe = (): Recipe[] => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.datePublication = new Date("2020-04-14 19:55:22");
+  recipe.id = 1;
+  recipe.date = new Date("2020-04-14 19:55:22");
 
   const recipe2 = new Recipe();
-  recipe2.idRecette = 2;
-  recipe2.datePublication = new Date("2020-04-16 14:24:57");
+  recipe2.id = 2;
+  recipe2.date = new Date("2020-04-16 14:24:57");
 
   const list = [recipe, recipe2];
 
@@ -63,15 +63,15 @@ describe("Get recipes by id category use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
     const result: Recipe[] = await getRecipesByIdCategoryUseCase.execute(
-      category.idCategorie,
+      category.id,
       user
     );
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     //attendre la nouvelle dépendance pour typescript
     //expect(result).toBeSortedBy("datePublication");
-    expect(result.map((a) => a.datePublication).sort()).toEqual(
-      recipes.map((a) => a.datePublication).sort()
+    expect(result.map((a) => a.date).sort()).toEqual(
+      recipes.map((a) => a.date).sort()
     );
     expect(result).toBe(recipes);
   });
@@ -80,7 +80,7 @@ describe("Get recipes by id category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(true);
-      await getRecipesByIdCategoryUseCase.execute(category.idCategorie, user);
+      await getRecipesByIdCategoryUseCase.execute(category.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -104,7 +104,7 @@ describe("Get recipes by id category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
-      await getRecipesByIdCategoryUseCase.execute(category.idCategorie, user);
+      await getRecipesByIdCategoryUseCase.execute(category.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");

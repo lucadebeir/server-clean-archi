@@ -8,7 +8,7 @@ import * as Utils from "../../utils/token.service";
 
 const initFavori = (): Favori => {
   const favori = new Favori();
-  favori.idRecette = 1;
+  favori.id_recipe = 1;
   favori.pseudo = "luca";
 
   return favori;
@@ -45,7 +45,7 @@ describe("Delete favori use case unit tests", () => {
   it("deleteFavoriUseCase should return message when it succeeded", async () => {
     spyOn(favoriRepository, "check").and.returnValue(true);
     spyOn(Utils, "isLogin").and.returnValue(true);
-    const result: string = await deleteFavoriUseCase.execute(favori.idRecette, favori.pseudo, token);
+    const result: string = await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, token);
     expect(result).toBeDefined();
     expect(result).toBe(
       "La recette est supprimé des favoris"
@@ -54,7 +54,7 @@ describe("Delete favori use case unit tests", () => {
 
   it("deleteFavoriUseCase should throw a parameter exception when the token is null", async () => {
     try {
-      await deleteFavoriUseCase.execute(favori.idRecette, favori.pseudo, undefined);
+      await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -66,7 +66,7 @@ describe("Delete favori use case unit tests", () => {
   it("deleteFavoriUseCase should throw a parameter exception when the token is not login", async () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
-      await deleteFavoriUseCase.execute(favori.idRecette, favori.pseudo, token);
+      await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -79,7 +79,7 @@ describe("Delete favori use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(favoriRepository, "check").and.returnValue(false);
-      await deleteFavoriUseCase.execute(favori.idRecette, favori.pseudo, token);
+      await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

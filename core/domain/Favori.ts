@@ -1,4 +1,4 @@
 export default class Favori {
   pseudo?: string;
-  idRecette?: number;
+  id_recipe?: number;
 }

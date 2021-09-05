@@ -12,15 +12,15 @@ import { BusinessException } from "../../exceptions/BusinessException";
 const initCommentaire = (): Commentaire => {
   const commentaire = new Commentaire();
   commentaire.message = "C'est bon !";
-  commentaire.ecritPar = "luca";
-  commentaire.concerne = 1;
+  commentaire.pseudo = "luca";
+  commentaire.id_recipe = 1;
 
   return commentaire;
 };
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
+  recipe.id = 1;
 
   return recipe;
 };
@@ -65,7 +65,7 @@ describe("Create commentaire use case unit tests", () => {
 
     spyOn(commentaireRepository, "create").and.callFake((commentaire: any) => {
       if (commentaire) {
-        const result: Commentaire = { ...commentaire, idCommentaire: 1 };
+        const result: Commentaire = { ...commentaire, id: 1 };
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -82,9 +82,9 @@ describe("Create commentaire use case unit tests", () => {
       token
     );
     expect(result).toBeDefined();
-    expect(result.concerne).toStrictEqual(1);
-    expect(result.ecritPar).toStrictEqual("luca");
-    expect(result.idCommentaire).toBeDefined();
+    expect(result.id_recipe).toStrictEqual(1);
+    expect(result.pseudo).toStrictEqual("luca");
+    expect(result.id).toBeDefined();
     expect(result.message).toStrictEqual("C'est bon !");
   });
 
@@ -108,7 +108,7 @@ describe("Create commentaire use case unit tests", () => {
   });
 
   it("createCommentaireUseCase should throw a parameter exception when the pseudo is undefined", async () => {
-    commentaire.ecritPar = undefined;
+    commentaire.pseudo = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await createCommentaireUseCase.execute(commentaire, token);
@@ -144,7 +144,7 @@ describe("Create commentaire use case unit tests", () => {
   });
 
   it("createCommentaireUseCase should throw a parameter exception when the id of recipe is undefined", async () => {
-    commentaire.concerne = undefined;
+    commentaire.id_recipe = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);

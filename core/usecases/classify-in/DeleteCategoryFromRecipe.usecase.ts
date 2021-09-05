@@ -20,14 +20,14 @@ export default class DeleteCategoryFromRecipeUseCase {
         if (token && isAdmin(token)) {
           if (classify) {
             if (
-              !classify.idCategorie ||
-              !this.categoryRepository.existById(classify.idCategorie)
+              !classify.id_category ||
+              !this.categoryRepository.existById(classify.id_category)
             ) {
               throw new BusinessException("La catégorie doit exister");
             }
             if (
-              !classify.idRecette ||
-              !this.recipeRepository.existById(classify.idRecette)
+              !classify.id_recipe ||
+              !this.recipeRepository.existById(classify.id_recipe)
             ) {
               throw new BusinessException("La recette doit exister");
             }

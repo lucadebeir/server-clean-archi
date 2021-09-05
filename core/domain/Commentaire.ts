@@ -1,8 +1,8 @@
 export default class Commentaire {
-  idCommentaire?: number;
+  id?: number;
   message?: string;
-  dateCommentaire?: string;
-  ecritPar?: string;
-  concerne?: number;
+  date?: string;
+  pseudo?: string;
+  id_recipe?: number;
   parent?: number;
 }

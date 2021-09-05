@@ -7,7 +7,7 @@ export default class ImageRepositorySQL implements ImageRepository {
   existById(id: any): Promise<boolean> {
     return ImageSequelize.findOne({
       where: {
-        idImage: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -25,7 +25,7 @@ export default class ImageRepositorySQL implements ImageRepository {
   deleteById(id: any): Promise<string> {
     return ImageSequelize.destroy({
       where: {
-        idImage: id,
+        id: id,
       },
     })
       .then(() => {
@@ -39,7 +39,7 @@ export default class ImageRepositorySQL implements ImageRepository {
   checkExistByName(name: any): Promise<boolean> {
     return ImageSequelize.findOne({
       where: {
-        nameImage: name,
+        name: name,
       },
     })
       .then((result: any) => {
@@ -71,7 +71,7 @@ export default class ImageRepositorySQL implements ImageRepository {
   findById(id: any): Promise<ImageDomain> {
     return ImageSequelize.findOne({
       where: {
-        idImage: id,
+        id: id,
       },
     })
       .then((image: any) => {
@@ -88,7 +88,7 @@ export default class ImageRepositorySQL implements ImageRepository {
         {
           model: RecipeSequelize,
           where: {
-            idRecette: id,
+            id: id,
           },
           through: {
             attributes: [],

@@ -10,10 +10,10 @@ const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
   user.password = "muca";
-  user.abonneNews = true;
+  user.is_subscribed = true;
   user.email = "luca.debeir@gmail.com";
-  user.emailConfirmed = true;
-  user.admin = false;
+  user.confirmed_email = true;
+  user.is_admin = false;
 
   return user;
 };

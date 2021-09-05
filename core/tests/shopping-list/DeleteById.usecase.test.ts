@@ -10,8 +10,8 @@ import * as Utils from "../../utils/token.service";
 
 const initShoppingList = (): Shopping => {
   const shopping = new Shopping();
-  shopping.idIngredientList = 1;
-  shopping.name = "Tomates";
+  shopping.id = 1;
+  shopping.name_ingredient = "Tomates";
   shopping.pseudo = "luca";
 
   return shopping;
@@ -62,7 +62,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
     spyOn(userRepository, "existByPseudo").and.returnValue(true);
     spyOn(Utils, "isLogin").and.returnValue(true);
     const result: string = await deleteByIdUseCase.execute(
-      shoppingList.idIngredientList,
+      shoppingList.id,
       token
     );
     expect(result).toBeDefined();
@@ -73,7 +73,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
 
   it("deleteByIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
-      await deleteByIdUseCase.execute(shoppingList.idIngredientList, undefined);
+      await deleteByIdUseCase.execute(shoppingList.id, undefined);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -85,7 +85,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
   it("deleteByIdUseCase should throw a parameter exception when the user is not connect", async () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
-      await deleteByIdUseCase.execute(shoppingList.idIngredientList, token);
+      await deleteByIdUseCase.execute(shoppingList.id, token);
     } catch (e) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
@@ -110,7 +110,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
-      await deleteByIdUseCase.execute(shoppingList.idIngredientList, token);
+      await deleteByIdUseCase.execute(shoppingList.id, token);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(

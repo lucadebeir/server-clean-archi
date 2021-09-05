@@ -9,7 +9,7 @@ const notationConfig = new NotationConfig();
 //Récupérer toutes les recettes
 notation.post("/add", (req, res) => {
   const notationData = {
-    idRecette: req.body.idRecette,
+    id_recipe: req.body.idRecette,
     pseudo: req.body.pseudo,
     note: req.body.note,
   };

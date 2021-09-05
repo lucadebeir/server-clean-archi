@@ -9,17 +9,25 @@ type ResetTokenStatic = typeof Model & {
 };
 
 function ResetTokenFactory(sequelize: Sequelize): ResetTokenStatic {
-  return <ResetTokenStatic>sequelize.define("resetToken", {
-    userId: {
+  return <ResetTokenStatic>sequelize.define("reset_token", {
+    id: {
+      type: DataTypes.NUMBER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    pseudo: {
       type: DataTypes.STRING,
     },
-    resettoken: {
+    token: {
       type: DataTypes.STRING,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    updated_at: {
+      type: DataTypes.DATE
+    }
   });
 }
 

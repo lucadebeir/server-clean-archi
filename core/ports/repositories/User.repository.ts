@@ -16,7 +16,7 @@ export default interface UserRepository {
   update(user: User): Promise<User>;
   deleteById(pseudo: any): Promise<string>;
 
-  forgetPassword(email: any): Promise<{ pseudo: any; resettoken: any }>;
+  forgetPassword(email: any): Promise<{ pseudo: any; token: any }>;
   checkValideToken(token: any): Promise<string>;
   updatePasswordWithToken(
     token?: TokenDomain,

@@ -10,7 +10,7 @@ import * as Utils from "../../utils/token.service";
 
 const initShopping = (): Shopping => {
   const shopping = new Shopping();
-  shopping.name = "Tomates";
+  shopping.name_ingredient = "Tomates";
   shopping.pseudo = "luca";
 
   return shopping;
@@ -122,7 +122,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'ingrédient " +
-          shopping.name +
+          shopping.name_ingredient +
           " se trouve déjà dans la liste de courses de l'utilisateur " +
           shopping.pseudo
       );
@@ -130,7 +130,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
   });
 
   it("addIngredientToShoppingListUseCase should throw a parameter exception when the name of ingredient is too long (length superior to 40 characters)", async () => {
-    shopping.name =
+    shopping.name_ingredient =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);

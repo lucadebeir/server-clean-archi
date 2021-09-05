@@ -1,6 +1,6 @@
 export default class NotationDomain {
-  idNotation?: number;
-  idRecette?: number;
+  id?: number;
+  id_recipe?: number;
   pseudo?: string;
   note?: number;
 }

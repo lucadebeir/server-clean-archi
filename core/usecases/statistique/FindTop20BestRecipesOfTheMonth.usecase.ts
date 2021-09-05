@@ -9,7 +9,7 @@ export default class FindTop20BestRecipesOfTheMonthUseCase {
 
   async execute(
     token?: TokenDomain
-  ): Promise<{ nomRecette: any; nbVues: any }[]> {
+  ): Promise<{ name: any; number_views: any }[]> {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findTop20BestRecipesOfTheMonth();
   }

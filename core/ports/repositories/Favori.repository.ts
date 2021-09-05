@@ -5,7 +5,7 @@ import RecipesFilterDomain from "../../domain/RecipesFilter.domain";
 export default interface FavoriRepository {
   create(favori: Favori): Promise<string>;
   findByIdUser(id: any): Promise<Recipe[]>;
-  findByIdUserPerToCategory(id: any, idCategorie: any): Promise<Favori[]>;
+  findByIdUserPerToCategory(id: any, idCategorie: any): Promise<Recipe[]>;
   deleteById(favori: Favori): Promise<string>;
 
   check(favori: Favori): Promise<boolean>;

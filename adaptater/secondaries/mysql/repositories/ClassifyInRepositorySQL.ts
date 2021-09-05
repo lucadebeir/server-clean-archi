@@ -6,8 +6,8 @@ export default class ClassifyInRepositorySQL implements ClassifyInRepository {
   check(classify: ClassifyIn): Promise<boolean> {
     return ClassifyInSequelize.findOne({
       where: {
-        idRecette: classify.idRecette,
-        idCategorie: classify.idCategorie,
+        id_recipe: classify.id_recipe,
+        id_category: classify.id_category,
       },
     })
       .then((result) => {
@@ -35,8 +35,8 @@ export default class ClassifyInRepositorySQL implements ClassifyInRepository {
   deleteCategoryFromRecipe(classify: ClassifyIn): Promise<string> {
     return ClassifyInSequelize.destroy({
       where: {
-        idRecette: classify.idRecette,
-        idCategorie: classify.idCategorie,
+        id_recipe: classify.id_recipe,
+        id_category: classify.id_category,
       },
     })
       .then(() => {

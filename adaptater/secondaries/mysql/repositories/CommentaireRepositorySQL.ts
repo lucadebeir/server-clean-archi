@@ -20,10 +20,10 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   findAllCommentairesByIdRecipe(id: any): Promise<Commentaire[]> {
     return CommentaireSequelize.findAll({
       where: {
-        concerne: id,
+        id_recipe: id,
         parent: 0,
       },
-      order: [["dateCommentaire", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((commentaires) => {
         if (commentaires) {
@@ -45,10 +45,10 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   ): Promise<Commentaire[]> {
     return CommentaireSequelize.findAll({
       where: {
-        concerne: id,
+        id_recipe: id,
         parent: idCommentaire,
       },
-      order: [["dateCommentaire", "ASC"]],
+      order: [["date", "ASC"]],
     })
       .then((commentaires) => {
         if (commentaires) {
@@ -67,9 +67,9 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   findAllCommentairesByIdUser(id: any): Promise<Commentaire[]> {
     return CommentaireSequelize.findAll({
       where: {
-        ecritPar: id,
+        pseudo: id,
       },
-      order: [["dateCommentaire", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((commentaires) => {
         if (commentaires) {
@@ -86,7 +86,7 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   deleteById(id: any): Promise<string> {
     return CommentaireSequelize.destroy({
       where: {
-        idCommentaire: id,
+        id: id,
       },
     })
       .then(() => {
@@ -104,8 +104,8 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
       },
       {
         where: {
-          concerne: commentaireToUpdate.concerne,
-          ecritPar: commentaireToUpdate.ecritPar,
+          id_recipe: commentaireToUpdate.id_recipe,
+          pseudo: commentaireToUpdate.pseudo,
         },
       }
     )
@@ -124,7 +124,7 @@ export default class CommentaireRepositorySQL implements CommentaireRepository {
   existById(id: any): Promise<boolean> {
     return CommentaireSequelize.findOne({
       where: {
-        idCommentaire: id,
+        id: id,
       },
     })
       .then((result: any) => {

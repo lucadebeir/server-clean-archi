@@ -8,15 +8,15 @@ export default class DeleteUnityUseCase {
   constructor(private unityRepository: UnityRepository) {}
 
   async execute(id: any, user?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(id, user);
+    await this.checkBusinessRules(id, user);
     return await this.unityRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id?: any, user?: TokenDomain): void {
+  private async checkBusinessRules(id?: any, user?: TokenDomain): Promise<void> {
     if (user && isAdmin(user)) {
       if (id) {
-        if (this.unityRepository.findById(id)) {
-          if (this.unityRepository.checkExistInRecipes(id)) {
+        if (await this.unityRepository.findById(id)) {
+          if (await this.unityRepository.checkExistInRecipes(id)) {
             throw new BusinessException(
               "Cette unité est associée à une ou plusieurs recettes"
             );

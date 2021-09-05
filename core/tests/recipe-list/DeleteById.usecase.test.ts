@@ -9,11 +9,11 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipeList = (): RecipeList => {
   const recipeList = new RecipeList();
-  recipeList.idRecipeList = 1;
-  recipeList.nomRecette = "Lasagnes";
-  recipeList.pseudoUser = "luca";
-  recipeList.complet = false;
-  recipeList.idRecette = 1;
+  recipeList.id = 1;
+  recipeList.name_recipe = "Lasagnes";
+  recipeList.pseudo = "luca";
+  recipeList.complete = false;
+  recipeList.id_recipe = 1;
 
   return recipeList;
 };
@@ -65,8 +65,8 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
     spyOn(userRepository, "existByPseudo").and.returnValue(true);
     spyOn(recipeListRepository, "existById").and.returnValue(true);
     const result: string = await deleteByIdUseCase.execute(
-      recipeList.idRecipeList,
-      recipeList.pseudoUser,
+      recipeList.id,
+      recipeList.pseudo,
       token
     );
     expect(result).toBeDefined();
@@ -76,8 +76,8 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
   it("deleteByIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await deleteByIdUseCase.execute(
-        recipeList.idRecipeList,
-        recipeList.pseudoUser,
+        recipeList.id,
+        recipeList.pseudo,
         undefined
       );
     } catch (e) {
@@ -92,8 +92,8 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await deleteByIdUseCase.execute(
-        recipeList.idRecipeList,
-        recipeList.pseudoUser,
+        recipeList.id,
+        recipeList.pseudo,
         token
       );
     } catch (e) {
@@ -105,12 +105,12 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
   });
 
   it("deleteByIdUseCase should throw a parameter exception when the pseudo is null", async () => {
-    recipeList.pseudoUser = undefined;
+    recipeList.pseudo = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await deleteByIdUseCase.execute(
-        recipeList.idRecipeList,
-        recipeList.pseudoUser,
+        recipeList.id,
+        recipeList.pseudo,
         token
       );
     } catch (e) {
@@ -120,13 +120,13 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
   });
 
   it("deleteByIdUseCase should throw a parameter exception when the token don't correspond to pseudo", async () => {
-    recipeList.pseudoUser = "lucas";
+    recipeList.pseudo = "lucas";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await deleteByIdUseCase.execute(
-        recipeList.idRecipeList,
-        recipeList.pseudoUser,
+        recipeList.id,
+        recipeList.pseudo,
         token
       );
     } catch (e) {
@@ -140,8 +140,8 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await deleteByIdUseCase.execute(
-        recipeList.idRecipeList,
-        recipeList.pseudoUser,
+        recipeList.id,
+        recipeList.pseudo,
         token
       );
     } catch (e) {

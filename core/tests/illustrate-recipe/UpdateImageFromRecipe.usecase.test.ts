@@ -9,8 +9,8 @@ import UpdateImageFromRecipeUseCase from "../../usecases/illustrate-recipe/Updat
 
 const initIllustrateRecipe = (): IllustrateRecipeDomain => {
   const illustrateRecipe = new IllustrateRecipeDomain();
-  illustrateRecipe.idRecette = 1;
-  illustrateRecipe.idImage = 1;
+  illustrateRecipe.id_recipe = 1;
+  illustrateRecipe.id_image = 1;
 
   return illustrateRecipe;
 };
@@ -91,7 +91,7 @@ describe("Add image to recipe use case unit tests", () => {
   });
 
   it("updateImageFromRecipeUseCase should throw a parameter exception when the idImage is undefined", async () => {
-    illustrateRecipe.idImage = undefined;
+    illustrateRecipe.id_image = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateImageFromRecipeUseCase.execute(illustrateRecipe, token);
@@ -102,7 +102,7 @@ describe("Add image to recipe use case unit tests", () => {
   });
 
   it("updateImageFromRecipeUseCase should throw a parameter exception when the idRecette is undefined", async () => {
-    illustrateRecipe.idRecette = undefined;
+    illustrateRecipe.id_recipe = undefined;
     try {
       spyOn(imageRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);

@@ -10,12 +10,12 @@ import { BusinessException } from "../../exceptions/BusinessException";
 
 const initCommentaires = (): Commentaire[] => {
   const commentaire = new Commentaire();
-  commentaire.idCommentaire = 1;
-  commentaire.ecritPar = "luca";
+  commentaire.id = 1;
+  commentaire.pseudo = "luca";
 
   const commentaire2 = new Commentaire();
-  commentaire2.idCommentaire = 2;
-  commentaire2.ecritPar = "luca";
+  commentaire2.id = 2;
+  commentaire2.pseudo = "luca";
 
   return [commentaire, commentaire2];
 };
@@ -76,7 +76,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
     );
     expect(result).toBeDefined();
     expect(result.length).toStrictEqual(2);
-    expect(result.filter((x) => x.ecritPar === user.pseudo).length).toStrictEqual(result.length);
+    expect(result.filter((x) => x.pseudo === user.pseudo).length).toStrictEqual(result.length);
   });
 
   it("getAllCommentairesByIdUserUseCase should throw a parameter exception when the token is null", async () => {

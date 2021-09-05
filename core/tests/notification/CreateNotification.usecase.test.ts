@@ -57,7 +57,7 @@ describe("Create notification use case unit tests", () => {
         if (notification) {
           const result: Notification = {
             ...notification,
-            idNotification: 1,
+            id: 1,
             enabled: false,
             date: date,
           };
@@ -73,7 +73,7 @@ describe("Create notification use case unit tests", () => {
       notification
     );
     expect(result).toBeDefined();
-    expect(result.idNotification).toStrictEqual(1);
+    expect(result.id).toStrictEqual(1);
     expect(
       list.filter((x) => result.type && result.type.indexOf(x) > -1).length
     ).toBeGreaterThan(0);
@@ -137,7 +137,7 @@ describe("Create notification use case unit tests", () => {
   });
 
   it("createNotificationUseCase should throw a parameter exception when the recipe doesnt exist when idRecette is not null", async () => {
-    notification.idRecette = 1;
+    notification.id_recipe = 1;
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       await createNotificationUseCase.execute(notification);

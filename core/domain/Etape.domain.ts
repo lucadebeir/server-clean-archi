@@ -1,5 +1,5 @@
 export default class Etape {
-  idRecette?: number;
-  numero?: number;
-  indications?: string;
+  id_recipe?: number;
+  number?: number;
+  indication?: string;
 }

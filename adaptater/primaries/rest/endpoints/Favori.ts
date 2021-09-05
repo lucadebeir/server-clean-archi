@@ -13,7 +13,7 @@ const recipeConfig = new RecipeConfig();
 //ajouter aux favoris
 favori.post("/add", authenticateJWT, (req, res) => {
   const favoriData = {
-    idRecette: req.body.idRecette,
+    id_recipe: req.body.idRecette,
     pseudo: req.body.pseudo,
   };
   favoriConfig
@@ -69,7 +69,7 @@ favori.delete("/:id/:pseudo", authenticateJWT, (req, res) => {
 //vérifie si un utilisateur a déjà cette recette en favori
 favori.get("/check/exist", authenticateJWT, (req, res) => {
   const { id, pseudo } = req.query;
-  const favori = { idRecette: id, pseudo: pseudo } as Favori;
+  const favori = { id_recipe: id, pseudo: pseudo } as Favori;
   favoriConfig
     .checkFavoriByPseudoUseCase()
     .execute(favori, req.body.user)

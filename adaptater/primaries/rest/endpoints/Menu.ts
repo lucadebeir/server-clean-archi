@@ -36,8 +36,8 @@ menu.get("/:id", authenticateJWT, (req, res) => {
 //Modifier une des recettes du menu selon l'id
 menu.post("/:id", authenticateJWT, (req, res) => {
   const data: any = {
-    idMenu: req.params.id,
-    idRecette: req.body.idRecette,
+    id: req.params.id,
+    id_recipe: req.body.idRecette,
   };
   menuConfig
     .updateMenuByIdUseCase()

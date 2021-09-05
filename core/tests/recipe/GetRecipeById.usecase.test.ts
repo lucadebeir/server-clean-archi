@@ -8,8 +8,8 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.nomRecette = "Lasagnes";
+  recipe.id = 1;
+  recipe.name = "Lasagnes";
 
   return recipe;
 };
@@ -41,10 +41,10 @@ describe("Get recipe by id use case unit tests", () => {
 
   it("getRecipeByIdUseCase should return recipe when it succeeded", async () => {
     spyOn(recipeRepository, "existById").and.returnValue(true);
-    const result: Recipe = await getRecipeByIdUseCase.execute(recipe.idRecette);
+    const result: Recipe = await getRecipeByIdUseCase.execute(recipe.id_recipe);
     expect(result).toBeDefined();
-    expect(result.idRecette).toBe(1);
-    expect(result.nomRecette).toBe("Lasagnes");
+    expect(result.id_recipe).toBe(1);
+    expect(result.name).toBe("Lasagnes");
   });
 
   it("getRecipeByIdUseCase should throw a parameter exception when the id is null", async () => {
@@ -60,7 +60,7 @@ describe("Get recipe by id use case unit tests", () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await getRecipeByIdUseCase.execute(recipe.idRecette);
+      await getRecipeByIdUseCase.execute(recipe.id_recipe);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");

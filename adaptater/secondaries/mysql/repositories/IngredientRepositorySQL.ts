@@ -8,7 +8,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   existById(id: any): Promise<boolean> {
     return IngredientSequelize.findOne({
       where: {
-        idIngredient: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -26,7 +26,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   checkExistInRecipes(id: any): Promise<boolean> {
     return UseIngredientSequelize.findOne({
       where: {
-        idIngredient: id,
+        id_ingredient: id,
       },
     })
       .then((result: any) => {
@@ -44,7 +44,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   checkExistByName(name: any): Promise<boolean> {
     return IngredientSequelize.findOne({
       where: {
-        nomIngredient: name,
+        name: name,
       },
     })
       .then((result: any) => {
@@ -92,7 +92,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   findById(id: any): Promise<Ingredient> {
     return IngredientSequelize.findOne({
       where: {
-        idIngredient: id,
+        id: id,
       },
     })
       .then((ingredient) => {
@@ -111,7 +111,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
     return IngredientSequelize.findAll({
       order: [["idIngredient", "ASC"]],
       where: {
-        idIngredient: { [Op.notIn]: ingredients },
+        id: { [Op.notIn]: ingredients },
       },
     })
       .then((result) => {
@@ -145,7 +145,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
         let array = data.map((item: any) => item.idIngredient);
         return IngredientSequelize.findAll({
           where: {
-            idIngredient: {
+            id: {
               [Op.notIn]: array,
             },
           },
@@ -166,7 +166,7 @@ export default class IngredientRepositorySQL implements IngredientRepository {
   deleteById(id: any): Promise<string> {
     return IngredientSequelize.destroy({
       where: {
-        idIngredient: id,
+        id: id,
       },
     })
       .then(() => {
@@ -179,8 +179,8 @@ export default class IngredientRepositorySQL implements IngredientRepository {
 
   update(ingredientToUpdate: Ingredient): any {
     return IngredientSequelize.update(
-      { nomIngredient: ingredientToUpdate.nomIngredient },
-      { where: { idIngredient: ingredientToUpdate.idIngredient } }
+      { name: ingredientToUpdate.name },
+      { where: { id: ingredientToUpdate.id } }
     )
       .then((ingredient) => {
         if (ingredient) {

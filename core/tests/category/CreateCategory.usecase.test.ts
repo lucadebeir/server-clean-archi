@@ -31,7 +31,7 @@ describe("Create category use case unit tests", () => {
 
     spyOn(categoryRepository, "create").and.callFake((category: Category) => {
       if (category) {
-        const result: Category = { ...category, idCategorie: 1 };
+        const result: Category = { ...category, id: 1 };
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -46,7 +46,7 @@ describe("Create category use case unit tests", () => {
       user
     );
     expect(result).toBeDefined();
-    expect(result.idCategorie).toBe(1);
+    expect(result.id).toBe(1);
     expect(result.libelleCategorie).toBe("Douceur");
   });
 

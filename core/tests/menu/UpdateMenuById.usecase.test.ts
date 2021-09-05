@@ -11,8 +11,8 @@ import * as Utils from "../../utils/token.service";
 const initMenu = (): Menu => {
   const menu = new Menu();
   //menu.map?.set(1, initRecipe());
-  menu.idMenu = 1;
-  menu.idRecette = 1;
+  menu.id = 1;
+  menu.id_recipe = 1;
 
   return menu;
 };
@@ -82,7 +82,7 @@ describe("Update menu by id use case unit tests", () => {
   });
 
   it("updateMenuByIdUseCase should throw a parameter exception when the idMenu is null", async () => {
-    menu.idMenu = undefined;
+    menu.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateMenuByIdUseCase.execute(menu, token);
@@ -93,7 +93,7 @@ describe("Update menu by id use case unit tests", () => {
   });
 
   it("updateMenuByIdUseCase should throw a parameter exception when the idRecette is null", async () => {
-    menu.idRecette = undefined;
+    menu.id_recipe = undefined;
     try {
       spyOn(menuRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -113,7 +113,7 @@ describe("Update menu by id use case unit tests", () => {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant de menu " +
-          menu.idMenu +
+          menu.id +
           " ne correspond à aucune ressource existante"
       );
     }
@@ -129,7 +129,7 @@ describe("Update menu by id use case unit tests", () => {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant de recette " +
-          menu.idRecette +
+          menu.id_recipe +
           " ne correspond à aucune ressource existante"
       );
     }

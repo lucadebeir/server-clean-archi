@@ -15,26 +15,26 @@ export default class AddCategoryToRecipeUseCase {
   ) {}
 
   async execute(classify: ClassifyIn, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(classify, token);
+    await this.checkBusinessRules(classify, token);
     return this.classifyInRepository.addCategoryToRecipe(classify);
   }
 
-  private checkBusinessRules(classify: ClassifyIn, token?: TokenDomain): void {
+  private async checkBusinessRules(classify: ClassifyIn, token?: TokenDomain): Promise<void> {
     if (token && isAdmin(token)) {
       if (classify) {
         if (
-          !classify.idCategorie ||
-          !this.categoryRepository.existById(classify.idCategorie)
+          !classify.id_category ||
+          await !this.categoryRepository.existById(classify.id_category)
         ) {
           throw new BusinessException("La catégorie doit exister");
         }
         if (
-          !classify.idRecette ||
-          !this.recipeRepository.existById(classify.idRecette)
+          !classify.id_recipe ||
+          await !this.recipeRepository.existById(classify.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         }
-        if (this.classifyInRepository.check(classify)) {
+        if (await this.classifyInRepository.check(classify)) {
           throw new BusinessException(
             "Cette catégorie existe déjà dans cette recette"
           );

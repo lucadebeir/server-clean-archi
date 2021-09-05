@@ -10,28 +10,25 @@ type RecipeListStatic = typeof Model & {
 
 function RecipeListFactory(sequelize: Sequelize): RecipeListStatic {
   return <RecipeListStatic>sequelize.define(
-    "recipeList",
+    "recipes_list",
     {
-      idRecipeList: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      nomRecette: {
+      name_recipe: {
         type: DataTypes.STRING,
       },
 
-      pseudoUser: {
+      pseudo: {
         type: DataTypes.STRING,
       },
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
       },
-      complet: {
+      complete: {
         type: DataTypes.BOOLEAN,
-      },
-      day: {
-        type: DataTypes.INTEGER,
       },
     },
     {

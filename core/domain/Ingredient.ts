@@ -1,5 +1,5 @@
 export default class Ingredient {
-  idIngredient?: number;
-  nomIngredient?: string;
-  lienImage?: string;
+  id?: number;
+  name?: string;
+  image_link?: string;
 }

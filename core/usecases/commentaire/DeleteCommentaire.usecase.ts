@@ -16,9 +16,9 @@ export default class DeleteCommentaireUseCase {
     commentaire: Commentaire,
     token?: TokenDomain
   ): Promise<string> {
-    this.checkBusinessRules(commentaire, token);
+    await this.checkBusinessRules(commentaire, token);
     return await this.commentaireRepository.deleteById(
-      commentaire.idCommentaire
+      commentaire.id
     );
   }
 
@@ -31,7 +31,7 @@ export default class DeleteCommentaireUseCase {
         this.underCheckBusinessRules(commentaire, token);
       } else {
         if (isLogin(token)) {
-          if (token.pseudo === commentaire.ecritPar) {
+          if (token.pseudo === commentaire.pseudo) {
             this.underCheckBusinessRules(commentaire, token);
           } else {
             throw new BusinessException(
@@ -51,13 +51,13 @@ export default class DeleteCommentaireUseCase {
     }
   }
 
-  private underCheckBusinessRules(
+  private async underCheckBusinessRules(
     commentaire: Commentaire,
     token: TokenDomain
-  ): void {
-    if (this.userRepository.existByPseudo(token.pseudo)) {
-      if (commentaire.idCommentaire) {
-        if (!this.commentaireRepository.existById(commentaire.idCommentaire)) {
+  ): Promise<void> {
+    if (await this.userRepository.existByPseudo(token.pseudo)) {
+      if (commentaire.id) {
+        if (!this.commentaireRepository.existById(commentaire.id)) {
           throw new BusinessException("Le commentaire n'existe pas");
         }
       } else {

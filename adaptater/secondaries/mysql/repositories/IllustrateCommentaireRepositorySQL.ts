@@ -8,8 +8,8 @@ export default class IllustrateCommentaireRepositorySQL
     illustrateCommentaire: IllustrateCommentaireDomain
   ): Promise<string> {
     const data = {
-      idImage: illustrateCommentaire.idImage,
-      idCommentaire: illustrateCommentaire.idCommentaire,
+      id_image: illustrateCommentaire.id_image,
+      id_commentaire: illustrateCommentaire.id_commentaire,
     };
     return IllustrateCommentaireSequelize.create(data)
       .then(() => {
@@ -24,8 +24,8 @@ export default class IllustrateCommentaireRepositorySQL
     illustrateCommentaire: IllustrateCommentaireDomain
   ): Promise<string> {
     return IllustrateCommentaireSequelize.update(
-      { idImage: illustrateCommentaire.idImage },
-      { where: { idCommentaire: illustrateCommentaire.idCommentaire } }
+      { id_image: illustrateCommentaire.id_image },
+      { where: { id_commentaire: illustrateCommentaire.id_commentaire } }
     )
       .then(() => {
         return "Image modifiée avec succès";
@@ -38,8 +38,8 @@ export default class IllustrateCommentaireRepositorySQL
   check(illustrateCommentaire: IllustrateCommentaireDomain): Promise<boolean> {
     return IllustrateCommentaireSequelize.findOne({
       where: {
-        idCommentaire: illustrateCommentaire.idCommentaire,
-        idImage: illustrateCommentaire.idImage,
+        id_commentaire: illustrateCommentaire.id_commentaire,
+        id_image: illustrateCommentaire.id_image,
       },
     })
       .then((result: any) => {

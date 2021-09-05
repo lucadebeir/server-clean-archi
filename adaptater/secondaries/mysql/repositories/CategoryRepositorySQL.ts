@@ -39,13 +39,13 @@ export default class CategoryRepositorySQL implements CategoryRepository {
 
   findCategoriesNotInRecipe(id: any): Promise<Category[]> {
     return CategorySequelize.findAll({
-      attributes: ["idCategorie"],
+      attributes: ["id"],
       raw: true,
       include: [
         {
           model: RecipeSequelize,
           where: {
-            idRecette: id,
+            id: id,
           },
           attributes: [],
         },
@@ -55,7 +55,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
         let array = data.map((item: any) => item.idCategorie);
         return CategorySequelize.findAll({
           where: {
-            idCategorie: {
+            id: {
               [Op.notIn]: array,
             },
           },
@@ -88,7 +88,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
           attributes: [],
         },
       ],
-      order: [["datePublication", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((recipes) => {
         if (recipes.length != 0) {
@@ -112,12 +112,12 @@ export default class CategoryRepositorySQL implements CategoryRepository {
           model: CategorySequelize,
           as: "categories",
           where: {
-            idCategorie: id,
+            id: id,
           },
           attributes: [],
         },
       ],
-      order: [["nbVues", "DESC"]],
+      order: [["number_views", "DESC"]],
     })
       .then((recipes) => {
         if (recipes.length != 0) {
@@ -134,7 +134,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   deleteById(id: any): Promise<string> {
     return CategorySequelize.destroy({
       where: {
-        idCategorie: id,
+        id: id,
       },
     })
       .then(() => {
@@ -147,8 +147,8 @@ export default class CategoryRepositorySQL implements CategoryRepository {
 
   update(categoryToUpdate: Category): Promise<Category> {
     return CategorySequelize.update(
-      { libelleCategorie: categoryToUpdate.libelleCategorie },
-      { where: { idCategorie: categoryToUpdate.idCategorie } }
+      { name: categoryToUpdate.name },
+      { where: { id: categoryToUpdate.id } }
     )
       .then((category) => {
         if (category) {
@@ -168,7 +168,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
         {
           model: ClassifyInSequelize,
           where: {
-            idCategorie: id,
+            id_category: id,
           },
         },
       ],
@@ -184,7 +184,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   existById(id: any): Promise<boolean> {
     return CategorySequelize.findOne({
       where: {
-        idCategorie: id,
+        id: id,
       },
     })
       .then((category) => {
@@ -202,7 +202,7 @@ export default class CategoryRepositorySQL implements CategoryRepository {
   checkExistByName(name: any): Promise<boolean> {
     return CategorySequelize.findOne({
       where: {
-        libelleCategorie: name,
+        name: name,
       },
     })
       .then((category) => {

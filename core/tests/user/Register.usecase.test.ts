@@ -8,8 +8,8 @@ const initUser = (): User => {
   const user = new User();
   user.pseudo = "luca";
   user.password = "muca";
-  user.confirmedPassword = "muca";
-  user.abonneNews = true;
+  user.confirmed_password = "muca";
+  user.is_subscribed = true;
   user.email = "luca.debeir@gmail.com";
 
   return user;
@@ -41,7 +41,7 @@ describe("Register user use case unit tests", () => {
 
     spyOn(userRepository, "register").and.callFake((user: User) => {
       if (user) {
-        const result: User = { ...user, admin: false, emailConfirmed: false };
+        const result: User = { ...user, is_admin: false, confirmed_email: false };
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -57,9 +57,9 @@ describe("Register user use case unit tests", () => {
     expect(result).toBeDefined();
     expect(result.pseudo).toStrictEqual("luca");
     expect(result.email).toStrictEqual("luca.debeir@gmail.com");
-    expect(result.admin).toStrictEqual(false);
-    expect(result.emailConfirmed).toStrictEqual(false);
-    expect(result.abonneNews).toStrictEqual(true);
+    expect(result.is_admin).toStrictEqual(false);
+    expect(result.confirmed_email).toStrictEqual(false);
+    expect(result.is_subscribed).toStrictEqual(true);
   });
 
   it("registerUseCase should throw a parameter exception when the pseudo is lt 4", async () => {
@@ -164,7 +164,7 @@ describe("Register user use case unit tests", () => {
   });
 
   it("registerUseCase should throw a parameter exception when the password confirmation is undefined", async () => {
-    user.confirmedPassword = undefined;
+    user.confirmed_password = undefined;
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
@@ -176,7 +176,7 @@ describe("Register user use case unit tests", () => {
   });
 
   it("registerUseCase should throw a parameter exception when the password and the password confirmation are different", async () => {
-    user.confirmedPassword = "luca";
+    user.confirmed_password = "luca";
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);

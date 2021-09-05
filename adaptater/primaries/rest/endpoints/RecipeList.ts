@@ -5,6 +5,7 @@ recipeList.use(cors());
 
 import RecipeListConfig from "../config/RecipeListConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import RecipeList from "../../../../core/domain/RecipeList";
 const recipeListConfig = new RecipeListConfig();
 
 //récupérer le recipeList du moment d'un utilisateur
@@ -22,10 +23,10 @@ recipeList.get("/:pseudo", authenticateJWT, (req, res) => {
 
 //ajout d'une recette à la recipeList
 recipeList.post("/add", authenticateJWT, (req, res) => {
-  const recipeListData = {
-    nomRecette: req.body.nomRecette,
-    pseudoUser: req.body.pseudoUser,
-    idRecette: req.body.idRecette,
+  const recipeListData: RecipeList = {
+    name_recipe: req.body.nomRecette,
+    pseudo: req.body.pseudoUser,
+    id_recipe: req.body.idRecette,
     day: req.body.day,
   };
   recipeListConfig
@@ -41,12 +42,12 @@ recipeList.post("/add", authenticateJWT, (req, res) => {
 
 //update état d'une recette de la liste
 recipeList.post("/update", authenticateJWT, (req, res) => {
-  const recipeListData = {
-    idRecipeList: req.body.idRecipeList,
-    nomRecette: req.body.nomRecette,
-    pseudoUser: req.body.pseudoUser,
-    idRecette: req.body.idRecette,
-    complet: req.body.complet,
+  const recipeListData: RecipeList = {
+    id: req.body.idRecipeList,
+    name_recipe: req.body.nomRecette,
+    pseudo: req.body.pseudoUser,
+    id_recipe: req.body.idRecette,
+    complete: req.body.complet,
     day: req.body.day,
   };
   recipeListConfig
@@ -62,12 +63,12 @@ recipeList.post("/update", authenticateJWT, (req, res) => {
 
 //update état d'une recette de la liste
 recipeList.post("/update/week", authenticateJWT, (req, res) => {
-  const recipeListData = {
-    idRecipeList: req.body.idRecipeList,
-    nomRecette: req.body.nomRecette,
-    pseudoUser: req.body.pseudoUser,
-    idRecette: req.body.idRecette,
-    complet: req.body.complet,
+  const recipeListData: RecipeList = {
+    id: req.body.idRecipeList,
+    name_recipe: req.body.nomRecette,
+    pseudo: req.body.pseudoUser,
+    id_recipe: req.body.idRecette,
+    complete: req.body.complet,
     day: req.body.day,
   };
   recipeListConfig

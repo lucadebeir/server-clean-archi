@@ -3,7 +3,6 @@ import RecipesFilterDomain from "../../../../core/domain/RecipesFilter.domain";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 import RecipeSequelize from "../entities/Recipe.model";
 import Category from "../../../../core/domain/Category.domain";
-import Ingredient from "../../../../core/domain/Ingredient";
 import CategorySequelize from "../entities/Category.model";
 import IngredientSequelize from "../entities/Ingredient.model";
 import ImageSequelize from "../entities/Image.model";
@@ -16,12 +15,13 @@ import RecipeListSequelize from "../entities/RecipeList.model";
 import EtapeSequelize from "../entities/Etape.model";
 import NotationSequelize from "../entities/Notation.model";
 import CommentaireSequelize from "../entities/Commentaire.model";
-import { fn, col, Op } from "sequelize";
+import { Op } from "sequelize";
+import UseIngredient from "../../../../core/domain/UseIngredient";
 
 export default class RecipeRepositorySQL implements RecipeRepository {
   update(recipe: Recipe): Promise<Recipe> {
     return RecipeSequelize.update(recipe, {
-      where: { idRecette: recipe.idRecette },
+      where: { id: recipe.id },
     })
       .then(() => {
         return recipe;
@@ -34,7 +34,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   existByName(name: any): Promise<boolean> {
     return RecipeSequelize.findOne({
       where: {
-        nomRecette: name,
+        name: name,
       },
     })
       .then((result: any) => {
@@ -52,7 +52,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   useInMenu(id: any): Promise<boolean> {
     return MenuSequelize.findOne({
       where: {
-        idRecette: id,
+        id_recipe: id,
       },
     })
       .then((result: any) => {
@@ -70,7 +70,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   useInRecipeList(id: any): Promise<boolean> {
     return RecipeListSequelize.findOne({
       where: {
-        idRecette: id,
+        id_recipe: id,
       },
     })
       .then((result: any) => {
@@ -88,7 +88,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   existById(id: any): Promise<boolean> {
     return RecipeSequelize.findOne({
       where: {
-        idRecette: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -117,7 +117,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -148,9 +148,10 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           attributes: ["note"],
         },
       ],
-      order: [["datePublication", order]],
+      order: [["date", order]],
     })
       .then((recipes: any) => {
+        console.log(recipes)
         if (recipes.length != 0) {
           return recipes;
         } else {
@@ -165,7 +166,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   findById(id: any): Promise<Recipe> {
     return RecipeSequelize.findOne({
       where: {
-        idRecette: id,
+        id: id,
       },
       include: [
         {
@@ -177,7 +178,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -234,7 +235,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -262,7 +263,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           attributes: ["note"],
         },
       ],
-      order: [["nbVues", "DESC"]],
+      order: [["number_views", "DESC"]],
     })
       .then((recipes) => {
         if (recipes.length != 0) {
@@ -276,12 +277,12 @@ export default class RecipeRepositorySQL implements RecipeRepository {
       });
   }
 
-  getIngredientsByIdRecipe(id: any): Promise<Ingredient[]> {
+  getIngredientsByIdRecipe(id: any): Promise<UseIngredient[]> {
     return UseIngredientSequelize.findAll({
       where: {
-        idRecette: id,
+        id_recipe: id,
       },
-      attributes: ["qte"],
+      attributes: ["quantity"],
       include: [
         {
           model: IngredientSequelize,
@@ -309,7 +310,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         {
           model: ClassifyInSequelize,
           where: {
-            idRecette: id,
+            id_recipe: id,
           },
           attributes: [],
         },
@@ -339,7 +340,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -367,7 +368,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           attributes: ["note"],
         },
       ],
-      order: [["datePublication", "DESC"]],
+      order: [["date", "DESC"]],
       limit: 3,
     })
       .then((recipes) => {
@@ -394,7 +395,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -422,7 +423,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           attributes: ["note"],
         },
       ],
-      order: [["nbVues", "DESC"]],
+      order: [["number_views", "DESC"]],
       limit: 12,
     })
       .then((recipes) => {
@@ -440,15 +441,15 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   updateNbView(id: any): Promise<string> {
     return RecipeSequelize.findOne({
       where: {
-        idRecette: id,
+        id: id,
       },
     }).then((recipe: any) => {
       if (!recipe) {
         throw new Error("Problème technique");
       } else {
         return RecipeSequelize.update(
-          { nbVues: recipe.nbVues + 1 },
-          { where: { idRecette: id } }
+          { number_views: recipe.number_views + 1 },
+          { where: { id: id } }
         )
           .then((recipe: any) => {
             if (recipe) {
@@ -467,7 +468,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
   deleteById(id: any): Promise<string> {
     return RecipeSequelize.destroy({
       where: {
-        idRecette: id,
+        id: id,
       },
     })
       .then(() => {
@@ -515,7 +516,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -546,7 +547,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
           attributes: ["note"],
         },
       ],
-      order: [[data.popular ? "nbVues" : "datePublication", "desc"]],
+      order: [[data.popular ? "number_views" : "date", "desc"]],
     })
       .then((recipes: any) => {
         if (recipes.length != 0) {

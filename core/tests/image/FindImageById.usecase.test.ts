@@ -5,9 +5,9 @@ import ImageRepository from "../../ports/repositories/Image.repository";
 
 const initImage = (): ImageDomain => {
   const image = new ImageDomain();
-  image.idImage = 1;
-  image.nameImage = "wraps aux épinards.jpeg";
-  image.lienImage =
+  image.id = 1;
+  image.name = "wraps aux épinards.jpeg";
+  image.link =
     "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg";
 
   return image;
@@ -38,11 +38,11 @@ describe("get image by id use case unit tests", () => {
 
   it("findImageByIdUseCase should return image when id is 1", async () => {
     const result: ImageDomain = await findImageByIdUseCase.execute(
-      image.idImage
+      image.id
     );
-    expect(result.idImage).toBe(1);
-    expect(result.nameImage).toBe("wraps aux épinards.jpeg");
-    expect(result.lienImage).toBe(
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("wraps aux épinards.jpeg");
+    expect(result.link).toBe(
       "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"
     );
   });

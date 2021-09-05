@@ -9,11 +9,11 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initCategories = (): Category[] => {
   const category1 = new Category();
-  category1.idCategorie = 1;
+  category1.id = 1;
   category1.libelleCategorie = "Douceur";
 
   const category2 = new Category();
-  category2.idCategorie = 2;
+  category2.id = 2;
   category2.libelleCategorie = "Repas";
 
   const list = [];
@@ -26,7 +26,7 @@ const initCategories = (): Category[] => {
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
+  recipe.id = 1;
 
   return recipe;
 };
@@ -77,7 +77,7 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should return categories when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Category[] = await getCategoriesNotInRecipeUseCase.execute(
-      recipe.idRecette,
+      recipe.id_recipe,
       user
     );
     expect(result).toBeDefined();
@@ -88,7 +88,7 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getCategoriesNotInRecipeUseCase.execute(recipe.idRecette, user);
+      await getCategoriesNotInRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -110,7 +110,7 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should throw a parameter exception when the recipe doesn't exist", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await getCategoriesNotInRecipeUseCase.execute(recipe.idRecette, user);
+      await getCategoriesNotInRecipeUseCase.execute(recipe.id_recipe, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");

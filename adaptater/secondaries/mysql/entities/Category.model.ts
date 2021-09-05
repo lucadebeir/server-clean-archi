@@ -12,12 +12,12 @@ function CategoryFactory(sequelize: Sequelize): CategoryStatic {
   return <CategoryStatic>sequelize.define(
     "categories",
     {
-      idCategorie: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      libelleCategorie: {
+      name: {
         type: DataTypes.STRING,
       },
     },

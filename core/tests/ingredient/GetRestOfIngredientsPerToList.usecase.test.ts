@@ -7,12 +7,12 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 2;
-  ingredient2.nomIngredient = "Fromage";
+  ingredient2.id = 2;
+  ingredient2.name = "Fromage";
 
   const ingredients = [ingredient, ingredient2];
 
@@ -21,12 +21,12 @@ const initIngredients = (): Ingredient[] => {
 
 const initRestIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 3;
-  ingredient.nomIngredient = "Orange(s)";
+  ingredient.id = 3;
+  ingredient.name = "Orange(s)";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 4;
-  ingredient2.nomIngredient = "Kiwi";
+  ingredient2.id = 4;
+  ingredient2.name = "Kiwi";
 
   const ingredients = [ingredient, ingredient2];
 

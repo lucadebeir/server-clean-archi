@@ -9,18 +9,18 @@ const initUsers = (): User[] => {
   const user = new User();
   user.pseudo = "luca";
   user.password = "muca";
-  user.abonneNews = true;
+  user.is_subscribed = true;
   user.email = "luca.debeir@gmail.com";
-  user.emailConfirmed = true;
-  user.admin = false;
+  user.confirmed_email = true;
+  user.is_admin = false;
 
   const user2 = new User();
   user2.pseudo = "lucas";
   user2.password = "muca";
-  user2.abonneNews = true;
+  user2.is_subscribed = true;
   user2.email = "lucas.debeir@gmail.com";
-  user2.emailConfirmed = true;
-  user2.admin = false;
+  user2.confirmed_email = true;
+  user2.is_admin = false;
 
   return [user, user2];
 };
@@ -52,7 +52,7 @@ describe("Get all abonne users use case unit tests", () => {
     expect(result.length).toStrictEqual(2);
     expect(result).toHaveLength(2);
     expect(result.map((user) => expect(users).toContain(user)));
-    expect(result.some(({ abonneNews }) => abonneNews)).toBe(true);
+    expect(result.some(({ is_subscribed }) => is_subscribed)).toBe(true);
   });
 
   it("getAllAbonneUsersUseCase should throw a parameter exception when the user is null", async () => {

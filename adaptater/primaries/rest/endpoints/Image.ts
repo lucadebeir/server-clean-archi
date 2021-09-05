@@ -12,6 +12,7 @@ import {
 } from "../../../secondaries/image/helpers/Image.helpers";
 import multer from "multer";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import ImageDomain from "../../../../core/domain/Image.domain";
 const multerMid = multer({
   storage: multer.memoryStorage(),
   limits: {
@@ -62,9 +63,9 @@ image.post(
   authenticateJWT,
   async (req, res) => {
     const imageUrl = await uploadImage(req.file);
-    const data = {
-      lienImage: imageUrl,
-      nameImage: req.file?.originalname,
+    const data: ImageDomain = {
+      link: imageUrl,
+      name: req?.file?.originalname,
     };
     imageConfig
       .uploadImageUseCase()

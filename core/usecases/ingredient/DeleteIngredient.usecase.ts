@@ -8,15 +8,15 @@ export default class DeleteIngredientUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
   async execute(id: any, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(id, token);
+    await this.checkBusinessRules(id, token);
     return await this.ingredientRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id: any, token?: TokenDomain): void {
+  private async checkBusinessRules(id: any, token?: TokenDomain): Promise<void> {
     if (token && isAdmin(token)) {
       if (id) {
-        if (this.ingredientRepository.existById(id)) {
-          if (this.ingredientRepository.checkExistInRecipes(id)) {
+        if (await this.ingredientRepository.existById(id)) {
+          if (await this.ingredientRepository.checkExistInRecipes(id)) {
             throw new BusinessException(
               "Cet ingrédient est associé à une ou plusieurs recettes"
             );

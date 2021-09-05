@@ -26,21 +26,21 @@ export default class AddIngredientToShoppingListUseCase {
     if (token && isLogin(token)) {
       if (shopping.pseudo) {
         if (await this.userRepository.existByPseudo(shopping.pseudo)) {
-          if (shopping.name) {
+          if (shopping.name_ingredient) {
             if (
               await this.shoppingRepository.exist(
                 shopping.pseudo,
-                shopping.name
+                shopping.name_ingredient
               )
             ) {
               throw new BusinessException(
                 "L'ingrédient " +
-                  shopping.name +
+                  shopping.name_ingredient +
                   " se trouve déjà dans la liste de courses de l'utilisateur " +
                   shopping.pseudo
               );
             }
-            if (shopping.name.length > 40) {
+            if (shopping.name_ingredient.length > 40) {
               throw new BusinessException(
                 "Le nom d'un ingrédient ne doit pas dépasser 40 caractères"
               );
@@ -51,7 +51,7 @@ export default class AddIngredientToShoppingListUseCase {
                   "La quantité doit être strictement supérieur à 0"
                 );
               } else {
-                if (!shopping.idUnite) {
+                if (!shopping.id_unit) {
                   throw new BusinessException("L'unité est obligatoire");
                 }
               }

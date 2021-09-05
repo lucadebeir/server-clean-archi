@@ -11,12 +11,12 @@ import * as Utils from "../../utils/token.service";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Tomates";
+  ingredient.id = 1;
+  ingredient.name = "Tomates";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 2;
-  ingredient2.nomIngredient = "Oignons";
+  ingredient2.id = 2;
+  ingredient2.name = "Oignons";
 
   const list = [ingredient, ingredient2];
 

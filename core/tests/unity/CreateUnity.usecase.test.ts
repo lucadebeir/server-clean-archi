@@ -8,7 +8,7 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
-  unity.libelleUnite = "g";
+  unity.name = "g";
 
   return unity;
 };
@@ -31,7 +31,7 @@ describe("Create unity use case unit tests", () => {
 
     spyOn(unityRepository, "create").and.callFake((unity: Unity) => {
       if (unity) {
-        const result: Unity = { ...unity, idUnite: 1 };
+        const result: Unity = { ...unity, id: 1 };
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -43,8 +43,8 @@ describe("Create unity use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Unity = await createUnityUseCase.execute(unity, user);
     expect(result).toBeDefined();
-    expect(result.idUnite).toBe(1);
-    expect(result.libelleUnite).toBe("g");
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("g");
   });
 
   it("createUnityUseCase should throw a parameter exception when the user is null", async () => {
@@ -81,7 +81,7 @@ describe("Create unity use case unit tests", () => {
   });
 
   it("createUnityUseCase should throw a parameter exception when the libelleUnity is null", async () => {
-    unity.libelleUnite = null;
+    unity.name = null;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
@@ -92,7 +92,7 @@ describe("Create unity use case unit tests", () => {
   });
 
   it("createUnityUseCase should throw a parameter exception when the libelleUnity has more than 19 characters", async () => {
-    unity.libelleUnite = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    unity.name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(unityRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);

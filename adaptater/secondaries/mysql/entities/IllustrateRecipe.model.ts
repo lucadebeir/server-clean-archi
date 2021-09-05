@@ -14,22 +14,22 @@ type IllustrateRecipeStatic = typeof Model & {
 
 function IllustrateRecipeFactory(sequelize: Sequelize): IllustrateRecipeStatic {
   return <IllustrateRecipeStatic>sequelize.define(
-    "illustrerRecettes",
+    "recipes__images",
     {
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-          model: "recettes",
-          key: "idRecette",
+          model: "recipes",
+          key: "id",
         },
       },
-      idImage: {
+      id_image: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
           model: "images",
-          key: "idImage",
+          key: "id",
         },
       },
     },
@@ -43,29 +43,29 @@ const IllustrateRecipeSequelize = IllustrateRecipeFactory(db.sequelize);
 
 ImageSequelize.belongsToMany(RecipeSequelize, {
   through: {
-    model: "illustrerRecettes",
+    model: "recipes__images",
   },
-  foreignKey: "idImage",
+  foreignKey: "id_image",
 });
 RecipeSequelize.belongsToMany(ImageSequelize, {
   through: {
-    model: "illustrerRecettes",
+    model: "recipes__images",
   },
-  foreignKey: "idRecette",
+  foreignKey: "id_recipe",
 });
 
 IllustrateRecipeSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(IllustrateRecipeSequelize, {
-  foreignKey: { name: "idRecette" },
+  foreignKey: { name: "id_recipe" },
 });
 
 IllustrateRecipeSequelize.belongsTo(ImageSequelize, {
-  foreignKey: { name: "idImage" },
+  foreignKey: { name: "id_image" },
 });
 ImageSequelize.hasMany(IllustrateRecipeSequelize, {
-  foreignKey: { name: "idImage" },
+  foreignKey: { name: "id_image" },
 });
 
 export = IllustrateRecipeSequelize;

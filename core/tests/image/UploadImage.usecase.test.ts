@@ -7,7 +7,7 @@ import * as Utils from "../../utils/token.service";
 
 const initImage = (): ImageDomain => {
   const image = new ImageDomain();
-  image.nameImage = "wraps aux épinards.jpeg";
+  image.name = "wraps aux épinards.jpeg";
 
   return image;
 };
@@ -30,7 +30,7 @@ describe("upload image use case unit tests", () => {
 
     spyOn(imageRepository, "uploadImage").and.callFake((file: any) => {
       if (file) {
-        const result: ImageDomain = { ...image, idImage: 1, lienImage: "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"};
+        const result: ImageDomain = { ...image, id: 1, link: "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"};
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -44,9 +44,9 @@ describe("upload image use case unit tests", () => {
       image,
       token
     );
-    expect(result.idImage).toBe(1);
-    expect(result.nameImage).toBe("wraps aux épinards.jpeg");
-    expect(result.lienImage).toBe(
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("wraps aux épinards.jpeg");
+    expect(result.link).toBe(
       "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"
     );
   });

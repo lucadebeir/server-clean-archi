@@ -62,7 +62,7 @@ ingredient.get("/rest/recipe/:id", authenticateJWT, (req, res) => {
 //Ajouter ingredient
 ingredient.post("/add", authenticateJWT, (req, res) => {
   const ingredientData = {
-    nomIngredient: req.body.nomIngredient,
+    name: req.body.nomIngredient,
   };
   ingredientConfig
     .createIngredientUseCase()
@@ -91,8 +91,8 @@ ingredient.delete("/:id", authenticateJWT, (req, res) => {
 //modifier ingredient
 ingredient.post("/update", authenticateJWT, (req, res) => {
   const ingredientData = {
-    idIngredient: req.body.idIngredient,
-    nomIngredient: req.body.nomIngredient,
+    id: req.body.idIngredient,
+    name: req.body.nomIngredient,
   };
   ingredientConfig
     .updateIngredientUseCase()

@@ -8,7 +8,7 @@ export default class UnityRepositorySQL implements UnityRepository {
   existById(id: any): Promise<boolean> {
     return UnitySequelize.findOne({
       where: {
-        idUnite: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -39,7 +39,7 @@ export default class UnityRepositorySQL implements UnityRepository {
 
   findAll(): Promise<Unity[]> {
     return UnitySequelize.findAll({
-      order: [["libelleUnite", "ASC"]],
+      order: [["name", "ASC"]],
     })
       .then((unity) => {
         if (unity) {
@@ -56,7 +56,7 @@ export default class UnityRepositorySQL implements UnityRepository {
   findById(id: any): Promise<Unity> {
     return UnitySequelize.findOne({
       where: {
-        idUnite: id,
+        id: id,
       },
     })
       .then((unity) => {
@@ -74,7 +74,7 @@ export default class UnityRepositorySQL implements UnityRepository {
   deleteById(id: any): Promise<string> {
     return UnitySequelize.destroy({
       where: {
-        idUnite: id,
+        id: id,
       },
     })
       .then(() => {
@@ -87,8 +87,8 @@ export default class UnityRepositorySQL implements UnityRepository {
 
   update(unityToUpdate: Unity): Promise<Unity> {
     return UnitySequelize.update(
-      { libelleUnite: unityToUpdate.libelleUnite },
-      { where: { idUnite: unityToUpdate.idUnite } }
+      { name: unityToUpdate.name },
+      { where: { id: unityToUpdate.id } }
     )
       .then(() => {
         return unityToUpdate;
@@ -101,7 +101,7 @@ export default class UnityRepositorySQL implements UnityRepository {
   checkExistByName(name: any): Promise<boolean> {
     return UnitySequelize.findOne({
       where: {
-        libelleUnite: name,
+        name: name,
       },
     })
       .then((unity) => {
@@ -119,7 +119,7 @@ export default class UnityRepositorySQL implements UnityRepository {
   checkExistInRecipes(id: any): Promise<boolean> {
     return UseIngredientSequelize.findOne({
       where: {
-        idUnite: id,
+        id_unit: id,
       },
     })
       .then((unity) => {

@@ -20,43 +20,43 @@ export default class UpdateIngredientFromRecipeUseCase {
     useIngredient: UseIngredient,
     token?: TokenDomain
   ): Promise<string> {
-    this.checkBusinessRules(useIngredient, token);
+    await this.checkBusinessRules(useIngredient, token);
     return this.useIngredientRepository.update(useIngredient);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     useIngredient?: UseIngredient,
     token?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (token && isAdmin(token)) {
       if (useIngredient) {
         if (
-          !useIngredient.idUnite ||
-          !this.unityRepository.findById(useIngredient.idUnite)
+          !useIngredient.id_unit ||
+          !this.unityRepository.findById(useIngredient.id_unit)
         ) {
           throw new BusinessException("L'unité doit exister");
         }
         if (
-          !useIngredient.idIngredient ||
-          !this.ingredientRepository.findById(useIngredient.idIngredient)
+          !useIngredient.id_ingredient ||
+          !this.ingredientRepository.findById(useIngredient.id_ingredient)
         ) {
           throw new BusinessException("L'ingrédient doit exister");
         }
         if (
-          !useIngredient.idRecette ||
-          !this.recipeRepository.findById(useIngredient.idRecette)
+          !useIngredient.id_recipe ||
+          !this.recipeRepository.findById(useIngredient.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         }
-        if (useIngredient.qte == 0) {
+        if (useIngredient.quantity == 0) {
           throw new BusinessException(
             "Une quantité ne peut pas être négative, ni nulle"
           );
         }
-        if (!useIngredient.qte) {
+        if (!useIngredient.quantity) {
           throw new BusinessException("La quantité est obligatoire");
         }
-        if (this.useIngredientRepository.check(useIngredient)) {
+        if (await this.useIngredientRepository.check(useIngredient)) {
           throw new BusinessException(
             "Cette ingrédient existe déjà dans cette recette"
           );

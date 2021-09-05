@@ -10,13 +10,13 @@ type FavoriStatic = typeof Model & {
 
 function FavoriFactory(sequelize: Sequelize): FavoriStatic {
   return <FavoriStatic>sequelize.define(
-    "favori",
+    "favorites",
     {
       pseudo: {
         type: DataTypes.STRING,
         primaryKey: true,
       },
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
         primaryKey: true,
       },

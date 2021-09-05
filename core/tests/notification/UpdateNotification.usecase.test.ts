@@ -9,7 +9,7 @@ import { BusinessException } from "../../exceptions/BusinessException";
 const initNotification = (): Notification => {
   const notification = new Notification();
   notification.type = "vue";
-  notification.idNotification = 1;
+  notification.id = 1;
 
   return notification;
 };
@@ -54,7 +54,7 @@ describe("Update notification use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(notificationRepository, "existById").and.returnValue(true);
     const result: string = await updateNotificationUseCase.execute(
-      notification.idNotification,
+      notification.id,
       token
     );
     expect(result).toBeDefined();
@@ -81,11 +81,11 @@ describe("Update notification use case unit tests", () => {
   });
 
   it("updateNotificationUseCase should throw a parameter exception when the id is undefined", async () => {
-    notification.idNotification = undefined;
+    notification.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateNotificationUseCase.execute(
-        notification.idNotification,
+        notification.id,
         token
       );
     } catch (e) {
@@ -101,7 +101,7 @@ describe("Update notification use case unit tests", () => {
       spyOn(notificationRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateNotificationUseCase.execute(
-        notification.idNotification,
+        notification.id,
         token
       );
     } catch (e) {

@@ -44,58 +44,58 @@ export default class CreateRecipeUseCase {
   private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {
     if (token && isAdmin(token)) {
       if (recipe) {
-        this.checkIfValueIsEmpty(recipe.nomRecette, "nomRecette");
-        this.checkIfValueIsEmpty(recipe.libellePart, "libellePart");
-        this.checkIfValueIsEmpty(recipe.nbrePart, "nbrePart");
-        this.checkIfValueIsEmpty(recipe.tempsPreparation, "tempsPreparation");
+        this.checkIfValueIsEmpty(recipe.name, "nomRecette");
+        this.checkIfValueIsEmpty(recipe.name_portion, "libellePart");
+        this.checkIfValueIsEmpty(recipe.number_portion, "nbrePart");
+        this.checkIfValueIsEmpty(recipe.preparation_time, "tempsPreparation");
 
-        this.checkIfValueIsValid(60, recipe.nomRecette, "nomRecette");
-        this.checkIfValueIsValid(50, recipe.libellePart, "libellePart");
+        this.checkIfValueIsValid(60, recipe.name, "nomRecette");
+        this.checkIfValueIsValid(50, recipe.name_portion, "libellePart");
 
-        if (recipe.nbrePart && recipe.nbrePart <= 0) {
+        if (recipe.number_portion && recipe.number_portion <= 0) {
           throw new BusinessException(
             "Le nombre de part doit être strictement supérieur à 0"
           );
         }
 
         if (
-          recipe.utiliserIngredients?.length == 0 ||
-          !recipe.utiliserIngredients
+          recipe.ingredients?.length == 0 ||
+          !recipe.ingredients
         ) {
           throw new BusinessException(
             "Il faut sélectionner au moins un ingrédient pour créer une recette"
           );
         } else {
-          recipe.utiliserIngredients?.map((ingredient) => {
-            if (ingredient.qte && ingredient.qte <= 0) {
+          recipe.ingredients?.map((ingredient) => {
+            if (ingredient.quantity && ingredient.quantity <= 0) {
               throw new BusinessException(
                 "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
               );
             }
 
-            if (!this.ingredientRepository.existById(ingredient.idIngredient)) {
+            if (!this.ingredientRepository.existById(ingredient.id_ingredient)) {
               throw new BusinessException(
-                "L'ingrédient " + ingredient.idIngredient + " n'existe pas"
+                "L'ingrédient " + ingredient.id_ingredient + " n'existe pas"
               );
             }
 
-            if (!this.unityRepository.existById(ingredient.idUnite)) {
+            if (!this.unityRepository.existById(ingredient.id_unit)) {
               throw new BusinessException(
-                "L'unité " + ingredient.idUnite + " n'existe pas"
+                "L'unité " + ingredient.id_unit + " n'existe pas"
               );
             }
           });
         }
 
-        if (recipe.classerDans?.length == 0 || !recipe.classerDans) {
+        if (recipe.recipes__categories?.length == 0 || !recipe.recipes__categories) {
           throw new BusinessException(
             "Il faut sélectionner au moins une catégorie pour créer une recette"
           );
         } else {
-          recipe.classerDans?.map((category) => {
-            if (!this.categoryRepository.existById(category.idCategorie)) {
+          recipe.recipes__categories?.map((category) => {
+            if (!this.categoryRepository.existById(category.id_category)) {
               throw new BusinessException(
-                "La catégorie " + category.idCategorie + " n'existe pas"
+                "La catégorie " + category.id_category + " n'existe pas"
               );
             }
           });

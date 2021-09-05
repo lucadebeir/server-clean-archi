@@ -6,8 +6,8 @@ export default class IllustrateRecipeRepositorySQL
   implements IllustrateRecipeRepository {
   addToRecette(illustrateRecipe: IllustrateRecipeDomain): Promise<string> {
     const data = {
-      idImage: illustrateRecipe.idImage,
-      idRecipe: illustrateRecipe.idRecette,
+      id_image: illustrateRecipe.id_image,
+      id_recipe: illustrateRecipe.id_recipe,
     };
     return IllustrateRecipeSequelize.create(data)
       .then(() => {
@@ -20,8 +20,8 @@ export default class IllustrateRecipeRepositorySQL
 
   updateFromRecipe(illustrateRecipe: IllustrateRecipeDomain): Promise<string> {
     return IllustrateRecipeSequelize.update(
-      { idImage: illustrateRecipe.idImage },
-      { where: { idRecette: illustrateRecipe.idRecette } }
+      { id_image: illustrateRecipe.id_image },
+      { where: { id_recipe: illustrateRecipe.id_recipe } }
     )
       .then(() => {
         return "Image modifiée avec succès";
@@ -34,8 +34,8 @@ export default class IllustrateRecipeRepositorySQL
   check(illustrateRecipe: IllustrateRecipeDomain): Promise<boolean> {
     return IllustrateRecipeSequelize.findOne({
       where: {
-        idRecette: illustrateRecipe.idRecette,
-        idImage: illustrateRecipe.idImage,
+        id_recipe: illustrateRecipe.id_recipe,
+        id_image: illustrateRecipe.id_image,
       },
     })
       .then((result: any) => {

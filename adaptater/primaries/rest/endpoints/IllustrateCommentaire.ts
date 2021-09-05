@@ -10,8 +10,8 @@ const illustrateCommentaireConfig = new IllustrateCommentaireConfig();
 //Ajouter une image à un commentaire
 illustrateCommentaire.get("/add", authenticateJWT, (req, res) => {
   const data: any = {
-    idImage: req.body.idImage,
-    idRecette: req.body.idRecette,
+    id_image: req.body.idImage,
+    id_recipe: req.body.idRecette,
   };
   illustrateCommentaireConfig
     .addImageToCommentaireUseCase()
@@ -27,8 +27,8 @@ illustrateCommentaire.get("/add", authenticateJWT, (req, res) => {
 //Modifier l'image d'un commentaire
 illustrateCommentaire.get("/update", authenticateJWT, (req, res) => {
   const data: any = {
-    idImage: req.body.idImage,
-    idRecette: req.body.idRecette,
+    id_image: req.body.idImage,
+    id_recipe: req.body.idRecette,
   };
   illustrateCommentaireConfig
     .updateImageFromCommentaireUseCase()

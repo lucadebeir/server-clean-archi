@@ -11,10 +11,10 @@ import DeleteCommentaireUseCase from "../../usecases/commentaire/DeleteCommentai
 
 const initCommentaire = (): Commentaire => {
   const commentaire = new Commentaire();
-  commentaire.idCommentaire = 1;
+  commentaire.id = 1;
   commentaire.message = "C'est bon !";
-  commentaire.ecritPar = "luca";
-  commentaire.concerne = 1;
+  commentaire.pseudo = "luca";
+  commentaire.id_recipe = 1;
 
   return commentaire;
 };
@@ -148,7 +148,7 @@ describe("Delete commentaire use case unit tests", () => {
   });
 
   it("deleteCommentaireUseCase should throw a parameter exception when the identifiant is undefined and is not an admin", async () => {
-    commentaire.idCommentaire = undefined;
+    commentaire.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
@@ -187,7 +187,7 @@ describe("Delete commentaire use case unit tests", () => {
   });
 
   it("deleteCommentaireUseCase should throw a parameter exception when the identifiant is undefined and is an admin", async () => {
-    commentaire.idCommentaire = undefined;
+    commentaire.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(Utils, "isLogin").and.returnValue(true);

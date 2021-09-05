@@ -1,4 +1,4 @@
 export default class IllustrateCommentaireDomain {
-  idCommentaire?: any;
-  idImage?: any;
+  id_commentaire?: any;
+  id_image?: any;
 }

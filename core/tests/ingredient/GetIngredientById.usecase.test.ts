@@ -7,8 +7,8 @@ import GetIngredientByIdUseCase from "../../usecases/ingredient/GetIngredientByI
 
 const initIngredient = (): Ingredient => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   return ingredient;
 };
@@ -42,7 +42,7 @@ describe("get ingredient by id use case unit tests", () => {
   it("getUnityByIdUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getIngredientByIdUseCase.execute(ingredient.idIngredient, user);
+      await getIngredientByIdUseCase.execute(ingredient.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -54,7 +54,7 @@ describe("get ingredient by id use case unit tests", () => {
   it("getUnityByIdUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await getIngredientByIdUseCase.execute(
-        ingredient.idIngredient,
+        ingredient.id,
         undefined
       );
     } catch (e) {
@@ -68,11 +68,11 @@ describe("get ingredient by id use case unit tests", () => {
   it("getIngredientByIdUseCase should return ingredient when idIngredient is 1", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Ingredient = await getIngredientByIdUseCase.execute(
-      ingredient.idIngredient,
+      ingredient.id,
       user
     );
-    expect(result.idIngredient).toBe(1);
-    expect(result.nomIngredient).toBe("Cacahuètes");
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("Cacahuètes");
   });
 
   it("should throw an error when id is missing", async () => {

@@ -16,22 +16,22 @@ function IllustrateCommentaireFactory(
   sequelize: Sequelize
 ): IllustrateCommentaireStatic {
   return <IllustrateCommentaireStatic>sequelize.define(
-    "illustrerCommentaires",
+    "commentaires__images",
     {
-      idCommentaire: {
+      id_commentaire: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
           model: "commentaires",
-          key: "idCommentaire",
+          key: "id",
         },
       },
-      idImage: {
+      id_image: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
           model: "images",
-          key: "idImage",
+          key: "id",
         },
       },
     },
@@ -47,29 +47,29 @@ const IllustrateCommentaireSequelize = IllustrateCommentaireFactory(
 
 ImageSequelize.belongsToMany(CommentaireSequelize, {
   through: {
-    model: "illustrerCommentaires",
+    model: "commentaires__images",
   },
-  foreignKey: "idImage",
+  foreignKey: "id",
 });
 CommentaireSequelize.belongsToMany(ImageSequelize, {
   through: {
-    model: "illustrerCommentaires",
+    model: "commentaires__images",
   },
-  foreignKey: "idCommentaire",
+  foreignKey: "id",
 });
 
 IllustrateCommentaireSequelize.belongsTo(CommentaireSequelize, {
-  foreignKey: { name: "idCommentaire" },
+  foreignKey: { name: "id_commentaire" },
 });
 CommentaireSequelize.hasMany(IllustrateCommentaireSequelize, {
-  foreignKey: { name: "idCommentaire" },
+  foreignKey: { name: "id" },
 });
 
 IllustrateCommentaireSequelize.belongsTo(ImageSequelize, {
-  foreignKey: { name: "idImage" },
+  foreignKey: { name: "id_image" },
 });
 ImageSequelize.hasMany(IllustrateCommentaireSequelize, {
-  foreignKey: { name: "idImage" },
+  foreignKey: { name: "id" },
 });
 
 export = IllustrateCommentaireSequelize;

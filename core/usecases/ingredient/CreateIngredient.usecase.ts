@@ -12,27 +12,27 @@ export default class CreateIngredientUseCase {
     ingredient?: Ingredient,
     user?: TokenDomain
   ): Promise<Ingredient> {
-    this.checkBusinessRules(ingredient, user);
+    await this.checkBusinessRules(ingredient, user);
     return await this.ingredientRepository.create(ingredient);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     ingredient?: Ingredient,
     user?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (user && isAdmin(user)) {
       if (ingredient) {
-        if (!ingredient.nomIngredient) {
+        if (!ingredient.name) {
           throw new BusinessException("Le nom d'un ingrédient est obligatoire");
         } else {
           if (
-            this.ingredientRepository.checkExistByName(ingredient.nomIngredient)
+            await this.ingredientRepository.checkExistByName(ingredient.name)
           ) {
             throw new BusinessException(
               "Ce nom est déjà utilisé par un ingrédient"
             );
           }
-          if (ingredient.nomIngredient.length > 39) {
+          if (ingredient.name.length > 39) {
             throw new BusinessException(
               "Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères"
             );

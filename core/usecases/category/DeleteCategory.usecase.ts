@@ -8,15 +8,15 @@ export default class DeleteCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
   async execute(id: any, user: TokenDomain): Promise<string> {
-    this.checkBusinessRules(id, user);
+    await this.checkBusinessRules(id, user);
     return await this.categoryRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id: any, user: TokenDomain): void {
+  private async checkBusinessRules(id: any, user: TokenDomain): Promise<void> {
     if (isAdmin(user)) {
       if (id) {
-        if (this.categoryRepository.existById(id)) {
-          if (this.categoryRepository.checkExistInRecipes(id)) {
+        if (await this.categoryRepository.existById(id)) {
+          if (await this.categoryRepository.checkExistInRecipes(id)) {
             throw new BusinessException(
               "Cette catégorie est associée à une ou plusieurs recettes"
             );

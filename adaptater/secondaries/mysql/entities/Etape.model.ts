@@ -11,17 +11,17 @@ type EtapeStatic = typeof Model & {
 
 function EtapeFactory(sequelize: Sequelize): EtapeStatic {
   return <EtapeStatic>sequelize.define(
-    "etape",
+    "steps",
     {
-      idRecette: {
+      id_recipe: {
         type: DataTypes.INTEGER,
         primaryKey: true,
       },
-      numero: {
+      number: {
         type: DataTypes.INTEGER,
         primaryKey: true,
       },
-      indications: {
+      indication: {
         type: DataTypes.TEXT,
       },
     },

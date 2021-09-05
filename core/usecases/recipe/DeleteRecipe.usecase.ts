@@ -8,22 +8,22 @@ export default class DeleteRecipeUseCase {
   constructor(private recipeRepository: RecipeRepository) {} //constructeur avec l'interface
 
   async execute(id: any, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(id, token);
+    await this.checkBusinessRules(id, token);
     return await this.recipeRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id: any, token?: TokenDomain): void {
+  private async checkBusinessRules(id: any, token?: TokenDomain): Promise<void> {
     if (token && isAdmin(token)) {
       if (id) {
-        if (this.recipeRepository.existById(id)) {
-          if (this.recipeRepository.useInMenu(id)) {
+        if (await this.recipeRepository.existById(id)) {
+          if (await this.recipeRepository.useInMenu(id)) {
             throw new BusinessException(
               "La recette " +
                 id +
                 " ne peut pas être supprimée car cette dernière est utilisée par le menu."
             );
           }
-          if (this.recipeRepository.useInRecipeList(id)) {
+          if (await this.recipeRepository.useInRecipeList(id)) {
             throw new BusinessException(
               "La recette " +
                 id +

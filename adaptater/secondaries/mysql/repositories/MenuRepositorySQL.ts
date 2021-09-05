@@ -9,7 +9,7 @@ export default class MenuRepositorySQL implements MenuRepository {
   existById(id: any): Promise<boolean> {
     return MenuSequelize.findOne({
       where: {
-        idMenu: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -29,7 +29,7 @@ export default class MenuRepositorySQL implements MenuRepository {
       include: [
         {
           model: MenuSequelize,
-          attributes: ["idMenu"],
+          attributes: ["id"],
           required: true,
         },
         {
@@ -66,10 +66,10 @@ export default class MenuRepositorySQL implements MenuRepository {
       include: [
         {
           model: MenuSequelize,
-          attributes: ["idMenu"],
+          attributes: ["id"],
           required: true,
           where: {
-            idMenu: id,
+            id: id,
           },
         },
         {
@@ -103,8 +103,8 @@ export default class MenuRepositorySQL implements MenuRepository {
 
   updateById(id: any, idRecette: any): Promise<string> {
     return MenuSequelize.update(
-      { idRecette: idRecette },
-      { where: { idMenu: id } }
+      { id_recipe: idRecette },
+      { where: { id: id } }
     )
       .then((recipe: any) => {
         return recipe;

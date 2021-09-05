@@ -7,8 +7,8 @@ export default class UseIngredientRepositorySQL
   check(useIngredient: UseIngredient): Promise<boolean> {
     return UseIngredientSequelize.findOne({
       where: {
-        idRecette: useIngredient.idRecette,
-        idIngredient: useIngredient.idIngredient,
+        id_recipe: useIngredient.id_recipe,
+        id_ingredient: useIngredient.id_ingredient,
       },
     })
       .then((result: any) => {
@@ -40,13 +40,13 @@ export default class UseIngredientRepositorySQL
   update(useIngredientToUpdate: UseIngredient): Promise<string> {
     return UseIngredientSequelize.update(
       {
-        qte: useIngredientToUpdate.qte,
-        idUnite: useIngredientToUpdate.idUnite,
+        quantity: useIngredientToUpdate.quantity,
+        id_unit: useIngredientToUpdate.id_unit,
       },
       {
         where: {
-          idRecette: useIngredientToUpdate.idRecette,
-          idIngredient: useIngredientToUpdate.idIngredient,
+          id_recipe: useIngredientToUpdate.id_recipe,
+          id_ingredient: useIngredientToUpdate.id_ingredient,
         },
       }
     )
@@ -61,8 +61,8 @@ export default class UseIngredientRepositorySQL
   delete(idRecette: any, idIngredient: any): Promise<string> {
     return UseIngredientSequelize.destroy({
       where: {
-        idRecette: idRecette,
-        idIngredient: idIngredient,
+        id_recipe: idRecette,
+        id_ingredient: idIngredient,
       },
     })
       .then(() => {

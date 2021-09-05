@@ -8,15 +8,15 @@ export default class ForgetPasswordUseCase {
     private mailingRepository: MailingRepository
   ) {}
 
-  async execute(email: any): Promise<{ pseudo: any; resettoken: any }> {
+  async execute(email: any): Promise<{ pseudo: any; token: any }> {
     this.checkBusinessRules(email);
 
     const result = this.userRepository
       .forgetPassword(email)
-      .then(async (result: { pseudo: any; resettoken: any }) => {
+      .then(async (result: { pseudo: any; token: any }) => {
         this.mailingRepository.sendMailWhenUserForgetPassword({
           pseudo: result.pseudo,
-          resettoken: result.resettoken,
+          resettoken: result.token,
           email: email,
         });
         return result;

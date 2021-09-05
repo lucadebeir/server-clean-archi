@@ -31,15 +31,15 @@ export default class UpdateImageFromCommentaireUseCase {
     if (token && isAdmin(token)) {
       if (illustrateCommentaire) {
         if (
-          !illustrateCommentaire.idImage ||
-          !this.imageRepository.existById(illustrateCommentaire.idImage)
+          !illustrateCommentaire.id_image ||
+          !this.imageRepository.existById(illustrateCommentaire.id_image)
         ) {
           throw new BusinessException("L'image doit exister");
         }
         if (
-          !illustrateCommentaire.idCommentaire ||
+          !illustrateCommentaire.id_commentaire ||
           !this.commentaireRepository.existById(
-            illustrateCommentaire.idCommentaire
+            illustrateCommentaire.id_commentaire
           )
         ) {
           throw new BusinessException("Le commentaire doit exister");

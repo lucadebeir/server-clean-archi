@@ -13,17 +13,17 @@ export default class CreateCommentaireUseCase {
     private recipeRepository: RecipeRepository) {}
 
   async execute(commentaire: Commentaire, token?: TokenDomain): Promise<Commentaire> {
-    this.checkBusinessRules(commentaire, token);
+    await this.checkBusinessRules(commentaire, token);
     return await this.commentaireRepository.create(commentaire);
   }
 
-  private checkBusinessRules(commentaire: Commentaire, token?: TokenDomain): void {
+  private async checkBusinessRules(commentaire: Commentaire, token?: TokenDomain): Promise<void> {
     if(token && isLogin(token)) {
-      if(commentaire.ecritPar) {
-        if(this.userRepository.existByPseudo(commentaire.ecritPar)) {
-           if(token.pseudo === commentaire.ecritPar) {
-            if(commentaire.concerne) {
-              if(this.recipeRepository.existById(commentaire.concerne)) {
+      if(commentaire.pseudo) {
+        if(await this.userRepository.existByPseudo(commentaire.pseudo)) {
+           if(token.pseudo === commentaire.pseudo) {
+            if(commentaire.id_recipe) {
+              if(await this.recipeRepository.existById(commentaire.id_recipe)) {
                 if(commentaire.message) {
                   if(commentaire.parent && !this.commentaireRepository.existById(commentaire.parent)) {
                     throw new BusinessException("Le commentaire parent n'existe pas")

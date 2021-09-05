@@ -5,6 +5,7 @@ unity.use(cors());
 
 import UnityConfig from "../config/UnityConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import Unity from "../../../../core/domain/Unity";
 const unityConfig = new UnityConfig();
 
 //récupère toutes les unités
@@ -35,8 +36,8 @@ unity.get("/:id", authenticateJWT, (req, res) => {
 
 //Ajouter ingredient
 unity.post("/add", authenticateJWT, (req, res) => {
-  const unityData = {
-    libelleUnite: req.body.libelleUnite,
+  const unityData: Unity = {
+    name: req.body.libelleUnite,
   };
   unityConfig
     .createUnityUseCase()
@@ -64,9 +65,9 @@ unity.delete("/:id", authenticateJWT, (req, res) => {
 
 //modifier ingredient
 unity.post("/update", authenticateJWT, (req, res) => {
-  const unityData = {
-    idUnite: req.body.idUnite,
-    libelleUnite: req.body.libelleUnite,
+  const unityData: Unity = {
+    id: req.body.idUnite,
+    name: req.body.libelleUnite,
   };
   unityConfig
     .updateUnityUseCase()

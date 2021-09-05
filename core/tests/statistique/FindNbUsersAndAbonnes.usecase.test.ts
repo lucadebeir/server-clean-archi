@@ -15,11 +15,11 @@ const initToken = (): TokenDomain => {
 const initUsers = (): User[] => {
   const user = new User();
   user.pseudo = "luca";
-  user.abonneNews = true;
+  user.is_subscribed = true;
 
   const user2 = new User();
   user.pseudo = "admin";
-  user.abonneNews = false;
+  user.is_subscribed = false;
 
   return [user, user2];
 };

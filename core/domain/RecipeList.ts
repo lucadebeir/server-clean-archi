@@ -1,8 +1,8 @@
 export default class RecipeList {
-  idRecipeList?: number;
-  nomRecette?: string;
-  pseudoUser?: string;
-  idRecette?: number;
-  complet?: boolean;
+  id?: number;
+  name_recipe?: string;
+  pseudo?: string;
+  id_recipe?: number;
+  complete?: boolean;
   day?: number;
 }

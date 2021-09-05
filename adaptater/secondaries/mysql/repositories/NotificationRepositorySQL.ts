@@ -7,7 +7,7 @@ export default class NotificationRepositorySQL
   existById(id: any): Promise<boolean> {
     return NotificationSequelize.findOne({
       where: {
-        idNotification: id,
+        id: id,
       },
     })
       .then((result: any) => {
@@ -24,7 +24,7 @@ export default class NotificationRepositorySQL
 
   findAll(): Promise<Notification[]> {
     return NotificationSequelize.findAll({
-      order: [["dateNotification", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((notifs) => {
         if (notifs) {
@@ -40,7 +40,7 @@ export default class NotificationRepositorySQL
 
   findAllNotificationsEnabled(): Promise<Notification[]> {
     return NotificationSequelize.findAll({
-      order: [["dateNotification", "DESC"]],
+      order: [["date", "DESC"]],
       where: {
         enabled: true,
       },
@@ -74,7 +74,7 @@ export default class NotificationRepositorySQL
   update(id: any): Promise<string> {
     return NotificationSequelize.update(
       { enabled: false },
-      { where: { idNotification: id } }
+      { where: { id: id } }
     )
       .then(() => {
         return "Notification modifiée";

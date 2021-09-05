@@ -7,8 +7,8 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
-  unity.idUnite = 1;
-  unity.libelleUnite = "g";
+  unity.id = 1;
+  unity.name = "g";
 
   return unity;
 };
@@ -41,7 +41,7 @@ describe("get unity by id use case unit tests", () => {
   it("getUnityByIdUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getUnityByIdUseCase.execute(unity.idUnite, user);
+      await getUnityByIdUseCase.execute(unity.id, user);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -52,7 +52,7 @@ describe("get unity by id use case unit tests", () => {
 
   it("getUnityByIdUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      await getUnityByIdUseCase.execute(unity.idUnite, undefined);
+      await getUnityByIdUseCase.execute(unity.id, undefined);
     } catch (e) {
       const a: BusinessException = e;
       expect(a.message).toBe(
@@ -64,11 +64,11 @@ describe("get unity by id use case unit tests", () => {
   it("getUnityByIdUseCase should return unity when id is 1", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Unity = await getUnityByIdUseCase.execute(
-      unity.idUnite,
+      unity.id,
       user
     );
-    expect(result.idUnite).toBe(1);
-    expect(result.libelleUnite).toBe("g");
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("g");
   });
 
   it("should throw an error when id is missing", async () => {

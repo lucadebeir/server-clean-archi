@@ -5,11 +5,12 @@ import { TechnicalException } from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import { isLogin } from "../../utils/token.service";
+import Recipe from "../../domain/Recipe";
 
 export default class GetFavorisByIdUserPerToCategoryUseCase {
   constructor(private favoriRepository: FavoriRepository, private categoryRepository: CategoryRepository) {}
 
-  async execute(pseudo: any, idCategorie: any, token?: TokenDomain): Promise<Favori[]> {
+  async execute(pseudo: any, idCategorie: any, token?: TokenDomain): Promise<Recipe[]> {
     this.checkBusinessRules(pseudo, idCategorie, token);
     return await this.favoriRepository.findByIdUserPerToCategory(
       pseudo,

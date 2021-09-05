@@ -11,23 +11,23 @@ type IngredientStatic = typeof Model & {
 
 function IngredientFactory(sequelize: Sequelize): IngredientStatic {
   return <IngredientStatic>sequelize.define(
-    "ingredient",
+    "ingredients",
     {
-      idIngredient: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      nomIngredient: {
+      name: {
         type: DataTypes.STRING,
       },
-      lienImage: {
+      image_link: {
         type: DataTypes.STRING,
       },
     },
     {
       timestamps: false,
-      tableName: "ingredient",
+      tableName: "ingredients",
     }
   );
 }
@@ -36,10 +36,10 @@ const IngredientSequelize = IngredientFactory(db.sequelize);
 
 //association 0:N avec les ingredients
 IngredientSequelize.hasMany(ShoppingSequelize, {
-  foreignKey: "idIngredient",
+  foreignKey: "id",
 });
 ShoppingSequelize.belongsTo(IngredientSequelize, {
-  foreignKey: "idIngredient",
+  foreignKey: "id_ingredient",
 });
 
 export = IngredientSequelize;

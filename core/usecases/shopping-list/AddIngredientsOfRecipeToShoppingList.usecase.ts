@@ -24,19 +24,19 @@ export default class AddIngredientsOfRecipeToShoppingListUseCase {
     );
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     pseudo: any,
     list: Ingredient[],
     token?: TokenDomain
-  ): Ingredient[] {
+  ): Promise<Ingredient[]> {
     if (token && isLogin(token)) {
       if (pseudo) {
-        if (this.userRepository.existByPseudo(pseudo)) {
+        if (await this.userRepository.existByPseudo(pseudo)) {
           return list.filter(
             async (ingredient) =>
               await !this.shoppingRepository.exist(
                 pseudo,
-                ingredient.nomIngredient
+                ingredient.name
               )
           );
         } else {

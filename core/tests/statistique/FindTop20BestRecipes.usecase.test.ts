@@ -15,28 +15,28 @@ const initToken = (): TokenDomain => {
 
 const initRecipes = (): Recipe[] => {
   const recipe = new Recipe();
-  recipe.idRecette = 1;
-  recipe.nbVues = 18;
-  recipe.nomRecette = "Lasagnes";
-  recipe.etapes = "1. Préchauffer le four à 180°C.";
-  recipe.nbrePart = 1;
-  recipe.libellePart = "Bocal";
-  recipe.tempsPreparation = date.format(new Date("00:08:00"), "hh:mm:ss");
-  recipe.tempsCuisson = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe.id = 1;
+  recipe.number_views = 18;
+  recipe.name = "Lasagnes";
+  recipe.steps = "1. Préchauffer le four à 180°C.";
+  recipe.number_portion = 1;
+  recipe.name_portion = "Bocal";
+  recipe.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe.rest_time = date.format(new Date("00:08:00"), "hh:mm:ss");
   recipe.astuce =
     "* Vous pouvez remplacer le beurre de cacahuètes par une autre purée d'oléagineux (amandes, cajou, noisettes..).";
   recipe.mot =
     "Un granola qui conviendra parfaitement aux fan de BANANA bread !";
 
   const recipe2 = new Recipe();
-  recipe2.idRecette = 2;
-  recipe2.nbVues = 8;
-  recipe2.nomRecette = "Salade Caesar";
-  recipe2.etapes = "1. Préchauffer le four à 180°C.";
-  recipe2.nbrePart = 1;
-  recipe2.libellePart = "Bocal";
-  recipe2.tempsPreparation = date.format(new Date("00:08:00"), "hh:mm:ss");
-  recipe2.tempsCuisson = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe2.id = 2;
+  recipe2.number_views = 8;
+  recipe2.name = "Salade Caesar";
+  recipe2.steps = "1. Préchauffer le four à 180°C.";
+  recipe2.number_portion = 1;
+  recipe2.name_portion = "Bocal";
+  recipe2.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
+  recipe2.rest_time = date.format(new Date("00:08:00"), "hh:mm:ss");
   recipe2.astuce =
     "* Vous pouvez remplacer le beurre de cacahuètes par une autre purée d'oléagineux (amandes, cajou, noisettes..).";
   recipe2.mot =
@@ -74,7 +74,7 @@ describe("Find top 20 best recipes use case unit tests", () => {
     const result: Recipe[] = await findTop20BestRecipesUseCase.execute(token);
     expect(result).toBeDefined();
     expect(result.length).toStrictEqual(2);
-    expect(result.some(({ nbVues }) => nbVues && nbVues >= 0)).toBe(true);
+    expect(result.some(({ number_views }) => number_views && number_views >= 0)).toBe(true);
   });
 
   it("findTop20BestRecipesUseCase should throw a parameter exception when the token is null", async () => {

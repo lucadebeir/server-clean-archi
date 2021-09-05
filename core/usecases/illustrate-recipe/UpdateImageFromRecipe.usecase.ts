@@ -29,14 +29,14 @@ export default class UpdateImageFromRecipeUseCase {
     if (token && isAdmin(token)) {
       if (illustrateRecipe) {
         if (
-          !illustrateRecipe.idImage ||
-          !this.imageRepository.existById(illustrateRecipe.idImage)
+          !illustrateRecipe.id_image ||
+          !this.imageRepository.existById(illustrateRecipe.id_image)
         ) {
           throw new BusinessException("L'image doit exister");
         }
         if (
-          !illustrateRecipe.idRecette ||
-          !this.recipeRepository.existById(illustrateRecipe.idRecette)
+          !illustrateRecipe.id_recipe ||
+          !this.recipeRepository.existById(illustrateRecipe.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         }

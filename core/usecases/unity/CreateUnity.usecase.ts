@@ -9,22 +9,22 @@ export default class CreateUnityUseCase {
   constructor(private unityRepository: UnityRepository) {}
 
   async execute(unity?: Unity, user?: TokenDomain): Promise<Unity> {
-    this.checkBusinessRules(unity, user);
+    await this.checkBusinessRules(unity, user);
     return await this.unityRepository.create(unity);
   }
 
-  private checkBusinessRules(unity?: Unity, user?: TokenDomain): void {
+  private async checkBusinessRules(unity?: Unity, user?: TokenDomain): Promise<void> {
     if (user && isAdmin(user)) {
       if (unity) {
-        if (!unity.libelleUnite) {
+        if (!unity.name) {
           throw new BusinessException("Le libellé d'une unité est obligatoire");
         } else {
-          if (this.unityRepository.checkExistByName(unity.libelleUnite)) {
+          if (await this.unityRepository.checkExistByName(unity.name)) {
             throw new BusinessException(
               "Ce libellé est déjà utilisé par une unité"
             );
           }
-          if (unity.libelleUnite.length > 19) {
+          if (unity.name.length > 19) {
             throw new BusinessException(
               "Le libellé d'une unité ne peut pas comporter plus de 19 caractères"
             );

@@ -10,18 +10,18 @@ import * as Utils from "../../utils/token.service";
 
 const initRecipeList = (): RecipeList[] => {
   const recipeList = new RecipeList();
-  recipeList.idRecipeList = 1;
-  recipeList.nomRecette = "Lasagnes";
-  recipeList.pseudoUser = "luca";
-  recipeList.complet = false;
-  recipeList.idRecette = 1;
+  recipeList.id = 1;
+  recipeList.name_recipe = "Lasagnes";
+  recipeList.pseudo = "luca";
+  recipeList.complete = false;
+  recipeList.id_recipe = 1;
 
   const recipeList2 = new RecipeList();
-  recipeList2.idRecipeList = 2;
-  recipeList2.nomRecette = "Brocolis";
-  recipeList2.pseudoUser = "luca";
-  recipeList2.complet = false;
-  recipeList2.idRecette = 2;
+  recipeList2.id = 2;
+  recipeList2.name_recipe = "Brocolis";
+  recipeList2.pseudo = "luca";
+  recipeList2.complete = false;
+  recipeList2.id_recipe = 2;
 
   const list = [recipeList, recipeList2];
 
@@ -88,7 +88,7 @@ describe("Get recipe list by id use case unit tests", () => {
     expect(result).toHaveLength(2);
     expect(
       result.map((recipe) => {
-        expect(recipe.pseudoUser).toEqual(token.pseudo);
+        expect(recipe.pseudo).toEqual(token.pseudo);
       })
     );
   });

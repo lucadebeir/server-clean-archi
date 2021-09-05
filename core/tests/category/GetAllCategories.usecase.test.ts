@@ -7,11 +7,11 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initCategories = (): Category[] => {
   const category1 = new Category();
-  category1.idCategorie = 1;
+  category1.id = 1;
   category1.libelleCategorie = "Douceur";
 
   const category2 = new Category();
-  category2.idCategorie = 2;
+  category2.id = 2;
   category2.libelleCategorie = "Repas";
 
   const list = [];

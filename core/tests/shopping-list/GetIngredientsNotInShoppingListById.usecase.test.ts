@@ -11,13 +11,13 @@ import * as Utils from "../../utils/token.service";
 
 const initShoppingList = (): Shopping[] => {
   const shooping = new Shopping();
-  shooping.idIngredientList = 1;
-  shooping.name = "Tomates";
+  shooping.id = 1;
+  shooping.name_ingredient = "Tomates";
   shooping.pseudo = "luca";
 
   const shooping2 = new Shopping();
-  shooping2.idIngredientList = 2;
-  shooping2.name = "Carottes";
+  shooping2.id = 2;
+  shooping2.name_ingredient = "Carottes";
   shooping2.pseudo = "luca";
 
   const list = [shooping, shooping2];
@@ -27,12 +27,12 @@ const initShoppingList = (): Shopping[] => {
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Bananes";
+  ingredient.id = 1;
+  ingredient.name = "Bananes";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 2;
-  ingredient2.nomIngredient = "Mozzarella";
+  ingredient2.id = 2;
+  ingredient2.name = "Mozzarella";
 
   const list = [ingredient, ingredient2];
 
@@ -104,10 +104,10 @@ describe("Get shopping list by pseudo use case unit tests", () => {
     );
 
     expect(
-      result.some(({ nomIngredient }) => nomIngredient === "Carottes")
+      result.some(({ name }) => name === "Carottes")
     ).toBe(false);
     expect(
-      result.some(({ nomIngredient }) => nomIngredient === "Bananes")
+      result.some(({ name }) => name === "Bananes")
     ).toBe(true);
     //expect(result).toEqual(expect.arrayContaining(shoppingList));
   });

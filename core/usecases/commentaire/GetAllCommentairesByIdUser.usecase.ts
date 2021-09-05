@@ -10,14 +10,14 @@ export default class GetAllCommentairesByIdUserUseCase {
   constructor(private commentaireRepository: CommentaireRepository, private userRepository: UserRepository) {}
 
   async execute(pseudo: any, token?: TokenDomain): Promise<Commentaire[]> {
-    this.checkBusinessRules(pseudo, token);
+    await this.checkBusinessRules(pseudo, token);
     return await this.commentaireRepository.findAllCommentairesByIdUser(pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private async checkBusinessRules(pseudo: any, token?: TokenDomain): Promise<void> {
     if(token && isLogin(token)) {
       if(pseudo) {
-        if(this.userRepository.existByPseudo(pseudo)) {
+        if(await this.userRepository.existByPseudo(pseudo)) {
           if(pseudo !== token.pseudo) {
             throw new BusinessException("La personne connectée n'est pas la personne correspondant au pseudo en question")
           }

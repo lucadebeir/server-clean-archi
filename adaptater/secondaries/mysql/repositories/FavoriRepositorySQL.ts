@@ -33,11 +33,11 @@ export default class FavoriRepositorySQL implements FavoriRepository {
           through: {
             attributes: [],
           },
-          where: { idCategorie: { [Op.in]: data.idsCategories } },
+          where: { id: { [Op.in]: data.idsCategories } },
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -68,7 +68,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
           attributes: ["note"],
         },
       ],
-      order: [[data.popular ? "nbVues" : "datePublication", "desc"]],
+      order: [[data.popular ? "number_views" : "date", "desc"]],
     })
       .then((recipes: any) => {
         if (recipes.length != 0) {
@@ -85,7 +85,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   check(favori: Favori): Promise<boolean> {
     return FavoriSequelize.findOne({
       where: {
-        idRecette: favori.idRecette,
+        id_recipe: favori.id_recipe,
         pseudo: favori.pseudo,
       },
     })
@@ -104,13 +104,13 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   create(favoriToCreate: Favori): Promise<string> {
     RecipeSequelize.findOne({
       where: {
-        idRecette: favoriToCreate.idRecette,
+        id: favoriToCreate.id_recipe,
       },
     }).then((recipe) => {
-      if (recipe?.nbFavoris) {
+      if (recipe?.number_favorites) {
         RecipeSequelize.update(
-          { nbFavoris: recipe.nbFavoris + 1 },
-          { where: { idRecette: favoriToCreate.idRecette } }
+          { number_favorites: recipe.number_favorites + 1 },
+          { where: { id: favoriToCreate.id_recipe } }
         );
       } else {
         throw new Error("Cette recette n'existe pas.");
@@ -152,7 +152,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
         },
         {
           model: UseIngredientSequelize,
-          attributes: ["qte"],
+          attributes: ["quantity"],
           required: true,
           include: [
             {
@@ -183,7 +183,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
           attributes: ["note"],
         },
       ],
-      order: [["datePublication", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((favoris) => {
         if (favoris.length != 0) {
@@ -197,7 +197,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
       });
   }
 
-  findByIdUserPerToCategory(pseudo: any, idCategorie: any): Promise<Favori[]> {
+  findByIdUserPerToCategory(pseudo: any, idCategorie: any): Promise<Recipe[]> {
     return RecipeSequelize.findAll({
       include: [
         {
@@ -213,11 +213,11 @@ export default class FavoriRepositorySQL implements FavoriRepository {
           attributes: [],
           as: "categories",
           where: {
-            idCategorie: idCategorie,
+            id: idCategorie,
           },
         },
       ],
-      order: [["datePublication", "DESC"]],
+      order: [["date", "DESC"]],
     })
       .then((favoris) => {
         if (favoris.length != 0) {
@@ -236,24 +236,24 @@ export default class FavoriRepositorySQL implements FavoriRepository {
   deleteById(favori: Favori): Promise<string> {
     FavoriSequelize.destroy({
       where: {
-        idRecette: favori.idRecette,
+        id_recipe: favori.id_recipe,
         pseudo: favori.pseudo,
       },
     });
     return RecipeSequelize.findOne({
       where: {
-        idRecette: favori.idRecette,
+        id: favori.id_recipe,
       },
     })
       .then((recipe) => {
-        if (recipe?.nbFavoris) {
+        if (recipe?.number_favorites) {
           RecipeSequelize.update(
             {
-              nbFavoris: recipe.nbFavoris - 1,
+              number_favorites: recipe.number_favorites - 1,
             },
             {
               where: {
-                idRecette: favori.idRecette,
+                id: favori.id_recipe,
               },
             }
           );

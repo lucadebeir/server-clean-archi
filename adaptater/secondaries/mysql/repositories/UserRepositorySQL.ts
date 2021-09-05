@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import ResetTokenSequelize from "../entities/ResetToken.model";
 import TokenDomain from "../../../../core/domain/Token.domain";
 import crypto from "crypto";
-import { LoginTicket, TokenPayload, OAuth2Client } from "google-auth-library";
+import {OAuth2Client} from "google-auth-library";
 
 export default class UserRepositorySQL implements UserRepository {
   checkEmailConfirmed(pseudo: any): Promise<boolean> {
@@ -15,7 +15,7 @@ export default class UserRepositorySQL implements UserRepository {
       },
     })
       .then((user) => {
-        if (user?.emailConfirmed) {
+        if (user?.confirmed_email) {
           return true;
         } else {
           return false;
@@ -48,13 +48,12 @@ export default class UserRepositorySQL implements UserRepository {
     const userData: any = {
       pseudo: user.pseudo,
       email: user.email,
-      mdp: user.password,
-      mdp2: user.confirmedPassword,
-      admin: user.admin,
-      abonneNews: user.abonneNews,
+      password: user.password,
+      confirmed_password: user.confirmed_password,
+      is_admin: user.is_admin,
+      is_subscribed: user.is_subscribed,
     };
-    const hash = bcrypt.hashSync(userData.mdp, 10);
-    userData.mdp = hash;
+    userData.password = bcrypt.hashSync(userData.password, 10);
     return UserSequelize.create(userData)
       .then((user: any) => {
         return user;
@@ -67,9 +66,9 @@ export default class UserRepositorySQL implements UserRepository {
   gRegister(user: User): Promise<User> {
     const userData: any = {
       pseudo: user.pseudo,
-      googleId: user.googleId,
+      id_google: user.id_google,
       email: user.email,
-      abonneNews: user.abonneNews,
+      is_subscribed: user.is_subscribed,
     };
     return UserSequelize.create(userData)
       .then((user: any) => {
@@ -90,12 +89,12 @@ export default class UserRepositorySQL implements UserRepository {
       .then((user: any) => {
         if (!user) {
           throw new Error("Mot de passe et/ou email incorrect");
-        } else if (!user.emailConfirmed) {
+        } else if (!user.confirmed_email) {
           throw new Error(
             "Vous devez vérifier votre adresse mail avant de pouvoir vous connecter ! :)"
           );
         } else {
-          if (bcrypt.compareSync(password, user.mdp)) {
+          if (bcrypt.compareSync(password, user.password)) {
             return user;
           } else {
             throw new Error("Mot de passe et/ou email incorrect");
@@ -124,9 +123,9 @@ export default class UserRepositorySQL implements UserRepository {
           if (!user) {
             throw new Error("Email incorrect");
           } else {
-            if (user.googleId !== payload.sub) {
+            if (user.id_google !== payload.sub) {
               throw new Error("GoogleId non valide");
-            } else if (!user.emailConfirmed) {
+            } else if (!user.confirmed_email) {
               throw new Error(
                 "Vous devez vérifier votre adresse mail avant de pouvoir vous connecter ! :)"
               );
@@ -182,7 +181,7 @@ export default class UserRepositorySQL implements UserRepository {
   findAllAbonneUsers(): Promise<User[]> {
     return UserSequelize.findAll({
       where: {
-        abonneNews: true,
+        is_subscribed: true,
       },
     })
       .then((users) => {
@@ -207,14 +206,14 @@ export default class UserRepositorySQL implements UserRepository {
         exclude: [
           "pseudo",
           "email",
-          "emailConfirmed",
-          "admin",
-          "abonneNews",
-          "mdp",
+          "confirmed_email",
+          "is_admin",
+          "is_subscribed",
+          "password",
         ],
       },
       where: {
-        abonneNews: true,
+        is_subscribed: true,
       },
     })
       .then((users: any) => {
@@ -231,7 +230,10 @@ export default class UserRepositorySQL implements UserRepository {
 
   updatePassword(pseudo: any, newPassword: any): Promise<User> {
     const hash = bcrypt.hashSync(newPassword, 10);
-    return UserSequelize.update({ password: hash }, { where: { pseudo: pseudo } })
+    return UserSequelize.update(
+      { password: hash },
+      { where: { pseudo: pseudo } }
+    )
       .then((user: any) => {
         if (user) {
           return user;
@@ -248,7 +250,7 @@ export default class UserRepositorySQL implements UserRepository {
     return UserSequelize.update(
       {
         email: user.email,
-        abonneNews: user.abonneNews,
+        is_subscribed: user.is_subscribed,
       },
       { where: { pseudo: user.pseudo } }
     )
@@ -278,7 +280,7 @@ export default class UserRepositorySQL implements UserRepository {
       });
   }
 
-  forgetPassword(email: any): Promise<{ pseudo: any; resettoken: any }> {
+  forgetPassword(email: any): Promise<{ pseudo: any; token: any }> {
     return UserSequelize.findOne({
       where: {
         email: email,
@@ -287,13 +289,13 @@ export default class UserRepositorySQL implements UserRepository {
       .then((user: any) => {
         if (user) {
           var resettoken = {
-            userId: user.pseudo,
-            resettoken: crypto.randomBytes(16).toString("hex"),
+            pseudo: user.pseudo,
+            token: crypto.randomBytes(16).toString("hex"),
           };
           return ResetTokenSequelize.create(resettoken).then(() => {
             return {
-              pseudo: resettoken.userId,
-              resettoken: resettoken.resettoken,
+              pseudo: resettoken.pseudo,
+              token: resettoken.token,
             };
           });
         } else {
@@ -308,14 +310,14 @@ export default class UserRepositorySQL implements UserRepository {
   checkValideToken(token: any): Promise<string> {
     return ResetTokenSequelize.findOne({
       where: {
-        resettoken: token,
+        token: token,
       },
     }).then((user) => {
       if (!user) {
         throw new Error("Invalide URL");
       } else {
         return UserSequelize.findOne({
-          where: { pseudo: user.userId },
+          where: { pseudo: user.pseudo },
         })
           .then(() => {
             throw new Error("Token verifié.");
@@ -329,7 +331,7 @@ export default class UserRepositorySQL implements UserRepository {
 
   updatePasswordWithToken(token: any, newPassword: any): Promise<string> {
     return ResetTokenSequelize.findOne({
-      where: { resettoken: token },
+      where: { token: token },
     })
       .then((userToken) => {
         if (!userToken) {
@@ -337,7 +339,7 @@ export default class UserRepositorySQL implements UserRepository {
         } else {
           return UserSequelize.findOne({
             where: {
-              pseudo: userToken.userId,
+              pseudo: userToken.pseudo,
             },
           })
             .then((userEmail) => {
@@ -352,8 +354,8 @@ export default class UserRepositorySQL implements UserRepository {
                   .then(() => {
                     return ResetTokenSequelize.destroy({
                       where: {
-                        userId: userToken.userId,
-                        resettoken: userToken.resettoken,
+                        pseudo: userToken.pseudo,
+                        token: userToken.token,
                       },
                     })
                       .then(() => {

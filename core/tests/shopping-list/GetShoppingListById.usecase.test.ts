@@ -10,13 +10,13 @@ import * as Utils from "../../utils/token.service";
 
 const initShoppingList = (): Shopping[] => {
   const shopping = new Shopping();
-  shopping.idIngredientList = 1;
-  shopping.name = "Tomates";
+  shopping.id = 1;
+  shopping.name_ingredient = "Tomates";
   shopping.pseudo = "luca";
 
   const shopping2 = new Shopping();
-  shopping2.idIngredientList = 2;
-  shopping2.name = "Carottes";
+  shopping2.id = 2;
+  shopping2.name_ingredient = "Carottes";
   shopping2.pseudo = "luca";
 
   const list = [shopping, shopping2];

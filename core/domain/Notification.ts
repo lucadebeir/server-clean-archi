@@ -1,8 +1,8 @@
 export default class Notification {
-  idNotification?: number;
+  id?: number;
   date?: string;
   type?: string;
-  idRecette?: number;
+  id_recipe?: number;
   pseudo?: string;
   enabled?: boolean;
 }

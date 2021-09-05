@@ -13,20 +13,20 @@ export default class CreateFavoriUseCase {
   ) {}
 
   async execute(favori: Favori, token?: TokenDomain): Promise<string> {
-    this.checkBusinessRules(favori, token);
+    await this.checkBusinessRules(favori, token);
     return await this.favoriRepository.create(favori);
   }
 
-  private checkBusinessRules(favori?: Favori, token?: TokenDomain): void {
+  private async checkBusinessRules(favori?: Favori, token?: TokenDomain): Promise<void> {
     if (token && isLogin(token)) {
       if (favori) {
         if (
-          !favori.idRecette ||
-          !this.recipeRepository.existById(favori.idRecette)
+          !favori.id_recipe ||
+          !this.recipeRepository.existById(favori.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         } else {
-          if (this.favoriRepository.check(favori)) {
+          if (await this.favoriRepository.check(favori)) {
             throw new BusinessException(
               "Cette recette se trouve déjà dans la liste des recettes favorites de l'utilisateur " +
                 favori.pseudo

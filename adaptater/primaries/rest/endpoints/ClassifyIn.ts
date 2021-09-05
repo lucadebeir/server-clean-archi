@@ -10,8 +10,8 @@ const classifyInConfig = new ClassifyInConfig();
 //ajouter une catégorie à une recette
 classify.post("/:idRecette", authenticateJWT, (req, res) => {
   const data = {
-    idRecette: req.params.idRecette,
-    idCategorie: req.body.idCategorie,
+    id_recipe: req.params.idRecette,
+    id_category: req.body.idCategorie,
   };
   classifyInConfig
     .addCategoryToRecipeUseCase()
@@ -27,8 +27,8 @@ classify.post("/:idRecette", authenticateJWT, (req, res) => {
 //supprimer une recette d'une catégorie
 classify.delete("/:idRecette", authenticateJWT, (req, res) => {
   const data = {
-    idRecette: req.params.idRecette,
-    idCategorie: req.body.idCategorie,
+    id_recipe: req.params.idRecette,
+    id_category: req.body.idCategorie,
   };
   classifyInConfig
     .addCategoryToRecipeUseCase()

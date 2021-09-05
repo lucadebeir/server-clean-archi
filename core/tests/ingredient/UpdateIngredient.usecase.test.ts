@@ -8,8 +8,8 @@ import TokenDomain from "../../domain/Token.domain";
 
 const initIngredient = (): Ingredient => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   return ingredient;
 };
@@ -51,8 +51,8 @@ describe("Update ingredient use case unit tests", () => {
       user
     );
     expect(result).toBeDefined();
-    expect(result.idIngredient).toBe(1);
-    expect(result.nomIngredient).toBe("Cacahuètes");
+    expect(result.id).toBe(1);
+    expect(result.name).toBe("Cacahuètes");
   });
 
   it("updateIngredientUseCase should throw a parameter exception when the user is null", async () => {
@@ -89,7 +89,7 @@ describe("Update ingredient use case unit tests", () => {
   });
 
   it("updateIngredientUseCase should throw a parameter exception when the id is null", async () => {
-    ingredient.idIngredient = undefined;
+    ingredient.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientUseCase.execute(ingredient, user);
@@ -113,7 +113,7 @@ describe("Update ingredient use case unit tests", () => {
   });
 
   it("updateIngredientUseCase should throw a parameter exception when the name is null", async () => {
-    ingredient.nomIngredient = undefined;
+    ingredient.name = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(ingredientRepository, "findById").and.returnValue(true);
@@ -125,7 +125,7 @@ describe("Update ingredient use case unit tests", () => {
   });
 
   it("updateIngredientUseCase should throw a parameter exception when the name has more than 39 characters", async () => {
-    ingredient.nomIngredient =
+    ingredient.name =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);

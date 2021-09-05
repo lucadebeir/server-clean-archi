@@ -18,29 +18,29 @@ export default class AddImageToRecipeUseCase {
     illustrateRecipe: IllustrateRecipeDomain,
     token?: TokenDomain
   ): Promise<string> {
-    this.checkBusinessRules(illustrateRecipe, token);
+    await this.checkBusinessRules(illustrateRecipe, token);
     return this.illustrateRecipeRepository.addToRecette(illustrateRecipe);
   }
 
-  private checkBusinessRules(
+  private async checkBusinessRules(
     illustrateRecipe: IllustrateRecipeDomain,
     token?: TokenDomain
-  ): void {
+  ): Promise<void> {
     if (token && isAdmin(token)) {
       if (illustrateRecipe) {
         if (
-          !illustrateRecipe.idImage ||
-          !this.imageRepository.existById(illustrateRecipe.idImage)
+          !illustrateRecipe.id_image ||
+          await !this.imageRepository.existById(illustrateRecipe.id_image)
         ) {
           throw new BusinessException("L'image doit exister");
         }
         if (
-          !illustrateRecipe.idRecette ||
-          !this.recipeRepository.existById(illustrateRecipe.idRecette)
+          !illustrateRecipe.id_recipe ||
+          await !this.recipeRepository.existById(illustrateRecipe.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         }
-        if (this.illustrateRecipeRepository.check(illustrateRecipe)) {
+        if (await this.illustrateRecipeRepository.check(illustrateRecipe)) {
           throw new BusinessException(
             "Cette image existe déjà dans cette recette"
           );

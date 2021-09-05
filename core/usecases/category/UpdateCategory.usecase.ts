@@ -9,27 +9,27 @@ export default class UpdateCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
   async execute(user?: TokenDomain, category?: Category): Promise<Category> {
-    this.checkBusinessRules(user, category);
+    await this.checkBusinessRules(user, category);
     return await this.categoryRepository.update(category);
   }
 
-  private checkBusinessRules(user?: TokenDomain, category?: Category): void {
+  private async checkBusinessRules(user?: TokenDomain, category?: Category): Promise<void> {
     if (user && isAdmin(user)) {
       if (category) {
-        if (!category.idCategorie) {
+        if (!category.id) {
           throw new TechnicalException(
             "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
           );
         }
-        if (this.categoryRepository.existById(category.idCategorie)) {
-          if (!category.libelleCategorie) {
+        if (await this.categoryRepository.existById(category.id)) {
+          if (!category.name) {
             throw new BusinessException(
               "Le libellé d'une catégorie est obligatoire"
             );
           } else {
             if (
-              this.categoryRepository.checkExistByName(
-                category.libelleCategorie
+              await this.categoryRepository.checkExistByName(
+                category.name
               )
             ) {
               throw new BusinessException(

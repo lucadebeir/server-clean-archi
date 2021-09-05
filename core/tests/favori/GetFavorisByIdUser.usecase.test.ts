@@ -8,11 +8,11 @@ import * as Utils from "../../utils/token.service";
 
 const initFavori = (): Favori[] => {
   const favori = new Favori();
-  favori.idRecette = 1;
+  favori.id_recipe = 1;
   favori.pseudo = "luca";
 
   const favori2 = new Favori();
-  favori2.idRecette = 2;
+  favori2.id_recipe = 2;
   favori2.pseudo = "luca";
 
   const list: Favori[] = [favori, favori2];

@@ -5,6 +5,7 @@ shopping.use(cors());
 
 import ShoppingConfig from "../config/ShoppingConfig";
 import { authenticateJWT } from "../middleware/auth.middleware";
+import Shopping from "../../../../core/domain/Shopping";
 const shoppingConfig = new ShoppingConfig();
 
 //récupérer la liste de course de l'utilisateur
@@ -36,12 +37,12 @@ shopping.get("/:pseudo/rest", authenticateJWT, (req, res) => {
 //ajouter un ingrédient à la liste de course
 shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
   console.log(req.body);
-  const shoppingData: any = {
+  const shoppingData: Shopping = {
     pseudo: req.body.pseudo,
-    idIngredient: req.body.idIngredient,
-    name: req.body.name,
+    id_ingredient: req.body.idIngredient,
+    name_ingredient: req.body.name,
     quantity: req.body.quantity,
-    idUnite: req.body.idUnite,
+    id_unit: req.body.idUnite,
   };
   shoppingConfig
     .addIngredientToShoppingList()

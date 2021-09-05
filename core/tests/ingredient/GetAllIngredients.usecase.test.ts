@@ -7,12 +7,12 @@ import IngredientRepository from "../../ports/repositories/Ingredient.repository
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
-  ingredient.idIngredient = 1;
-  ingredient.nomIngredient = "Cacahuètes";
+  ingredient.id = 1;
+  ingredient.name = "Cacahuètes";
 
   const ingredient2 = new Ingredient();
-  ingredient2.idIngredient = 2;
-  ingredient2.nomIngredient = "Fromage";
+  ingredient2.id = 2;
+  ingredient2.name = "Fromage";
 
   const ingredients = [ingredient, ingredient2];
 

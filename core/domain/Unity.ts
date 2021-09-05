@@ -1,4 +1,4 @@
 export default class Unity {
-  idUnite?: number | null;
-  libelleUnite?: string | null;
+  id?: number | null;
+  name?: string | null;
 }
