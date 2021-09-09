@@ -62,10 +62,10 @@ image.post(
   upload.single("file"),
   authenticateJWT,
   async (req, res) => {
-    const imageUrl = await uploadImage(req.file);
+    const imageUrl = await uploadImage((req as any).file);
     const data: ImageDomain = {
       link: imageUrl,
-      name: req?.file?.originalname,
+      name: (req as any)?.file?.originalname,
     };
     imageConfig
       .uploadImageUseCase()
