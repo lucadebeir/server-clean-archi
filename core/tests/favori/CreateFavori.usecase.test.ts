@@ -62,7 +62,7 @@ describe("Create favori use case unit tests", () => {
   it("updateCategoryUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await createFavoriUseCase.execute(favori, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de créer cette ressource"
@@ -74,7 +74,7 @@ describe("Create favori use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await createFavoriUseCase.execute(favori, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de créer cette ressource"
@@ -87,7 +87,7 @@ describe("Create favori use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await createFavoriUseCase.execute(favori, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -99,7 +99,7 @@ describe("Create favori use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(favoriRepository, "check").and.returnValue(true);
       await createFavoriUseCase.execute(favori, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Cette recette se trouve déjà dans la liste des recettes favorites de l'utilisateur " +

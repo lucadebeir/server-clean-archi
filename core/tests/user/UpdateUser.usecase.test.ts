@@ -44,7 +44,6 @@ describe("Update user use case unit tests", () => {
   });
 
   it("updateUserUseCase should return user when it succeeded", async () => {
-    spyOn(userRepository, "existByPseudo").and.returnValue(false);
     spyOn(userRepository, "existByEmail").and.returnValue(false);
     spyOn(Utils, "isLogin").and.returnValue(true);
     const result: User = await updateUserUseCase.execute(user, token);
@@ -59,7 +58,7 @@ describe("Update user use case unit tests", () => {
   it("updateUserUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await updateUserUseCase.execute(user, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -71,48 +70,11 @@ describe("Update user use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await updateUserUseCase.execute(user, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
       );
-    }
-  });
-
-  it("updateUserUseCase should throw a parameter exception when the pseudo is lt 4", async () => {
-    user.pseudo = "aaa";
-    try {
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      await updateUserUseCase.execute(user, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe(
-        "Un pseudo ne peut pas comporter moins de 4 caractères"
-      );
-    }
-  });
-
-  it("updateUserUseCase should throw a parameter exception when the pseudo is gt 29", async () => {
-    user.pseudo = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    try {
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      await updateUserUseCase.execute(user, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe(
-        "Un pseudo ne peut pas comporter plus de 29 caractères"
-      );
-    }
-  });
-
-  it("updateUserUseCase should throw a parameter exception when the pseudo already exists", async () => {
-    try {
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      spyOn(userRepository, "existByPseudo").and.returnValue(true);
-      await updateUserUseCase.execute(user, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("Un utilisateur existe déjà avec ce pseudo");
     }
   });
 
@@ -121,9 +83,8 @@ describe("Update user use case unit tests", () => {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
-      spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await updateUserUseCase.execute(user, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Un email ne peut pas comporter plus de 59 caractères"
@@ -134,23 +95,11 @@ describe("Update user use case unit tests", () => {
   it("updateUserUseCase should throw a parameter exception when the email already exists", async () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
-      spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(true);
       await updateUserUseCase.execute(user, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Un utilisateur existe déjà avec cet email");
-    }
-  });
-
-  it("updateUserUseCase should throw a parameter exception when the pseudo is undefined", async () => {
-    user.pseudo = undefined;
-    try {
-      spyOn(Utils, "isLogin").and.returnValue(true);
-      await updateUserUseCase.execute(user, token);
-    } catch (e) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("Le pseudo est obligatoire");
     }
   });
 
@@ -158,9 +107,8 @@ describe("Update user use case unit tests", () => {
     user.email = undefined;
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
-      spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await updateUserUseCase.execute(user, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'email est obligatoire");
     }

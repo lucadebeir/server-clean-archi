@@ -92,7 +92,7 @@ describe("Update commentaire use case unit tests", () => {
   it("updateCommentaireUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await updateCommentaireUseCase.execute(commentaire, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas modifier cette ressource");
     }
@@ -102,7 +102,7 @@ describe("Update commentaire use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas modifier cette ressource");
     }
@@ -113,7 +113,7 @@ describe("Update commentaire use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
     }
@@ -124,7 +124,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -136,7 +136,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La personne connectée n'est pas la personne correspondant au pseudo en question"
@@ -150,7 +150,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une recette est obligatoire");
     }
@@ -162,7 +162,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(false);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette n'existe pas");
     }
@@ -175,7 +175,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(true);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant est obligatoire");
     }
@@ -188,7 +188,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(commentaireRepository, "existById").and.returnValue(false);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire n'existe pas");
     }
@@ -202,7 +202,7 @@ describe("Update commentaire use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(commentaireRepository, "existById").and.returnValue(true);
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le message est obligatoire");
     }
@@ -221,7 +221,7 @@ describe("Update commentaire use case unit tests", () => {
         return true;
       });
       await updateCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire parent n'existe pas");
     }

@@ -102,7 +102,7 @@ describe("Delete commentaire use case unit tests", () => {
   it("deleteCommentaireUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await deleteCommentaireUseCase.execute(commentaire, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas supprimer cette ressource");
     }
@@ -114,7 +114,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas supprimer cette ressource");
     }
@@ -127,7 +127,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Ce commentaire n'est pas un des votre. Vous ne pouvez pas supprimer cette ressource"
@@ -141,7 +141,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -154,7 +154,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant est obligatoire");
     }
@@ -167,7 +167,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(commentaireRepository, "existById").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire n'existe pas");
     }
@@ -180,7 +180,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -193,7 +193,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant est obligatoire");
     }
@@ -206,7 +206,7 @@ describe("Delete commentaire use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(commentaireRepository, "existById").and.returnValue(false);
       await deleteCommentaireUseCase.execute(commentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire n'existe pas");
     }

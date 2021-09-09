@@ -53,7 +53,7 @@ describe("Update unity use case unit tests", () => {
   it("deleteUnityUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await deleteUnityUseCase.execute(unity.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -65,7 +65,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await deleteUnityUseCase.execute(unity.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -78,7 +78,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "L'identifiant d'une unité est obligatoire pour pouvoir la supprimer"
@@ -91,7 +91,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette unité n'existe pas");
     }
@@ -103,7 +103,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteUnityUseCase.execute(unity.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Cette unité est associée à une ou plusieurs recettes"

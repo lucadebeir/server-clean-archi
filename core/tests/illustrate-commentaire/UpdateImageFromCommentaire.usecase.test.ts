@@ -74,7 +74,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -89,7 +89,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -105,7 +105,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'image doit exister");
     }
@@ -120,7 +120,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire doit exister");
     }
@@ -134,7 +134,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'image doit exister");
     }
@@ -149,7 +149,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire doit exister");
     }
@@ -165,7 +165,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette image n'existe pas dans ce commentaire");
     }

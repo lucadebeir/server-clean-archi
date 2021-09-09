@@ -82,7 +82,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
   it("getAllCommentairesByIdUserUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await getAllCommentairesByIdUserUseCase.execute(user.pseudo, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à ces ressources");
     }
@@ -92,7 +92,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllCommentairesByIdUserUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à ces ressources");
     }
@@ -103,7 +103,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
     try {
         spyOn(Utils, "isLogin").and.returnValue(true);
       await getAllCommentairesByIdUserUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
     }
@@ -114,7 +114,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
         spyOn(Utils, "isLogin").and.returnValue(true);
         spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await getAllCommentairesByIdUserUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -126,7 +126,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await getAllCommentairesByIdUserUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La personne connectée n'est pas la personne correspondant au pseudo en question"

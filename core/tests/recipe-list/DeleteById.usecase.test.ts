@@ -80,7 +80,7 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
         recipeList.pseudo,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer cette ressource"
@@ -96,7 +96,7 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
         recipeList.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer cette ressource"
@@ -113,7 +113,7 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
         recipeList.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo d'un utilisateur est obligatoire");
     }
@@ -129,7 +129,7 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
         recipeList.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Problème technique");
     }
@@ -144,7 +144,7 @@ describe("Delete recipe from recipe list by id use case unit tests", () => {
         recipeList.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }

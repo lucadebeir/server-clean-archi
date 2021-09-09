@@ -58,7 +58,7 @@ describe("Get all abonne users use case unit tests", () => {
   it("getAllAbonneUsersUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await getAllAbonneUsersUseCase.execute(undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -70,7 +70,7 @@ describe("Get all abonne users use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getAllAbonneUsersUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"

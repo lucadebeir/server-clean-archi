@@ -30,10 +30,10 @@ describe("Get menu by id use case unit tests", () => {
   let token: TokenDomain = new TokenDomain();
   let menu: Menu;
 
-  let menuRepository: MenuRepository = ({
+  let menuRepository: MenuRepository = {
     findById: null,
     existById: null,
-  } as unknown) as MenuRepository;
+  } as unknown as MenuRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
@@ -53,19 +53,16 @@ describe("Get menu by id use case unit tests", () => {
   it("getMenuBydIdUseCase should return recipe when it succeeded", async () => {
     spyOn(menuRepository, "existById").and.returnValue(true);
     spyOn(Utils, "isAdmin").and.returnValue(true);
-    const result: Recipe = await getMenuBydIdUseCase.execute(
-      menu.id,
-      token
-    );
+    const result: Recipe = await getMenuBydIdUseCase.execute(menu.id, token);
     expect(result).toBeDefined();
-    expect(result.id_recipe).toBe(1);
+    expect(result.id).toBe(1);
     expect(result.name).toBe("Lasagnes");
   });
 
   it("getMenuBydIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await getMenuBydIdUseCase.execute(menu.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -77,7 +74,7 @@ describe("Get menu by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getMenuBydIdUseCase.execute(menu.id, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -89,7 +86,7 @@ describe("Get menu by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getMenuBydIdUseCase.execute(undefined, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant d'une recette du menu est obligatoire"
@@ -102,7 +99,7 @@ describe("Get menu by id use case unit tests", () => {
       spyOn(menuRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getMenuBydIdUseCase.execute(menu.id, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +

@@ -1,7 +1,7 @@
 import Recipe from "../../domain/Recipe";
 import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import * as Utils from "../../utils/token.service";
 import date from "date-and-time";
@@ -17,11 +17,12 @@ import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
 import UserRepository from "../../ports/repositories/User.repository";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
+import Etape from "../../domain/Etape.domain";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
   recipe.name = "Lasagnes";
-  recipe.steps = "1. Préchauffer le four à 180°C.";
+  recipe.steps = initSteps();
   recipe.number_portion = 1;
   recipe.name_portion = "Bocal";
   recipe.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
@@ -34,11 +35,20 @@ const initRecipe = (): Recipe => {
   return recipe;
 };
 
+const initSteps = (): Etape[] => {
+  const step = new Etape();
+  step.indication = "Préchauffer le four à 180°C.";
+  step.number = 1;
+  step.id_recipe = 1;
+
+  return [step];
+};
+
 const afterCreateRecipe = (): Recipe => {
   const recipe = new Recipe();
   recipe.id = 1;
   recipe.name = "Lasagnes";
-  recipe.steps = "1. Préchauffer le four à 180°C.";
+  recipe.steps = initSteps();
   recipe.number_portion = 1;
   recipe.name_portion = "Bocal";
   recipe.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
@@ -79,19 +89,15 @@ const initClassifyIn = (): ClassifyIn[] => {
   const category = new ClassifyIn();
   category.id_category = 1;
 
-  const list: ClassifyIn[] = [category];
-
-  return list;
+  return [category];
 };
 
 const initCategory = (): Category[] => {
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
-  const list: Category[] = [category];
-
-  return list;
+  return [category];
 };
 
 const initUseIngredient = (): UseIngredient[] => {
@@ -100,9 +106,7 @@ const initUseIngredient = (): UseIngredient[] => {
   useIngredient.id_unit = 1;
   useIngredient.quantity = 1;
 
-  const list: UseIngredient[] = [useIngredient];
-
-  return list;
+  return [useIngredient];
 };
 
 const initImage = (): ImageDomain[] => {
@@ -111,9 +115,7 @@ const initImage = (): ImageDomain[] => {
     "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
   image.name = "IMG_20200903_103750_461311495694712.jpg";
 
-  const list: ImageDomain[] = [image];
-
-  return list;
+  return [image];
 };
 
 describe("Create recipe use case unit tests", () => {
@@ -142,8 +144,13 @@ describe("Create recipe use case unit tests", () => {
     existById: null,
   } as unknown as UnityRepository;
 
-  let userRepository: UserRepository;
-  let mailingRepository: MailingRepository;
+  let userRepository: UserRepository = {
+    findAllAbonneMailUsers: null
+  } as unknown as UserRepository;
+
+  let mailingRepository: MailingRepository = {
+    sendMailWhenNewRecipe: null
+  } as unknown as MailingRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
@@ -171,6 +178,8 @@ describe("Create recipe use case unit tests", () => {
       }
       return new Promise((resolve, reject) => resolve(null));
     });
+
+    spyOn(userRepository, "findAllAbonneMailUsers").and.returnValue([user]);
   });
 
   it("createRecipeUseCase should return message when it succeeded", async () => {
@@ -179,11 +188,12 @@ describe("Create recipe use case unit tests", () => {
     spyOn(categoryRepository, "existById").and.returnValue(true);
     spyOn(ingredientRepository, "existById").and.returnValue(true);
     spyOn(unityRepository, "existById").and.returnValue(true);
+    spyOn(mailingRepository, "sendMailWhenNewRecipe");
     const result: Recipe = await createRecipeUseCase.execute(recipe, user);
     expect(result).toBeDefined();
-    expect(result.id_recipe).toStrictEqual(1);
+    expect(result.id).toStrictEqual(1);
     expect(result.name).toStrictEqual("Lasagnes");
-    expect(result.steps).toStrictEqual("1. Préchauffer le four à 180°C.");
+    expect(result.steps).toHaveLength(1);
     expect(result.number_portion).toStrictEqual(1);
     expect(result.number_views).toStrictEqual(0);
     expect(result.number_favorites).toStrictEqual(0);
@@ -214,7 +224,7 @@ describe("Create recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await createRecipeUseCase.execute(recipe, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -226,7 +236,7 @@ describe("Create recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -238,7 +248,7 @@ describe("Create recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(true);
       await createRecipeUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Un objet de type Recette est requis pour créer une recette"
@@ -254,23 +264,22 @@ describe("Create recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
-      expect(a.message).toBe(
-        "La recette " + recipe.name + " existe déjà."
-      );
+      expect(a.message).toBe("La recette " + recipe.name + " existe déjà.");
     }
   });
 
   it("createRecipeUseCase should throw a parameter exception when the name of recipe is not defined", async () => {
     recipe.name = undefined;
     try {
+      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ nomRecette d'une recette est obligatoire"
+        "Le champ name d'une recette est obligatoire"
       );
     }
   });
@@ -278,12 +287,13 @@ describe("Create recipe use case unit tests", () => {
   it("createRecipeUseCase should throw a parameter exception when the libellePart of recipe is not defined", async () => {
     recipe.name_portion = undefined;
     try {
+      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ libellePart d'une recette est obligatoire"
+        "Le champ name_portion d'une recette est obligatoire"
       );
     }
   });
@@ -291,23 +301,25 @@ describe("Create recipe use case unit tests", () => {
   it("createRecipeUseCase should throw a parameter exception when the nbrePart of recipe is not defined", async () => {
     recipe.number_portion = undefined;
     try {
+      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Le champ nbrePart d'une recette est obligatoire");
+      expect(a.message).toBe("Le champ number_portion d'une recette est obligatoire");
     }
   });
 
   it("createRecipeUseCase should throw a parameter exception when the tempsPreparation of recipe is not defined", async () => {
     recipe.preparation_time = undefined;
     try {
+      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ tempsPreparation d'une recette est obligatoire"
+        "Le champ preparation_time d'une recette est obligatoire"
       );
     }
   });
@@ -316,12 +328,13 @@ describe("Create recipe use case unit tests", () => {
     recipe.name =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
+      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ nomRecette d'une recette ne doit pas dépasser 60 caractères"
+        "Le champ name d'une recette ne doit pas dépasser 60 caractères"
       );
     }
   });
@@ -333,10 +346,10 @@ describe("Create recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ libellePart d'une recette ne doit pas dépasser 50 caractères"
+        "Le champ name_portion d'une recette ne doit pas dépasser 50 caractères"
       );
     }
   });
@@ -350,7 +363,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nombre de part doit être strictement supérieur à 0"
@@ -367,7 +380,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nombre de part doit être strictement supérieur à 0"
@@ -385,7 +398,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
@@ -403,7 +416,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
@@ -417,7 +430,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins un ingrédient pour créer une recette"
@@ -431,7 +444,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins un ingrédient pour créer une recette"
@@ -452,7 +465,7 @@ describe("Create recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient 1 n'existe pas");
     }
@@ -471,7 +484,7 @@ describe("Create recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'unité 1 n'existe pas");
     }
@@ -485,7 +498,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(unityRepository, "existById").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une catégorie pour créer une recette"
@@ -501,7 +514,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(unityRepository, "existById").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une catégorie pour créer une recette"
@@ -522,7 +535,7 @@ describe("Create recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie 1 n'existe pas");
     }
@@ -537,7 +550,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(unityRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une image pour créer une recette"
@@ -554,7 +567,7 @@ describe("Create recipe use case unit tests", () => {
       spyOn(unityRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await createRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une image pour créer une recette"

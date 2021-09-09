@@ -79,7 +79,7 @@ describe("update ingredient from recipe use case unit tests", () => {
   it("updateIngredientFromRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await updateIngredientFromRecipeUseCase.execute(useIngredient, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -91,7 +91,7 @@ describe("update ingredient from recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -104,7 +104,7 @@ describe("update ingredient from recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'unité doit exister");
     }
@@ -116,7 +116,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient doit exister");
     }
@@ -129,7 +129,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(ingredientRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -140,7 +140,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'unité doit exister");
     }
@@ -152,7 +152,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(ingredientRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient doit exister");
     }
@@ -165,7 +165,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(recipeRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -179,7 +179,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(ingredientRepository, "findById").and.returnValue(true);
       spyOn(recipeRepository, "findById").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La quantité est obligatoire");
     }
@@ -193,7 +193,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(recipeRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Une quantité ne peut pas être négative, ni nulle"
@@ -209,7 +209,7 @@ describe("update ingredient from recipe use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(useIngredientRepository, "check").and.returnValue(true);
       await updateIngredientFromRecipeUseCase.execute(useIngredient, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette ingrédient existe déjà dans cette recette");
     }

@@ -51,11 +51,9 @@ describe("Update password use case unit tests", () => {
     spyOn(userRepository, "updatePassword").and.callFake(
       (
         pseudo: any,
-        oldPassword: any,
-        newPassword: any,
-        confirmNewPassword: any
+        newPassword: any
       ) => {
-        if (pseudo && oldPassword && newPassword && confirmNewPassword) {
+        if (pseudo && newPassword) {
           const result: User = user;
           return new Promise((resolve, reject) => resolve(result));
         }
@@ -87,7 +85,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -105,7 +103,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -123,7 +121,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo est obligatoire");
     }
@@ -140,7 +138,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -158,7 +156,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La personne connectée n'est pas la personne correspondant au pseudo en question"
@@ -178,7 +176,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ancien mot de passe n'est pas correct");
     }
@@ -196,7 +194,7 @@ describe("Update password use case unit tests", () => {
         confirmNewPassword,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nouveau mot de passe et sa confirmation ne correspondent pas"

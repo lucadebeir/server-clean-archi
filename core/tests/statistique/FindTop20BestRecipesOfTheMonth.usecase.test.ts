@@ -17,27 +17,26 @@ describe("Find top 20 best recipes of the days use case unit tests", () => {
 
   let token: TokenDomain;
 
-  let statistiqueRepository: StatistiqueRepository = ({
+  let statistiqueRepository: StatistiqueRepository = {
     findTop20BestRecipesOfTheMonth: null,
-  } as unknown) as StatistiqueRepository;
+  } as unknown as StatistiqueRepository;
 
   beforeEach(() => {
     token = initToken();
 
-    findTop20BestRecipesOfTheMonthUseCase = new FindTop20BestRecipesOfTheMonthUseCase(
-      statistiqueRepository
-    );
+    findTop20BestRecipesOfTheMonthUseCase =
+      new FindTop20BestRecipesOfTheMonthUseCase(statistiqueRepository);
 
     spyOn(statistiqueRepository, "findTop20BestRecipesOfTheMonth").and.callFake(
       () => {
-        const result: { nomRecette: any; nbVues: any }[] = [
+        const result: { name: any; number_views: any }[] = [
           {
-            nomRecette: "Lasagnes",
-            nbVues: 18,
+            name: "Lasagnes",
+            number_views: 18,
           },
           {
-            nomRecette: "Salade Caesar",
-            nbVues: 12,
+            name: "Salade Caesar",
+            number_views: 12,
           },
         ];
         return new Promise((resolve, reject) => resolve(result));
@@ -48,18 +47,18 @@ describe("Find top 20 best recipes of the days use case unit tests", () => {
   it("findTop20BestRecipesOfTheMonthUseCase should return list when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: {
-      nomRecette: any;
-      nbVues: any;
+      name: any;
+      number_views: any;
     }[] = await findTop20BestRecipesOfTheMonthUseCase.execute(token);
     expect(result).toBeDefined();
     expect(result.length).toStrictEqual(2);
-    expect(result.some(({ nbVues }) => nbVues >= 0)).toBe(true);
+    expect(result.some(({ number_views }) => number_views >= 0)).toBe(true);
   });
 
   it("findTop20BestRecipesOfTheMonthUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await findTop20BestRecipesOfTheMonthUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }
@@ -69,7 +68,7 @@ describe("Find top 20 best recipes of the days use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await findTop20BestRecipesOfTheMonthUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }

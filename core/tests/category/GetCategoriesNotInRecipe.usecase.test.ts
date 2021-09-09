@@ -10,11 +10,11 @@ import TokenDomain from "../../domain/Token.domain";
 const initCategories = (): Category[] => {
   const category1 = new Category();
   category1.id = 1;
-  category1.libelleCategorie = "Douceur";
+  category1.name = "Douceur";
 
   const category2 = new Category();
   category2.id = 2;
-  category2.libelleCategorie = "Repas";
+  category2.name = "Repas";
 
   const list = [];
 
@@ -38,13 +38,13 @@ describe("Get categories not in recipe use case unit tests", () => {
   let user: TokenDomain = new TokenDomain();
   let recipe: Recipe;
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     findCategoriesNotInRecipe: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     findById: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
   beforeEach(() => {
     list = initCategories();
@@ -77,7 +77,7 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should return categories when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: Category[] = await getCategoriesNotInRecipeUseCase.execute(
-      recipe.id_recipe,
+      recipe.id,
       user
     );
     expect(result).toBeDefined();
@@ -88,8 +88,8 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getCategoriesNotInRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await getCategoriesNotInRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -101,7 +101,7 @@ describe("Get categories not in recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getCategoriesNotInRecipeUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant de la recette est indéfinie");
     }
@@ -110,8 +110,8 @@ describe("Get categories not in recipe use case unit tests", () => {
   it("getCategoriesNotInRecipeUseCase should throw a parameter exception when the recipe doesn't exist", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await getCategoriesNotInRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await getCategoriesNotInRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");
     }

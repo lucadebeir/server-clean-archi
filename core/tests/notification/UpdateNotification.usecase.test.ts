@@ -64,7 +64,7 @@ describe("Update notification use case unit tests", () => {
   it("updateNotificationUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await updateNotificationUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas modifier cette ressource");
     }
@@ -74,7 +74,7 @@ describe("Update notification use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateNotificationUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous ne pouvez pas modifier cette ressource");
     }
@@ -88,7 +88,7 @@ describe("Update notification use case unit tests", () => {
         notification.id,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant d'une notification est obligatoire"
@@ -104,7 +104,7 @@ describe("Update notification use case unit tests", () => {
         notification.id,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La notification n'existe pas");
     }

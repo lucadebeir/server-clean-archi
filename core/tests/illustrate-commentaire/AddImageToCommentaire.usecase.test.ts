@@ -73,7 +73,7 @@ describe("Add image to commentaire use case unit tests", () => {
         illustrateCommentaire,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -85,7 +85,7 @@ describe("Add image to commentaire use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -98,7 +98,7 @@ describe("Add image to commentaire use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'image doit exister");
     }
@@ -110,7 +110,7 @@ describe("Add image to commentaire use case unit tests", () => {
       spyOn(imageRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire doit exister");
     }
@@ -121,7 +121,7 @@ describe("Add image to commentaire use case unit tests", () => {
       spyOn(imageRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'image doit exister");
     }
@@ -133,7 +133,7 @@ describe("Add image to commentaire use case unit tests", () => {
       spyOn(commentaireRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le commentaire doit exister");
     }
@@ -146,7 +146,7 @@ describe("Add image to commentaire use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(illustrateCommentaireRepository, "check").and.returnValue(true);
       await addImageToCommentaireUseCase.execute(illustrateCommentaire, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette image est déjà associé à ce commentaire");
     }

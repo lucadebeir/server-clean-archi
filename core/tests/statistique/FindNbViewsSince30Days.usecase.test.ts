@@ -16,9 +16,9 @@ describe("Find nombre views since 30 days use case unit tests", () => {
 
   let token: TokenDomain;
 
-  let statistiqueRepository: StatistiqueRepository = ({
+  let statistiqueRepository: StatistiqueRepository = {
     findNbViewsSince30Days: null,
-  } as unknown) as StatistiqueRepository;
+  } as unknown as StatistiqueRepository;
 
   beforeEach(() => {
     token = initToken();
@@ -28,13 +28,13 @@ describe("Find nombre views since 30 days use case unit tests", () => {
     );
 
     spyOn(statistiqueRepository, "findNbViewsSince30Days").and.callFake(() => {
-      const result: { nbVues: any; date: any }[] = [
+      const result: { number_views: any; date: any }[] = [
         {
-          nbVues: 1,
+          number_views: 1,
           date: "2021-04-08",
         },
         {
-          nbVues: 2,
+          number_views: 2,
           date: "2021-04-10",
         },
       ];
@@ -45,18 +45,18 @@ describe("Find nombre views since 30 days use case unit tests", () => {
   it("findNbViewsSince30DaysUseCase should return list when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     const result: {
-      nbVues: any;
+      number_views: any;
       date: any;
     }[] = await findNbViewsSince30DaysUseCase.execute(token);
     expect(result).toBeDefined();
     expect(result.length).toStrictEqual(2);
-    expect(result.some(({ nbVues }) => nbVues !== 0)).toBe(true);
+    expect(result.some(({ number_views }) => number_views !== 0)).toBe(true);
   });
 
   it("findNbViewsSince30DaysUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await findNbViewsSince30DaysUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }
@@ -66,7 +66,7 @@ describe("Find nombre views since 30 days use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await findNbViewsSince30DaysUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }

@@ -90,7 +90,7 @@ describe("Add ingredients of recipe to shopping list by pseudo use case unit tes
         ingredients,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter ces ressources"
@@ -106,7 +106,7 @@ describe("Add ingredients of recipe to shopping list by pseudo use case unit tes
         ingredients,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter ces ressources"
@@ -122,7 +122,7 @@ describe("Add ingredients of recipe to shopping list by pseudo use case unit tes
         ingredients,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
     }
@@ -137,7 +137,7 @@ describe("Add ingredients of recipe to shopping list by pseudo use case unit tes
         ingredients,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +

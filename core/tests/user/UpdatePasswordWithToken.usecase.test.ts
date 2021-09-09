@@ -67,7 +67,7 @@ describe("Update password with token use case unit tests", () => {
     try {
       spyOn(Utils, "isExpired").and.returnValue(false);
       await updatePasswordWithTokenUseCase.execute(token, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le mot de passe est obligatoire");
     }
@@ -76,7 +76,7 @@ describe("Update password with token use case unit tests", () => {
   it("updatePasswordWithTokenUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await updatePasswordWithTokenUseCase.execute(undefined, user.password);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Le lien n'est plus valide. Il n'est valable que 5min. Veuillez recommencer le processus."
@@ -88,7 +88,7 @@ describe("Update password with token use case unit tests", () => {
     try {
       spyOn(Utils, "isExpired").and.returnValue(true);
       await updatePasswordWithTokenUseCase.execute(token, user.password);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Le lien n'est plus valide. Il n'est valable que 5min. Veuillez recommencer le processus."

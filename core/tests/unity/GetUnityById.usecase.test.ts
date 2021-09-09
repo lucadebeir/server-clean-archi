@@ -42,7 +42,7 @@ describe("get unity by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getUnityByIdUseCase.execute(unity.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -53,7 +53,7 @@ describe("get unity by id use case unit tests", () => {
   it("getUnityByIdUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await getUnityByIdUseCase.execute(unity.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -75,7 +75,7 @@ describe("get unity by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getUnityByIdUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'id d'une unité est obligatoire");
     }

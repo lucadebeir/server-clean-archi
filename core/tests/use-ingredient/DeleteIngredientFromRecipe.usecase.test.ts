@@ -78,7 +78,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -94,7 +94,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -111,7 +111,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient doit exister");
     }
@@ -127,7 +127,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -142,7 +142,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient doit exister");
     }
@@ -158,7 +158,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
         useIngredient.id_ingredient,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }

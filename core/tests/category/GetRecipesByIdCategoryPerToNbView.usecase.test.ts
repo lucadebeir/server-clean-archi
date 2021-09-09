@@ -9,7 +9,7 @@ import TokenDomain from "../../domain/Token.domain";
 const initCategories = (): Category => {
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   return category;
 };
@@ -35,18 +35,17 @@ describe("Get Recipes by id category use case unit tests", () => {
   let user: TokenDomain = new TokenDomain();
   let recipes: Recipe[];
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     getRecipesByIdCategoryPerToNbView: null,
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     category = initCategories();
     recipes = initRecipe();
 
-    getRecipesByIdCategoryPerToNbViewUseCase = new GetRecipesByIdCategoryPerToNbViewUseCase(
-      categoryRepository
-    );
+    getRecipesByIdCategoryPerToNbViewUseCase =
+      new GetRecipesByIdCategoryPerToNbViewUseCase(categoryRepository);
 
     spyOn(categoryRepository, "getRecipesByIdCategoryPerToNbView").and.callFake(
       (id: any) => {
@@ -62,10 +61,8 @@ describe("Get Recipes by id category use case unit tests", () => {
   it("getRecipesByIdCategoryPerToNbViewUseCase should return categories when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(categoryRepository, "existById").and.returnValue(true);
-    const result: Recipe[] = await getRecipesByIdCategoryPerToNbViewUseCase.execute(
-      category.id,
-      user
-    );
+    const result: Recipe[] =
+      await getRecipesByIdCategoryPerToNbViewUseCase.execute(category.id, user);
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
     expect(result).toBe(recipes);
@@ -77,11 +74,8 @@ describe("Get Recipes by id category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(true);
-      await getRecipesByIdCategoryPerToNbViewUseCase.execute(
-        category.id,
-        user
-      );
-    } catch (e) {
+      await getRecipesByIdCategoryPerToNbViewUseCase.execute(category.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -94,7 +88,7 @@ describe("Get Recipes by id category use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryPerToNbViewUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant de la catégorie est indéfinie");
     }
@@ -104,11 +98,8 @@ describe("Get Recipes by id category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
-      await getRecipesByIdCategoryPerToNbViewUseCase.execute(
-        category.id,
-        user
-      );
-    } catch (e) {
+      await getRecipesByIdCategoryPerToNbViewUseCase.execute(category.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");
     }

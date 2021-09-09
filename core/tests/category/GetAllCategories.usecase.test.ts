@@ -1,18 +1,15 @@
 import Category from "../../domain/Category.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import * as Utils from "../../utils/token.service";
 import GetAllCategoriesUseCase from "../../usecases/category/GetAllCategories.usecase";
-import TokenDomain from "../../domain/Token.domain";
 
 const initCategories = (): Category[] => {
   const category1 = new Category();
   category1.id = 1;
-  category1.libelleCategorie = "Douceur";
+  category1.name = "Douceur";
 
   const category2 = new Category();
   category2.id = 2;
-  category2.libelleCategorie = "Repas";
+  category2.name = "Repas";
 
   const list = [];
 
@@ -27,9 +24,9 @@ describe("Get all categories use case unit tests", () => {
 
   let list: Category[];
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     findAll: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     list = initCategories();

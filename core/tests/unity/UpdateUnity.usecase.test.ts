@@ -53,7 +53,7 @@ describe("Update unity use case unit tests", () => {
   it("updateUnityUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await updateUnityUseCase.execute(unity, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -65,7 +65,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -77,7 +77,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'unité est indéfinie");
     }
@@ -88,7 +88,7 @@ describe("Update unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "L'identifiant d'une unité est obligatoire pour pouvoir la modifier"
@@ -101,7 +101,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette unité n'existe pas");
     }
@@ -113,7 +113,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "findById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le libellé d'une unité est obligatoire");
     }
@@ -126,7 +126,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Une unité ne peut pas comporter plus de 19 caractères"
@@ -140,7 +140,7 @@ describe("Update unity use case unit tests", () => {
       spyOn(unityRepository, "checkExistByName").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce libellé est déjà utilisé par une unité");
     }

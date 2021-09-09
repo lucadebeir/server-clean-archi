@@ -84,7 +84,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
   it("getShoppingListByIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await getShoppingListByIdUseCase.execute(user.pseudo, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à ces ressources"
@@ -96,7 +96,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getShoppingListByIdUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à ces ressources"
@@ -108,7 +108,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await getShoppingListByIdUseCase.execute(undefined, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
     }
@@ -119,7 +119,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await getShoppingListByIdUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +

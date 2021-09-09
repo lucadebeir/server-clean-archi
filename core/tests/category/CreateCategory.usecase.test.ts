@@ -8,7 +8,7 @@ import * as Utils from "../../utils/token.service";
 
 const initCategory = (): Category => {
   const category = new Category();
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   return category;
 };
@@ -19,10 +19,10 @@ describe("Create category use case unit tests", () => {
   let category: Category;
   let user: TokenDomain = new TokenDomain();
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     create: null,
-    checkExistByName: null,
-  } as unknown) as CategoryRepository;
+    checkExistByName: null
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     category = initCategory();
@@ -47,13 +47,13 @@ describe("Create category use case unit tests", () => {
     );
     expect(result).toBeDefined();
     expect(result.id).toBe(1);
-    expect(result.libelleCategorie).toBe("Douceur");
+    expect(result.name).toBe("Douceur");
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await createCategoryUseCase.execute(category, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -65,7 +65,7 @@ describe("Create category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await createCategoryUseCase.execute(category, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -77,19 +77,19 @@ describe("Create category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("La catégorie est indéfinie");
     }
   });
 
   it("createCategoryUseCase should throw a parameter exception when the libelleCategorie is null", async () => {
-    category.libelleCategorie = null;
+    category.name = null;
     try {
       spyOn(categoryRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(category, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le libellé d'une catégorie est obligatoire");
     }
@@ -100,7 +100,7 @@ describe("Create category use case unit tests", () => {
       spyOn(categoryRepository, "checkExistByName").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createCategoryUseCase.execute(category, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce libellé est déjà utilisé par une catégorie");
     }

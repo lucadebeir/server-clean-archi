@@ -61,7 +61,7 @@ describe("Update menu by id use case unit tests", () => {
   it("updateMenuByIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await updateMenuByIdUseCase.execute(menu, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -73,7 +73,7 @@ describe("Update menu by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateMenuByIdUseCase.execute(menu, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de modifier cette ressource"
@@ -86,7 +86,7 @@ describe("Update menu by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateMenuByIdUseCase.execute(menu, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant du menu est obligatoire");
     }
@@ -98,7 +98,7 @@ describe("Update menu by id use case unit tests", () => {
       spyOn(menuRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateMenuByIdUseCase.execute(menu, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une recette est obligatoire");
     }
@@ -109,7 +109,7 @@ describe("Update menu by id use case unit tests", () => {
       spyOn(menuRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateMenuByIdUseCase.execute(menu, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant de menu " +
@@ -125,7 +125,7 @@ describe("Update menu by id use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateMenuByIdUseCase.execute(menu, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant de recette " +

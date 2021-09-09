@@ -55,7 +55,7 @@ describe("Get all unities use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllUnitiesUseCase.execute(user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"

@@ -39,7 +39,7 @@ describe("upload image use case unit tests", () => {
 
   it("uploadImageUseCase should return image when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(imageRepository, "checkExistByName").and.returnValue(false);
+    spyOn(imageRepository, "checkExistByName").and.returnValue(false);
     const result: ImageDomain = await uploadImageUseCase.execute(
       image,
       token
@@ -54,7 +54,7 @@ describe("upload image use case unit tests", () => {
   it("uploadImageUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await uploadImageUseCase.execute(image, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -66,7 +66,7 @@ describe("upload image use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await uploadImageUseCase.execute(image, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -76,9 +76,9 @@ describe("upload image use case unit tests", () => {
 
   it("uploadImageUseCase should throw an error when file is missing", async () => {
     try {
-        spyOn(Utils, "isAdmin").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
       await uploadImageUseCase.execute(null, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Une image est obligatoire pour pouvoir la télécharger");
     }
@@ -86,10 +86,10 @@ describe("upload image use case unit tests", () => {
 
   it("uploadImageUseCase should throw an error when file alreaydy exists", async () => {
     try {
-        spyOn(Utils, "isAdmin").and.returnValue(true);
-        spyOn(imageRepository, "checkExistByName").and.returnValue(true);
+      spyOn(Utils, "isAdmin").and.returnValue(true);
+      spyOn(imageRepository, "checkExistByName").and.returnValue(true);
       await uploadImageUseCase.execute(image, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette image existe déjà");
     }

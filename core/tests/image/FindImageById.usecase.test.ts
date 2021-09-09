@@ -50,7 +50,7 @@ describe("get image by id use case unit tests", () => {
   it("findImageByIdUseCase should throw an error when id is missing", async () => {
     try {
       await findImageByIdUseCase.execute(null);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une image est obligatoire");
     }

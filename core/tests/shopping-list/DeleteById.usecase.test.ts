@@ -74,7 +74,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
   it("deleteByIdUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await deleteByIdUseCase.execute(shoppingList.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer à ces ressources"
@@ -86,7 +86,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await deleteByIdUseCase.execute(shoppingList.id, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer à ces ressources"
@@ -98,7 +98,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await deleteByIdUseCase.execute(undefined, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant d'un élément de la liste de courses est obligatoire"
@@ -111,7 +111,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await deleteByIdUseCase.execute(shoppingList.id, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +

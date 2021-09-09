@@ -55,7 +55,7 @@ describe("Create ingredient use case unit tests", () => {
   it("createIngredientUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await createIngredientUseCase.execute(ingredient, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -67,7 +67,7 @@ describe("Create ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await createIngredientUseCase.execute(ingredient, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -79,7 +79,7 @@ describe("Create ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'ingrédient est indéfinie");
     }
@@ -90,7 +90,7 @@ describe("Create ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le nom d'un ingrédient est obligatoire");
     }
@@ -103,7 +103,7 @@ describe("Create ingredient use case unit tests", () => {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères"
@@ -116,7 +116,7 @@ describe("Create ingredient use case unit tests", () => {
       spyOn(ingredientRepository, "checkExistByName").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createIngredientUseCase.execute(ingredient, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce nom est déjà utilisé par un ingrédient");
     }

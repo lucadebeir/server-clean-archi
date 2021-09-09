@@ -9,7 +9,7 @@ import TokenDomain from "../../domain/Token.domain";
 const initCategory = (): Category => {
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   return category;
 };
@@ -20,11 +20,11 @@ describe("Update category use case unit tests", () => {
   let category: Category;
   let user: TokenDomain = new TokenDomain();
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     update: null,
     checkExistByName: null,
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     category = initCategory();
@@ -50,14 +50,14 @@ describe("Update category use case unit tests", () => {
     );
     expect(result).toBeDefined();
     expect(result.id).toBeDefined();
-    expect(result.libelleCategorie).toBe("Douceur");
+    expect(result.name).toBe("Douceur");
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the category is null", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateCategoryUseCase.execute(user, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("La catégorie est indéfinie");
     }
@@ -66,7 +66,7 @@ describe("Update category use case unit tests", () => {
   it("updateCategoryUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await updateCategoryUseCase.execute(undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -79,7 +79,7 @@ describe("Update category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
@@ -93,7 +93,7 @@ describe("Update category use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(false);
       await updateCategoryUseCase.execute(user, category);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
@@ -102,12 +102,12 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the libelleCategorie is null", async () => {
-    category.libelleCategorie = null;
+    category.name = null;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le libellé d'une catégorie est obligatoire");
     }
@@ -119,7 +119,7 @@ describe("Update category use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "checkExistByName").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce libellé est déjà utilisé par une catégorie");
     }
@@ -129,7 +129,7 @@ describe("Update category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await updateCategoryUseCase.execute(user, category);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"

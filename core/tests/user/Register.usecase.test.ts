@@ -66,7 +66,7 @@ describe("Register user use case unit tests", () => {
     user.pseudo = "aaa";
     try {
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Un pseudo ne peut pas comporter moins de 4 caractères"
@@ -78,7 +78,7 @@ describe("Register user use case unit tests", () => {
     user.pseudo = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Un pseudo ne peut pas comporter plus de 29 caractères"
@@ -90,7 +90,7 @@ describe("Register user use case unit tests", () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Un utilisateur existe déjà avec ce pseudo");
     }
@@ -102,7 +102,7 @@ describe("Register user use case unit tests", () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Un email ne peut pas comporter plus de 59 caractères"
@@ -115,7 +115,7 @@ describe("Register user use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(true);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Un utilisateur existe déjà avec cet email");
     }
@@ -124,7 +124,7 @@ describe("Register user use case unit tests", () => {
   /*it("registerUseCase should throw a parameter exception when the email is not valid", async () => {
     try {
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Cet email est invalide");
     }
@@ -134,7 +134,7 @@ describe("Register user use case unit tests", () => {
     user.pseudo = undefined;
     try {
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo est obligatoire");
     }
@@ -145,7 +145,7 @@ describe("Register user use case unit tests", () => {
     try {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'email est obligatoire");
     }
@@ -157,7 +157,7 @@ describe("Register user use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le mot de passe est obligatoire");
     }
@@ -169,7 +169,7 @@ describe("Register user use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La confirmation du mot de passe est obligatoire");
     }
@@ -181,7 +181,7 @@ describe("Register user use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(userRepository, "existByEmail").and.returnValue(false);
       await registerUseCase.execute(user, link);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le mot de passe et la confirmation du mot de passe sont différents"

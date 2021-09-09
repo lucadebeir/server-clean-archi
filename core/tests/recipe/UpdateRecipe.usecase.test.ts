@@ -15,12 +15,13 @@ import UpdateRecipeUseCase from "../../usecases/recipe/UpdateRecipe.usecase";
 import Category from "../../domain/Category.domain";
 import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
+import Etape from "../../domain/Etape.domain";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
   recipe.id = 1;
   recipe.name = "Lasagnes";
-  recipe.steps = "1. Préchauffer le four à 180°C.";
+  recipe.steps = initSteps();
   recipe.number_portion = 1;
   recipe.name_portion = "Bocal";
   recipe.preparation_time = date.format(new Date("00:08:00"), "hh:mm:ss");
@@ -35,7 +36,7 @@ const initRecipe = (): Recipe => {
 
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   recipe.categories = [category];
 
@@ -50,6 +51,15 @@ const initRecipe = (): Recipe => {
   recipe.images = [image];
 
   return recipe;
+};
+
+const initSteps = (): Etape[] => {
+  const step = new Etape();
+  step.indication = "Préchauffer le four à 180°C.";
+  step.number = 1;
+  step.id_recipe = 1;
+
+  return [step];
 };
 
 const initUseIngredient = (): UseIngredient[] => {
@@ -74,22 +84,22 @@ describe("Update recipe use case unit tests", () => {
   let useIngredient: UseIngredient[];
   let user: TokenDomain = new TokenDomain();
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     update: null,
     existByName: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
-  let ingredientRepository: IngredientRepository = ({
+  let ingredientRepository: IngredientRepository = {
     existById: null,
-  } as unknown) as IngredientRepository;
+  } as unknown as IngredientRepository;
 
-  let unityRepository: UnityRepository = ({
+  let unityRepository: UnityRepository = {
     existById: null,
-  } as unknown) as UnityRepository;
+  } as unknown as UnityRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
@@ -125,7 +135,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await updateRecipeUseCase.execute(recipe, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -137,7 +147,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -153,11 +163,9 @@ describe("Update recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
-      expect(a.message).toBe(
-        "La recette " + recipe.name + " existe déjà."
-      );
+      expect(a.message).toBe("La recette " + recipe.name + " existe déjà.");
     }
   });
 
@@ -166,7 +174,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le champ nomRecette d'une recette est obligatoire"
@@ -179,7 +187,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le champ libellePart d'une recette est obligatoire"
@@ -192,7 +200,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le champ nbrePart d'une recette est obligatoire");
     }
@@ -203,7 +211,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le champ tempsPreparation d'une recette est obligatoire"
@@ -217,7 +225,7 @@ describe("Update recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le champ nomRecette d'une recette ne doit pas dépasser 60 caractères"
@@ -232,7 +240,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le champ libellePart d'une recette ne doit pas dépasser 50 caractères"
@@ -249,7 +257,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nombre de part doit être strictement supérieur à 0"
@@ -266,7 +274,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nombre de part doit être strictement supérieur à 0"
@@ -284,7 +292,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
@@ -302,7 +310,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
@@ -316,7 +324,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins un ingrédient pour créer une recette"
@@ -330,7 +338,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins un ingrédient pour créer une recette"
@@ -351,7 +359,7 @@ describe("Update recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'ingrédient 1 n'existe pas");
     }
@@ -370,7 +378,7 @@ describe("Update recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'unité 1 n'existe pas");
     }
@@ -384,7 +392,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(unityRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une catégorie pour créer une recette"
@@ -400,7 +408,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(unityRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une catégorie pour créer une recette"
@@ -421,7 +429,7 @@ describe("Update recipe use case unit tests", () => {
         return new Promise((resolve, reject) => resolve(null));
       });
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie 1 n'existe pas");
     }
@@ -436,7 +444,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(unityRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une image pour créer une recette"
@@ -453,7 +461,7 @@ describe("Update recipe use case unit tests", () => {
       spyOn(unityRepository, "existById").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une image pour créer une recette"

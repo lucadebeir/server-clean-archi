@@ -62,7 +62,7 @@ describe("Get all notifications use case unit tests", () => {
   it("getAllNotificationsUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await getAllNotificationsUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à ces ressources");
     }
@@ -72,7 +72,7 @@ describe("Get all notifications use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getAllNotificationsUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à ces ressources");
     }

@@ -36,13 +36,13 @@ describe("get ingredients not in recipe use case unit tests", () => {
   let user: TokenDomain = new TokenDomain();
   let recipe: Recipe;
 
-  let ingredientRepository: IngredientRepository = ({
+  let ingredientRepository: IngredientRepository = {
     findIngredientsNotInRecipe: null,
-  } as unknown) as IngredientRepository;
+  } as unknown as IngredientRepository;
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     existById: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
   beforeEach(() => {
     getIngredientsNotInRecipeUseCase = new GetIngredientsNotInRecipeUseCase(
@@ -68,21 +68,19 @@ describe("get ingredients not in recipe use case unit tests", () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: Ingredient[] = await getIngredientsNotInRecipeUseCase.execute(
-      recipe.id_recipe,
+      recipe.id,
       user
     );
     expect(result.length).toBe(2);
     expect(result).toHaveLength(2);
-    expect(
-      result.find((ingredient) => ingredient.idIngredient === 1)
-    ).toBeDefined();
+    expect(result.find((ingredient) => ingredient.id === 1)).toBeDefined();
   });
 
   it("getIngredientsNotInRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
-      await getIngredientsNotInRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await getIngredientsNotInRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -92,11 +90,8 @@ describe("get ingredients not in recipe use case unit tests", () => {
 
   it("getIngredientsNotInRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
-      await getIngredientsNotInRecipeUseCase.execute(
-        recipe.id_recipe,
-        undefined
-      );
-    } catch (e) {
+      await getIngredientsNotInRecipeUseCase.execute(recipe.id, undefined);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -108,7 +103,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getIngredientsNotInRecipeUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une recette est obligatoire");
     }
@@ -118,12 +113,12 @@ describe("get ingredients not in recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "existById").and.returnValue(false);
-      await getIngredientsNotInRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await getIngredientsNotInRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +
-          recipe.id_recipe +
+          recipe.id +
           " ne correspond à aucune ressource existante."
       );
     }

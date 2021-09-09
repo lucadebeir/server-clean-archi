@@ -28,13 +28,13 @@ describe("get image by recette use case unit tests", () => {
   let image: ImageDomain;
   let recipe: Recipe;
 
-  let imageRepository: ImageRepository = ({
+  let imageRepository: ImageRepository = {
     findByRecette: null,
-  } as unknown) as ImageRepository;
+  } as unknown as ImageRepository;
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     existById: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
   beforeEach(() => {
     findImageByRecetteUseCase = new FindImageByRecetteUseCase(
@@ -57,7 +57,7 @@ describe("get image by recette use case unit tests", () => {
   it("findImageByRecetteUseCase should return image when id is 1", async () => {
     spyOn(recipeRepository, "existById").and.returnValue(true);
     const result: ImageDomain = await findImageByRecetteUseCase.execute(
-      recipe.id_recipe
+      recipe.id
     );
     expect(result.id).toBe(1);
     expect(result.name).toBe("wraps aux épinards.jpeg");
@@ -69,7 +69,7 @@ describe("get image by recette use case unit tests", () => {
   it("findImageByRecetteUseCase should throw an error when id is missing", async () => {
     try {
       await findImageByRecetteUseCase.execute(null);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une recette est obligatoire");
     }
@@ -78,8 +78,8 @@ describe("get image by recette use case unit tests", () => {
   it("findImageByRecetteUseCase should throw an error when recipe doesn't exist", async () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
-      await findImageByRecetteUseCase.execute(recipe.id_recipe);
-    } catch (e) {
+      await findImageByRecetteUseCase.execute(recipe.id);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette n'existe pas");
     }

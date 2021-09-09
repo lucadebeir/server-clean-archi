@@ -70,7 +70,7 @@ describe("Add category to recipe use case unit tests", () => {
   it("addCategoryToRecipeUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await addCategoryToRecipeUseCase.execute(classifyIn, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -82,7 +82,7 @@ describe("Add category to recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -95,7 +95,7 @@ describe("Add category to recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie doit exister");
     }
@@ -107,7 +107,7 @@ describe("Add category to recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -118,7 +118,7 @@ describe("Add category to recipe use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La catégorie doit exister");
     }
@@ -130,7 +130,7 @@ describe("Add category to recipe use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette doit exister");
     }
@@ -143,7 +143,7 @@ describe("Add category to recipe use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(classifyInRepository, "check").and.returnValue(true);
       await addCategoryToRecipeUseCase.execute(classifyIn, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette catégorie existe déjà dans cette recette");
     }

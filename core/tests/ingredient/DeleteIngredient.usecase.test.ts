@@ -52,7 +52,7 @@ describe("Delete ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await deleteIngredientUseCase.execute(ingredient.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -64,7 +64,7 @@ describe("Delete ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await deleteIngredientUseCase.execute(ingredient.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -76,7 +76,7 @@ describe("Delete ingredient use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(true);
       await deleteIngredientUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'identifiant d'un ingrédient est indéfini");
     }
@@ -87,7 +87,7 @@ describe("Delete ingredient use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientUseCase.execute(ingredient.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cet ingrédient n'existe pas");
     }
@@ -99,7 +99,7 @@ describe("Delete ingredient use case unit tests", () => {
       spyOn(ingredientRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteIngredientUseCase.execute(ingredient.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Cet ingrédient est associé à une ou plusieurs recettes"

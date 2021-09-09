@@ -118,7 +118,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
         user.pseudo,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à ces ressources"
@@ -133,7 +133,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
         user.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à ces ressources"
@@ -148,7 +148,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
         undefined,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'un utilisateur est obligatoire");
     }
@@ -162,7 +162,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
         user.pseudo,
         token
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +

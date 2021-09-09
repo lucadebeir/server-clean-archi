@@ -9,7 +9,7 @@ import * as Utils from "../../utils/token.service";
 const initCategory = (): Category => {
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   return category;
 };
@@ -20,11 +20,11 @@ describe("Delete category use case unit tests", () => {
   let category: Category;
   let user: TokenDomain = new TokenDomain();
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     deleteById: null,
     checkExistInRecipes: null,
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     category = initCategory();
@@ -56,7 +56,7 @@ describe("Delete category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
       await deleteCategoryUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -68,7 +68,7 @@ describe("Delete category use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(true);
       await deleteCategoryUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'identifiant d'une catégorie est indéfini");
     }
@@ -80,7 +80,7 @@ describe("Delete category use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteCategoryUseCase.execute(category.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette catégorie n'existe pas");
     }
@@ -92,7 +92,7 @@ describe("Delete category use case unit tests", () => {
       spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteCategoryUseCase.execute(category.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Cette catégorie est associée à une ou plusieurs recettes"

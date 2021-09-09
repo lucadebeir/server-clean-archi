@@ -55,7 +55,7 @@ describe("Delete favori use case unit tests", () => {
   it("deleteFavoriUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de créer cette ressource"
@@ -67,7 +67,7 @@ describe("Delete favori use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de créer cette ressource"
@@ -80,7 +80,7 @@ describe("Delete favori use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(favoriRepository, "check").and.returnValue(false);
       await deleteFavoriUseCase.execute(favori.id_recipe, favori.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Cette recette n'existe pas dans la liste des recettes favorites de l'utilisateur " +

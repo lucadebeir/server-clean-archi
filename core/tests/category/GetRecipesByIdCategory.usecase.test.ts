@@ -9,7 +9,7 @@ import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByI
 const initCategories = (): Category => {
   const category = new Category();
   category.id = 1;
-  category.libelleCategorie = "Douceur";
+  category.name = "Douceur";
 
   return category;
 };
@@ -35,10 +35,10 @@ describe("Get recipes by id category use case unit tests", () => {
   let user: TokenDomain = new TokenDomain();
   let recipes: Recipe[];
 
-  let categoryRepository: CategoryRepository = ({
+  let categoryRepository: CategoryRepository = {
     getRecipesByIdCategory: null,
     existById: null,
-  } as unknown) as CategoryRepository;
+  } as unknown as CategoryRepository;
 
   beforeEach(() => {
     category = initCategories();
@@ -81,7 +81,7 @@ describe("Get recipes by id category use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(category.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -94,7 +94,7 @@ describe("Get recipes by id category use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant de la catégorie est indéfinie");
     }
@@ -105,7 +105,7 @@ describe("Get recipes by id category use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);
       await getRecipesByIdCategoryUseCase.execute(category.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");
     }

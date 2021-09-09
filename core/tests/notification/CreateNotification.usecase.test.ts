@@ -84,7 +84,7 @@ describe("Create notification use case unit tests", () => {
   it("createNotificationUseCase should throw a parameter exception when the type not correct", async () => {
     try {
       await createNotificationUseCase.execute(notification);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Une notification doit être de type 'vue', 'abonne', 'favori' ou 'commentaire'"
@@ -96,7 +96,7 @@ describe("Create notification use case unit tests", () => {
     notification.type = undefined;
     try {
       await createNotificationUseCase.execute(notification);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Problème technique");
     }
@@ -108,7 +108,7 @@ describe("Create notification use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await createNotificationUseCase.execute(notification, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -119,7 +119,7 @@ describe("Create notification use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await createNotificationUseCase.execute(notification, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }
@@ -130,7 +130,7 @@ describe("Create notification use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await createNotificationUseCase.execute(notification, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }
@@ -141,7 +141,7 @@ describe("Create notification use case unit tests", () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       await createNotificationUseCase.execute(notification);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("La recette n'existe pas");
     }

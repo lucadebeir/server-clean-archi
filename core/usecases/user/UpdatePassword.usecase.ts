@@ -34,7 +34,7 @@ export default class UpdatePasswordUseCase {
   ): Promise<void> {
     if (token && isLogin(token)) {
       if (pseudo) {
-        if (await !this.userRepository.existByPseudo(pseudo)) {
+        if (!await this.userRepository.existByPseudo(pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         } else {
           if (token.pseudo != pseudo) {

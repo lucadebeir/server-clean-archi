@@ -61,7 +61,7 @@ describe("Get user by id use case unit tests", () => {
   it("getUserByIdUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await getUserByIdUseCase.execute(user.pseudo, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -73,7 +73,7 @@ describe("Get user by id use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getUserByIdUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -85,7 +85,7 @@ describe("Get user by id use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await getUserByIdUseCase.execute(undefined, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo est obligatoire");
     }
@@ -96,7 +96,7 @@ describe("Get user by id use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await getUserByIdUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -108,7 +108,7 @@ describe("Get user by id use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await getUserByIdUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La personne connectée n'est pas la personne correspondant au pseudo en question"

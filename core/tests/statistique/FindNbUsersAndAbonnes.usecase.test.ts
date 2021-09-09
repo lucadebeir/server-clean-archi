@@ -58,7 +58,7 @@ describe("Find nombre users and abonnes use case unit tests", () => {
   it("findUsersXAbonnesUseCase should throw a parameter exception when the token is null", async () => {
     try {
       await findUsersXAbonnesUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }
@@ -68,7 +68,7 @@ describe("Find nombre users and abonnes use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await findUsersXAbonnesUseCase.execute(token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Vous n'avez pas accès à cette ressource");
     }

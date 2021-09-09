@@ -54,7 +54,7 @@ describe("Get all ingredients use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllIngredientsUseCase.execute(user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -66,7 +66,7 @@ describe("Get all ingredients use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await getAllIngredientsUseCase.execute(undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"

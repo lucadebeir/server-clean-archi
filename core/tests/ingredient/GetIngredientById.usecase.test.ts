@@ -43,7 +43,7 @@ describe("get ingredient by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getIngredientByIdUseCase.execute(ingredient.id, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -57,7 +57,7 @@ describe("get ingredient by id use case unit tests", () => {
         ingredient.id,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -79,7 +79,7 @@ describe("get ingredient by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getIngredientByIdUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'id d'un ingrédient est obligatoire");
     }

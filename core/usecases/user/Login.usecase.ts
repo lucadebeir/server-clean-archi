@@ -15,7 +15,7 @@ export default class LoginUseCase {
       if (email) {
         if(await this.userRepository.existByEmail(email)) {
           if (password) {
-            if(await !this.userRepository.checkEmailConfirmed(email)) {
+            if(!await this.userRepository.checkEmailConfirmed(email)) {
               throw new BusinessException(
                 "L'email de l'utilisateur n'est pas confirmé"
               );

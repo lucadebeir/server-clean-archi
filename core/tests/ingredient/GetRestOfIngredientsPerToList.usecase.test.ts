@@ -40,14 +40,13 @@ describe("get rest of ingredients per to list use case unit tests", () => {
   let restIngredients: Ingredient[];
   let user: TokenDomain = new TokenDomain();
 
-  let ingredientRepository: IngredientRepository = ({
+  let ingredientRepository: IngredientRepository = {
     findRestOfIngredientsPerToList: null,
-  } as unknown) as IngredientRepository;
+  } as unknown as IngredientRepository;
 
   beforeEach(() => {
-    getRestOfIngredientsPerToListUseCase = new GetRestOfIngredientsPerToListUseCase(
-      ingredientRepository
-    );
+    getRestOfIngredientsPerToListUseCase =
+      new GetRestOfIngredientsPerToListUseCase(ingredientRepository);
 
     ingredients = initIngredients();
     restIngredients = initRestIngredients();
@@ -65,22 +64,18 @@ describe("get rest of ingredients per to list use case unit tests", () => {
 
   it("getRestOfIngredientsPerToListUseCase should return ingredient when success", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
-    const result: Ingredient[] = await getRestOfIngredientsPerToListUseCase.execute(
-      ingredients,
-      user
-    );
+    const result: Ingredient[] =
+      await getRestOfIngredientsPerToListUseCase.execute(ingredients, user);
     expect(result.length).toBe(2);
     expect(result).toHaveLength(2);
-    expect(
-      result.find((ingredient) => ingredient.idIngredient === 3)
-    ).toBeDefined();
+    expect(result.find((ingredient) => ingredient.id === 3)).toBeDefined();
   });
 
   it("getRestOfIngredientsPerToListUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await getRestOfIngredientsPerToListUseCase.execute(ingredients, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -94,7 +89,7 @@ describe("get rest of ingredients per to list use case unit tests", () => {
         ingredients,
         undefined
       );
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -106,7 +101,7 @@ describe("get rest of ingredients per to list use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await getRestOfIngredientsPerToListUseCase.execute(null, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Une liste d'ingrédients ne peut pas être nulle");
     }

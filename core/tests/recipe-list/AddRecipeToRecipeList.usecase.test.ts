@@ -73,7 +73,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
   it("addRecipeToRecipeListUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await addRecipeToRecipeListUseCase.execute(recipeList, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter cette ressource"
@@ -85,7 +85,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter cette ressource"
@@ -98,7 +98,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo d'un utilisateur est obligatoire");
     }
@@ -110,7 +110,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Problème technique");
     }
@@ -121,7 +121,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }
@@ -133,7 +133,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(recipeListRepository, "existByName").and.returnValue(true);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
@@ -152,7 +152,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       spyOn(recipeListRepository, "existByName").and.returnValue(false);
       await addRecipeToRecipeListUseCase.execute(recipeList, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nom d'une recette ne doit pas dépasser 60 caractères"

@@ -12,6 +12,8 @@ const initShopping = (): Shopping => {
   const shopping = new Shopping();
   shopping.name_ingredient = "Tomates";
   shopping.pseudo = "luca";
+  shopping.quantity = 1;
+  shopping.id_unit = 1;
 
   return shopping;
 };
@@ -77,7 +79,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
   it("addIngredientToShoppingListUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await addIngredientToShoppingListUseCase.execute(shopping, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter cette ressource"
@@ -89,7 +91,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'ajouter cette ressource"
@@ -102,7 +104,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'identifiant " +
@@ -118,7 +120,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
       spyOn(shoppingRepository, "exist").and.returnValue(true);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "L'ingrédient " +
@@ -137,7 +139,7 @@ describe("Add ingredient to shopping list by pseudo use case unit tests", () => 
       spyOn(shoppingRepository, "exist").and.returnValue(false);
       spyOn(Utils, "isLogin").and.returnValue(true);
       await addIngredientToShoppingListUseCase.execute(shopping, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le nom d'un ingrédient ne doit pas dépasser 40 caractères"

@@ -68,7 +68,7 @@ describe("Delete all recipe from recipe list use case unit tests", () => {
   it("deleteAllUseCase should throw a parameter exception when the token is undefined", async () => {
     try {
       await deleteAllUseCase.execute(user.pseudo, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer ces ressources"
@@ -80,7 +80,7 @@ describe("Delete all recipe from recipe list use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(false);
       await deleteAllUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit de supprimer ces ressources"
@@ -92,7 +92,7 @@ describe("Delete all recipe from recipe list use case unit tests", () => {
     try {
       spyOn(Utils, "isLogin").and.returnValue(true);
       await deleteAllUseCase.execute(undefined, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le pseudo d'un utilisateur est obligatoire");
     }
@@ -104,7 +104,7 @@ describe("Delete all recipe from recipe list use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(true);
       await deleteAllUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("Problème technique");
     }
@@ -115,7 +115,7 @@ describe("Delete all recipe from recipe list use case unit tests", () => {
       spyOn(Utils, "isLogin").and.returnValue(true);
       spyOn(userRepository, "existByPseudo").and.returnValue(false);
       await deleteAllUseCase.execute(user.pseudo, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'utilisateur n'existe pas");
     }

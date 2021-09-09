@@ -50,7 +50,7 @@ describe("Create unity use case unit tests", () => {
   it("createUnityUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await createUnityUseCase.execute(unity, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -62,7 +62,7 @@ describe("Create unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await createUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -74,7 +74,7 @@ describe("Create unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'unité est indéfinie");
     }
@@ -85,7 +85,7 @@ describe("Create unity use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Le libellé d'une unité est obligatoire");
     }
@@ -97,7 +97,7 @@ describe("Create unity use case unit tests", () => {
       spyOn(unityRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Le libellé d'une unité ne peut pas comporter plus de 19 caractères"
@@ -110,7 +110,7 @@ describe("Create unity use case unit tests", () => {
       spyOn(unityRepository, "checkExistByName").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await createUnityUseCase.execute(unity, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Ce libellé est déjà utilisé par une unité");
     }

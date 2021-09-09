@@ -20,12 +20,12 @@ describe("Delete recipe use case unit tests", () => {
   let recipe: Recipe;
   let user: TokenDomain = new TokenDomain();
 
-  let recipeRepository: RecipeRepository = ({
+  let recipeRepository: RecipeRepository = {
     deleteById: null,
     useInMenu: null,
     useInRecipeList: null,
     existById: null,
-  } as unknown) as RecipeRepository;
+  } as unknown as RecipeRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
@@ -47,10 +47,7 @@ describe("Delete recipe use case unit tests", () => {
     spyOn(recipeRepository, "useInMenu").and.returnValue(false);
     spyOn(recipeRepository, "useInRecipeList").and.returnValue(false);
 
-    const result: string = await deleteRecipeUseCase.execute(
-      recipe.id_recipe,
-      user
-    );
+    const result: string = await deleteRecipeUseCase.execute(recipe.id, user);
     expect(result).toBeDefined();
     expect(result).toBe("La recette a bien été supprimé");
   });
@@ -58,8 +55,8 @@ describe("Delete recipe use case unit tests", () => {
   it("deleteRecipeUseCase should throw a parameter exception when the user is undefined", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteRecipeUseCase.execute(recipe.id_recipe, undefined);
-    } catch (e) {
+      await deleteRecipeUseCase.execute(recipe.id, undefined);
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -70,8 +67,8 @@ describe("Delete recipe use case unit tests", () => {
   it("deleteRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(false);
-      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await deleteRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -83,7 +80,7 @@ describe("Delete recipe use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValues(true);
       await deleteRecipeUseCase.execute(undefined, user);
-    } catch (e) {
+    } catch(e: any) {
       const a: TechnicalException = e;
       expect(a.message).toBe("L'identifiant d'une recette est indéfini");
     }
@@ -93,8 +90,8 @@ describe("Delete recipe use case unit tests", () => {
     try {
       spyOn(recipeRepository, "existById").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await deleteRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette recette n'existe pas");
     }
@@ -105,12 +102,12 @@ describe("Delete recipe use case unit tests", () => {
       spyOn(recipeRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "useInMenu").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await deleteRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
-          recipe.id_recipe +
+          recipe.id +
           " ne peut pas être supprimée car cette dernière est utilisée par le menu."
       );
     }
@@ -122,12 +119,12 @@ describe("Delete recipe use case unit tests", () => {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(recipeRepository, "useInMenu").and.returnValue(false);
       spyOn(recipeRepository, "useInRecipeList").and.returnValue(true);
-      await deleteRecipeUseCase.execute(recipe.id_recipe, user);
-    } catch (e) {
+      await deleteRecipeUseCase.execute(recipe.id, user);
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "La recette " +
-          recipe.id_recipe +
+          recipe.id +
           " ne peut pas être supprimée car cette dernière est utilisée par un menu de la semaine."
       );
     }

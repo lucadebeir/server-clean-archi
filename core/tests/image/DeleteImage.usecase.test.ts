@@ -53,7 +53,7 @@ describe("delete image by id use case unit tests", () => {
   it("deleteImageUseCase should throw a parameter exception when the user is null", async () => {
     try {
       await deleteImageUseCase.execute(image.id, undefined);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -65,7 +65,7 @@ describe("delete image by id use case unit tests", () => {
     try {
       spyOn(Utils, "isAdmin").and.returnValue(false);
       await deleteImageUseCase.execute(image.id, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
@@ -77,7 +77,7 @@ describe("delete image by id use case unit tests", () => {
     try {
         spyOn(Utils, "isAdmin").and.returnValue(true);
       await deleteImageUseCase.execute(null, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("L'identifiant d'une image est obligatoire pour pouvoir la supprimer");
     }
@@ -88,7 +88,7 @@ describe("delete image by id use case unit tests", () => {
         spyOn(Utils, "isAdmin").and.returnValue(true);
         spyOn(imageRepository, "findById").and.returnValue(false);
       await deleteImageUseCase.execute(image, token);
-    } catch (e) {
+    } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe("Cette image n'existe pas");
     }
