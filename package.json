@@ -51,7 +51,7 @@
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
-        "@types/cors": "^2.8.10",
+        "@types/cors": "^2.8.12",
         "@types/date-and-time": "^0.13.0",
         "@types/ejs": "^3.0.6",
         "@types/hashmap": "^2.3.1",
