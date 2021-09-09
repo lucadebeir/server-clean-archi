@@ -180,6 +180,7 @@ describe("Create recipe use case unit tests", () => {
     });
 
     spyOn(userRepository, "findAllAbonneMailUsers").and.returnValue([user]);
+    spyOn(mailingRepository, "sendMailWhenNewRecipe");
   });
 
   it("createRecipeUseCase should return message when it succeeded", async () => {
@@ -188,7 +189,6 @@ describe("Create recipe use case unit tests", () => {
     spyOn(categoryRepository, "existById").and.returnValue(true);
     spyOn(ingredientRepository, "existById").and.returnValue(true);
     spyOn(unityRepository, "existById").and.returnValue(true);
-    spyOn(mailingRepository, "sendMailWhenNewRecipe");
     const result: Recipe = await createRecipeUseCase.execute(recipe, user);
     expect(result).toBeDefined();
     expect(result.id).toStrictEqual(1);
