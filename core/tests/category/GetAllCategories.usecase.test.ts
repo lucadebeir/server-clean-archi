@@ -11,12 +11,7 @@ const initCategories = (): Category[] => {
   category2.id = 2;
   category2.name = "Repas";
 
-  const list = [];
-
-  list.push(category1);
-  list.push(category2);
-
-  return list;
+  return [category1, category2];
 };
 
 describe("Get all categories use case unit tests", () => {

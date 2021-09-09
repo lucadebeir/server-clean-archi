@@ -14,12 +14,7 @@ const initUnities = (): Unity[] => {
   unity2.id = 2;
   unity2.name = "g";
 
-  const list = [];
-
-  list.push(unity1);
-  list.push(unity2);
-
-  return list;
+  return [unity1, unity2];
 };
 
 describe("Get all unities use case unit tests", () => {
