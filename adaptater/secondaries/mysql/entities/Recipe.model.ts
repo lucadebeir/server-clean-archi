@@ -109,10 +109,10 @@ RecipeSequelize.hasMany(NotationSequelize, {
 
 //association 0:N avec les commentaires
 CommentaireSequelize.belongsTo(RecipeSequelize, {
-  foreignKey: { name: "concerne" },
+  foreignKey: { name: "id_recipe" },
 });
 RecipeSequelize.hasMany(CommentaireSequelize, {
-  foreignKey: { name: "concerne" },
+  foreignKey: { name: "id" },
 });
 
 export = RecipeSequelize;

@@ -42,7 +42,7 @@ export default class UpdatePasswordUseCase {
               "La personne connectée n'est pas la personne correspondant au pseudo en question"
             );
           } else {
-            if (token.mdp != oldPassword) {
+            if (token.password != oldPassword) {
               throw new BusinessException(
                 "L'ancien mot de passe n'est pas correct"
               );

@@ -14,6 +14,7 @@ export default class Recipe {
   number_portion?: number;
   name_portion?: string;
   preparation_time?: string;
+  cooking_time?: string;
   rest_time?: string;
   astuce?: string;
   images?: ImageDomain[];

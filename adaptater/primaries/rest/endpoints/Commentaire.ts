@@ -13,8 +13,8 @@ commentaire.post("/add", authenticateJWT, (req, res) => {
   const commentaire: Commentaire = {
     message: req.body.message,
     date: new Date().toDateString(),
-    pseudo: req.body.ecritPar,
-    id_recipe: req.body.concerne,
+    pseudo: req.body.pseudo,
+    id_recipe: req.body.id_recipe,
     parent: req.body.parent,
   };
   commentaireConfig
@@ -31,11 +31,11 @@ commentaire.post("/add", authenticateJWT, (req, res) => {
 //modifier commentaire
 commentaire.post("/update", authenticateJWT, (req, res) => {
   const commentaireData: Commentaire = {
-    id: req.body.idCommentaire,
+    id: req.body.id,
     message: req.body.message,
-    date: req.body.dateCommentaire,
-    pseudo: req.body.ecritPar,
-    id_recipe: req.body.concerne,
+    date: req.body.date,
+    pseudo: req.body.pseudo,
+    id_recipe: req.body.id_recipe,
     parent: req.body.parent,
   };
   commentaireConfig
@@ -93,9 +93,9 @@ commentaire.delete("/:id", authenticateJWT, (req, res) => {
   const commentaireData: Commentaire = {
     id: parseInt(req.params.id),
     message: req.body.message,
-    date: req.body.dateCommentaire,
-    pseudo: req.body.ecritPar,
-    id_recipe: req.body.concerne,
+    date: req.body.date,
+    pseudo: req.body.pseudo,
+    id_recipe: req.body.id_recipe,
     parent: req.body.parent,
   };
   commentaireConfig

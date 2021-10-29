@@ -1,7 +1,7 @@
 import TokenDomain from "../domain/Token.domain";
 
 export const isAdmin = (token: TokenDomain) => {
-  return token.admin;
+  return token.is_admin;
 };
 
 export const isLogin = (token: TokenDomain) => {

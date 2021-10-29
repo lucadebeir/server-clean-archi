@@ -203,7 +203,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         {
           model: NotationSequelize,
           required: false,
-          as: "notations",
+          as: "ratings",
         },
         {
           model: CommentaireSequelize,

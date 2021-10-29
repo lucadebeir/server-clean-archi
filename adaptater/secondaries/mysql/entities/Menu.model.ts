@@ -26,6 +26,7 @@ function MenuFactory(sequelize: Sequelize): MenuStatic {
         },
         {
             timestamps: false,
+            tableName: "menu",
         }
     );
 }

@@ -1,10 +1,10 @@
 export default class TokenDomain {
   pseudo!: string;
   email!: string;
-  emailConfirmed!: boolean;
-  mdp!: string;
-  admin!: boolean;
-  abonneNews!: boolean;
+  confirmed_email!: boolean;
+  password!: string;
+  is_admin!: boolean;
+  is_subscribed!: boolean;
   iat!: number;
   exp!: number;
 }

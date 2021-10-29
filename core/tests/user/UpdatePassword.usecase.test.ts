@@ -21,7 +21,7 @@ const initUser = (): User => {
 const initToken = (): TokenDomain => {
   const token = new TokenDomain();
   token.pseudo = "luca";
-  token.mdp = "muca";
+  token.password = "muca";
 
   return token;
 };
