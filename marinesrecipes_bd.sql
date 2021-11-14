@@ -465,7 +465,8 @@ CREATE TABLE `shopping_list` (
   `id` int(11) NOT NULL,
   `pseudo` varchar(30) NOT NULL,
   `id_ingredient` int(11) NOT NULL,
-  `name_ingredient` varchar(40) NOT NULL
+  `name_ingredient` varchar(40) NOT NULL,
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

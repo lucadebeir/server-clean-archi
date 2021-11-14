@@ -91,11 +91,18 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
   addIngredientToShoppingList(shopping: Shopping): Promise<string> {
     const listeCourseData: Shopping = {
       pseudo: shopping.pseudo,
+      ingredient: shopping.ingredient,
       name_ingredient: shopping.name_ingredient,
       quantity: shopping.quantity,
-      id_unit: shopping.id_unit,
+      unit: shopping.unit,
     };
-    return ShoppingSequelize.create(listeCourseData)
+    return ShoppingSequelize.create({
+      pseudo: shopping.pseudo,
+      id_ingredient: shopping.ingredient?.id,
+      name_ingredient: shopping.name_ingredient,
+      quantity: shopping.quantity,
+      id_unit: shopping.unit?.id
+    })
       .then((shopping) => {
         if (shopping) {
           return "L'ingrédient a bien été ajouté";
@@ -116,10 +123,10 @@ export default class ShoppingRepositorySQL implements ShoppingRepository {
       for (let i = 0; i < list.length; i++) {
         const listeCourseData: Shopping = {
           pseudo: pseudo,
-          id_ingredient: list[i].id_ingredient,
+          ingredient: list[i].ingredient,
           name_ingredient: list[i].name_ingredient,
           quantity: list[i].quantity,
-          id_unit: list[i].id_unit,
+          unit: list[i].unit,
         };
 
         return ShoppingSequelize.create(listeCourseData)

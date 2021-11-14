@@ -64,6 +64,7 @@ export default class UserRepositorySQL implements UserRepository {
   }
 
   gRegister(user: User): Promise<User> {
+    console.log(user)
     const userData: any = {
       pseudo: user.pseudo,
       id_google: user.id_google,

@@ -51,7 +51,7 @@ export default class AddIngredientToShoppingListUseCase {
                   "La quantité doit être strictement supérieur à 0"
                 );
               } else {
-                if (!shopping.id_unit) {
+                if (!shopping.unit) {
                   throw new BusinessException("L'unité est obligatoire");
                 }
               }

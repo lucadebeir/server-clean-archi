@@ -39,10 +39,10 @@ shopping.post("/add/ingredient", authenticateJWT, (req, res) => {
   console.log(req.body);
   const shoppingData: Shopping = {
     pseudo: req.body.pseudo,
-    id_ingredient: req.body.idIngredient,
+    ingredient: req.body.ingredient,
     name_ingredient: req.body.name,
     quantity: req.body.quantity,
-    id_unit: req.body.idUnite,
+    unit: req.body.unit,
   };
   shoppingConfig
     .addIngredientToShoppingList()

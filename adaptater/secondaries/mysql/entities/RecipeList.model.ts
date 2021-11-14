@@ -33,6 +33,7 @@ function RecipeListFactory(sequelize: Sequelize): RecipeListStatic {
     },
     {
       timestamps: false,
+        tableName: 'recipes_list'
     }
   );
 }

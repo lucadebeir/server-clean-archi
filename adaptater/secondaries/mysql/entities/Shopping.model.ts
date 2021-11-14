@@ -42,6 +42,7 @@ function ShoppingFactory(sequelize: Sequelize): ShoppingStatic {
     },
     {
       timestamps: false,
+        tableName: 'shopping_list'
     }
   );
 }

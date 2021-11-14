@@ -1,4 +1,4 @@
 export default class Unity {
-  id?: number | null;
-  name?: string | null;
+  id?: number;
+  name?: string;
 }
