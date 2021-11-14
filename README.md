@@ -1,11 +1,15 @@
-# SERVER EN CLEAN ARCHITECTURE
+# SERVER CLEAN ARCHITECTURE
 
- Server de Marine's Recipe en clean architecture
+This is the server of Marine's Recipe in clean architecture
 
 ![alt text](https://cdn-media-1.freecodecamp.org/images/lbexLhWvRfpexSV0lSIWczkHd5KdszeDy9a3)
 
-On sépare le server en 2 parties :
-- le core avec la partie métier qui ne changera jamais
-- les adapteurs qui permettent d'implémenter notre logique métier
+The server is divied in 2 parts :
+- the core with the business part that will NEVER change
+- the adapters that allow to implement our business logic
 
-Plus d'informations à suivre...
+More information to follow...
+
+
+## Runs the app in the development mode 
+`npm run start:dev`
