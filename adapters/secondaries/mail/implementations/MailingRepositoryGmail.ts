@@ -126,7 +126,6 @@ export default class MailingRepositoryGmail implements MailingRepository {
   }
 
   sendMailWhenUserForgetPassword(data: any): void {
-    console.log(data);
     const filePath = path.join(
       __dirname,
       `../templates/forget-password/${TEMPLATES["forget_password"].fileName}`

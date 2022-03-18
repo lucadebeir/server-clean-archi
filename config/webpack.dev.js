@@ -25,7 +25,7 @@ const config = {
             {test: /\.js$/, exclude: /node_modules/, use: ['babel-loader']},
             {test: /\.ts?$/, exclude: /node_modules/, use: ['ts-loader']},
             {test: /\.html$/, loader: "html-loader"},
-            {test: /\.json$/, loader: "json-loader"}
+            {test: /\.json$/, loader: 'json-loader'}
         ]
     },
     plugins: [

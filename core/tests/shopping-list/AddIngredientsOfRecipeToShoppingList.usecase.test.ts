@@ -4,7 +4,7 @@ import Token from "../../domain/Token";
 import User from "../../domain/User";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import AddIngredientsOfRecipeToShoppingListUseCase
-  from "../../usecases/shopping-list/AddIngredientsOfRecipeToShoppingList.usecase";
+    from "../../usecases/shopping-list/AddIngredientsOfRecipeToShoppingList.usecase";
 import * as Utils from "../../utils/token.service";
 import Unity from "../../domain/Unity";
 

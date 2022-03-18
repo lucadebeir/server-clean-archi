@@ -14,9 +14,10 @@ const recipeConfig = new RecipeConfig();
 //ajouter aux favoris
 favori.post("/add", authenticateJWT, (req, res) => {
   const favoriData = {
-    id_recipe: req.body.idRecette,
+    id_recipe: req.body.id_recipe,
     pseudo: req.body.pseudo,
   };
+  console.log(favoriData)
   favoriConfig
     .createFavoriUseCase()
     .execute(favoriData, req.body.user)

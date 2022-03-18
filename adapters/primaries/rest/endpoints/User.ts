@@ -17,7 +17,6 @@ let refreshTokens: any[] = [];
 
 //Register for an user
 user.post("/register", (req, res) => {
-    console.log(req)
     const userData: User = {
         pseudo: sanitizeHtml(req.body.pseudo),
         email: sanitizeHtml(req.body.email),
@@ -52,7 +51,6 @@ user.post("/register", (req, res) => {
 
 //Google register for an user
 user.post("/gregister", (req, res) => {
-    console.log(req.body);
     const userData: User = {
         id_google: req.body.googleId,
         pseudo: sanitizeHtml(req.body.pseudo),
@@ -86,7 +84,6 @@ user.post("/gregister", (req, res) => {
 
 //Login
 user.post("/login", (req, res) => {
-    console.log(req.body);
     userConfig
         .loginUseCase()
         .execute(sanitizeHtml(req.body.email), sanitizeHtml(req.body.password))
@@ -97,7 +94,6 @@ user.post("/login", (req, res) => {
             let refreshToken = jwt.sign(user.dataValues, refreshTokenSecret);
             refreshTokens.push(refreshToken);
 
-            console.log(accessToken);
             res.json({
                 accessToken,
                 refreshToken,
@@ -110,7 +106,6 @@ user.post("/login", (req, res) => {
 
 //Google login
 user.post("/glogin", (req, res) => {
-    console.log(req.body);
     userConfig
         .gLoginUseCase()
         .execute(req.body.token)

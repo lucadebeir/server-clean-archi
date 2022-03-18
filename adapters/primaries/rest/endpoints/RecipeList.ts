@@ -98,7 +98,6 @@ recipeList.delete("/delete", authenticateJWT, (req, res) => {
 
 //suppression de toutes les recettes de la liste
 recipeList.delete("/delete/all", authenticateJWT, (req, res) => {
-  console.log(req.body);
   recipeListConfig
     .deleteAllUseCase()
     .execute(req.body.pseudo, req.body.user)
@@ -113,7 +112,6 @@ recipeList.delete("/delete/all", authenticateJWT, (req, res) => {
 //vérifie si un utilisateur a déjà une recette dans sa liste de recette
 recipeList.get("/check/exist", authenticateJWT, (req, res) => {
   const { id, pseudo } = req.query;
-  console.log(id, pseudo);
   recipeListConfig
     .checkExistRecipeByPseudoUseCase()
     .execute(id, pseudo, req.body.user)

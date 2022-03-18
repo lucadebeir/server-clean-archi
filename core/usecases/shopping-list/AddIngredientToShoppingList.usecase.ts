@@ -13,7 +13,6 @@ export default class AddIngredientToShoppingListUseCase {
   ) {}
 
   async execute(shopping: Shopping, token?: Token): Promise<string> {
-    console.log(shopping);
     await this.checkBusinessRules(shopping, token);
     return await this.shoppingRepository.addIngredientToShoppingList(shopping);
   }
@@ -22,7 +21,6 @@ export default class AddIngredientToShoppingListUseCase {
     shopping: Shopping,
     token?: Token
   ): Promise<void> {
-    console.log(shopping);
     if (token && isLogin(token)) {
       if (shopping.pseudo) {
         if (await this.userRepository.existByPseudo(shopping.pseudo)) {

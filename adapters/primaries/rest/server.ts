@@ -6,26 +6,28 @@ import routes from "./endpoints/index";
 //import sanitizer from "express-sanitizer";
 
 const app = express();
-
 //déclaration du port
 const port = process.env.PORT || 3000;
 
 //pour utiliser les variables d'environnement
 require("dotenv").config();
 
+if(process.env.NODE_ENV === 'production') {
+  const corsOptions = {
+    origin: ["http://localhost:3007", "https://marinesrecipes.fr"],
+    optionsSuccessStatus: 200
+  }
+  app.use(cors(corsOptions));
+} else {
+  app.use(cors());
+}
+
 //déclaration de ce que l'app utilise comme module
 //app.use(sanitizer());
 app.use(express.json());
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
-
-//Serve only the static files form the dist directory
-/*app.use(express.static(__dirname + "/dist"));
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname + "/dist/index.html"));
-});*/
 
 //lancement serveur
 app.listen(port, function () {

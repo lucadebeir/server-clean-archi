@@ -10,7 +10,6 @@ export default class GoogleRegisterUseCase {
   ) {}
 
   async execute(user: User, link: any): Promise<User> {
-    console.log(user)
     await this.checkBusinessRules(user);
     //this.mailingRepository.sendMailAfterRegister(user, link);
     return this.userRepository.gRegister(user);

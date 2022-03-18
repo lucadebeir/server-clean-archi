@@ -12,7 +12,7 @@ import ClassifyInSequelize from "../entities/ClassifyIn.model";
 import IllustrateRecipeSequelize from "../entities/IllustrateRecipe.model";
 import MenuSequelize from "../entities/Menu.model";
 import RecipeListSequelize from "../entities/RecipeList.model";
-import EtapeSequelize from "../entities/Etape.model";
+import StepSequelize from "../entities/Step.model";
 import NotationSequelize from "../entities/Notation.model";
 import CommentaireSequelize from "../entities/Commentaire.model";
 import {Op} from "sequelize";
@@ -93,11 +93,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         return RecipeSequelize.findAll({
             include: [
                 {
-                    model: CategorySequelize,
-                    as: "categories",
-                    through: {
-                        attributes: [],
-                    }
+                    model: ClassifyInSequelize,
+                    include: [CategorySequelize]
                 },
                 {
                     model: UseIngredientSequelize,
@@ -121,7 +118,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                     attributes: ["number", "indication"]
                 },
@@ -148,11 +145,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             },
             include: [
                 {
-                    model: CategorySequelize,
-                    as: "categories",
-                    through: {
-                        attributes: [],
-                    }
+                    model: ClassifyInSequelize,
+                    include: [CategorySequelize]
                 },
                 {
                     model: UseIngredientSequelize,
@@ -175,7 +169,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {
@@ -201,11 +195,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         return RecipeSequelize.findAll({
             include: [
                 {
-                    model: CategorySequelize,
-                    as: "categories",
-                    through: {
-                        attributes: [],
-                    }
+                    model: ClassifyInSequelize,
+                    include: [CategorySequelize]
                 },
                 {
                     model: UseIngredientSequelize,
@@ -228,7 +219,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {
@@ -321,7 +312,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {
@@ -372,7 +363,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {
@@ -430,18 +421,15 @@ export default class RecipeRepositorySQL implements RecipeRepository {
     }
 
     create(recipe: Recipe): Promise<Recipe> {
-        console.log(recipe)
-        console.log('lol')
         return RecipeSequelize.create(recipe, {
             include: [
                 ClassifyInSequelize,
                 IllustrateRecipeSequelize,
                 UseIngredientSequelize,
-                EtapeSequelize,
+                StepSequelize,
             ],
         })
             .then((recipeCreate) => {
-                console.log(recipeCreate);
                 return recipeCreate;
             })
             .catch((err) => {
@@ -486,7 +474,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {

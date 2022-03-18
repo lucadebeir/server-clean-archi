@@ -5,7 +5,7 @@ import StatistiqueRepository from "../../ports/repositories/Statistique.reposito
 import date from "date-and-time";
 import Recipe from "../../domain/Recipe";
 import FindTop20WorstRecipesUseCase from "../../usecases/statistique/FindTop20WorstRecipes.usecase";
-import Etape from "../../domain/Etape";
+import Step from "../../domain/Step";
 
 const initToken = (): Token => {
   const token = new Token();
@@ -46,8 +46,8 @@ const initRecipes = (): Recipe[] => {
   return [recipe, recipe2];
 };
 
-const initSteps = (): Etape[] => {
-  const step = new Etape();
+const initSteps = (): Step[] => {
+  const step = new Step();
   step.indication = "Préchauffer le four à 180°C.";
   step.number = 1;
   step.id_recipe = 1;

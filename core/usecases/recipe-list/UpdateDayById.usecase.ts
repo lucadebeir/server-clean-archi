@@ -13,7 +13,6 @@ export default class UpdateDayByIdUseCase {
   ) {}
 
   async execute(recipe: RecipeList, token?: Token): Promise<string> {
-    console.log(recipe);
     await this.checkBusinessRules(recipe, token);
     return await this.recipeListRepository.updateDay(recipe);
   }

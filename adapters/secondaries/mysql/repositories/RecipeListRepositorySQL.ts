@@ -105,7 +105,7 @@ export default class RecipeListRepositorySQL implements RecipeListRepository {
     deleteById(id: any, pseudo: any): Promise<string> {
         return RecipeListSequelize.destroy({
             where: {
-                id: id,
+                id_recipe: id,
                 pseudo: pseudo,
             },
         })

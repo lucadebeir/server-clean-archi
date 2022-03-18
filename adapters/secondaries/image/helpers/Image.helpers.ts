@@ -1,7 +1,7 @@
 const util = require("util");
 import * as ImageConfig from "../config";
 
-const bucket = ImageConfig.storage.bucket("recipes-of-marine");
+const bucket = ImageConfig.storage.bucket("bucket_storage_app");
 
 const { format } = util;
 
@@ -32,7 +32,6 @@ export const uploadImage = (file: any) =>
         const publicUrl = format(
           `https://storage.googleapis.com/${bucket.name}/${blob.name}`
         );
-        console.log(publicUrl)
         resolve(publicUrl);
       })
       .on("error", () => {

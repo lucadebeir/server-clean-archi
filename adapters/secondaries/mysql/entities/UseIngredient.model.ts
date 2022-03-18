@@ -22,7 +22,7 @@ function UseIngredientFactory(sequelize: Sequelize): UseIngredientStatic {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-          model: "recipes", // 'Movies' would also work
+          model: "recipes",
           key: "id",
         },
       },

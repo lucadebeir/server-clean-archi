@@ -2,12 +2,12 @@ import {BuildOptions, DataTypes, Model, Sequelize} from "sequelize";
 import Recipe from "../../../../core/domain/Recipe";
 import db from "../config/db";
 import CommentaireSequelize from "./Commentaire.model";
-import EtapeSequelize from "./Etape.model";
 import FavoriSequelize from "./Favori.model";
 import MenuSequelize from "./Menu.model";
 import NotationSequelize from "./Notation.model";
 import NotificationSequelize from "./Notification.model";
 import RecipeListSequelize from "./RecipeList.model";
+import StepSequelize from "./Step.model";
 
 interface RecipeModel extends Model<Recipe>, Recipe {
 }
@@ -62,6 +62,10 @@ function RecipeFactory(sequelize: Sequelize): RecipeStatic {
             mot: {
                 type: DataTypes.STRING,
             },
+            difficulty: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0
+            }
         },
         {
             timestamps: false,
@@ -86,7 +90,15 @@ FavoriSequelize.belongsTo(RecipeSequelize, {
     foreignKey: {name: "id_recipe"},
 });
 RecipeSequelize.hasMany(FavoriSequelize, {
-    foreignKey: {name: "id"},
+    foreignKey: {name: "id_recipe"},
+});
+
+//association 0:N avec les étapes
+StepSequelize.belongsTo(RecipeSequelize, {
+    foreignKey: {name: "id_recipe"},
+});
+RecipeSequelize.hasMany(StepSequelize, {
+    foreignKey: {name: "id_recipe"},
 });
 
 //association 0:N avec le menu
@@ -94,14 +106,6 @@ MenuSequelize.belongsTo(RecipeSequelize, {
     foreignKey: {name: "id_recipe"},
 });
 RecipeSequelize.hasMany(MenuSequelize, {
-    foreignKey: {name: "id"},
-});
-
-//association 0:N avec les etapes
-EtapeSequelize.belongsTo(RecipeSequelize, {
-    foreignKey: {name: "id_recipe"},
-});
-RecipeSequelize.hasMany(EtapeSequelize, {
     foreignKey: {name: "id_recipe"},
 });
 
@@ -110,7 +114,7 @@ NotationSequelize.belongsTo(RecipeSequelize, {
     foreignKey: {name: "id_recipe"},
 });
 RecipeSequelize.hasMany(NotationSequelize, {
-    foreignKey: {name: "id"},
+    foreignKey: {name: "id_recipe"},
 });
 
 //association 0:N avec les commentaires
@@ -118,7 +122,7 @@ CommentaireSequelize.belongsTo(RecipeSequelize, {
     foreignKey: {name: "id_recipe"},
 });
 RecipeSequelize.hasMany(CommentaireSequelize, {
-    foreignKey: {name: "id"},
+    foreignKey: {name: "id_recipe"},
 });
 
 //association 0:N avec les commentaires

@@ -4,7 +4,7 @@ import FavoriSequelize from "../entities/Favori.model";
 import RecipeSequelize from "../entities/Recipe.model";
 import CategorySequelize from "../entities/Category.model";
 import Recipe from "../../../../core/domain/Recipe";
-import EtapeSequelize from "../entities/Etape.model";
+import StepSequelize from "../entities/Step.model";
 import ImageSequelize from "../entities/Image.model";
 import IngredientSequelize from "../entities/Ingredient.model";
 import NotationSequelize from "../entities/Notation.model";
@@ -60,7 +60,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {
@@ -166,7 +166,7 @@ export default class FavoriRepositorySQL implements FavoriRepository {
                     },
                 },
                 {
-                    model: EtapeSequelize,
+                    model: StepSequelize,
                     required: false,
                 },
                 {

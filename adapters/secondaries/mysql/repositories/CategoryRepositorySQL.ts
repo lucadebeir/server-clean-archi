@@ -166,7 +166,6 @@ export default class CategoryRepositorySQL implements CategoryRepository {
       },
     })
       .then((category) => {
-        console.log(category)
         return true;
       })
       .catch((err) => {

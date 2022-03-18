@@ -7,14 +7,15 @@ import * as Utils from "../../utils/token.service";
 import date from "date-and-time";
 import UseIngredient from "../../domain/UseIngredient";
 import Image from "../../domain/Image";
-import CategoryRepository from "../../ports/repositories/Category.repository";
-import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import UnityRepository from "../../ports/repositories/Unity.repository";
 import UpdateRecipeUseCase from "../../usecases/recipe/UpdateRecipe.usecase";
 import Category from "../../domain/Category";
 import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
-import Etape from "../../domain/Etape";
+import Step from "../../domain/Step";
+import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
+import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
+import StepRepository from "../../ports/repositories/Step.repository";
+import IllustrateRecipe from "../../domain/IllustrateRecipe";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
@@ -37,23 +38,25 @@ const initRecipe = (): Recipe => {
   category.id = 1;
   category.name = "Douceur";
 
-  recipe.categories = [category];
+  recipe.recipes__categories = [{category}];
 
   recipe.recipes__ingredients__units = initUseIngredient();
 
   const image = new Image();
   image.id = 1;
   image.link =
-    "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
+      "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
   image.name = "IMG_20200903_103750_461311495694712.jpg";
 
-  recipe.images = [image];
+  const illustrateRecipe = new IllustrateRecipe();
+  illustrateRecipe.image = image;
+  recipe.recipes__images = [illustrateRecipe];
 
   return recipe;
 };
 
-const initSteps = (): Etape[] => {
-  const step = new Etape();
+const initSteps = (): Step[] => {
+  const step = new Step();
   step.indication = "Préchauffer le four à 180°C.";
   step.number = 1;
   step.id_recipe = 1;
@@ -88,29 +91,34 @@ describe("Update recipe use case unit tests", () => {
     existByName: null,
   } as unknown as RecipeRepository;
 
-  let categoryRepository: CategoryRepository = {
-    existById: null,
-  } as unknown as CategoryRepository;
+  let classifyInRepository: ClassifyInRepository = {
+    check: null,
+    addCategoryToRecipe: null
+  } as unknown as ClassifyInRepository;
 
-  let ingredientRepository: IngredientRepository = {
-    existById: null,
-  } as unknown as IngredientRepository;
+  let useIngredientRepository: UseIngredientRepository = {
+    check: null,
+    update: null,
+    addIngredientToRecipe: null
+  } as unknown as UseIngredientRepository;
 
-  let unityRepository: UnityRepository = {
-    existById: null,
-  } as unknown as UnityRepository;
+  let stepRepository: StepRepository = {
+    check: null,
+    update: null,
+    addStepToRecipe: null
+  } as unknown as StepRepository;
 
   beforeEach(() => {
     recipe = initRecipe();
     useIngredient = initUseIngredient();
 
-    updateRecipeUseCase = new UpdateRecipeUseCase(
-      recipeRepository,
-      categoryRepository,
-      ingredientRepository,
-      unityRepository
-    );
+    updateRecipeUseCase = new UpdateRecipeUseCase(recipeRepository, classifyInRepository, useIngredientRepository, stepRepository);
 
+    spyOn(classifyInRepository, "check").and.returnValue(true);
+    spyOn(useIngredientRepository, "check").and.returnValue(true);
+    spyOn(stepRepository, "check").and.returnValue(true);
+    spyOn(useIngredientRepository, "update");
+    spyOn(stepRepository, "update");
     spyOn(recipeRepository, "update").and.callFake((recipe: Recipe) => {
       if (recipe) {
         const result: Recipe = recipe;
@@ -122,24 +130,8 @@ describe("Update recipe use case unit tests", () => {
 
   it("updateRecipeUseCase should return message when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
-    spyOn(recipeRepository, "existByName").and.returnValue(false);
-    spyOn(categoryRepository, "existById").and.returnValue(true);
-    spyOn(ingredientRepository, "existById").and.returnValue(true);
-    spyOn(unityRepository, "existById").and.returnValue(true);
     const result: Recipe = await updateRecipeUseCase.execute(recipe, user);
     expect(result).toBeDefined();
-  });
-
-  it("updateRecipeUseCase should throw a parameter exception when the user is undefined", async () => {
-    try {
-      spyOn(Utils, "isAdmin").and.returnValues(false);
-      await updateRecipeUseCase.execute(recipe, undefined);
-    } catch(e: any) {
-      const a: TechnicalException = e;
-      expect(a.message).toBe(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
-    }
   });
 
   it("updateRecipeUseCase should throw a parameter exception when the user is not admin", async () => {
@@ -154,20 +146,6 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the name of recipe is already used", async () => {
-    try {
-      spyOn(recipeRepository, "existByName").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      await updateRecipeUseCase.execute(recipe, user);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("La recette " + recipe.name + " existe déjà.");
-    }
-  });
-
   it("updateRecipeUseCase should throw a parameter exception when the name of recipe is not defined", async () => {
     recipe.name = undefined;
     try {
@@ -176,12 +154,12 @@ describe("Update recipe use case unit tests", () => {
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ nomRecette d'une recette est obligatoire"
+        "Le champ name d'une recette est obligatoire"
       );
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the libellePart of recipe is not defined", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the name_portion of recipe is not defined", async () => {
     recipe.name_portion = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -189,23 +167,23 @@ describe("Update recipe use case unit tests", () => {
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ libellePart d'une recette est obligatoire"
+        "Le champ name_portion d'une recette est obligatoire"
       );
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the nbrePart of recipe is not defined", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the number_portion of recipe is not defined", async () => {
     recipe.number_portion = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;
-      expect(a.message).toBe("Le champ nbrePart d'une recette est obligatoire");
+      expect(a.message).toBe("Le champ number_portion d'une recette est obligatoire");
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the tempsPreparation of recipe is not defined", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the preparation_time of recipe is not defined", async () => {
     recipe.preparation_time = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -213,7 +191,7 @@ describe("Update recipe use case unit tests", () => {
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ tempsPreparation d'une recette est obligatoire"
+        "Le champ preparation_time d'une recette est obligatoire"
       );
     }
   });
@@ -227,33 +205,28 @@ describe("Update recipe use case unit tests", () => {
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ nomRecette d'une recette ne doit pas dépasser 60 caractères"
+        "Le champ name d'une recette ne doit pas dépasser 60 caractères"
       );
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the lenght of the libellePart is greater than 50 caracters", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the lenght of the name_portion is greater than 50 caracters", async () => {
     recipe.name_portion =
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
-        "Le champ libellePart d'une recette ne doit pas dépasser 50 caractères"
+        "Le champ name_portion d'une recette ne doit pas dépasser 50 caractères"
       );
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the nbrePart is less than 0", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the number_portion is less than 0", async () => {
     recipe.number_portion = -2;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -264,13 +237,9 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when the nbrePart is equal to 0", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when the number_portion is equal to 0", async () => {
     recipe.number_portion = 0;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -285,10 +254,6 @@ describe("Update recipe use case unit tests", () => {
     useIngredient[0].quantity = -2;
     recipe.recipes__ingredients__units = useIngredient;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -303,10 +268,6 @@ describe("Update recipe use case unit tests", () => {
     useIngredient[0].quantity = 0;
     recipe.recipes__ingredients__units = useIngredient;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -317,10 +278,9 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when useIngredients is empty", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when recipes__ingredients__units is empty", async () => {
     recipe.recipes__ingredients__units = [];
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -331,10 +291,9 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when useIngredients is undefined", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when recipes__ingredients__units is undefined", async () => {
     recipe.recipes__ingredients__units = undefined;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
@@ -345,51 +304,10 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when an ingredient doesn't exist", async () => {
+  it("updateRecipeUseCase should throw a parameter exception when recipes__categories is empty", async () => {
+    recipe.recipes__categories = [];
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.callFake((id: any) => {
-        if (id == 1) {
-          return new Promise((resolve, reject) => resolve(false));
-        }
-        return new Promise((resolve, reject) => resolve(null));
-      });
-      await updateRecipeUseCase.execute(recipe, user);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("L'ingrédient 1 n'existe pas");
-    }
-  });
-
-  it("updateRecipeUseCase should throw a parameter exception when an unity doesn't exist", async () => {
-    try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.callFake((id: any) => {
-        if (id == 1) {
-          return new Promise((resolve, reject) => resolve(false));
-        }
-        return new Promise((resolve, reject) => resolve(null));
-      });
-      await updateRecipeUseCase.execute(recipe, user);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("L'unité 1 n'existe pas");
-    }
-  });
-
-  it("updateRecipeUseCase should throw a parameter exception when classifyIn is empty", async () => {
-    recipe.categories = [];
-    try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;
@@ -399,49 +317,23 @@ describe("Update recipe use case unit tests", () => {
     }
   });
 
-  it("updateRecipeUseCase should throw a parameter exception when classifyIn is undefined", async () => {
-    recipe.categories = undefined;
+  it("updateRecipeUseCase should throw a parameter exception when recipes__categories is undefined", async () => {
+    recipe.recipes__categories = undefined;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;
       expect(a.message).toBe(
         "Il faut sélectionner au moins une catégorie pour créer une recette"
       );
-    }
-  });
-
-  it("updateRecipeUseCase should throw a parameter exception when a category doesn't exist", async () => {
-    try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.callFake((id: any) => {
-        if (id == 1) {
-          return new Promise((resolve, reject) => resolve(false));
-        }
-        return new Promise((resolve, reject) => resolve(null));
-      });
-      await updateRecipeUseCase.execute(recipe, user);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("La catégorie 1 n'existe pas");
     }
   });
 
   it("updateRecipeUseCase should throw a parameter exception when images is empty", async () => {
-    recipe.images = [];
+    recipe.recipes__images = [];
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;
@@ -452,13 +344,9 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when images is undefined", async () => {
-    recipe.images = undefined;
+    recipe.recipes__images = undefined;
     try {
-      spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
-      spyOn(ingredientRepository, "existById").and.returnValue(true);
-      spyOn(unityRepository, "existById").and.returnValue(true);
-      spyOn(categoryRepository, "existById").and.returnValue(true);
       await updateRecipeUseCase.execute(recipe, user);
     } catch(e: any) {
       const a: BusinessException = e;

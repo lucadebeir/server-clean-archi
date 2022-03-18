@@ -2,7 +2,7 @@ import Category from "./Category";
 import ClassifyIn from "./ClassifyIn";
 import Image from "./Image";
 import UseIngredient from "./UseIngredient";
-import Etape from "./Etape";
+import Step from "./Step";
 import IllustrateRecipe from "./IllustrateRecipe";
 import Ingredient from "./Ingredient";
 import Unity from "./Unity";
@@ -14,7 +14,7 @@ export default class Recipe {
     date?: Date = new Date();
     number_favorites?: number;
     number_views?: number;
-    steps?: Etape[] = [];
+    steps?: Step[] = [];
     number_portion?: number;
     name_portion?: string;
     preparation_time?: string;
@@ -29,7 +29,7 @@ export default class Recipe {
     mot?: string;
     menu?: number;
     note?: number;
-    difficulty: number;
+    difficulty?: number;
 
     isValid = (): boolean => {
         let isValid: boolean = false;

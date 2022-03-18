@@ -63,14 +63,11 @@ image.post(
   upload.single("file"),
   authenticateJWT,
   async (req, res) => {
-      console.log(req.file)
     const imageUrl = await uploadImage((req as any).file);
-      console.log(imageUrl)
     const data: Image = {
       link: imageUrl,
       name: (req as any)?.file?.originalname,
     };
-      console.log(data)
     imageConfig
       .uploadImageUseCase()
       .execute(data, req.body.user)

@@ -17,12 +17,8 @@ export default class CheckExistRecipeByPseudoUseCase {
   }
 
   private checkBusinessRules(pseudo: any, token?: Token): void {
-    console.log(token);
-    console.log(pseudo);
     if (!token || !isLogin(token)) {
-      throw new TechnicalException(
-        "Vous n'avez pas le droit d'ajouter cette ressource"
-      );
+      throw new TechnicalException("Vous n'avez pas le droit d'ajouter cette ressource");
     } else {
       if (pseudo) {
         if (!this.userRepository.existByPseudo(pseudo)) {
