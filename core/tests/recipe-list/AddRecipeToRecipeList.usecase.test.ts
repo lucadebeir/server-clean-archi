@@ -1,7 +1,7 @@
 import RecipeList from "../../domain/RecipeList";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import AddRecipeToRecipeListUseCase from "../../usecases/recipe-list/AddRecipeToRecipeList.usecase";
@@ -17,8 +17,8 @@ const initRecipeList = (): RecipeList => {
   return recipeList;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -28,7 +28,7 @@ describe("Add recipe to recipe list use case unit tests", () => {
   let addRecipeToRecipeListUseCase: AddRecipeToRecipeListUseCase;
 
   let recipeList: RecipeList;
-  let token: TokenDomain;
+  let token: Token;
 
   let recipeListRepository: RecipeListRepository = ({
     addRecipe: null,

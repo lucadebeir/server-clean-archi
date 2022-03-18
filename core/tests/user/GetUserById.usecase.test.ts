@@ -1,9 +1,9 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import GetUserByIdUseCase from "../../usecases/user/GetUserById.usecase";
 
 const initUser = (): User => {
@@ -18,8 +18,8 @@ const initUser = (): User => {
   return user;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -29,7 +29,7 @@ describe("Get user by id use case unit tests", () => {
   let getUserByIdUseCase: GetUserByIdUseCase;
 
   let user: User;
-  let token: TokenDomain;
+  let token: Token;
 
   let userRepository: UserRepository = {
     findById: null,

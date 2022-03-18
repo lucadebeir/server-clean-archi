@@ -1,19 +1,18 @@
-import Notification from "../../domain/Notification";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import NotificationRepository from "../../ports/repositories/Notification.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateNotificationUseCase {
   constructor(private notificationRepository: NotificationRepository) {}
 
-  async execute(id: any, token?: TokenDomain): Promise<string> {
+  async execute(id: any, token?: Token): Promise<string> {
     this.checkBusinessRules(id, token);
     return this.notificationRepository.update(id);
   }
 
-  private checkBusinessRules(id: any, token?: TokenDomain): void {
+  private checkBusinessRules(id: any, token?: Token): void {
     if (token && isAdmin(token)) {
       if (id) {
         if (!this.notificationRepository.existById(id)) {

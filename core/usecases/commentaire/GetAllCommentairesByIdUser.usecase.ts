@@ -1,20 +1,20 @@
 import Commentaire from "../../domain/Commentaire";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class GetAllCommentairesByIdUserUseCase {
   constructor(private commentaireRepository: CommentaireRepository, private userRepository: UserRepository) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<Commentaire[]> {
+  async execute(pseudo: any, token?: Token): Promise<Commentaire[]> {
     await this.checkBusinessRules(pseudo, token);
     return await this.commentaireRepository.findAllCommentairesByIdUser(pseudo);
   }
 
-  private async checkBusinessRules(pseudo: any, token?: TokenDomain): Promise<void> {
+  private async checkBusinessRules(pseudo: any, token?: Token): Promise<void> {
     if(token && isLogin(token)) {
       if(pseudo) {
         if(await this.userRepository.existByPseudo(pseudo)) {

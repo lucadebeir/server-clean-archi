@@ -1,10 +1,10 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
 import UpdateUserUseCase from "../../usecases/user/UpdateUser.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 
 const initUser = (): User => {
   const user = new User();
@@ -22,7 +22,7 @@ describe("Update user use case unit tests", () => {
   let updateUserUseCase: UpdateUserUseCase;
 
   let user: User;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let userRepository: UserRepository = {
     update: null,

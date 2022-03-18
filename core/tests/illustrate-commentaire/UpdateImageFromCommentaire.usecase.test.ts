@@ -1,14 +1,15 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
-import IllustrateCommentaireDomain from "../../domain/IllustrateCommentaire.domain";
+import IllustrateCommentaire from "../../domain/IllustrateCommentaire";
 import IllustrateCommentaireRepository from "../../ports/repositories/IllustrateCommentaire.repository";
 import ImageRepository from "../../ports/repositories/Image.repository";
-import UpdateImageFromCommentaireUseCase from "../../usecases/illustrate-commentaire/UpdateImageFromCommentaire.usecase";
+import UpdateImageFromCommentaireUseCase
+    from "../../usecases/illustrate-commentaire/UpdateImageFromCommentaire.usecase";
 
-const initIllustrateCommentaire = (): IllustrateCommentaireDomain => {
-  const illustrateCommentaire = new IllustrateCommentaireDomain();
+const initIllustrateCommentaire = (): IllustrateCommentaire => {
+  const illustrateCommentaire = new IllustrateCommentaire();
   illustrateCommentaire.id_commentaire = 1;
   illustrateCommentaire.id_image = 1;
 
@@ -18,8 +19,8 @@ const initIllustrateCommentaire = (): IllustrateCommentaireDomain => {
 describe("Add image to commentaire use case unit tests", () => {
   let updateImageFromCommentaireUseCase: UpdateImageFromCommentaireUseCase;
 
-  let illustrateCommentaire: IllustrateCommentaireDomain;
-  let token: TokenDomain = new TokenDomain();
+  let illustrateCommentaire: IllustrateCommentaire;
+  let token: Token = new Token();
 
   let illustrateCommentaireRepository: IllustrateCommentaireRepository = ({
     updateFromCommentaire: null,
@@ -46,7 +47,7 @@ describe("Add image to commentaire use case unit tests", () => {
     spyOn(
       illustrateCommentaireRepository,
       "updateFromCommentaire"
-    ).and.callFake((illustrateCommentaire: IllustrateCommentaireDomain) => {
+    ).and.callFake((illustrateCommentaire: IllustrateCommentaire) => {
       if (illustrateCommentaire) {
         const result: string = "L'image a bien remplacé dans la recette";
         return new Promise((resolve, reject) => resolve(result));

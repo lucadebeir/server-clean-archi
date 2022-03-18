@@ -1,12 +1,12 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import StatistiqueRepository from "../../ports/repositories/Statistique.repository";
 import User from "../../domain/User";
 import FindUsersXAbonnesUseCase from "../../usecases/statistique/FindNbUsersAndAbonnes.usecase";
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -27,7 +27,7 @@ const initUsers = (): User[] => {
 describe("Find nombre users and abonnes use case unit tests", () => {
   let findUsersXAbonnesUseCase: FindUsersXAbonnesUseCase;
 
-  let token: TokenDomain;
+  let token: Token;
   let users: User[];
 
   let statistiqueRepository: StatistiqueRepository = ({

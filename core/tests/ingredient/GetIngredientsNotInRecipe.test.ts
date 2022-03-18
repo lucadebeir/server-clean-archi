@@ -1,12 +1,11 @@
 import Ingredient from "../../domain/Ingredient";
 import Recipe from "../../domain/Recipe";
-import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import * as Utils from "../../utils/token.service";
 import GetIngredientsNotInRecipeUseCase from "../../usecases/ingredient/GetIngredientsNotInRecipe.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
@@ -33,7 +32,7 @@ describe("get ingredients not in recipe use case unit tests", () => {
   let getIngredientsNotInRecipeUseCase: GetIngredientsNotInRecipeUseCase;
 
   let ingredients: Ingredient[];
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
   let recipe: Recipe;
 
   let ingredientRepository: IngredientRepository = {

@@ -1,23 +1,23 @@
 import Commentaire from "../../domain/Commentaire";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class CreateCommentaireUseCase {
   constructor(private commentaireRepository: CommentaireRepository,
     private userRepository: UserRepository,
     private recipeRepository: RecipeRepository) {}
 
-  async execute(commentaire: Commentaire, token?: TokenDomain): Promise<Commentaire> {
+  async execute(commentaire: Commentaire, token?: Token): Promise<Commentaire> {
     await this.checkBusinessRules(commentaire, token);
     return await this.commentaireRepository.create(commentaire);
   }
 
-  private async checkBusinessRules(commentaire: Commentaire, token?: TokenDomain): Promise<void> {
+  private async checkBusinessRules(commentaire: Commentaire, token?: Token): Promise<void> {
     if(token && isLogin(token)) {
       if(commentaire.pseudo) {
         if(await this.userRepository.existByPseudo(commentaire.pseudo)) {

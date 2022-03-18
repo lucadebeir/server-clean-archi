@@ -1,14 +1,14 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import AddImageToCommentaireUseCase from "../../usecases/illustrate-commentaire/AddImageToCommentaire.usecase";
-import IllustrateCommentaireDomain from "../../domain/IllustrateCommentaire.domain";
+import IllustrateCommentaire from "../../domain/IllustrateCommentaire";
 import IllustratecommentaireRepository from "../../ports/repositories/IllustrateCommentaire.repository";
 import ImageRepository from "../../ports/repositories/Image.repository";
 
-const initIllustrateCommentaire = (): IllustrateCommentaireDomain => {
-  const illustrateCommentaire = new IllustrateCommentaireDomain();
+const initIllustrateCommentaire = (): IllustrateCommentaire => {
+  const illustrateCommentaire = new IllustrateCommentaire();
   illustrateCommentaire.id_commentaire = 1;
   illustrateCommentaire.id_image = 1;
 
@@ -18,8 +18,8 @@ const initIllustrateCommentaire = (): IllustrateCommentaireDomain => {
 describe("Add image to commentaire use case unit tests", () => {
   let addImageToCommentaireUseCase: AddImageToCommentaireUseCase;
 
-  let illustrateCommentaire: IllustrateCommentaireDomain;
-  let token: TokenDomain = new TokenDomain();
+  let illustrateCommentaire: IllustrateCommentaire;
+  let token: Token = new Token();
 
   let illustrateCommentaireRepository: IllustratecommentaireRepository = ({
     addToCommentaire: null,
@@ -44,7 +44,7 @@ describe("Add image to commentaire use case unit tests", () => {
     );
 
     spyOn(illustrateCommentaireRepository, "addToCommentaire").and.callFake(
-      (illustrateCommentaire: IllustrateCommentaireDomain) => {
+      (illustrateCommentaire: IllustrateCommentaire) => {
         if (illustrateCommentaire) {
           const result: string = "L'image a bien été ajouté à la recette";
           return new Promise((resolve, reject) => resolve(result));

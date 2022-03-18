@@ -1,11 +1,11 @@
 import Commentaire from "../../domain/Commentaire";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class UpdateCommentaireUseCase {
   constructor(
@@ -16,7 +16,7 @@ export default class UpdateCommentaireUseCase {
 
   async execute(
     commentaire: Commentaire,
-    token?: TokenDomain
+    token?: Token
   ): Promise<Commentaire> {
     await this.checkBusinessRules(commentaire, token);
     return await this.commentaireRepository.update(commentaire);
@@ -24,7 +24,7 @@ export default class UpdateCommentaireUseCase {
 
   private async checkBusinessRules(
     commentaire: Commentaire,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     if (token && isLogin(token)) {
       if (commentaire.pseudo) {

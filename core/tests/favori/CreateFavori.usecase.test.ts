@@ -1,7 +1,7 @@
 import Favori from "../../domain/Favori";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import CreateFavoriUseCase from "../../usecases/favori/CreateFavori.usecase";
@@ -19,7 +19,7 @@ describe("Create favori use case unit tests", () => {
   let createFavoriUseCase: CreateFavoriUseCase;
 
   let favori: Favori;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let favoriRepository: FavoriRepository = ({
     create: null,

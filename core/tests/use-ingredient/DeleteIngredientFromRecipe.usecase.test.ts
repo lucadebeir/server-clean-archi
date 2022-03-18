@@ -1,7 +1,6 @@
-import { BusinessException } from "../../exceptions/BusinessException";
-import UnityRepository from "../../ports/repositories/Unity.repository";
+import {BusinessException} from "../../exceptions/BusinessException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import UseIngredient from "../../domain/UseIngredient";
 import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
@@ -22,7 +21,7 @@ describe("delete ingredient from recipe use case unit tests", () => {
   let deleteIngredientFromRecipeUseCase: DeleteIngredientFromRecipeUseCase;
 
   let useIngredient: UseIngredient;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let useIngredientRepository: UseIngredientRepository = ({
     delete: null,

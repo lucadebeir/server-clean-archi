@@ -1,9 +1,9 @@
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class DeleteAllUseCase {
   constructor(
@@ -11,14 +11,14 @@ export default class DeleteAllUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<string> {
+  async execute(pseudo: any, token?: Token): Promise<string> {
     await this.checkBusinessRules(pseudo, token);
     return await this.recipeListRepository.deleteAll(pseudo);
   }
 
   private async checkBusinessRules(
     pseudo: any,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(

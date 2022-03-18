@@ -1,20 +1,21 @@
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
+import CryptRepository from "../../ports/crypt/Crypt.repository";
 
 export default class UpdatePasswordUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository, private cryptRepository: CryptRepository) {}
 
-  async execute(
+  execute = async (
     pseudo: any,
     oldPassword: any,
     newPassword: any,
     confirmNewPassword: any,
-    token?: TokenDomain
-  ): Promise<User> {
+    token?: Token
+  ): Promise<User> => {
     await this.checkBusinessRules(
       pseudo,
       oldPassword,
@@ -22,16 +23,17 @@ export default class UpdatePasswordUseCase {
       confirmNewPassword,
       token
     );
-    return this.userRepository.updatePassword(pseudo, newPassword);
-  }
+    const hash: string = await this.cryptRepository.crypt(newPassword);
+    return this.userRepository.updatePassword(pseudo, hash);
+  };
 
-  private async checkBusinessRules(
+  private checkBusinessRules = async (
     pseudo: any,
     oldPassword: any,
     newPassword: any,
     confirmNewPassword: any,
-    token?: TokenDomain
-  ): Promise<void> {
+    token?: Token
+  ): Promise<void> => {
     if (token && isLogin(token)) {
       if (pseudo) {
         if (!await this.userRepository.existByPseudo(pseudo)) {
@@ -63,5 +65,5 @@ export default class UpdatePasswordUseCase {
         "Vous n'avez pas le droit de modifier cette ressource"
       );
     }
-  }
+  };
 }

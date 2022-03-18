@@ -1,18 +1,18 @@
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import Unity from "../../domain/Unity";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class GetUnityByIdUseCase {
   constructor(private unityRepository: UnityRepository) {}
 
-  async execute(id: any, user?: TokenDomain): Promise<Unity> {
+  async execute(id: any, user?: Token): Promise<Unity> {
     this.checkBusinessRules(id, user);
     return await this.unityRepository.findById(id);
   }
 
-  private checkBusinessRules(id: any, user?: TokenDomain): void {
+  private checkBusinessRules(id: any, user?: Token): void {
     if (user && isAdmin(user)) {
       if (!id) {
         throw new BusinessException("L'id d'une unité est obligatoire");

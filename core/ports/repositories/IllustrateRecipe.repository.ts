@@ -1,8 +1,8 @@
-import IllustrateRecipeDomain from "../../domain/IllustrateRecipe.domain";
+import IllustrateRecipe from "../../domain/IllustrateRecipe";
 
 export default interface IllustrateRecipeRepository {
-  addToRecette(illustrateRecipe: IllustrateRecipeDomain): Promise<string>;
-  updateFromRecipe(illustrateRecipe: IllustrateRecipeDomain): Promise<string>;
+  addToRecette(illustrateRecipe: IllustrateRecipe): Promise<string>;
+  updateFromRecipe(illustrateRecipe: IllustrateRecipe): Promise<string>;
 
-  check(illustrateRecipe: IllustrateRecipeDomain): Promise<boolean>;
+  check(illustrateRecipe: IllustrateRecipe): Promise<boolean>;
 }

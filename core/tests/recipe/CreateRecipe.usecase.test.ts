@@ -1,23 +1,23 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import {BusinessException} from "../../exceptions/BusinessException";
 import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import * as Utils from "../../utils/token.service";
 import date from "date-and-time";
 import UseIngredient from "../../domain/UseIngredient";
-import ImageDomain from "../../domain/Image.domain";
+import Image from "../../domain/Image";
 import ClassifyIn from "../../domain/ClassifyIn";
 import CreateRecipeUseCase from "../../usecases/recipe/CreateRecipe.usecase";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
 import UserRepository from "../../ports/repositories/User.repository";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
-import Etape from "../../domain/Etape.domain";
+import Etape from "../../domain/Etape";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
@@ -72,9 +72,9 @@ const afterCreateRecipe = (): Recipe => {
   useIngredient.unite.name = "g";
   useIngredient.quantity = 1;
 
-  recipe.ingredients = [useIngredient];
+  recipe.recipes__ingredients__units = [useIngredient];
 
-  const image = new ImageDomain();
+  const image = new Image();
   image.id = 1;
   image.link =
     "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
@@ -109,8 +109,8 @@ const initUseIngredient = (): UseIngredient[] => {
   return [useIngredient];
 };
 
-const initImage = (): ImageDomain[] => {
-  const image = new ImageDomain();
+const initImage = (): Image[] => {
+  const image = new Image();
   image.link =
     "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
   image.name = "IMG_20200903_103750_461311495694712.jpg";
@@ -124,8 +124,8 @@ describe("Create recipe use case unit tests", () => {
   let recipe: Recipe;
   let classifyIn: ClassifyIn[];
   let useIngredient: UseIngredient[];
-  let image: ImageDomain[];
-  let user: TokenDomain = new TokenDomain();
+  let image: Image[];
+  let user: Token = new Token();
 
   let recipeRepository: RecipeRepository = {
     create: null,
@@ -159,7 +159,7 @@ describe("Create recipe use case unit tests", () => {
     image = initImage();
 
     recipe.recipes__categories = classifyIn;
-    recipe.ingredients = useIngredient;
+    recipe.recipes__ingredients__units = useIngredient;
     recipe.images = image;
 
     createRecipeUseCase = new CreateRecipeUseCase(
@@ -213,8 +213,8 @@ describe("Create recipe use case unit tests", () => {
     );
     expect(result.categories).toBeDefined();
     expect(result.categories?.length).toStrictEqual(1);
-    expect(result.ingredients).toBeDefined();
-    expect(result.ingredients?.length).toStrictEqual(1);
+    expect(result.recipes__ingredients__units).toBeDefined();
+    expect(result.recipes__ingredients__units?.length).toStrictEqual(1);
     expect(result.images).toBeDefined();
     expect(result.images?.length).toStrictEqual(1);
     expect(result.images?.map((image) => expect(image.id).toBeDefined()));
@@ -390,7 +390,7 @@ describe("Create recipe use case unit tests", () => {
 
   it("createRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity negative", async () => {
     useIngredient[0].quantity = -2;
-    recipe.ingredients = useIngredient;
+    recipe.recipes__ingredients__units = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -408,7 +408,7 @@ describe("Create recipe use case unit tests", () => {
 
   it("createRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity null", async () => {
     useIngredient[0].quantity = 0;
-    recipe.ingredients = useIngredient;
+    recipe.recipes__ingredients__units = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -425,7 +425,7 @@ describe("Create recipe use case unit tests", () => {
   });
 
   it("createRecipeUseCase should throw a parameter exception when useIngredients is empty", async () => {
-    recipe.ingredients = [];
+    recipe.recipes__ingredients__units = [];
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -439,7 +439,7 @@ describe("Create recipe use case unit tests", () => {
   });
 
   it("createRecipeUseCase should throw a parameter exception when useIngredients is undefined", async () => {
-    recipe.ingredients = undefined;
+    recipe.recipes__ingredients__units = undefined;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);

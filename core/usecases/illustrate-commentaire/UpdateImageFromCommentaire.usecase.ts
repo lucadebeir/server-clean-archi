@@ -1,11 +1,11 @@
-import IllustrateCommentaireDomain from "../../domain/IllustrateCommentaire.domain";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import IllustrateCommentaire from "../../domain/IllustrateCommentaire";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import IllustrateCommentaireRepository from "../../ports/repositories/IllustrateCommentaire.repository";
 import ImageRepository from "../../ports/repositories/Image.repository";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateImageFromCommentaireUseCase {
   constructor(
@@ -15,8 +15,8 @@ export default class UpdateImageFromCommentaireUseCase {
   ) {}
 
   async execute(
-    illustrateCommentaire: IllustrateCommentaireDomain,
-    token?: TokenDomain
+    illustrateCommentaire: IllustrateCommentaire,
+    token?: Token
   ): Promise<string> {
     this.checkBusinessRules(illustrateCommentaire, token);
     return this.illustrateCommentaireRepository.updateFromCommentaire(
@@ -25,8 +25,8 @@ export default class UpdateImageFromCommentaireUseCase {
   }
 
   private checkBusinessRules(
-    illustrateCommentaire: IllustrateCommentaireDomain,
-    token?: TokenDomain
+    illustrateCommentaire: IllustrateCommentaire,
+    token?: Token
   ): void {
     if (token && isAdmin(token)) {
       if (illustrateCommentaire) {

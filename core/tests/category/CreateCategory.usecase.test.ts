@@ -1,7 +1,7 @@
-import Category from "../../domain/Category.domain";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Category from "../../domain/Category";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import CreateCategoryUseCase from "../../usecases/category/CreateCategory.usecase";
 import * as Utils from "../../utils/token.service";
@@ -17,7 +17,7 @@ describe("Create category use case unit tests", () => {
   let createCategoryUseCase: CreateCategoryUseCase;
 
   let category: Category;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let categoryRepository: CategoryRepository = {
     create: null,
@@ -84,7 +84,7 @@ describe("Create category use case unit tests", () => {
   });
 
   it("createCategoryUseCase should throw a parameter exception when the libelleCategorie is null", async () => {
-    category.name = null;
+    category.name = undefined;
     try {
       spyOn(categoryRepository, "checkExistByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);

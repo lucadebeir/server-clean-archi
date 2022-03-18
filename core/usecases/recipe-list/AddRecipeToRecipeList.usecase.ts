@@ -1,10 +1,10 @@
 import RecipeList from "../../domain/RecipeList";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class AddRecipeToRecipeListUseCase {
   constructor(
@@ -12,14 +12,14 @@ export default class AddRecipeToRecipeListUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(recipe: RecipeList, token?: TokenDomain): Promise<RecipeList> {
+  async execute(recipe: RecipeList, token?: Token): Promise<RecipeList> {
     await this.checkBusinessRules(recipe, token);
     return await this.recipeListRepository.addRecipe(recipe);
   }
 
   private async checkBusinessRules(
     recipe: RecipeList,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(

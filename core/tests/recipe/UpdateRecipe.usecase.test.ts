@@ -1,21 +1,20 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import * as Utils from "../../utils/token.service";
 import date from "date-and-time";
 import UseIngredient from "../../domain/UseIngredient";
-import ImageDomain from "../../domain/Image.domain";
-import ClassifyIn from "../../domain/ClassifyIn";
+import Image from "../../domain/Image";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 import UpdateRecipeUseCase from "../../usecases/recipe/UpdateRecipe.usecase";
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Ingredient from "../../domain/Ingredient";
 import Unity from "../../domain/Unity";
-import Etape from "../../domain/Etape.domain";
+import Etape from "../../domain/Etape";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
@@ -40,9 +39,9 @@ const initRecipe = (): Recipe => {
 
   recipe.categories = [category];
 
-  recipe.ingredients = initUseIngredient();
+  recipe.recipes__ingredients__units = initUseIngredient();
 
-  const image = new ImageDomain();
+  const image = new Image();
   image.id = 1;
   image.link =
     "https://storage.googleapis.com/recipes-of-marine/IMG_20200903_103750_461311495694712.jpg";
@@ -82,7 +81,7 @@ describe("Update recipe use case unit tests", () => {
 
   let recipe: Recipe;
   let useIngredient: UseIngredient[];
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let recipeRepository: RecipeRepository = {
     update: null,
@@ -284,7 +283,7 @@ describe("Update recipe use case unit tests", () => {
 
   it("updateRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity negative", async () => {
     useIngredient[0].quantity = -2;
-    recipe.ingredients = useIngredient;
+    recipe.recipes__ingredients__units = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -302,7 +301,7 @@ describe("Update recipe use case unit tests", () => {
 
   it("updateRecipeUseCase should throw a parameter exception when one or more ingredients have a quantity null", async () => {
     useIngredient[0].quantity = 0;
-    recipe.ingredients = useIngredient;
+    recipe.recipes__ingredients__units = useIngredient;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(ingredientRepository, "existById").and.returnValue(true);
@@ -319,7 +318,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when useIngredients is empty", async () => {
-    recipe.ingredients = [];
+    recipe.recipes__ingredients__units = [];
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);
@@ -333,7 +332,7 @@ describe("Update recipe use case unit tests", () => {
   });
 
   it("updateRecipeUseCase should throw a parameter exception when useIngredients is undefined", async () => {
-    recipe.ingredients = undefined;
+    recipe.recipes__ingredients__units = undefined;
     try {
       spyOn(recipeRepository, "existByName").and.returnValue(false);
       spyOn(Utils, "isAdmin").and.returnValue(true);

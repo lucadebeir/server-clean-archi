@@ -1,10 +1,10 @@
 import Commentaire from "../../domain/Commentaire";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isAdmin, isLogin } from "../../utils/token.service";
+import {isAdmin, isLogin} from "../../utils/token.service";
 
 export default class DeleteCommentaireUseCase {
   constructor(
@@ -14,7 +14,7 @@ export default class DeleteCommentaireUseCase {
 
   async execute(
     commentaire: Commentaire,
-    token?: TokenDomain
+    token?: Token
   ): Promise<string> {
     await this.checkBusinessRules(commentaire, token);
     return await this.commentaireRepository.deleteById(
@@ -24,7 +24,7 @@ export default class DeleteCommentaireUseCase {
 
   private checkBusinessRules(
     commentaire: Commentaire,
-    token?: TokenDomain
+    token?: Token
   ): void {
     if (token) {
       if (isAdmin(token)) {
@@ -53,7 +53,7 @@ export default class DeleteCommentaireUseCase {
 
   private async underCheckBusinessRules(
     commentaire: Commentaire,
-    token: TokenDomain
+    token: Token
   ): Promise<void> {
     if (await this.userRepository.existByPseudo(token.pseudo)) {
       if (commentaire.id) {

@@ -1,4 +1,4 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 
 export default class GetCategoriesByIdRecipeUseCase {

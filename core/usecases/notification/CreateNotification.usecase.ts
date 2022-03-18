@@ -1,11 +1,11 @@
 import Notification from "../../domain/Notification";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import NotificationRepository from "../../ports/repositories/Notification.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class CreateNotificationUseCase {
   typeList: any[] = ["vue", "abonne", "favori", "commentaire", "user"];
@@ -18,7 +18,7 @@ export default class CreateNotificationUseCase {
 
   async execute(
     notification: Notification,
-    token?: TokenDomain
+    token?: Token
   ): Promise<Notification> {
     await this.checkBusinessRules(notification, token);
     return this.notificationRepository.create(notification);
@@ -26,7 +26,7 @@ export default class CreateNotificationUseCase {
 
   private async checkBusinessRules(
     notification: Notification,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     if (notification.pseudo) {
       if (token && isLogin(token) && token.pseudo === notification.pseudo) {

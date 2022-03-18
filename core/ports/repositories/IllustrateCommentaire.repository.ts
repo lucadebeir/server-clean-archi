@@ -1,12 +1,12 @@
-import IllustrateCommentaireDomain from "../../domain/IllustrateCommentaire.domain";
+import IllustrateCommentaire from "../../domain/IllustrateCommentaire";
 
 export default interface IllustrateCommentaireRepository {
   addToCommentaire(
-    illustrateCommentaire: IllustrateCommentaireDomain
+    illustrateCommentaire: IllustrateCommentaire
   ): Promise<string>;
   updateFromCommentaire(
-    illustrateCommentaire: IllustrateCommentaireDomain
+    illustrateCommentaire: IllustrateCommentaire
   ): Promise<string>;
 
-  check(illustrateCommentaire: IllustrateCommentaireDomain): Promise<boolean>;
+  check(illustrateCommentaire: IllustrateCommentaire): Promise<boolean>;
 }

@@ -1,7 +1,7 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import GetRecipeByIdUseCase from "../../usecases/recipe/GetRecipeById.usecase";
 import * as Utils from "../../utils/token.service";
@@ -18,7 +18,7 @@ describe("Get recipe by id use case unit tests", () => {
   let getRecipeByIdUseCase: GetRecipeByIdUseCase;
 
   let recipe: Recipe;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let recipeRepository: RecipeRepository = {
     findById: null,

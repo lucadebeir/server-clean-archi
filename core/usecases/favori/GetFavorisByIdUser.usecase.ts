@@ -1,18 +1,18 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class GetFavorisByIdUserUseCase {
   constructor(private favoriRepository: FavoriRepository) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<Recipe[]> {
+  async execute(pseudo: any, token?: Token): Promise<Recipe[]> {
     this.checkBusinessRules(pseudo, token);
     return await this.favoriRepository.findByIdUser(token?.pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private checkBusinessRules(pseudo: any, token?: Token): void {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(
         "Vous n'avez pas le droit de créer cette ressource"

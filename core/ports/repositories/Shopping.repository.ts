@@ -6,10 +6,6 @@ export default interface ShoppingRepository {
   findIngredientsNotInShoppingListById(pseudo: any): Promise<Ingredient[]>;
 
   addIngredientToShoppingList(shopping: Shopping): Promise<string>;
-  addIngredientsOfRecipeToShoppingList(
-    pseudo: any,
-    list: Ingredient[]
-  ): Promise<string>;
 
   deleteById(id: any): Promise<string>;
 

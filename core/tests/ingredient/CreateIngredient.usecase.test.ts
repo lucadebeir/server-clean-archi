@@ -1,7 +1,7 @@
 import Ingredient from "../../domain/Ingredient";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import * as Utils from "../../utils/token.service";
 import CreateIngredientUseCase from "../../usecases/ingredient/CreateIngredient.usecase";
@@ -17,7 +17,7 @@ describe("Create ingredient use case unit tests", () => {
   let createIngredientUseCase: CreateIngredientUseCase;
 
   let ingredient: Ingredient;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let ingredientRepository: IngredientRepository = ({
     create: null,

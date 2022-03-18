@@ -1,8 +1,8 @@
 import Notification from "../../domain/Notification";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import CreateNotificationUseCase from "../../usecases/notification/CreateNotification.usecase";
 import NotificationRepository from "../../ports/repositories/Notification.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
@@ -15,8 +15,8 @@ const initNotification = (): Notification => {
   return notification;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -26,7 +26,7 @@ describe("Create notification use case unit tests", () => {
   let createNotificationUseCase: CreateNotificationUseCase;
 
   let notification: Notification;
-  let token: TokenDomain;
+  let token: Token;
   let date: string = Date.now().toString();
   let list = ["vue", "abonne", "favori", "commentaire", "user"];
 

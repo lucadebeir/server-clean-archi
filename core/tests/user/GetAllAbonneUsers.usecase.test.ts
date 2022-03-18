@@ -1,8 +1,8 @@
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import GetAllAbonneUsersUseCase from "../../usecases/user/GetAllAbonneUsers.usecase";
 
 const initUsers = (): User[] => {
@@ -29,7 +29,7 @@ describe("Get all abonne users use case unit tests", () => {
   let getAllAbonneUsersUseCase: GetAllAbonneUsersUseCase;
 
   let users: User[];
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let userRepository: UserRepository = {
     findAllAbonneUsers: null,

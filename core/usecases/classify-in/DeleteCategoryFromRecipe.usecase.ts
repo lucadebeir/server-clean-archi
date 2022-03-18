@@ -1,22 +1,22 @@
 import ClassifyIn from "../../domain/ClassifyIn";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class DeleteCategoryFromRecipeUseCase {
     constructor(private classifyInRepository: ClassifyInRepository, private categoryRepository: CategoryRepository,
         private recipeRepository: RecipeRepository) {}
 
-    async execute(classify: ClassifyIn, token?: TokenDomain): Promise<string> {
+    async execute(classify: ClassifyIn, token?: Token): Promise<string> {
         this.checkBusinessRules(classify, token);
         return this.classifyInRepository.deleteCategoryFromRecipe(classify);
     }
 
-    private checkBusinessRules(classify: ClassifyIn, token?: TokenDomain): void {
+    private checkBusinessRules(classify: ClassifyIn, token?: Token): void {
         if (token && isAdmin(token)) {
           if (classify) {
             if (

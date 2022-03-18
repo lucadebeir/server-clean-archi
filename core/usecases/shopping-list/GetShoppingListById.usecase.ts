@@ -1,10 +1,10 @@
 import Shopping from "../../domain/Shopping";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class GetShoppingListByIdUseCase {
   constructor(
@@ -12,12 +12,12 @@ export default class GetShoppingListByIdUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<Shopping[]> {
+  async execute(pseudo: any, token?: Token): Promise<Shopping[]> {
     this.checkBusinessRules(pseudo, token);
     return await this.shoppingRepository.findById(pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private checkBusinessRules(pseudo: any, token?: Token): void {
     if (token && isLogin(token)) {
       if (pseudo) {
         if (!this.userRepository.existByPseudo(pseudo)) {

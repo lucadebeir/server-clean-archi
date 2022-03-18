@@ -1,10 +1,10 @@
-import Category from "../../domain/Category.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Category from "../../domain/Category";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import * as Utils from "../../utils/token.service";
 import UpdateCategoryUseCase from "../../usecases/category/UpdateCategory.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initCategory = (): Category => {
   const category = new Category();
@@ -18,7 +18,7 @@ describe("Update category use case unit tests", () => {
   let updateCategoryUseCase: UpdateCategoryUseCase;
 
   let category: Category;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let categoryRepository: CategoryRepository = {
     update: null,
@@ -75,7 +75,7 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the idCategory is null", async () => {
-    category.id = null;
+    category.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       await updateCategoryUseCase.execute(user, category);
@@ -88,7 +88,7 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the category doesnt exist", async () => {
-    category.id = null;
+    category.id = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(false);
@@ -102,7 +102,7 @@ describe("Update category use case unit tests", () => {
   });
 
   it("updateCategoryUseCase should throw a parameter exception when the libelleCategorie is null", async () => {
-    category.name = null;
+    category.name = undefined;
     try {
       spyOn(Utils, "isAdmin").and.returnValue(true);
       spyOn(categoryRepository, "existById").and.returnValue(true);

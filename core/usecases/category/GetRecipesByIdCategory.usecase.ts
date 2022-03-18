@@ -1,19 +1,19 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class GetRecipesByIdCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {} //constructeur avec l'interface
 
-  async execute(id: any, user: TokenDomain): Promise<Recipe[]> {
+  async execute(id: any, user: Token): Promise<Recipe[]> {
     this.checkBusinessRules(id, user);
     return await this.categoryRepository.getRecipesByIdCategory(id);
   }
 
-  private checkBusinessRules(id: any, user: TokenDomain): void {
+  private checkBusinessRules(id: any, user: Token): void {
     if (isAdmin(user)) {
       if (id) {
         if (!this.categoryRepository.existById(id)) {

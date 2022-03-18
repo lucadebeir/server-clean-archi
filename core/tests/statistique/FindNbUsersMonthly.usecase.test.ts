@@ -1,11 +1,11 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import StatistiqueRepository from "../../ports/repositories/Statistique.repository";
 import FindNbUsersMonthlyUseCase from "../../usecases/statistique/FindNbUsersMonthly.usecase";
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -14,7 +14,7 @@ const initToken = (): TokenDomain => {
 describe("Find nombre users monthly use case unit tests", () => {
   let findNbUsersMonthlyUseCase: FindNbUsersMonthlyUseCase;
 
-  let token: TokenDomain;
+  let token: Token;
 
   let statistiqueRepository: StatistiqueRepository = {
     findNbUsersMonthly: null,

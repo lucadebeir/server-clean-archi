@@ -1,12 +1,12 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import Commentaire from "../../domain/Commentaire";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import GetAllCommentairesByIdUserUseCase from "../../usecases/commentaire/GetAllCommentairesByIdUser.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import UserRepository from "../../ports/repositories/User.repository";
 import User from "../../domain/User";
 import * as Utils from "../../utils/token.service";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 
 const initCommentaires = (): Commentaire[] => {
   const commentaire = new Commentaire();
@@ -20,8 +20,8 @@ const initCommentaires = (): Commentaire[] => {
   return [commentaire, commentaire2];
 };
 
-const initToken = (): TokenDomain => {
-    const token = new TokenDomain();
+const initToken = (): Token => {
+    const token = new Token();
     token.pseudo = "luca";
   
     return token;
@@ -38,7 +38,7 @@ describe("Get all commentaires of an user use case unit tests", () => {
   let getAllCommentairesByIdUserUseCase: GetAllCommentairesByIdUserUseCase;
 
   let commentaires: Commentaire[];
-  let token: TokenDomain;
+  let token: Token;
   let user: User;
 
   let commentaireRepository: CommentaireRepository = ({

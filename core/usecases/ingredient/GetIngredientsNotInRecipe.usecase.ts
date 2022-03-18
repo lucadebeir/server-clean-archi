@@ -1,9 +1,9 @@
 import Ingredient from "../../domain/Ingredient";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class GetIngredientsNotInRecipeUseCase {
   constructor(
@@ -11,12 +11,12 @@ export default class GetIngredientsNotInRecipeUseCase {
     private recipeRepository: RecipeRepository
   ) {} //constructeur avec l'interface
 
-  async execute(id: any, user?: TokenDomain): Promise<Ingredient[]> {
+  async execute(id: any, user?: Token): Promise<Ingredient[]> {
     this.checkBusinessRules(id, user);
     return await this.ingredientRepository.findIngredientsNotInRecipe(id);
   }
 
-  private checkBusinessRules(id: any, user?: TokenDomain): void {
+  private checkBusinessRules(id: any, user?: Token): void {
     if (user && isAdmin(user)) {
       if (!id) {
         throw new BusinessException(

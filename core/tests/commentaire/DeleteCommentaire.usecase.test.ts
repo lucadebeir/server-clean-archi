@@ -1,12 +1,10 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import Commentaire from "../../domain/Commentaire";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
-import Recipe from "../../domain/Recipe";
-import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
 import DeleteCommentaireUseCase from "../../usecases/commentaire/DeleteCommentaire.usecase";
 
 const initCommentaire = (): Commentaire => {
@@ -19,8 +17,8 @@ const initCommentaire = (): Commentaire => {
   return commentaire;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -30,7 +28,7 @@ describe("Delete commentaire use case unit tests", () => {
   let deleteCommentaireUseCase: DeleteCommentaireUseCase;
 
   let commentaire: Commentaire;
-  let token: TokenDomain;
+  let token: Token;
 
   let commentaireRepository: CommentaireRepository = ({
     deleteById: null,

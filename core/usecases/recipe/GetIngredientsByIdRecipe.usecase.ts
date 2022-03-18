@@ -1,4 +1,3 @@
-import Ingredient from "../../domain/Ingredient";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UseIngredient from "../../domain/UseIngredient";
 

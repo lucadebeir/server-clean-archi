@@ -1,12 +1,11 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import StatistiqueRepository from "../../ports/repositories/Statistique.repository";
 import FindTop20BestRecipesOfTheMonthUseCase from "../../usecases/statistique/FindTop20BestRecipesOfTheMonth.usecase";
-import Recipe from "../../domain/Recipe";
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -15,7 +14,7 @@ const initToken = (): TokenDomain => {
 describe("Find top 20 best recipes of the days use case unit tests", () => {
   let findTop20BestRecipesOfTheMonthUseCase: FindTop20BestRecipesOfTheMonthUseCase;
 
-  let token: TokenDomain;
+  let token: Token;
 
   let statistiqueRepository: StatistiqueRepository = {
     findTop20BestRecipesOfTheMonth: null,

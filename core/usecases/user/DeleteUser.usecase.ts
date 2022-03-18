@@ -1,18 +1,18 @@
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class DeleteUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<string> {
+  async execute(pseudo: any, token?: Token): Promise<string> {
     this.checkBusinessRules(pseudo, token);
     return this.userRepository.deleteById(pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private checkBusinessRules(pseudo: any, token?: Token): void {
     if (token && isLogin(token)) {
       if (pseudo) {
         if (!this.userRepository.existByPseudo(pseudo)) {

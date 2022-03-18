@@ -1,12 +1,12 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateRecipeUseCase {
   constructor(
@@ -16,12 +16,12 @@ export default class UpdateRecipeUseCase {
     private unityRepository: UnityRepository
   ) {} //constructeur avec l'interface
 
-  async execute(recipe: Recipe, token?: TokenDomain): Promise<Recipe> {
+  async execute(recipe: Recipe, token?: Token): Promise<Recipe> {
     this.checkBusinessRules(recipe, token);
     return await this.recipeRepository.update(recipe);
   }
 
-  private checkBusinessRules(recipe?: Recipe, token?: TokenDomain): void {
+  private checkBusinessRules(recipe?: Recipe, token?: Token): void {
     if (token && isAdmin(token)) {
       if (recipe?.id) {
         this.checkIfValueIsEmpty(recipe.name, "nomRecette");
@@ -39,14 +39,14 @@ export default class UpdateRecipeUseCase {
         }
 
         if (
-          recipe.ingredients?.length == 0 ||
-          !recipe.ingredients
+          recipe.recipes__ingredients__units?.length == 0 ||
+          !recipe.recipes__ingredients__units
         ) {
           throw new BusinessException(
             "Il faut sélectionner au moins un ingrédient pour créer une recette"
           );
         } else {
-          recipe.ingredients?.map((useIngredient) => {
+          recipe.recipes__ingredients__units?.map((useIngredient) => {
             if (useIngredient.quantity && useIngredient.quantity <= 0) {
               throw new BusinessException(
                 "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"

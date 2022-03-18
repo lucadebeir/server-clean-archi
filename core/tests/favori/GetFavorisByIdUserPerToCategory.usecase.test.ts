@@ -1,10 +1,10 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Favori from "../../domain/Favori";
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import GetFavorisByIdUserPerToCategoryUseCase from "../../usecases/favori/GetFavorisByIdUserPerToCategory.usecase";
@@ -24,8 +24,8 @@ const initFavori = (): Favori[] => {
   return list;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -49,7 +49,7 @@ describe("Get favoris by id user per to category use case unit tests", () => {
   let getFavorisByIdUserPerToCategoryUseCase: GetFavorisByIdUserPerToCategoryUseCase;
 
   let favoris: Favori[];
-  let token: TokenDomain;
+  let token: Token;
   let user: User;
   let category: Category;
 

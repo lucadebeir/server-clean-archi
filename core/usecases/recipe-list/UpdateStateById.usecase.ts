@@ -1,10 +1,10 @@
 import RecipeList from "../../domain/RecipeList";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class UpdateStateByIdUseCase {
   constructor(
@@ -12,12 +12,12 @@ export default class UpdateStateByIdUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(recipe: RecipeList, token?: TokenDomain): Promise<string> {
+  async execute(recipe: RecipeList, token?: Token): Promise<string> {
     this.checkBusinessRules(recipe, token);
     return await this.recipeListRepository.updateState(recipe);
   }
 
-  private checkBusinessRules(recipe: RecipeList, token?: TokenDomain): void {
+  private checkBusinessRules(recipe: RecipeList, token?: Token): void {
     if (!token || !isLogin(token)) {
       throw new TechnicalException(
         "Vous n'avez pas le droit de modifier cette ressource"

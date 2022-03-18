@@ -1,9 +1,9 @@
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class DeleteByIdUseCase {
   constructor(
@@ -11,12 +11,12 @@ export default class DeleteByIdUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(id: any, token?: TokenDomain): Promise<string> {
+  async execute(id: any, token?: Token): Promise<string> {
     this.checkBusinessRules(id, token);
     return await this.shoppingRepository.deleteById(id);
   }
 
-  private checkBusinessRules(id: any, token?: TokenDomain): void {
+  private checkBusinessRules(id: any, token?: Token): void {
     if (token && isLogin(token)) {
       if (id) {
         if (!this.userRepository.existByPseudo(token.pseudo)) {

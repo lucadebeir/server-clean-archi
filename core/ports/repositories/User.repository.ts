@@ -1,11 +1,11 @@
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
 
 export default interface UserRepository {
   register(user: User): Promise<User>;
   gRegister(user: User): Promise<User>;
-  login(email: any, password: any): Promise<TokenDomain>;
-  gLogin(token: any): Promise<TokenDomain>;
+  login(email: any, password: any): Promise<Token>;
+  gLogin(token: any): Promise<Token>;
   existByPseudo(pseudo: any): Promise<boolean>;
   existByEmail(email: any): Promise<boolean>;
   findById(pseudo: any): Promise<User>;
@@ -19,12 +19,12 @@ export default interface UserRepository {
   forgetPassword(email: any): Promise<{ pseudo: any; token: any }>;
   checkValideToken(token: any): Promise<string>;
   updatePasswordWithToken(
-    token?: TokenDomain,
+    token?: Token,
     newPassword?: any
   ): Promise<string>;
 
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
 
-  checkEmailConfirmed(pseudo: any): Promise<boolean>;
+  checkEmailConfirmed(email: any): Promise<boolean>;
 }

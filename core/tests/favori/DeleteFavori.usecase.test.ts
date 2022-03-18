@@ -1,7 +1,7 @@
 import Favori from "../../domain/Favori";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import DeleteFavoriUseCase from "../../usecases/favori/DeleteFavori.usecase";
 import * as Utils from "../../utils/token.service";
@@ -18,7 +18,7 @@ describe("Delete favori use case unit tests", () => {
   let deleteFavoriUseCase: DeleteFavoriUseCase;
 
   let favori: Favori;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let favoriRepository: FavoriRepository = ({
     deleteById: null,

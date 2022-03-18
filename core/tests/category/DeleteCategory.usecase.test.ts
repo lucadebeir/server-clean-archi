@@ -1,7 +1,7 @@
-import Category from "../../domain/Category.domain";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Category from "../../domain/Category";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import DeleteCategoryUseCase from "../../usecases/category/DeleteCategory.usecase";
 import * as Utils from "../../utils/token.service";
@@ -18,7 +18,7 @@ describe("Delete category use case unit tests", () => {
   let deleteCategoryUseCase: DeleteCategoryUseCase;
 
   let category: Category;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let categoryRepository: CategoryRepository = {
     deleteById: null,

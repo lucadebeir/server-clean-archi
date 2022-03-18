@@ -1,12 +1,13 @@
 import Ingredient from "../../domain/Ingredient";
 import Shopping from "../../domain/Shopping";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import GetIngredientsNotInShoppingListByIdUseCase from "../../usecases/shopping-list/GetIngredientsNotInShoppingListById.usecase";
+import GetIngredientsNotInShoppingListByIdUseCase
+    from "../../usecases/shopping-list/GetIngredientsNotInShoppingListById.usecase";
 import * as Utils from "../../utils/token.service";
 
 const initShoppingList = (): Shopping[] => {
@@ -51,7 +52,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
 
   let shoppingList: Shopping[];
   let ingredients: Ingredient[];
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
   let user: User;
 
   let shoppingRepository: ShoppingRepository = {

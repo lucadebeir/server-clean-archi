@@ -1,16 +1,16 @@
 import Ingredient from "../../domain/Ingredient";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class CreateIngredientUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
   async execute(
     ingredient?: Ingredient,
-    user?: TokenDomain
+    user?: Token
   ): Promise<Ingredient> {
     await this.checkBusinessRules(ingredient, user);
     return await this.ingredientRepository.create(ingredient);
@@ -18,7 +18,7 @@ export default class CreateIngredientUseCase {
 
   private async checkBusinessRules(
     ingredient?: Ingredient,
-    user?: TokenDomain
+    user?: Token
   ): Promise<void> {
     if (user && isAdmin(user)) {
       if (ingredient) {

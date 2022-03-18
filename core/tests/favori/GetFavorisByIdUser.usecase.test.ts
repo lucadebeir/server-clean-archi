@@ -1,8 +1,8 @@
 import Favori from "../../domain/Favori";
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import GetFavorisByIdUserUseCase from "../../usecases/favori/GetFavorisByIdUser.usecase";
 import * as Utils from "../../utils/token.service";
@@ -21,8 +21,8 @@ const initFavori = (): Favori[] => {
   return list;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -39,7 +39,7 @@ describe("Get favoris by id user use case unit tests", () => {
   let getFavorisByIdUserUseCase: GetFavorisByIdUserUseCase;
 
   let favoris: Favori[];
-  let token: TokenDomain;
+  let token: Token;
   let user: User;
 
   let favoriRepository: FavoriRepository = {

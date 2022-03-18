@@ -1,4 +1,4 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import UserRepository from "../../ports/repositories/User.repository";
 import SendFromContactUseCase from "../../usecases/user/SendFromContact.usecase";
 import MailingRepository from "../../ports/mailing/Mailing.repository";

@@ -1,4 +1,4 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import Commentaire from "../../domain/Commentaire";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import Recipe from "../../domain/Recipe";
@@ -6,8 +6,8 @@ import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import CreateCommentaireUseCase from "../../usecases/commentaire/CreateCommentaire.usecase";
 import UserRepository from "../../ports/repositories/User.repository";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
 
 const initCommentaire = (): Commentaire => {
   const commentaire = new Commentaire();
@@ -25,8 +25,8 @@ const initRecipe = (): Recipe => {
   return recipe;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -37,7 +37,7 @@ describe("Create commentaire use case unit tests", () => {
 
   let commentaire: Commentaire;
   let recipe: Recipe;
-  let token: TokenDomain;
+  let token: Token;
 
   let commentaireRepository: CommentaireRepository = ({
     create: null,

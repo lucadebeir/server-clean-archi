@@ -1,4 +1,4 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import Commentaire from "../../domain/Commentaire";
 import GetAllCommentairesByIdRecipeUseCase from "../../usecases/commentaire/GetAllCommentairesByIdRecipe.usecase";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";

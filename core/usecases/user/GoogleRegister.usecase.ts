@@ -1,5 +1,5 @@
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 

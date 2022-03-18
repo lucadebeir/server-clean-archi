@@ -1,11 +1,11 @@
 import ClassifyIn from "../../domain/ClassifyIn";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class AddCategoryToRecipeUseCase {
   constructor(
@@ -14,12 +14,12 @@ export default class AddCategoryToRecipeUseCase {
     private recipeRepository: RecipeRepository
   ) {}
 
-  async execute(classify: ClassifyIn, token?: TokenDomain): Promise<string> {
+  async execute(classify: ClassifyIn, token?: Token): Promise<string> {
     await this.checkBusinessRules(classify, token);
     return this.classifyInRepository.addCategoryToRecipe(classify);
   }
 
-  private async checkBusinessRules(classify: ClassifyIn, token?: TokenDomain): Promise<void> {
+  private async checkBusinessRules(classify: ClassifyIn, token?: Token): Promise<void> {
     if (token && isAdmin(token)) {
       if (classify) {
         if (

@@ -1,9 +1,9 @@
-import ImageDomain from "../../domain/Image.domain";
+import Image from "../../domain/Image";
 
 export default interface ImageRepository {
-  uploadImage(image: ImageDomain): Promise<ImageDomain>;
-  findById(id: any): Promise<ImageDomain>;
-  findByRecette(id: any): Promise<ImageDomain>;
+  uploadImage(image: Image): Promise<Image>;
+  findById(id: any): Promise<Image>;
+  findByRecipe(id: any): Promise<Image>;
   deleteById(id: any): Promise<string>;
 
   checkExistByName(name: any): Promise<boolean>;

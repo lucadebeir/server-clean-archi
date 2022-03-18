@@ -1,21 +1,23 @@
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
 import UserRepository from "../../ports/repositories/User.repository";
+import CryptRepository from "../../ports/crypt/Crypt.repository";
 
 export default class RegisterUseCase {
   constructor(
     private userRepository: UserRepository,
-    private mailingRepository: MailingRepository
+    private mailingRepository: MailingRepository,
+    private cryptRepository: CryptRepository
   ) {}
 
   async execute(user: User, link: any): Promise<User> {
-    await this.checkBusinessRules(user)
+    user = await this.checkBusinessRules(user);
     this.mailingRepository.sendMailAfterRegister(user, link);
     return this.userRepository.register(user);
   }
 
-  private async checkBusinessRules(user: User): Promise<void> {
+  private async checkBusinessRules(user: User): Promise<User> {
 
       if (
         user.pseudo &&
@@ -41,6 +43,9 @@ export default class RegisterUseCase {
                         throw new BusinessException(
                           "Le mot de passe et la confirmation du mot de passe sont différents"
                         );
+                      } else {
+                        user.password = await this.cryptRepository.crypt(user.password);
+                        return user;
                       }
                     } else {
                       throw new BusinessException(
@@ -63,33 +68,16 @@ export default class RegisterUseCase {
     
   }
 
-  private checkIfValueIsValid(
-    chiffre: number,
-    valueS?: string,
-    champ?: string,
-    inf?: boolean
-  ): boolean {
+  private checkIfValueIsValid(chiffre: number, valueS?: string, champ?: string, inf?: boolean): boolean {
     if (!inf) {
       if (valueS && valueS.length > chiffre) {
-        throw new BusinessException(
-          "Un " +
-            champ +
-            " ne peut pas comporter plus de " +
-            chiffre +
-            " caractères"
-        );
+        throw new BusinessException("Un " + champ + " ne peut pas comporter plus de " + chiffre + " caractères");
       } else {
         return true;
       }
     } else {
       if (valueS && valueS.length < chiffre) {
-        throw new BusinessException(
-          "Un " +
-            champ +
-            " ne peut pas comporter moins de " +
-            chiffre +
-            " caractères"
-        );
+        throw new BusinessException("Un " + champ + " ne peut pas comporter moins de " + chiffre + " caractères");
       } else {
         return true;
       }

@@ -1,12 +1,12 @@
-import { BusinessException } from "../../exceptions/BusinessException";
-import ImageDomain from "../../domain/Image.domain";
+import {BusinessException} from "../../exceptions/BusinessException";
+import Image from "../../domain/Image";
 import ImageRepository from "../../ports/repositories/Image.repository";
 import UploadImageUseCase from "../../usecases/image/UploadImage.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
 
-const initImage = (): ImageDomain => {
-  const image = new ImageDomain();
+const initImage = (): Image => {
+  const image = new Image();
   image.name = "wraps aux épinards.jpeg";
 
   return image;
@@ -15,8 +15,8 @@ const initImage = (): ImageDomain => {
 describe("upload image use case unit tests", () => {
   let uploadImageUseCase: UploadImageUseCase;
 
-  let image: ImageDomain;
-  let token: TokenDomain = new TokenDomain();
+  let image: Image;
+  let token: Token = new Token();
 
   let imageRepository: ImageRepository = ({
     uploadImage: null,
@@ -30,7 +30,7 @@ describe("upload image use case unit tests", () => {
 
     spyOn(imageRepository, "uploadImage").and.callFake((file: any) => {
       if (file) {
-        const result: ImageDomain = { ...image, id: 1, link: "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"};
+        const result: Image = { ...image, id: 1, link: "https://storage.googleapis.com/recipes-of-marine/wraps aux épinards.jpeg"};
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -40,7 +40,7 @@ describe("upload image use case unit tests", () => {
   it("uploadImageUseCase should return image when it succeeded", async () => {
     spyOn(Utils, "isAdmin").and.returnValue(true);
     spyOn(imageRepository, "checkExistByName").and.returnValue(false);
-    const result: ImageDomain = await uploadImageUseCase.execute(
+    const result: Image = await uploadImageUseCase.execute(
       image,
       token
     );
@@ -71,16 +71,6 @@ describe("upload image use case unit tests", () => {
       expect(a.message).toBe(
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );
-    }
-  });
-
-  it("uploadImageUseCase should throw an error when file is missing", async () => {
-    try {
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      await uploadImageUseCase.execute(null, token);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("Une image est obligatoire pour pouvoir la télécharger");
     }
   });
 

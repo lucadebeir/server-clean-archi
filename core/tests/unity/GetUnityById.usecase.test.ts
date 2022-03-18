@@ -1,9 +1,9 @@
 import Unity from "../../domain/Unity";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 import * as Utils from "../../utils/token.service";
 import GetUnityByIdUseCase from "../../usecases/unity/GetUnityById.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initUnity = (): Unity => {
   const unity = new Unity();
@@ -18,7 +18,7 @@ describe("get unity by id use case unit tests", () => {
 
   let unity: Unity;
 
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let unityRepository: UnityRepository = ({
     findById: null,

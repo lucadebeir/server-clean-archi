@@ -1,10 +1,11 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UpdatePasswordUseCase from "../../usecases/user/UpdatePassword.usecase";
+import CryptRepository from "../../ports/crypt/Crypt.repository";
 
 const initUser = (): User => {
   const user = new User();
@@ -18,8 +19,8 @@ const initUser = (): User => {
   return user;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
   token.password = "muca";
 
@@ -30,7 +31,7 @@ describe("Update password use case unit tests", () => {
   let updatePasswordUseCase: UpdatePasswordUseCase;
 
   let user: User;
-  let token: TokenDomain;
+  let token: Token;
 
   let newPassword: string;
   let confirmNewPassword: string;
@@ -40,13 +41,19 @@ describe("Update password use case unit tests", () => {
     existByPseudo: null,
   } as unknown as UserRepository;
 
+  let cryptRepository: CryptRepository = {
+    crypt: null
+  } as unknown as CryptRepository;
+
   beforeEach(() => {
     user = initUser();
     token = initToken();
-    updatePasswordUseCase = new UpdatePasswordUseCase(userRepository);
+    updatePasswordUseCase = new UpdatePasswordUseCase(userRepository, cryptRepository);
 
     newPassword = "luca";
     confirmNewPassword = "luca";
+
+    spyOn(cryptRepository, "crypt");
 
     spyOn(userRepository, "updatePassword").and.callFake(
       (
@@ -73,7 +80,6 @@ describe("Update password use case unit tests", () => {
       token
     );
     expect(result).toBeDefined();
-    expect(result.pseudo).toStrictEqual(user.pseudo);
   });
 
   it("updatePasswordUseCase should throw a parameter exception when the user is null", async () => {

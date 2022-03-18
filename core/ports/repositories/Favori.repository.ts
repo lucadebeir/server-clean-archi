@@ -1,6 +1,6 @@
 import Favori from "../../domain/Favori";
 import Recipe from "../../domain/Recipe";
-import RecipesFilterDomain from "../../domain/RecipesFilter.domain";
+import RecipesFilter from "../../domain/RecipesFilter";
 
 export default interface FavoriRepository {
   create(favori: Favori): Promise<string>;
@@ -10,5 +10,5 @@ export default interface FavoriRepository {
 
   check(favori: Favori): Promise<boolean>;
 
-  research(data: RecipesFilterDomain, pseudo: string): Promise<Recipe[]>;
+  research(data: RecipesFilter, pseudo: string): Promise<Recipe[]>;
 }

@@ -1,7 +1,7 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import * as Utils from "../../utils/token.service";
 import GetRecipesByIdCategoryUseCase from "../../usecases/category/GetRecipesByIdCategory.usecase";
@@ -32,7 +32,7 @@ describe("Get recipes by id category use case unit tests", () => {
   let getRecipesByIdCategoryUseCase: GetRecipesByIdCategoryUseCase;
 
   let category: Category;
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
   let recipes: Recipe[];
 
   let categoryRepository: CategoryRepository = {

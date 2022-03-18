@@ -1,12 +1,12 @@
-import { BusinessException } from "../../exceptions/BusinessException";
-import ImageDomain from "../../domain/Image.domain";
+import {BusinessException} from "../../exceptions/BusinessException";
+import Image from "../../domain/Image";
 import ImageRepository from "../../ports/repositories/Image.repository";
 import FindImageByRecetteUseCase from "../../usecases/image/FindImageByRecette.usecase";
 import Recipe from "../../domain/Recipe";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 
-const initImage = (): ImageDomain => {
-  const image = new ImageDomain();
+const initImage = (): Image => {
+  const image = new Image();
   image.id = 1;
   image.name = "wraps aux épinards.jpeg";
   image.link =
@@ -25,11 +25,11 @@ const initRecipe = (): Recipe => {
 describe("get image by recette use case unit tests", () => {
   let findImageByRecetteUseCase: FindImageByRecetteUseCase;
 
-  let image: ImageDomain;
+  let image: Image;
   let recipe: Recipe;
 
   let imageRepository: ImageRepository = {
-    findByRecette: null,
+    findByRecipe: null,
   } as unknown as ImageRepository;
 
   let recipeRepository: RecipeRepository = {
@@ -45,9 +45,9 @@ describe("get image by recette use case unit tests", () => {
     image = initImage();
     recipe = initRecipe();
 
-    spyOn(imageRepository, "findByRecette").and.callFake((id: any) => {
+    spyOn(imageRepository, "findByRecipe").and.callFake((id: any) => {
       if (id) {
-        const result: ImageDomain = image;
+        const result: Image = image;
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -56,7 +56,7 @@ describe("get image by recette use case unit tests", () => {
 
   it("findImageByRecetteUseCase should return image when id is 1", async () => {
     spyOn(recipeRepository, "existById").and.returnValue(true);
-    const result: ImageDomain = await findImageByRecetteUseCase.execute(
+    const result: Image = await findImageByRecetteUseCase.execute(
       recipe.id
     );
     expect(result.id).toBe(1);

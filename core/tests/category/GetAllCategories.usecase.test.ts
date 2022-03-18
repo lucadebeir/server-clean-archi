@@ -1,4 +1,4 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import GetAllCategoriesUseCase from "../../usecases/category/GetAllCategories.usecase";
 

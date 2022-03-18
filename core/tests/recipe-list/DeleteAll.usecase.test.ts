@@ -1,8 +1,7 @@
-import RecipeList from "../../domain/RecipeList";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import DeleteAllUseCase from "../../usecases/recipe-list/DeleteAll.usecase";
@@ -15,8 +14,8 @@ const initUser = (): User => {
   return user;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -25,7 +24,7 @@ const initToken = (): TokenDomain => {
 describe("Delete all recipe from recipe list use case unit tests", () => {
   let deleteAllUseCase: DeleteAllUseCase;
 
-  let token: TokenDomain;
+  let token: Token;
   let user: User;
 
   let recipeListRepository: RecipeListRepository = ({

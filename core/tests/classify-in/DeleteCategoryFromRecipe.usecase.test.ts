@@ -1,6 +1,6 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import ClassifyIn from "../../domain/ClassifyIn";
 import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
@@ -19,7 +19,7 @@ describe("Delete category from recipe use case unit tests", () => {
   let deleteCategoryFromRecipeUseCase: DeleteCategoryFromRecipeUseCase;
 
   let classifyIn: ClassifyIn;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let classifyInRepository: ClassifyInRepository = ({
     deleteCategoryFromRecipe: null,

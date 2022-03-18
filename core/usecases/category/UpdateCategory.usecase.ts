@@ -1,19 +1,19 @@
-import Category from "../../domain/Category.domain";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Category from "../../domain/Category";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
-  async execute(user?: TokenDomain, category?: Category): Promise<Category> {
+  async execute(user?: Token, category?: Category): Promise<Category> {
     await this.checkBusinessRules(user, category);
     return await this.categoryRepository.update(category);
   }
 
-  private async checkBusinessRules(user?: TokenDomain, category?: Category): Promise<void> {
+  private async checkBusinessRules(user?: Token, category?: Category): Promise<void> {
     if (user && isAdmin(user)) {
       if (category) {
         if (!category.id) {

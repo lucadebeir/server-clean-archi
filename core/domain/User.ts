@@ -5,6 +5,6 @@ export default class User {
     confirmed_email?: boolean;
     password?: string;
     confirmed_password?: string;
-    is_admin!: boolean;
+    is_admin?: boolean;
     is_subscribed?: boolean;
 }

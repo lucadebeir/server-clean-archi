@@ -1,14 +1,14 @@
 import Favori from "../../domain/Favori";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class DeleteFavoriUseCase {
   constructor(private favoriRepository: FavoriRepository) {}
 
-  async execute(id: any, pseudo: any, token?: TokenDomain): Promise<string> {
+  async execute(id: any, pseudo: any, token?: Token): Promise<string> {
     const favori: Favori = {
       id_recipe: id,
       pseudo: pseudo
@@ -17,7 +17,7 @@ export default class DeleteFavoriUseCase {
     return await this.favoriRepository.deleteById(favori);
   }
 
-  private checkBusinessRules(favori?: Favori, token?: TokenDomain): void {
+  private checkBusinessRules(favori?: Favori, token?: Token): void {
     if (token && isLogin(token)) {
       if (favori) {
         if (!this.favoriRepository.check(favori)) {

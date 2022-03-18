@@ -1,18 +1,18 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import StatistiqueRepository from "../../ports/repositories/Statistique.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class FindTop20WorstRecipesUseCase {
   constructor(private statistiqueRepository: StatistiqueRepository) {}
 
-  async execute(token?: TokenDomain): Promise<Recipe[]> {
+  async execute(token?: Token): Promise<Recipe[]> {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findTop20WorstRecipes();
   }
 
-  private checkBusinessRules(token?: TokenDomain): void {
+  private checkBusinessRules(token?: Token): void {
     if (!token || !isAdmin(token)) {
       throw new TechnicalException("Vous n'avez pas accès à cette ressource");
     }

@@ -1,12 +1,12 @@
-import { BusinessException } from "../../exceptions/BusinessException";
-import ImageDomain from "../../domain/Image.domain";
+import {BusinessException} from "../../exceptions/BusinessException";
+import Image from "../../domain/Image";
 import ImageRepository from "../../ports/repositories/Image.repository";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
 import DeleteImageUseCase from "../../usecases/image/DeleteImage.usecase";
 
-const initImage = (): ImageDomain => {
-  const image = new ImageDomain();
+const initImage = (): Image => {
+  const image = new Image();
   image.id = 1;
   image.name = "wraps aux épinards.jpeg";
   image.link =
@@ -18,8 +18,8 @@ const initImage = (): ImageDomain => {
 describe("delete image by id use case unit tests", () => {
   let deleteImageUseCase: DeleteImageUseCase;
 
-  let image: ImageDomain;
-  let token: TokenDomain = new TokenDomain();
+  let image: Image;
+  let token: Token = new Token();
 
   let imageRepository: ImageRepository = ({
     deleteById: null,

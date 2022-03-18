@@ -1,10 +1,10 @@
 import Favori from "../../domain/Favori";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import FavoriRepository from "../../ports/repositories/Favori.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class CreateFavoriUseCase {
   constructor(
@@ -12,17 +12,17 @@ export default class CreateFavoriUseCase {
     private recipeRepository: RecipeRepository
   ) {}
 
-  async execute(favori: Favori, token?: TokenDomain): Promise<string> {
+  async execute(favori: Favori, token?: Token): Promise<string> {
     await this.checkBusinessRules(favori, token);
     return await this.favoriRepository.create(favori);
   }
 
-  private async checkBusinessRules(favori?: Favori, token?: TokenDomain): Promise<void> {
+  private async checkBusinessRules(favori?: Favori, token?: Token): Promise<void> {
     if (token && isLogin(token)) {
       if (favori) {
         if (
           !favori.id_recipe ||
-          !this.recipeRepository.existById(favori.id_recipe)
+          !await this.recipeRepository.existById(favori.id_recipe)
         ) {
           throw new BusinessException("La recette doit exister");
         } else {

@@ -1,11 +1,11 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Recipe from "../../domain/Recipe";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import CategoryRepository from "../../ports/repositories/Category.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import * as Utils from "../../utils/token.service";
 import GetCategoriesNotInRecipeUseCase from "../../usecases/category/GetCategoriesNotInRecipe.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initCategories = (): Category[] => {
   const category1 = new Category();
@@ -30,7 +30,7 @@ describe("Get categories not in recipe use case unit tests", () => {
   let getCategoriesNotInRecipeUseCase: GetCategoriesNotInRecipeUseCase;
 
   let list: Category[];
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
   let recipe: Recipe;
 
   let categoryRepository: CategoryRepository = {

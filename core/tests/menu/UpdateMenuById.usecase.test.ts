@@ -1,8 +1,7 @@
 import Menu from "../../domain/Menu";
-import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import MenuRepository from "../../ports/repositories/Menu.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UpdateMenuByIdUseCase from "../../usecases/menu/UpdateMenuById.usecase";
@@ -20,7 +19,7 @@ const initMenu = (): Menu => {
 describe("Update menu by id use case unit tests", () => {
   let updateMenuByIdUseCase: UpdateMenuByIdUseCase;
 
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
   let menu: Menu;
 
   let menuRepository: MenuRepository = ({

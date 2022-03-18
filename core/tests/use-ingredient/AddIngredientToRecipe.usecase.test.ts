@@ -1,7 +1,7 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import UseIngredient from "../../domain/UseIngredient";
 import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
 import AddIngredientToRecipeUseCase from "../../usecases/use-ingredient/AddIngredientToRecipe.usecase";
@@ -22,7 +22,7 @@ describe("Add ingredient to recipe use case unit tests", () => {
   let addIngredientToRecipeUseCase: AddIngredientToRecipeUseCase;
 
   let useIngredient: UseIngredient;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
 
   let useIngredientRepository: UseIngredientRepository = ({
     addIngredientToRecipe: null,

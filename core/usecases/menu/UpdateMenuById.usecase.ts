@@ -1,10 +1,10 @@
 import Menu from "../../domain/Menu";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import MenuRepository from "../../ports/repositories/Menu.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateMenuByIdUseCase {
   constructor(
@@ -12,12 +12,12 @@ export default class UpdateMenuByIdUseCase {
     private recipeRepository: RecipeRepository
   ) {}
 
-  async execute(menu: Menu, token?: TokenDomain): Promise<string> {
+  async execute(menu: Menu, token?: Token): Promise<string> {
     await this.checkBusinessRules(menu, token);
     return await this.menuRepository.updateById(menu.id, menu.id_recipe);
   }
 
-  private async checkBusinessRules(menu: Menu, token?: TokenDomain): Promise<void> {
+  private async checkBusinessRules(menu: Menu, token?: Token): Promise<void> {
     if (token && isAdmin(token)) {
       if (menu.id) {
         if (await this.menuRepository.existById(menu.id)) {

@@ -1,11 +1,11 @@
-import IllustrateRecipeDomain from "../../domain/IllustrateRecipe.domain";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import IllustrateRecipe from "../../domain/IllustrateRecipe";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import IllustrateRecipeRepository from "../../ports/repositories/IllustrateRecipe.repository";
 import ImageRepository from "../../ports/repositories/Image.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateImageFromRecipeUseCase {
   constructor(
@@ -15,16 +15,16 @@ export default class UpdateImageFromRecipeUseCase {
   ) {}
 
   async execute(
-    illustrateRecipe: IllustrateRecipeDomain,
-    token?: TokenDomain
+    illustrateRecipe: IllustrateRecipe,
+    token?: Token
   ): Promise<string> {
     this.checkBusinessRules(illustrateRecipe, token);
     return this.illustrateRecipeRepository.updateFromRecipe(illustrateRecipe);
   }
 
   private checkBusinessRules(
-    illustrateRecipe: IllustrateRecipeDomain,
-    token?: TokenDomain
+    illustrateRecipe: IllustrateRecipe,
+    token?: Token
   ): void {
     if (token && isAdmin(token)) {
       if (illustrateRecipe) {

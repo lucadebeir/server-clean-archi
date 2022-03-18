@@ -1,10 +1,10 @@
 import Shopping from "../../domain/Shopping";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class AddIngredientToShoppingListUseCase {
   constructor(
@@ -12,7 +12,7 @@ export default class AddIngredientToShoppingListUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(shopping: Shopping, token?: TokenDomain): Promise<string> {
+  async execute(shopping: Shopping, token?: Token): Promise<string> {
     console.log(shopping);
     await this.checkBusinessRules(shopping, token);
     return await this.shoppingRepository.addIngredientToShoppingList(shopping);
@@ -20,7 +20,7 @@ export default class AddIngredientToShoppingListUseCase {
 
   private async checkBusinessRules(
     shopping: Shopping,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     console.log(shopping);
     if (token && isLogin(token)) {

@@ -1,8 +1,8 @@
 import Shopping from "../../domain/Shopping";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import DeleteByIdUseCase from "../../usecases/shopping-list/DeleteById.usecase";
@@ -28,7 +28,7 @@ describe("Delete element from recipe list by id use case unit tests", () => {
   let deleteByIdUseCase: DeleteByIdUseCase;
 
   let shoppingList: Shopping;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
   let user: User;
 
   let shoppingRepository: ShoppingRepository = {

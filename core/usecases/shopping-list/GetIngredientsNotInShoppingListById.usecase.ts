@@ -1,10 +1,10 @@
 import Ingredient from "../../domain/Ingredient";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class GetIngredientsNotInShoppingListByIdUseCase {
   constructor(
@@ -12,14 +12,14 @@ export default class GetIngredientsNotInShoppingListByIdUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<Ingredient[]> {
+  async execute(pseudo: any, token?: Token): Promise<Ingredient[]> {
     this.checkBusinessRules(pseudo, token);
     return await this.shoppingRepository.findIngredientsNotInShoppingListById(
       pseudo
     );
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private checkBusinessRules(pseudo: any, token?: Token): void {
     if (token && isLogin(token)) {
       if (pseudo) {
         if (!this.userRepository.existByPseudo(pseudo)) {

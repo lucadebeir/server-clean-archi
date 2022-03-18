@@ -1,21 +1,21 @@
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class UpdateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(user: User, token?: TokenDomain): Promise<User> {
+  async execute(user: User, token?: Token): Promise<User> {
     await this.checkBusinessRules(user, token);
     return this.userRepository.update(user);
   }
 
   private async checkBusinessRules(
     user: User,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     if (token && isLogin(token)) {
       if (

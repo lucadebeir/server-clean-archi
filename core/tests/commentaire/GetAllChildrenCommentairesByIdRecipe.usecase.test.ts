@@ -1,9 +1,10 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import Commentaire from "../../domain/Commentaire";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import Recipe from "../../domain/Recipe";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import GetAllChildrenCommentairesByIdRecipeUseCase from "../../usecases/commentaire/GetAllChildrenCommentairesByIdRecipe.usecase";
+import GetAllChildrenCommentairesByIdRecipeUseCase
+    from "../../usecases/commentaire/GetAllChildrenCommentairesByIdRecipe.usecase";
 
 const initCommentaire = (): Commentaire => {
   const commentaire = new Commentaire();

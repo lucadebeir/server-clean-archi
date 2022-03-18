@@ -1,9 +1,9 @@
 import Ingredient from "../../domain/Ingredient";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import * as Utils from "../../utils/token.service";
 import GetRestOfIngredientsPerToListUseCase from "../../usecases/ingredient/GetRestOfIngredientsPerToList.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initIngredients = (): Ingredient[] => {
   const ingredient = new Ingredient();
@@ -38,7 +38,7 @@ describe("get rest of ingredients per to list use case unit tests", () => {
 
   let ingredients: Ingredient[];
   let restIngredients: Ingredient[];
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let ingredientRepository: IngredientRepository = {
     findRestOfIngredientsPerToList: null,

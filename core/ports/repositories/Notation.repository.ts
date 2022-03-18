@@ -1,6 +1,6 @@
-import NotationDomain from "../../domain/Notation.domain";
+import Notation from "../../domain/Notation";
 
 export default interface NotationRepository {
-  save(notation: NotationDomain): Promise<NotationDomain>;
-  findByPseudo(idRecipe: number, pseudo: string): Promise<NotationDomain>;
+  save(notation: Notation): Promise<Notation>;
+  findByPseudo(idRecipe: number, pseudo: string): Promise<Notation>;
 }

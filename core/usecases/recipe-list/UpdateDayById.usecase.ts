@@ -1,10 +1,10 @@
 import RecipeList from "../../domain/RecipeList";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import RecipeListRepository from "../../ports/repositories/RecipeList.repository";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class UpdateDayByIdUseCase {
   constructor(
@@ -12,7 +12,7 @@ export default class UpdateDayByIdUseCase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(recipe: RecipeList, token?: TokenDomain): Promise<string> {
+  async execute(recipe: RecipeList, token?: Token): Promise<string> {
     console.log(recipe);
     await this.checkBusinessRules(recipe, token);
     return await this.recipeListRepository.updateDay(recipe);
@@ -20,7 +20,7 @@ export default class UpdateDayByIdUseCase {
 
   private async checkBusinessRules(
     recipe: RecipeList,
-    token?: TokenDomain
+    token?: Token
   ): Promise<void> {
     let days: number[] = [0, 1, 2, 3, 4, 5, 6];
 

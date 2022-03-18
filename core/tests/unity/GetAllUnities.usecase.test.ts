@@ -1,9 +1,9 @@
 import Unity from "../../domain/Unity";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 import * as Utils from "../../utils/token.service";
 import GetAllUnitiesUseCase from "../../usecases/unity/GetAllUnities.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 
 const initUnities = (): Unity[] => {
   const unity1 = new Unity();
@@ -21,7 +21,7 @@ describe("Get all unities use case unit tests", () => {
   let getAllUnitiesUseCase: GetAllUnitiesUseCase;
 
   let list: Unity[];
-  let user: TokenDomain = new TokenDomain();
+  let user: Token = new Token();
 
   let unityRepository: UnityRepository = {
     findAll: null,

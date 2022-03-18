@@ -1,14 +1,14 @@
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import StatistiqueRepository from "../../ports/repositories/Statistique.repository";
 import date from "date-and-time";
 import Recipe from "../../domain/Recipe";
 import FindTop20WorstRecipesUseCase from "../../usecases/statistique/FindTop20WorstRecipes.usecase";
-import Etape from "../../domain/Etape.domain";
+import Etape from "../../domain/Etape";
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
 
   return token;
@@ -58,7 +58,7 @@ const initSteps = (): Etape[] => {
 describe("Find top 20 worst recipes use case unit tests", () => {
   let findTop20WorstRecipesUseCase: FindTop20WorstRecipesUseCase;
 
-  let token: TokenDomain;
+  let token: Token;
   let recipes: Recipe[];
 
   let statistiqueRepository: StatistiqueRepository = {

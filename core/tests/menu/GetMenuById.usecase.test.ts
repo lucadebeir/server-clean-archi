@@ -1,8 +1,8 @@
 import Menu from "../../domain/Menu";
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import MenuRepository from "../../ports/repositories/Menu.repository";
 import GetMenuBydIdUseCase from "../../usecases/menu/GetMenuById.usecase";
 import * as Utils from "../../utils/token.service";
@@ -27,7 +27,7 @@ describe("Get menu by id use case unit tests", () => {
   let getMenuBydIdUseCase: GetMenuBydIdUseCase;
 
   let recipe: Recipe;
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
   let menu: Menu;
 
   let menuRepository: MenuRepository = {

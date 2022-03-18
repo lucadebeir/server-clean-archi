@@ -1,8 +1,9 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
 import LoginUseCase from "../../usecases/user/Login.usecase";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
+import CryptRepository from "../../ports/crypt/Crypt.repository";
 
 const initUser = (): User => {
   const user = new User();
@@ -12,8 +13,8 @@ const initUser = (): User => {
   return user;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
   token.email = "luca.debeir@gmail.com";
 
@@ -24,7 +25,7 @@ describe("Login user use case unit tests", () => {
   let loginUseCase: LoginUseCase;
 
   let user: User;
-  let token: TokenDomain;
+  let token: Token;
 
   let userRepository: UserRepository = ({
     login: null,
@@ -32,15 +33,21 @@ describe("Login user use case unit tests", () => {
     checkEmailConfirmed: null,
   } as unknown) as UserRepository;
 
+  let cryptRepository: CryptRepository = {
+    compare: null
+  } as unknown as CryptRepository;
+
   beforeEach(() => {
     user = initUser();
     token = initToken();
 
-    loginUseCase = new LoginUseCase(userRepository);
+    loginUseCase = new LoginUseCase(userRepository, cryptRepository);
+
+    spyOn(cryptRepository, "compare").and.returnValue(true);
 
     spyOn(userRepository, "login").and.callFake((email: any, password: any) => {
       if (email && password) {
-        const result: TokenDomain = token;
+        const result: Token = token;
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));
@@ -50,7 +57,7 @@ describe("Login user use case unit tests", () => {
   it("loginUseCase should return token when it succeeded", async () => {
     spyOn(userRepository, "existByEmail").and.returnValue(true);
     spyOn(userRepository, "checkEmailConfirmed").and.returnValue(true);
-    const result: TokenDomain = await loginUseCase.execute(
+    const result: Token = await loginUseCase.execute(
       user.email,
       user.password
     );

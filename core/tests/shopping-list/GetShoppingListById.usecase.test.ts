@@ -1,8 +1,8 @@
 import Shopping from "../../domain/Shopping";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import ShoppingRepository from "../../ports/repositories/Shopping.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import GetShoppingListByIdUseCase from "../../usecases/shopping-list/GetShoppingListById.usecase";
@@ -35,7 +35,7 @@ describe("Get shopping list by pseudo use case unit tests", () => {
   let getShoppingListByIdUseCase: GetShoppingListByIdUseCase;
 
   let shoppingList: Shopping[];
-  let token: TokenDomain = new TokenDomain();
+  let token: Token = new Token();
   let user: User;
 
   let shoppingRepository: ShoppingRepository = {

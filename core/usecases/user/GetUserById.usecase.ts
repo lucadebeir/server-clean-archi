@@ -1,19 +1,19 @@
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import User from "../../domain/User";
-import { BusinessException } from "../../exceptions/BusinessException";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {BusinessException} from "../../exceptions/BusinessException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UserRepository from "../../ports/repositories/User.repository";
-import { isLogin } from "../../utils/token.service";
+import {isLogin} from "../../utils/token.service";
 
 export default class GetUserByIdUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(pseudo: any, token?: TokenDomain): Promise<User> {
+  async execute(pseudo: any, token?: Token): Promise<User> {
     this.checkBusinessRules(pseudo, token);
     return this.userRepository.findById(pseudo);
   }
 
-  private checkBusinessRules(pseudo: any, token?: TokenDomain): void {
+  private checkBusinessRules(pseudo: any, token?: Token): void {
     if (token && isLogin(token)) {
       if (pseudo) {
         if (!this.userRepository.existByPseudo(pseudo)) {

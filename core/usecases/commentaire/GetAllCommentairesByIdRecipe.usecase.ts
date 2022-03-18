@@ -1,5 +1,5 @@
 import Commentaire from "../../domain/Commentaire";
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import CommentaireRepository from "../../ports/repositories/Commentaire.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 

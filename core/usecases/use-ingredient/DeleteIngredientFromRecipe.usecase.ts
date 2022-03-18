@@ -1,9 +1,9 @@
-import TokenDomain from "../../domain/Token.domain";
-import { BusinessException } from "../../exceptions/BusinessException";
+import Token from "../../domain/Token";
+import {BusinessException} from "../../exceptions/BusinessException";
 import IngredientRepository from "../../ports/repositories/Ingredient.repository";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
-import { isAdmin } from "../../utils/token.service";
+import {isAdmin} from "../../utils/token.service";
 
 export default class DeleteIngredientFromRecipeUseCase {
   constructor(
@@ -15,7 +15,7 @@ export default class DeleteIngredientFromRecipeUseCase {
   async execute(
     idRecette: any,
     idIngredient: any,
-    token?: TokenDomain
+    token?: Token
   ): Promise<string> {
     this.checkBusinessRules(idRecette, idIngredient, token);
     return this.useIngredientRepository.delete(idRecette, idIngredient);
@@ -24,7 +24,7 @@ export default class DeleteIngredientFromRecipeUseCase {
   private checkBusinessRules(
     idRecette: number,
     idIngredient: number,
-    token?: TokenDomain
+    token?: Token
   ): void {
     if (token && isAdmin(token)) {
       if (!idIngredient || !this.ingredientRepository.findById(idIngredient)) {

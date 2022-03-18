@@ -1,4 +1,4 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Recipe from "../../domain/Recipe";
 
 export default interface CategoryRepository {

@@ -1,6 +1,6 @@
-import Category from "../../domain/Category.domain";
+import Category from "../../domain/Category";
 import Recipe from "../../domain/Recipe";
-import RecipesFilterDomain from "../../domain/RecipesFilter.domain";
+import RecipesFilter from "../../domain/RecipesFilter";
 import UseIngredient from "../../domain/UseIngredient";
 
 export default interface RecipeRepository {
@@ -24,5 +24,5 @@ export default interface RecipeRepository {
   useInMenu(id: any): Promise<boolean>;
   useInRecipeList(id: any): Promise<boolean>;
 
-  research(data: RecipesFilterDomain): Promise<Recipe[]>;
+  research(data: RecipesFilter): Promise<Recipe[]>;
 }

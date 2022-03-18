@@ -1,10 +1,10 @@
-import ImageDomain from "../../domain/Image.domain";
+import Image from "../../domain/Image";
 import ImageRepository from "../../ports/repositories/Image.repository";
 
 export default class FindImageByIdUseCase {
   constructor(private imageRepository: ImageRepository) {}
 
-  async execute(id: any): Promise<ImageDomain> {
+  async execute(id: any): Promise<Image> {
     this.checkBusinessRules(id);
     return this.imageRepository.findById(id);
   }

@@ -1,5 +1,5 @@
 import Recipe from "../../domain/Recipe";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import {BusinessException} from "../../exceptions/BusinessException";
 import {TechnicalException} from "../../exceptions/TechnicalException";
 import MailingRepository from "../../ports/mailing/Mailing.repository";
@@ -9,9 +9,8 @@ import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import UnityRepository from "../../ports/repositories/Unity.repository";
 import UserRepository from "../../ports/repositories/User.repository";
 import {isAdmin} from "../../utils/token.service";
-import User from "../../domain/User";
 import validator from "validator";
-import isEmpty = validator.isEmpty;
+import Category from "../../domain/Category";
 
 export default class CreateRecipeUseCase {
     constructor(
@@ -24,11 +23,13 @@ export default class CreateRecipeUseCase {
     ) {
     } //constructeur avec l'interface
 
-    async execute(recipe?: Recipe, token?: TokenDomain): Promise<Recipe> {
+    async execute(recipe?: Recipe, token?: Token): Promise<Recipe> {
+        console.log(recipe)
         try {
             await this.checkBusinessRules(recipe, token);
+            console.log(recipe)
 
-            return this.recipeRepository.create(recipe).then(async result => {
+            return await this.recipeRepository.create(recipe)/**.then(async result => {
                 const users: { name: any; address: any; }[] = await this.userRepository.findAllAbonneMailUsers();
 
                 users.map((user) => {
@@ -40,14 +41,14 @@ export default class CreateRecipeUseCase {
                 });
 
                 return result;
-            });
+            })**/;
         } catch (e) {
             throw e;
         }
 
     }
 
-    private async checkBusinessRules(recipe?: Recipe, token?: TokenDomain): Promise<void> {
+    private async checkBusinessRules(recipe?: Recipe, token?: Token): Promise<void> {
         if (token && isAdmin(token)) {
             if (recipe) {
                 if (await this.recipeRepository.existByName(recipe.name)) {
@@ -71,14 +72,14 @@ export default class CreateRecipeUseCase {
                     }
 
                     if (
-                        recipe.ingredients?.length == 0 ||
-                        !recipe.ingredients
+                        recipe.recipes__ingredients__units?.length == 0 ||
+                        !recipe.recipes__ingredients__units
                     ) {
                         throw new BusinessException(
                             "Il faut sélectionner au moins un ingrédient pour créer une recette"
                         );
                     } else {
-                        recipe.ingredients?.map(async (ingredient) => {
+                        recipe.recipes__ingredients__units?.map(async (ingredient) => {
                             if (ingredient.quantity == 0 || ingredient.quantity! < 0) {
                                 throw new BusinessException(
                                     "Les quantités au niveau des ingrédients utilisés doivent être strictement supérieurs à 0"
@@ -100,12 +101,15 @@ export default class CreateRecipeUseCase {
                     }
                 }
 
+                console.log(recipe);
+
                 if (recipe.recipes__categories?.length == 0 || !recipe.recipes__categories) {
                     throw new BusinessException(
                         "Il faut sélectionner au moins une catégorie pour créer une recette"
                     );
                 } else {
                     recipe.recipes__categories?.map(async (category) => {
+                        console.log(category)
                         if (!await this.categoryRepository.existById(category.id_category)) {
                             throw new BusinessException(
                                 "La catégorie " + category.id_category + " n'existe pas"
@@ -114,7 +118,10 @@ export default class CreateRecipeUseCase {
                     });
                 }
 
-                if (recipe.images?.length == 0 || !recipe.images) {
+                console.log("lololol")
+                console.log(recipe)
+
+                if (recipe.recipes__images?.length == 0 || !recipe.recipes__images) {
                     throw new BusinessException(
                         "Il faut sélectionner au moins une image pour créer une recette"
                     );
@@ -129,7 +136,7 @@ export default class CreateRecipeUseCase {
                 "Vous n'avez pas le droit d'accéder à cette ressource"
             );
         }
-
+        console.log('ici')
     }
 
     private checkIfValueIsEmpty(value: any, champ?: string): void {

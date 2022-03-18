@@ -1,14 +1,14 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import * as Utils from "../../utils/token.service";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import RecipeRepository from "../../ports/repositories/Recipe.repository";
-import IllustrateRecipeDomain from "../../domain/IllustrateRecipe.domain";
+import IllustrateRecipe from "../../domain/IllustrateRecipe";
 import IllustrateRecipeRepository from "../../ports/repositories/IllustrateRecipe.repository";
 import ImageRepository from "../../ports/repositories/Image.repository";
 import UpdateImageFromRecipeUseCase from "../../usecases/illustrate-recipe/UpdateImageFromRecipe.usecase";
 
-const initIllustrateRecipe = (): IllustrateRecipeDomain => {
-  const illustrateRecipe = new IllustrateRecipeDomain();
+const initIllustrateRecipe = (): IllustrateRecipe => {
+  const illustrateRecipe = new IllustrateRecipe();
   illustrateRecipe.id_recipe = 1;
   illustrateRecipe.id_image = 1;
 
@@ -18,8 +18,8 @@ const initIllustrateRecipe = (): IllustrateRecipeDomain => {
 describe("Add image to recipe use case unit tests", () => {
   let updateImageFromRecipeUseCase: UpdateImageFromRecipeUseCase;
 
-  let illustrateRecipe: IllustrateRecipeDomain;
-  let token: TokenDomain = new TokenDomain();
+  let illustrateRecipe: IllustrateRecipe;
+  let token: Token = new Token();
 
   let illustrateRecipeRepository: IllustrateRecipeRepository = ({
     updateFromRecipe: null,
@@ -44,7 +44,7 @@ describe("Add image to recipe use case unit tests", () => {
     );
 
     spyOn(illustrateRecipeRepository, "updateFromRecipe").and.callFake(
-      (illustrateRecipe: IllustrateRecipeDomain) => {
+      (illustrateRecipe: IllustrateRecipe) => {
         if (illustrateRecipe) {
           const result: string = "L'image a bien remplacé dans la recette";
           return new Promise((resolve, reject) => resolve(result));

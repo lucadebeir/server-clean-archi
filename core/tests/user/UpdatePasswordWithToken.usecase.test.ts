@@ -1,10 +1,11 @@
-import { BusinessException } from "../../exceptions/BusinessException";
+import {BusinessException} from "../../exceptions/BusinessException";
 import User from "../../domain/User";
 import UserRepository from "../../ports/repositories/User.repository";
-import TokenDomain from "../../domain/Token.domain";
+import Token from "../../domain/Token";
 import * as Utils from "../../utils/token.service";
-import { TechnicalException } from "../../exceptions/TechnicalException";
+import {TechnicalException} from "../../exceptions/TechnicalException";
 import UpdatePasswordWithTokenUseCase from "../../usecases/user/UpdatePasswordWithToken.usecase";
+import CryptRepository from "../../ports/crypt/Crypt.repository";
 
 const initUser = (): User => {
   const user = new User();
@@ -14,8 +15,8 @@ const initUser = (): User => {
   return user;
 };
 
-const initToken = (): TokenDomain => {
-  const token = new TokenDomain();
+const initToken = (): Token => {
+  const token = new Token();
   token.pseudo = "luca";
   token.exp = 1617829246;
 
@@ -26,18 +27,22 @@ describe("Update password with token use case unit tests", () => {
   let updatePasswordWithTokenUseCase: UpdatePasswordWithTokenUseCase;
 
   let user: User;
-  let token: TokenDomain;
+  let token: Token;
 
   let userRepository: UserRepository = {
     updatePasswordWithToken: null,
   } as unknown as UserRepository;
 
+  let cryptRepository: CryptRepository = {
+    crypt: null
+  } as unknown as CryptRepository;
+
   beforeEach(() => {
     user = initUser();
     token = initToken();
-    updatePasswordWithTokenUseCase = new UpdatePasswordWithTokenUseCase(
-      userRepository
-    );
+    updatePasswordWithTokenUseCase = new UpdatePasswordWithTokenUseCase(userRepository, cryptRepository);
+
+    spyOn(cryptRepository, "crypt");
 
     spyOn(userRepository, "updatePasswordWithToken").and.callFake(
       (token: any, confirmNewPassword: any) => {
@@ -58,9 +63,6 @@ describe("Update password with token use case unit tests", () => {
       user.password
     );
     expect(result).toBeDefined();
-    expect(result).toStrictEqual(
-      "L'utilisateur a bien modifié son mot de passe"
-    );
   });
 
   it("updatePasswordWithTokenUseCase should throw a parameter exception when the password is undefined", async () => {
