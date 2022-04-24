@@ -12,7 +12,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMail(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/${TEMPLATES["new_recipe"].fileName}`
+      `./templates/${TEMPLATES["new_recipe"].fileName}`
     );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
@@ -33,13 +33,13 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailWhenNewRecipe(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/new-recipe/${TEMPLATES["new_recipe"].fileName}`
+      `./templates/new-recipe/${TEMPLATES["new_recipe"].fileName}`
     );
 
     const dataForTemplate = {
-      link: "http://marinesrecipes.fr/recipe/" + data.recipe.idRecette,
+      link: "https://marinesrecipes.fr/recipe/" + data.recipe.id,
       pseudo: data.user.get("name"),
-      nomRecette: data.recipe.nomRecette,
+      name: data.recipe.name,
       mot: data.recipe.mot,
     };
 
@@ -53,22 +53,22 @@ export default class MailingRepositoryGmail implements MailingRepository {
         attachments: [
           {
             filename: "logo.jpeg",
-            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            path: path.join(__dirname, `./templates/images/logo.jpeg`),
             cid: "logo",
           },
           {
             filename: "facebook.png",
-            path: path.join(__dirname, `../templates/images/facebook.png`),
+            path: path.join(__dirname, `./templates/images/facebook.png`),
             cid: "facebook",
           },
           {
             filename: "instagram.jpeg",
-            path: path.join(__dirname, `../templates/images/instagram.png`),
+            path: path.join(__dirname, `./templates/images/instagram.png`),
             cid: "instagram",
           },
           {
-            filename: data.recipe.images[0].nameImage,
-            path: data.recipe.images[0].lienImage,
+            filename: data.recipe.images[0].name,
+            path: data.recipe.images[0].link,
             cid: "image",
           },
         ],
@@ -84,7 +84,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailAfterRegister(user: User, link: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/register/${TEMPLATES["register"].fileName}`
+      `./templates/register/${TEMPLATES["register"].fileName}`
     );
 
     const data = {
@@ -102,17 +102,17 @@ export default class MailingRepositoryGmail implements MailingRepository {
         attachments: [
           {
             filename: "logo.jpeg",
-            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            path: path.join(__dirname, `./templates/images/logo.jpeg`),
             cid: "logo",
           },
           {
             filename: "facebook.png",
-            path: path.join(__dirname, `../templates/images/facebook.png`),
+            path: path.join(__dirname, `./templates/images/facebook.png`),
             cid: "facebook",
           },
           {
             filename: "instagram.jpeg",
-            path: path.join(__dirname, `../templates/images/instagram.png`),
+            path: path.join(__dirname, `./templates/images/instagram.png`),
             cid: "instagram",
           },
         ],
@@ -128,7 +128,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailWhenUserForgetPassword(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/forget-password/${TEMPLATES["forget_password"].fileName}`
+      `./templates/forget-password/${TEMPLATES["forget_password"].fileName}`
     );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
@@ -141,17 +141,17 @@ export default class MailingRepositoryGmail implements MailingRepository {
         attachments: [
           {
             filename: "logo.jpeg",
-            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            path: path.join(__dirname, `./templates/images/logo.jpeg`),
             cid: "logo",
           },
           {
             filename: "facebook.png",
-            path: path.join(__dirname, `../templates/images/facebook.png`),
+            path: path.join(__dirname, `./templates/images/facebook.png`),
             cid: "facebook",
           },
           {
             filename: "instagram.jpeg",
-            path: path.join(__dirname, `../templates/images/instagram.png`),
+            path: path.join(__dirname, `./templates/images/instagram.png`),
             cid: "instagram",
           },
         ],
@@ -167,7 +167,7 @@ export default class MailingRepositoryGmail implements MailingRepository {
   sendMailFromContact(data: any): void {
     const filePath = path.join(
       __dirname,
-      `../templates/contact/${TEMPLATES["contact"].fileName}`
+      `./templates/contact/${TEMPLATES["contact"].fileName}`
     );
 
     ejs.renderFile(filePath, data, {}, (e, content) => {
@@ -180,17 +180,17 @@ export default class MailingRepositoryGmail implements MailingRepository {
         attachments: [
           {
             filename: "logo.jpeg",
-            path: path.join(__dirname, `../templates/images/logo.jpeg`),
+            path: path.join(__dirname, `./templates/images/logo.jpeg`),
             cid: "logo",
           },
           {
             filename: "facebook.png",
-            path: path.join(__dirname, `../templates/images/facebook.png`),
+            path: path.join(__dirname, `./templates/images/facebook.png`),
             cid: "facebook",
           },
           {
             filename: "instagram.jpeg",
-            path: path.join(__dirname, `../templates/images/instagram.png`),
+            path: path.join(__dirname, `./templates/images/instagram.png`),
             cid: "instagram",
           },
         ],

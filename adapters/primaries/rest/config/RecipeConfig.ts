@@ -24,6 +24,8 @@ import UseIngredientRepository from "../../../../core/ports/repositories/UseIngr
 import UseIngredientRepositorySQL from "../../../secondaries/mysql/repositories/UseIngredientRepositorySQL";
 import ClassifyInRepository from "../../../../core/ports/repositories/ClassifyIn.repository";
 import ClassifyInRepositorySQL from "../../../secondaries/mysql/repositories/ClassifyInRepositorySQL";
+import IllustrateRecipeRepository from "../../../../core/ports/repositories/IllustrateRecipe.repository";
+import IllustrateRecipeRepositorySQL from "../../../secondaries/mysql/repositories/IllustrateRecipeRepositorySQL";
 
 export default class RecipeConfig {
     private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
@@ -33,6 +35,7 @@ export default class RecipeConfig {
     private stepRepository: StepRepository = new StepRepositorySQL();
     private useIngredientRepository: UseIngredientRepository = new UseIngredientRepositorySQL();
     private classifyInRepository: ClassifyInRepository = new ClassifyInRepositorySQL();
+    private illustrateRecipeRepository: IllustrateRecipeRepository = new IllustrateRecipeRepositorySQL();
 
     public getAllRecipeUseCase(): GetAllRecipesUseCase {
         return new GetAllRecipesUseCase(this.recipeRepository);
@@ -67,8 +70,8 @@ export default class RecipeConfig {
     }
 
     public updateRecipeUseCase(): UpdateRecipeUseCase {
-        return new UpdateRecipeUseCase(this.recipeRepository, this.classifyInRepository, this.useIngredientRepository, this.stepRepository
-        );
+        return new UpdateRecipeUseCase(this.recipeRepository, this.classifyInRepository, this.useIngredientRepository,
+            this.stepRepository, this.illustrateRecipeRepository);
     }
 
     public updateNbViewsUseCase(): UpdateNbViewsUseCase {

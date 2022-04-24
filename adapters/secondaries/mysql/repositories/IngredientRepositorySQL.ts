@@ -147,8 +147,9 @@ export default class IngredientRepositorySQL implements IngredientRepository {
     }
 
     update(ingredientToUpdate: Ingredient): Promise<any> {
+        console.log(ingredientToUpdate)
         return IngredientSequelize.update(
-            {name: ingredientToUpdate.name},
+            {name: ingredientToUpdate.name, image_link: ingredientToUpdate.image_link},
             {where: {id: ingredientToUpdate.id}}
         )
             .then((ingredient) => {

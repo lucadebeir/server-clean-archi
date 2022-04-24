@@ -37,8 +37,9 @@ const config = {
         new CopyPlugin({
             patterns: [
                 {from: "./adapters/secondaries/image/config", to: "config"},
-            ],
-        }),
+                {from: "./adapters/secondaries/mail/templates", to: "templates"}
+            ]
+        })
     ],
     externals: [nodeExternals()]
 };

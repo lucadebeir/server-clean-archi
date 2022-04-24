@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const Dotenv = require("dotenv-webpack");
 const nodeExternals = require("webpack-node-externals");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin");
 
 const config = {
     resolve: {
@@ -31,7 +32,13 @@ const config = {
         new Dotenv({
             path: './.env.prod'
         }),
-        new NodePolyfillPlugin()
+        new NodePolyfillPlugin(),
+        new CopyPlugin({
+            patterns: [
+                {from: "./adapters/secondaries/image/config", to: "config"},
+                {from: "./adapters/secondaries/mail/templates", to: "templates"}
+            ]
+        })
     ],
     externals: [nodeExternals()]
 };

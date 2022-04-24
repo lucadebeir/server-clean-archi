@@ -13,8 +13,9 @@ export default class RegisterUseCase {
 
   async execute(user: User, link: any): Promise<User> {
     user = await this.checkBusinessRules(user);
+    user = await this.userRepository.register(user);
     this.mailingRepository.sendMailAfterRegister(user, link);
-    return this.userRepository.register(user);
+    return user;
   }
 
   private async checkBusinessRules(user: User): Promise<User> {

@@ -139,16 +139,4 @@ describe("Update ingredient use case unit tests", () => {
       );
     }
   });
-
-  it("updateIngredientUseCase should throw a parameter exception when the libelleUnity already exists", async () => {
-    try {
-      spyOn(ingredientRepository, "checkExistByName").and.returnValue(true);
-      spyOn(ingredientRepository, "findById").and.returnValue(true);
-      spyOn(Utils, "isAdmin").and.returnValue(true);
-      await updateIngredientUseCase.execute(ingredient, user);
-    } catch(e: any) {
-      const a: BusinessException = e;
-      expect(a.message).toBe("Ce nom est déjà utilisé par un ingrédient");
-    }
-  });
 });

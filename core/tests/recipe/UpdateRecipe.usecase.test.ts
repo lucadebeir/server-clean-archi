@@ -16,6 +16,7 @@ import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository
 import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
 import StepRepository from "../../ports/repositories/Step.repository";
 import IllustrateRecipe from "../../domain/IllustrateRecipe";
+import IllustrateRecipeRepository from "../../ports/repositories/IllustrateRecipe.repository";
 
 const initRecipe = (): Recipe => {
   const recipe = new Recipe();
@@ -108,11 +109,17 @@ describe("Update recipe use case unit tests", () => {
     addStepToRecipe: null
   } as unknown as StepRepository;
 
+  let illustrateRecipeRepository: IllustrateRecipeRepository = {
+    check: null,
+    addToRecette: null,
+    updateFromRecipe: null
+  } as unknown as IllustrateRecipeRepository;
+
   beforeEach(() => {
     recipe = initRecipe();
     useIngredient = initUseIngredient();
 
-    updateRecipeUseCase = new UpdateRecipeUseCase(recipeRepository, classifyInRepository, useIngredientRepository, stepRepository);
+    updateRecipeUseCase = new UpdateRecipeUseCase(recipeRepository, classifyInRepository, useIngredientRepository, stepRepository, illustrateRecipeRepository);
 
     spyOn(classifyInRepository, "check").and.returnValue(true);
     spyOn(useIngredientRepository, "check").and.returnValue(true);

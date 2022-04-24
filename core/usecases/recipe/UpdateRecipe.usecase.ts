@@ -7,14 +7,12 @@ import {isAdmin} from "../../utils/token.service";
 import ClassifyInRepository from "../../ports/repositories/ClassifyIn.repository";
 import UseIngredientRepository from "../../ports/repositories/UseIngredient.repository";
 import StepRepository from "../../ports/repositories/Step.repository";
+import IllustrateRecipeRepository from "../../ports/repositories/IllustrateRecipe.repository";
 
 export default class UpdateRecipeUseCase {
-  constructor(
-    private recipeRepository: RecipeRepository,
-    private classifyInRepository: ClassifyInRepository,
-    private useIngredientRepository: UseIngredientRepository,
-    private stepRepository: StepRepository
-  ) {} //constructeur avec l'interface
+  constructor(private recipeRepository: RecipeRepository, private classifyInRepository: ClassifyInRepository,
+              private useIngredientRepository: UseIngredientRepository, private stepRepository: StepRepository,
+              private illustrateRecipeRepository: IllustrateRecipeRepository) {} //constructeur avec l'interface
 
   execute = async (recipe: Recipe, token: Token): Promise<Recipe> => {
     this.checkBusinessRules(recipe, token);
@@ -25,29 +23,31 @@ export default class UpdateRecipeUseCase {
   private updateAssociations = async (recipe: Recipe): Promise<void> => {
     if (recipe.recipes__categories) for (const category of recipe.recipes__categories) {
       category.id_recipe = recipe.id;
-      if (!await this.classifyInRepository.check(category)) {
+      if (!await this.classifyInRepository.check(category))
         await this.classifyInRepository.addCategoryToRecipe(category);
-      }
     }
 
     if(recipe.recipes__ingredients__units) {
       for (const ingredient of recipe.recipes__ingredients__units) {
         ingredient.id_recipe = recipe.id;
-        if (await this.useIngredientRepository.check(ingredient)) {
+        if (await this.useIngredientRepository.check(ingredient))
           await this.useIngredientRepository.update(ingredient);
-        } else {
+        else
           await this.useIngredientRepository.addIngredientToRecipe(ingredient);
-        }
       }
     }
 
     if(recipe.steps) for(const step of recipe.steps) {
       step.id_recipe = recipe.id;
-      if(await this.stepRepository.check(step)) {
+      if(await this.stepRepository.check(step))
         await this.stepRepository.update(step);
-      } else {
+      else
         await this.stepRepository.addStepToRecipe(step);
-      }
+    }
+
+    if(recipe.recipes__images) for(const image of recipe.recipes__images) {
+      image.id_recipe = recipe.id;
+      await this.illustrateRecipeRepository.updateFromRecipe(image);
     }
   };
 

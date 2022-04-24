@@ -63,7 +63,7 @@ category.get("/:id/recipes/views", authenticateJWT, (req, res) => {
 //Ajouter catégorie
 category.post("/add", authenticateJWT, (req, res) => {
   const categoryData = {
-    name: req.body.libelleCategorie,
+    name: req.body.name,
   };
   categoryConfig
     .createCategoryUseCase()
@@ -92,8 +92,8 @@ category.delete("/:id", authenticateJWT, (req, res) => {
 //modifier catégorie
 category.post("/update", authenticateJWT, (req, res) => {
   const categoryData = {
-    id: req.body.idCategorie,
-    name: req.body.libelleCategorie,
+    id: req.body.id,
+    name: req.body.name,
   };
   categoryConfig
     .updateCategoryUseCase()

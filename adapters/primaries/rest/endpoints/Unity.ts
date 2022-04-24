@@ -38,7 +38,7 @@ unity.get("/:id", authenticateJWT, (req, res) => {
 //Ajouter ingredient
 unity.post("/add", authenticateJWT, (req, res) => {
   const unityData: Unity = {
-    name: req.body.libelleUnite,
+    name: req.body.name,
   };
   unityConfig
     .createUnityUseCase()
@@ -67,8 +67,8 @@ unity.delete("/:id", authenticateJWT, (req, res) => {
 //modifier ingredient
 unity.post("/update", authenticateJWT, (req, res) => {
   const unityData: Unity = {
-    id: req.body.idUnite,
-    name: req.body.libelleUnite,
+    id: req.body.id,
+    name: req.body.name,
   };
   unityConfig
     .updateUnityUseCase()

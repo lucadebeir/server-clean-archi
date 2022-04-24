@@ -8,18 +8,12 @@ import {isAdmin} from "../../utils/token.service";
 export default class UpdateIngredientUseCase {
   constructor(private ingredientRepository: IngredientRepository) {}
 
-  async execute(
-    ingredient?: Ingredient,
-    user?: Token
-  ): Promise<Ingredient> {
+  execute = async (ingredient?: Ingredient, user?: Token): Promise<Ingredient> => {
     await this.checkBusinessRules(ingredient, user);
     return await this.ingredientRepository.update(ingredient);
-  }
+  };
 
-  private async checkBusinessRules(
-    ingredient?: Ingredient,
-    user?: Token
-  ): Promise<void> {
+  private checkBusinessRules = async (ingredient?: Ingredient, user?: Token): Promise<void> => {
     if (user && isAdmin(user)) {
       if (ingredient) {
         if (!ingredient.id) {
@@ -33,15 +27,6 @@ export default class UpdateIngredientUseCase {
                 "Le nom d'un ingrédient est obligatoire"
               );
             } else {
-              if (
-                await this.ingredientRepository.checkExistByName(
-                  ingredient.name
-                )
-              ) {
-                throw new BusinessException(
-                  "Ce nom est déjà utilisé par un ingrédient"
-                );
-              }
               if (ingredient.name.length > 39) {
                 throw new BusinessException(
                   "Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères"
@@ -60,5 +45,5 @@ export default class UpdateIngredientUseCase {
         "Vous n'avez pas le droit d'accéder à cette ressource"
       );
     }
-  }
+  };
 }
