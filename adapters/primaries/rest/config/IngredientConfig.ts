@@ -1,10 +1,10 @@
 import IngredientRepository from "../../../../core/ports/repositories/Ingredient.repository";
 import IngredientRepositorySQL from "../../../secondaries/mysql/repositories/IngredientRepositorySQL";
-import GetAllIngredientsUseCase from "../../../../core/usecases/ingredient/GetAllIngredients.usecase";
-import GetIngredientByIdUseCase from "../../../../core/usecases/ingredient/GetIngredientById.usecase";
-import GetRestOfIngredientsPerToListUseCase
-    from "../../../../core/usecases/ingredient/GetRestOfIngredientsPerToList.usecase";
-import GetIngredientsNotInRecipeUseCase from "../../../../core/usecases/ingredient/GetIngredientsNotInRecipe.usecase";
+import FindAllIngredientsUsecase from "../../../../core/usecases/ingredient/FindAllIngredients.usecase";
+import FindIngredientByIdUsecase from "../../../../core/usecases/ingredient/FindIngredientById.usecase";
+import FindRestOfIngredientsPerToListUsecase
+    from "../../../../core/usecases/ingredient/FindRestOfIngredientsPerToList.usecase";
+import FindIngredientsNotInRecipeUsecase from "../../../../core/usecases/ingredient/FindIngredientsNotInRecipe.usecase";
 import CreateIngredientUseCase from "../../../../core/usecases/ingredient/CreateIngredient.usecase";
 import DeleteIngredientUseCase from "../../../../core/usecases/ingredient/DeleteIngredient.usecase";
 import UpdateIngredientUseCase from "../../../../core/usecases/ingredient/UpdateIngredient.usecase";
@@ -15,20 +15,20 @@ export default class IngredientConfig {
   private ingredientRepository: IngredientRepository = new IngredientRepositorySQL();
   private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
 
-  public getAllIngredientsUseCase(): GetAllIngredientsUseCase {
-    return new GetAllIngredientsUseCase(this.ingredientRepository);
+  public getAllIngredientsUseCase(): FindAllIngredientsUsecase {
+    return new FindAllIngredientsUsecase(this.ingredientRepository);
   }
 
-  public getIngredientByIdUseCase(): GetIngredientByIdUseCase {
-    return new GetIngredientByIdUseCase(this.ingredientRepository);
+  public getIngredientByIdUseCase(): FindIngredientByIdUsecase {
+    return new FindIngredientByIdUsecase(this.ingredientRepository);
   }
 
-  public getRestOfIngredientsPerToListUseCase(): GetRestOfIngredientsPerToListUseCase {
-    return new GetRestOfIngredientsPerToListUseCase(this.ingredientRepository);
+  public getRestOfIngredientsPerToListUseCase(): FindRestOfIngredientsPerToListUsecase {
+    return new FindRestOfIngredientsPerToListUsecase(this.ingredientRepository);
   }
 
-  public getIngredientsNotInRecipeUseCase(): GetIngredientsNotInRecipeUseCase {
-    return new GetIngredientsNotInRecipeUseCase(
+  public getIngredientsNotInRecipeUseCase(): FindIngredientsNotInRecipeUsecase {
+    return new FindIngredientsNotInRecipeUsecase(
       this.ingredientRepository,
       this.recipeRepository
     );

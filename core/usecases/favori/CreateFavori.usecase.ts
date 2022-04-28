@@ -7,17 +7,14 @@ import RecipeRepository from "../../ports/repositories/Recipe.repository";
 import {isLogin} from "../../utils/token.service";
 
 export default class CreateFavoriUseCase {
-  constructor(
-    private favoriRepository: FavoriRepository,
-    private recipeRepository: RecipeRepository
-  ) {}
+  constructor(private favoriRepository: FavoriRepository, private recipeRepository: RecipeRepository) {}
 
-  async execute(favori: Favori, token?: Token): Promise<string> {
+  execute = async (favori: Favori, token?: Token): Promise<string> => {
     await this.checkBusinessRules(favori, token);
     return await this.favoriRepository.create(favori);
-  }
+  };
 
-  private async checkBusinessRules(favori?: Favori, token?: Token): Promise<void> {
+  private checkBusinessRules = async (favori?: Favori, token?: Token): Promise<void> => {
     if (token && isLogin(token)) {
       if (favori) {
         if (!favori.id_recipe || !await this.recipeRepository.existById(favori.id_recipe)) {
@@ -33,5 +30,5 @@ export default class CreateFavoriUseCase {
     } else {
       throw new TechnicalException("Vous n'avez pas le droit de créer cette ressource");
     }
-  }
+  };
 }

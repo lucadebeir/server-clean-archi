@@ -8,11 +8,11 @@ import Shopping from "../../domain/Shopping";
 export default class AddIngredientsOfRecipeToShoppingListUseCase {
     constructor(private shoppingRepository: ShoppingRepository) {}
 
-    async execute(pseudo: any, list: Shopping[], token?: Token): Promise<string> {
+    execute = async (pseudo: any, list: Shopping[], token?: Token): Promise<string> => {
         await this.checkBusinessRules(pseudo, token);
         list.map(async value => await this.shoppingRepository.addIngredientToShoppingList(value));
         return "Les ingrédients de la recette sont bien ajoutés à la liste de courses de l'utilisateur";
-    }
+    };
 
     private checkBusinessRules = async (pseudo: any, token?: Token): Promise<void> => {
         if (token && isLogin(token)) {

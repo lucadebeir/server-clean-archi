@@ -3,12 +3,12 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import UserRepository from "../../../../core/ports/repositories/User.repository";
 import CreateCommentaireUseCase from "../../../../core/usecases/commentaire/CreateCommentaire.usecase";
 import DeleteCommentaireUseCase from "../../../../core/usecases/commentaire/DeleteCommentaire.usecase";
-import GetAllChildrenCommentairesByIdRecipeUseCase
-    from "../../../../core/usecases/commentaire/GetAllChildrenCommentairesByIdRecipe.usecase";
-import GetAllCommentairesByIdRecipeUseCase
-    from "../../../../core/usecases/commentaire/GetAllCommentairesByIdRecipe.usecase";
-import GetAllCommentairesByIdUserUseCase
-    from "../../../../core/usecases/commentaire/GetAllCommentairesByIdUser.usecase";
+import FindAllChildrenCommentairesByIdRecipeUsecase
+    from "../../../../core/usecases/commentaire/FindAllChildrenCommentairesByIdRecipe.usecase";
+import FindAllCommentairesByIdRecipeUsecase
+    from "../../../../core/usecases/commentaire/FindAllCommentairesByIdRecipe.usecase";
+import FindAllCommentairesByIdUserUsecase
+    from "../../../../core/usecases/commentaire/FindAllCommentairesByIdUser.usecase";
 import UpdateCommentaireUseCase from "../../../../core/usecases/commentaire/UpdateCommentaire.usecase";
 import CommentaireRepositorySQL from "../../../secondaries/mysql/repositories/CommentaireRepositorySQL";
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
@@ -19,22 +19,22 @@ export default class CommentaireConfig {
   private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
   private userRepository: UserRepository = new UserRepositorySQL();
 
-  public getAllCommentairesByIdRecipe(): GetAllCommentairesByIdRecipeUseCase {
-    return new GetAllCommentairesByIdRecipeUseCase(
+  public getAllCommentairesByIdRecipe(): FindAllCommentairesByIdRecipeUsecase {
+    return new FindAllCommentairesByIdRecipeUsecase(
       this.commentaireRepository,
       this.recipeRepository
     );
   }
 
-  public getAllChildrenCommentairesByIdRecipe(): GetAllChildrenCommentairesByIdRecipeUseCase {
-    return new GetAllChildrenCommentairesByIdRecipeUseCase(
+  public getAllChildrenCommentairesByIdRecipe(): FindAllChildrenCommentairesByIdRecipeUsecase {
+    return new FindAllChildrenCommentairesByIdRecipeUsecase(
       this.commentaireRepository,
       this.recipeRepository
     );
   }
 
-  public getAllCommentairesByIdUser(): GetAllCommentairesByIdUserUseCase {
-    return new GetAllCommentairesByIdUserUseCase(
+  public getAllCommentairesByIdUser(): FindAllCommentairesByIdUserUsecase {
+    return new FindAllCommentairesByIdUserUsecase(
       this.commentaireRepository,
       this.userRepository
     );

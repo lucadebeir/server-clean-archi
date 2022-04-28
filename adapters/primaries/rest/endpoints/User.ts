@@ -24,15 +24,9 @@ user.post("/register", (req, res) => {
         confirmed_password: sanitizeHtml(req.body.confirmedPassword),
         is_admin: req.body.admin,
         is_subscribed: req.body.abonneNews,
-    };
+    } as User;
     const rand = Math.floor(Math.random() * 100 + 54);
-    const link =
-        "http://" +
-        req.get("host") +
-        "/server/verify?id=" +
-        rand +
-        "&pseudo=" +
-        userData.pseudo;
+    const link = "//" + req.get("host") + "/server/verify?id=" + rand + "&pseudo=" + userData.pseudo;
 
     userConfig
         .registerUseCase()
@@ -57,15 +51,9 @@ user.post("/gregister", (req, res) => {
         email: sanitizeHtml(req.body.email),
         is_subscribed: req.body.abonneNews,
         is_admin: false
-    };
+    } as User;
     const rand = Math.floor(Math.random() * 100 + 54);
-    const link =
-        "http://" +
-        req.get("host") +
-        "/server/verify?id=" +
-        rand +
-        "&pseudo=" +
-        userData.pseudo;
+    const link = "//" + req.get("host") + "/server/verify?id=" + rand + "&pseudo=" + userData.pseudo;
 
     userConfig
         .gRegisterUseCase()
@@ -205,7 +193,7 @@ user.put("/profil/:pseudo", authenticateJWT, (req, res) => {
         password: sanitizeHtml(req.body.mdp),
         is_admin: req.body.admin,
         is_subscribed: req.body.abonneNews,
-    };
+    } as User;
     userConfig
         .updateUserUseCase()
         .execute(userData, req.body.user)

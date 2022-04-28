@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import RecipeConfig from "../config/RecipeConfig";
 import {authenticateJWT} from "../middleware/auth.middleware";
+import Recipe from "../../../../core/domain/Recipe";
 
 const recipe = express.Router();
 recipe.use(cors());
@@ -13,7 +14,8 @@ recipe.get("/all", (req, res) => {
     recipeConfig
         .getAllRecipeUseCase()
         .execute("desc")
-        .then((recipes: any) => {
+        .then((recipes: Recipe[]) => {
+            console.log(recipes)
             res.json(recipes);
         })
         .catch((err: Error) => {

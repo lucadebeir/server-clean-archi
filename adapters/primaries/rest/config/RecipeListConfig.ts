@@ -4,7 +4,7 @@ import AddRecipeToRecipeListUseCase from "../../../../core/usecases/recipe-list/
 import CheckExistRecipeByPseudoUseCase from "../../../../core/usecases/recipe-list/CheckExistRecipeByPseudo.usecase";
 import DeleteAllUseCase from "../../../../core/usecases/recipe-list/DeleteAll.usecase";
 import DeleteByIdUseCase from "../../../../core/usecases/recipe-list/DeleteById.usecase";
-import GetRecipeListByIdUseCase from "../../../../core/usecases/recipe-list/GetRecipeListById.usecase";
+import FindRecipeListByIdUsecase from "../../../../core/usecases/recipe-list/FindRecipeListById.usecase";
 import UpdateStateByIdUseCase from "../../../../core/usecases/recipe-list/UpdateStateById.usecase";
 import UpdateDayByIdUseCase from "../../../../core/usecases/recipe-list/UpdateDayById.usecase";
 import RecipeListRepositorySQL from "../../../secondaries/mysql/repositories/RecipeListRepositorySQL";
@@ -22,8 +22,8 @@ export default class RecipeListConfig {
     );
   }
 
-  public getRecipeListByIdUseCase(): GetRecipeListByIdUseCase {
-    return new GetRecipeListByIdUseCase(
+  public getRecipeListByIdUseCase(): FindRecipeListByIdUsecase {
+    return new FindRecipeListByIdUsecase(
       this.recipeListRepository,
       this.userRepository
     );

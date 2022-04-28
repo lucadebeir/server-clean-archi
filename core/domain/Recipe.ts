@@ -7,6 +7,8 @@ import IllustrateRecipe from "./IllustrateRecipe";
 import Ingredient from "./Ingredient";
 import Unity from "./Unity";
 import {BusinessException} from "../exceptions/BusinessException";
+import Notation from "./Notation";
+import Commentaire from "./Commentaire";
 
 export default class Recipe {
     id?: number;
@@ -20,6 +22,7 @@ export default class Recipe {
     preparation_time?: string;
     cooking_time?: string;
     rest_time?: string;
+    global_time?: string;
     astuce?: string;
     images?: Image[];
     recipes__ingredients__units?: UseIngredient[] = [];
@@ -30,6 +33,9 @@ export default class Recipe {
     menu?: number;
     note?: number;
     difficulty?: number;
+    average_rate?: number;
+    ratings?: Notation[] = [];
+    commentaires: Commentaire[] = [];
 
     isValid = (): boolean => {
         let isValid: boolean = false;

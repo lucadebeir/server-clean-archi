@@ -120,7 +120,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         order: [["date", order]],
     })
         .then((recipes: any) => {
-            return recipes;
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);
@@ -171,7 +172,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         ],
     })
         .then((recipe: any) => {
-            return recipe;
+            let result: Recipe = recipe.dataValues;
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);
@@ -215,8 +217,9 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         ],
         order: [["number_views", "DESC"]],
     })
-        .then((recipes) => {
-            return recipes;
+        .then((recipes: any) => {
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);
@@ -303,8 +306,9 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         order: [["date", "DESC"]],
         limit: 3,
     })
-        .then((recipes) => {
-            return recipes;
+        .then((recipes: any) => {
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);
@@ -352,8 +356,9 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         order: [["number_views", "DESC"]],
         limit: 12,
     })
-        .then((recipes) => {
-            return recipes;
+        .then((recipes: any) => {
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);
@@ -455,7 +460,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         order: [[data.popular ? "number_views" : "date", "desc"]],
     })
         .then((recipes: any) => {
-            return recipes;
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
         .catch((err) => {
             throw new TechnicalException(err.message);

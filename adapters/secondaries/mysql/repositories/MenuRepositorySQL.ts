@@ -7,99 +7,92 @@ import CategorySequelize from "../entities/Category.model";
 import {TechnicalException} from "../../../../core/exceptions/TechnicalException";
 
 export default class MenuRepositorySQL implements MenuRepository {
-  existById(id: any): Promise<boolean> {
-    return MenuSequelize.findOne({
-      where: {
-        id: id,
-      },
-    })
+  existById = (id: any): Promise<boolean> => MenuSequelize.findOne({
+    where: {
+      id: id,
+    },
+  })
       .then((result: any) => {
         return !!result;
       })
       .catch((err) => {
         throw new TechnicalException(err.message);
       });
-  }
 
-  findMenu(): Promise<Recipe[]> {
-    return RecipeSequelize.findAll({
-      include: [
-        {
-          model: MenuSequelize,
-          attributes: ["id"],
-          required: true,
+  findMenu = (): Promise<Recipe[]> => RecipeSequelize.findAll({
+    include: [
+      {
+        model: MenuSequelize,
+        attributes: ["id"],
+        required: true,
+      },
+      {
+        model: ImageSequelize,
+        required: true,
+        through: {
+          attributes: [],
         },
-        {
-          model: ImageSequelize,
-          required: true,
-          through: {
-            attributes: [],
-          },
+      },
+      {
+        model: CategorySequelize,
+        as: "categories",
+        required: true,
+        through: {
+          attributes: [],
         },
-        {
-          model: CategorySequelize,
-          as: "categories",
-          required: true,
-          through: {
-            attributes: [],
-          },
-        },
-      ],
-    })
+      },
+    ],
+  })
       .then((menu: any) => {
-        return menu;
+        let result: Recipe[] = menu.map(recipe => recipe.dataValues);
+        return result;
       })
       .catch((err) => {
         throw new TechnicalException(err.message);
       });
-  }
 
-  findById(id: any): Promise<Recipe> {
-    return RecipeSequelize.findOne({
-      include: [
-        {
-          model: MenuSequelize,
-          attributes: ["id"],
-          required: true,
-          where: {
-            id: id,
-          },
+  findById = (id: any): Promise<Recipe> => RecipeSequelize.findOne({
+    include: [
+      {
+        model: MenuSequelize,
+        attributes: ["id"],
+        required: true,
+        where: {
+          id: id,
         },
-        {
-          model: ImageSequelize,
-          required: true,
-          through: {
-            attributes: [],
-          },
+      },
+      {
+        model: ImageSequelize,
+        required: true,
+        through: {
+          attributes: [],
         },
-        {
-          model: CategorySequelize,
-          as: "categories",
-          required: true,
-          through: {
-            attributes: [],
-          },
+      },
+      {
+        model: CategorySequelize,
+        as: "categories",
+        required: true,
+        through: {
+          attributes: [],
         },
-      ],
-    })
+      },
+    ],
+  })
       .then((recipe: any) => {
         return recipe;
       })
       .catch((err) => {
         throw new TechnicalException(err.message);
       });
-  }
 
-  updateById(id: any, id_recipe: any): Promise<string> {
-    return MenuSequelize.update(
-      { id_recipe: id_recipe },
-      { where: { id: id } }
-    )
+  updateById = (id: any, id_recipe: any): Promise<string> => MenuSequelize.update(
+      {id_recipe: id_recipe},
+      {where: {id: id}}
+  )
       .then((recipe: any) => {
         return recipe;
       })
       .catch((err) => {
         throw new TechnicalException(err.message);
       });
-  }
 }

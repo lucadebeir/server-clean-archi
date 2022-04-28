@@ -15,87 +15,84 @@ import {Op} from "sequelize";
 import {TechnicalException} from "../../../../core/exceptions/TechnicalException";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
-    research(data: RecipesFilter, pseudo: string): Promise<Recipe[]> {
-        return RecipeSequelize.findAll({
-            include: [
-                {
-                    model: FavoriSequelize,
-                    attributes: [],
-                    required: true,
-                    where: {
-                        pseudo: pseudo,
-                    },
+    research = (data: RecipesFilter, pseudo: string): Promise<Recipe[]> => RecipeSequelize.findAll({
+        include: [
+            {
+                model: FavoriSequelize,
+                attributes: [],
+                required: true,
+                where: {
+                    pseudo: pseudo,
                 },
-                {
-                    model: CategorySequelize,
-                    //attributes: ["libelleCategorie"],
-                    as: "categories",
-                    required: true,
-                    through: {
-                        attributes: [],
-                    },
-                    where: {id: {[Op.in]: data.idsCategories}},
-                },
-                {
-                    model: UseIngredientSequelize,
-                    attributes: ["quantity"],
-                    required: true,
-                    include: [
-                        {
-                            model: IngredientSequelize,
-                            //attributes: ["nomIngredient"]
-                        },
-                        {
-                            model: UnitySequelize,
-                            //attributes: ["libelleUnite"]
-                        },
-                    ],
-                },
-                {
-                    model: ImageSequelize,
-                    as: "images",
-                    required: true,
-                    through: {
-                        attributes: [],
-                    },
-                },
-                {
-                    model: StepSequelize,
-                    required: false,
-                },
-                {
-                    model: NotationSequelize,
-                    required: false,
-                    attributes: ["note"],
-                },
-            ],
-            order: [[data.popular ? "number_views" : "date", "desc"]],
-        })
-            .then((recipes: any) => {
-                return recipes;
-            })
-            .catch((err) => {
-                throw new TechnicalException(err.message);
-            });
-    }
-
-    check(favori: Favori): Promise<boolean> {
-        return FavoriSequelize.findOne({
-            where: {
-                id_recipe: favori.id_recipe,
-                pseudo: favori.pseudo,
             },
-            attributes: ['id_recipe', 'pseudo']
+            {
+                model: CategorySequelize,
+                //attributes: ["libelleCategorie"],
+                as: "categories",
+                required: true,
+                through: {
+                    attributes: [],
+                },
+                where: {id: {[Op.in]: data.idsCategories}},
+            },
+            {
+                model: UseIngredientSequelize,
+                attributes: ["quantity"],
+                required: true,
+                include: [
+                    {
+                        model: IngredientSequelize,
+                        //attributes: ["nomIngredient"]
+                    },
+                    {
+                        model: UnitySequelize,
+                        //attributes: ["libelleUnite"]
+                    },
+                ],
+            },
+            {
+                model: ImageSequelize,
+                as: "images",
+                required: true,
+                through: {
+                    attributes: [],
+                },
+            },
+            {
+                model: StepSequelize,
+                required: false,
+            },
+            {
+                model: NotationSequelize,
+                required: false,
+                attributes: ["note"],
+            },
+        ],
+        order: [[data.popular ? "number_views" : "date", "desc"]],
+    })
+        .then((recipes: any) => {
+            let result: Recipe[] =  recipes.map(recipe => recipe.dataValues);
+            return result;
         })
-            .then((result) => {
-                return !!result;
-            })
-            .catch((err) => {
-                throw new TechnicalException(err.message);
-            });
-    }
+        .catch((err) => {
+            throw new TechnicalException(err.message);
+        });
 
-    create(favoriToCreate: Favori): Promise<string> {
+    check = (favori: Favori): Promise<boolean> => FavoriSequelize.findOne({
+        where: {
+            id_recipe: favori.id_recipe,
+            pseudo: favori.pseudo,
+        },
+        attributes: ['id_recipe', 'pseudo']
+    })
+        .then((result) => {
+            return !!result;
+        })
+        .catch((err) => {
+            throw new TechnicalException(err.message);
+        });
+
+    create = (favoriToCreate: Favori): Promise<string> => {
         RecipeSequelize.findOne({
             where: {
                 id: favoriToCreate.id_recipe,
@@ -120,102 +117,100 @@ export default class FavoriRepositorySQL implements FavoriRepository {
             .catch((err) => {
                 throw new TechnicalException(err.message);
             });
-    }
+    };
 
-    findByIdUser(pseudo: any): Promise<Recipe[]> {
-        return RecipeSequelize.findAll({
-            include: [
-                {
-                    model: FavoriSequelize,
+    findByIdUser = (pseudo: any): Promise<Recipe[]> => RecipeSequelize.findAll({
+        include: [
+            {
+                model: FavoriSequelize,
+                attributes: [],
+                required: true,
+                where: {
+                    pseudo: pseudo,
+                },
+            },
+            {
+                model: CategorySequelize,
+                //attributes: ["libelleCategorie"],
+                as: "categories",
+                required: true,
+                through: {
                     attributes: [],
-                    required: true,
-                    where: {
-                        pseudo: pseudo,
+                },
+            },
+            {
+                model: UseIngredientSequelize,
+                attributes: ["quantity"],
+                required: true,
+                include: [
+                    {
+                        model: IngredientSequelize,
+                        //attributes: ["nomIngredient"]
                     },
-                },
-                {
-                    model: CategorySequelize,
-                    //attributes: ["libelleCategorie"],
-                    as: "categories",
-                    required: true,
-                    through: {
-                        attributes: [],
+                    {
+                        model: UnitySequelize,
+                        //attributes: ["libelleUnite"]
                     },
+                ],
+            },
+            {
+                model: ImageSequelize,
+                as: "images",
+                required: true,
+                through: {
+                    attributes: [],
                 },
-                {
-                    model: UseIngredientSequelize,
-                    attributes: ["quantity"],
-                    required: true,
-                    include: [
-                        {
-                            model: IngredientSequelize,
-                            //attributes: ["nomIngredient"]
-                        },
-                        {
-                            model: UnitySequelize,
-                            //attributes: ["libelleUnite"]
-                        },
-                    ],
-                },
-                {
-                    model: ImageSequelize,
-                    as: "images",
-                    required: true,
-                    through: {
-                        attributes: [],
-                    },
-                },
-                {
-                    model: StepSequelize,
-                    required: false,
-                },
-                {
-                    model: NotationSequelize,
-                    required: false,
-                    attributes: ["note"],
-                },
-            ],
-            order: [["date", "DESC"]],
+            },
+            {
+                model: StepSequelize,
+                required: false,
+            },
+            {
+                model: NotationSequelize,
+                required: false,
+                attributes: ["note"],
+            },
+        ],
+        order: [["date", "DESC"]],
+    })
+        .then((favoris: any) => {
+            let result: Recipe[] =  favoris.map(recipe => recipe.dataValues);
+            return result;
         })
-            .then((favoris) => {
-                return favoris;
-            })
-            .catch((err) => {
-                throw new TechnicalException(err.message);
-            });
-    }
+        .catch((err) => {
+            throw new TechnicalException(err.message);
+        });
 
-    findByIdUserPerToCategory(pseudo: any, id_category: any): Promise<Recipe[]> {
-        return RecipeSequelize.findAll({
-            include: [
-                {
-                    model: FavoriSequelize,
-                    attributes: [],
-                    required: true,
-                    where: {
-                        pseudo: pseudo,
-                    },
+    findByIdUserPerToCategory = (pseudo: any, id_category: any): Promise<Recipe[]> => RecipeSequelize.findAll({
+        include: [
+            {
+                model: FavoriSequelize,
+                attributes: [],
+                required: true,
+                where: {
+                    pseudo: pseudo,
                 },
-                {
-                    model: CategorySequelize,
-                    attributes: [],
-                    as: "categories",
-                    where: {
-                        id: id_category,
-                    },
+            },
+            {
+                model: CategorySequelize,
+                attributes: [],
+                as: "categories",
+                where: {
+                    id: id_category,
                 },
-            ],
-            order: [["date", "DESC"]],
+            },
+        ],
+        order: [["date", "DESC"]],
+    })
+        .then((favoris: any) => {
+            let result: Recipe[] =  favoris.map(recipe => recipe.dataValues);
+            return result;
         })
-            .then((favoris) => {
-                return favoris;
-            })
-            .catch((err) => {
-                throw new TechnicalException(err.message);
-            });
-    }
+        .catch((err) => {
+            throw new TechnicalException(err.message);
+        });
 
-    deleteById(favori: Favori): Promise<string> {
+    deleteById = (favori: Favori): Promise<string> => {
         RecipeSequelize.findOne({
             where: {
                 id: favori.id_recipe,
@@ -249,5 +244,5 @@ export default class FavoriRepositorySQL implements FavoriRepository {
             .catch((err) => {
                 throw new TechnicalException(err.message);
             });
-    }
+    };
 }

@@ -8,33 +8,23 @@ import {isAdmin} from "../../utils/token.service";
 export default class UpdateCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
-  async execute(user?: Token, category?: Category): Promise<Category> {
+  execute = async (user?: Token, category?: Category): Promise<Category> => {
     await this.checkBusinessRules(user, category);
     return await this.categoryRepository.update(category);
-  }
+  };
 
-  private async checkBusinessRules(user?: Token, category?: Category): Promise<void> {
+  private checkBusinessRules = async (user?: Token, category?: Category): Promise<void> => {
     if (user && isAdmin(user)) {
       if (category) {
         if (!category.id) {
-          throw new TechnicalException(
-            "L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier"
-          );
+          throw new TechnicalException("L'identifiant d'une catégorie est obligatoire pour pouvoir la modifier");
         }
         if (await this.categoryRepository.existById(category.id)) {
           if (!category.name) {
-            throw new BusinessException(
-              "Le libellé d'une catégorie est obligatoire"
-            );
+            throw new BusinessException("Le libellé d'une catégorie est obligatoire");
           } else {
-            if (
-              await this.categoryRepository.checkExistByName(
-                category.name
-              )
-            ) {
-              throw new BusinessException(
-                "Ce libellé est déjà utilisé par une catégorie"
-              );
+            if (await this.categoryRepository.checkExistByName(category.name)) {
+              throw new BusinessException("Ce libellé est déjà utilisé par une catégorie");
             }
           }
         } else {
@@ -44,9 +34,7 @@ export default class UpdateCategoryUseCase {
         throw new TechnicalException("La catégorie est indéfinie");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
-  }
+  };
 }

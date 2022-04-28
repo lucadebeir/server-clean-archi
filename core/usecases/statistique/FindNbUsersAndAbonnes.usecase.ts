@@ -7,14 +7,12 @@ import {isAdmin} from "../../utils/token.service";
 export default class FindUsersXAbonnesUseCase {
   constructor(private statistiqueRepository: StatistiqueRepository) {}
 
-  async execute(token?: Token): Promise<User[]> {
+  execute = async (token?: Token): Promise<User[]> => {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findUsersXAbonnes();
-  }
+  };
 
-  private checkBusinessRules(token?: Token): void {
-    if (!token || !isAdmin(token)) {
-      throw new TechnicalException("Vous n'avez pas accès à cette ressource");
-    }
-  }
+  private checkBusinessRules = (token?: Token): void => {
+    if (!token || !isAdmin(token)) throw new TechnicalException("Vous n'avez pas accès à cette ressource");
+  };
 }

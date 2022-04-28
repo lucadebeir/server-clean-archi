@@ -6,14 +6,12 @@ import {isAdmin} from "../../utils/token.service";
 export default class FindNbViewsUseCase {
   constructor(private statistiqueRepository: StatistiqueRepository) {}
 
-  async execute(token?: Token): Promise<number> {
+  execute = async (token?: Token): Promise<number> => {
     this.checkBusinessRules(token);
     return this.statistiqueRepository.findNbViews();
-  }
+  };
 
-  private checkBusinessRules(token?: Token): void {
-    if (!token || !isAdmin(token)) {
-      throw new TechnicalException("Vous n'avez pas accès à cette ressource");
-    }
-  }
+  private checkBusinessRules = (token?: Token): void => {
+    if (!token || !isAdmin(token)) throw new TechnicalException("Vous n'avez pas accès à cette ressource");
+  };
 }

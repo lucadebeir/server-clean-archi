@@ -1,24 +1,24 @@
 import UnityRepository from "../../../../core/ports/repositories/Unity.repository";
 import CreateUnityUseCase from "../../../../core/usecases/unity/CreateUnity.usecase";
 import DeleteUnityUseCase from "../../../../core/usecases/unity/DeleteUnity.usecase";
-import GetAllUnitiesUseCase from "../../../../core/usecases/unity/GetAllUnities.usecase";
-import GetUnityByIdUseCase from "../../../../core/usecases/unity/GetUnityById.usecase";
+import FindAllUnitiesUsecase from "../../../../core/usecases/unity/FindAllUnities.usecase";
+import FindUnityByIdUsecase from "../../../../core/usecases/unity/FindUnityById.usecase";
 import UpdateUnityUseCase from "../../../../core/usecases/unity/UpdateUnity.usecase";
 import UnityRepositorySQL from "../../../secondaries/mysql/repositories/UnityRepositorySQL";
 
 export default class UnityConfig {
   private unityRepository: UnityRepository = new UnityRepositorySQL();
 
-  public getAllUnitiesUseCase(): GetAllUnitiesUseCase {
-    return new GetAllUnitiesUseCase(this.unityRepository);
+  public getAllUnitiesUseCase(): FindAllUnitiesUsecase {
+    return new FindAllUnitiesUsecase(this.unityRepository);
   }
 
   public createUnityUseCase(): CreateUnityUseCase {
     return new CreateUnityUseCase(this.unityRepository);
   }
 
-  public getUnityByIdUseCase(): GetUnityByIdUseCase {
-    return new GetUnityByIdUseCase(this.unityRepository);
+  public getUnityByIdUseCase(): FindUnityByIdUsecase {
+    return new FindUnityByIdUsecase(this.unityRepository);
   }
 
   public updateUnityUseCase(): UpdateUnityUseCase {

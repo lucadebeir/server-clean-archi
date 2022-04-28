@@ -4,11 +4,11 @@ import CheckValideTokenUseCase from "../../../../core/usecases/user/CheckValideT
 import DeleteUserUseCase from "../../../../core/usecases/user/DeleteUser.usecase";
 import ExistByPseudoUseCase from "../../../../core/usecases/user/ExistByPseudo.usecase";
 import ForgetPasswordUseCase from "../../../../core/usecases/user/ForgetPassword.usecase";
-import GetAllAbonneMailUsersUseCase from "../../../../core/usecases/user/GetAllAbonneMailUsers.usecase";
-import GetAllAbonneUsersUseCase from "../../../../core/usecases/user/GetAllAbonneUsers.usecase";
-import GetAllExistingEmailsUseCase from "../../../../core/usecases/user/GetAllExistingEmails.usecase";
-import GetAllExistingPseudoUseCase from "../../../../core/usecases/user/GetAllExistingPseudo.usecase";
-import GetUserByIdUseCase from "../../../../core/usecases/user/GetUserById.usecase";
+import FindAllAbonneMailUsersUsecase from "../../../../core/usecases/user/FindAllAbonneMailUsers.usecase";
+import FindAllAbonneUsersUsecase from "../../../../core/usecases/user/FindAllAbonneUsers.usecase";
+import FindAllExistingEmailsUsecase from "../../../../core/usecases/user/FindAllExistingEmails.usecase";
+import FindAllExistingPseudoUsecase from "../../../../core/usecases/user/FindAllExistingPseudo.usecase";
+import FindUserByIdUsecase from "../../../../core/usecases/user/FindUserById.usecase";
 import GoogleLoginUseCase from "../../../../core/usecases/user/GoogleLogin.usecase";
 import GoogleRegisterUseCase from "../../../../core/usecases/user/GoogleRegister.usecase";
 import LoginUseCase from "../../../../core/usecases/user/Login.usecase";
@@ -46,24 +46,24 @@ export default class UserConfig {
     );
   }
 
-  public getAllAbonneUsersUseCase(): GetAllAbonneUsersUseCase {
-    return new GetAllAbonneUsersUseCase(this.userRepository);
+  public getAllAbonneUsersUseCase(): FindAllAbonneUsersUsecase {
+    return new FindAllAbonneUsersUsecase(this.userRepository);
   }
 
-  public getAllAbonneMailUsersUseCase(): GetAllAbonneMailUsersUseCase {
-    return new GetAllAbonneMailUsersUseCase(this.userRepository);
+  public getAllAbonneMailUsersUseCase(): FindAllAbonneMailUsersUsecase {
+    return new FindAllAbonneMailUsersUsecase(this.userRepository);
   }
 
-  public getAllExistingEmailsUseCase(): GetAllExistingEmailsUseCase {
-    return new GetAllExistingEmailsUseCase(this.userRepository);
+  public getAllExistingEmailsUseCase(): FindAllExistingEmailsUsecase {
+    return new FindAllExistingEmailsUsecase(this.userRepository);
   }
 
-  public getAllExistingPseudoUseCase(): GetAllExistingPseudoUseCase {
-    return new GetAllExistingPseudoUseCase(this.userRepository);
+  public getAllExistingPseudoUseCase(): FindAllExistingPseudoUsecase {
+    return new FindAllExistingPseudoUsecase(this.userRepository);
   }
 
-  public getUserByIdUseCase(): GetUserByIdUseCase {
-    return new GetUserByIdUseCase(this.userRepository);
+  public getUserByIdUseCase(): FindUserByIdUsecase {
+    return new FindUserByIdUsecase(this.userRepository);
   }
 
   public loginUseCase(): LoginUseCase {

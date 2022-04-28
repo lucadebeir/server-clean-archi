@@ -11,7 +11,7 @@ export default class UpdatePasswordWithTokenUseCase {
   execute = async (token?: Token, newPassword?: any): Promise<string> => {
     this.checkBusinessRules(token, newPassword);
     const hash: string = await this.cryptRepository.crypt(newPassword);
-    return this.userRepository.updatePasswordWithToken(token, hash);
+    return await this.userRepository.updatePasswordWithToken(token, hash);
   };
 
   private checkBusinessRules = (token?: Token, new_password?: any): void => {

@@ -4,13 +4,13 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import UserRepository from "../../../../core/ports/repositories/User.repository";
 import CreateRecipeUseCase from "../../../../core/usecases/recipe/CreateRecipe.usecase";
 import DeleteRecipeUseCase from "../../../../core/usecases/recipe/DeleteRecipe.usecase";
-import GetAllPerToNbViewUseCase from "../../../../core/usecases/recipe/GetAllPerToNbView.usecase";
-import GetAllRecipesUseCase from "../../../../core/usecases/recipe/GetAllRecipes.usecase";
-import GetCategoriesByIdRecipeUseCase from "../../../../core/usecases/recipe/GetCategoriesByIdRecipe.usecase";
-import GetIngredientsByIdRecipeUseCase from "../../../../core/usecases/recipe/GetIngredientsByIdRecipe.usecase";
-import GetLatestRecipesUseCase from "../../../../core/usecases/recipe/GetLatestRecipes.usecase";
-import GetMostPopularRecipesUseCase from "../../../../core/usecases/recipe/GetMostPopularRecipes.usecase";
-import GetRecipeByIdUseCase from "../../../../core/usecases/recipe/GetRecipeById.usecase";
+import FindAllPerToNbViewUsecase from "../../../../core/usecases/recipe/FindAllPerToNbView.usecase";
+import FindAllRecipesUsecase from "../../../../core/usecases/recipe/FindAllRecipes.usecase";
+import FindCategoriesByIdRecipeUsecase from "../../../../core/usecases/recipe/FindCategoriesByIdRecipe.usecase";
+import FindIngredientsByIdRecipeUsecase from "../../../../core/usecases/recipe/FindIngredientsByIdRecipe.usecase";
+import FindLatestRecipesUsecase from "../../../../core/usecases/recipe/FindLatestRecipes.usecase";
+import FindMostPopularRecipesUsecase from "../../../../core/usecases/recipe/FindMostPopularRecipes.usecase";
+import FindRecipeByIdUsecase from "../../../../core/usecases/recipe/FindRecipeById.usecase";
 import ResearchFilterUseCase from "../../../../core/usecases/recipe/ResearchFilter.usecase";
 import UpdateNbViewsUseCase from "../../../../core/usecases/recipe/UpdateNbViews.usecase";
 import UpdateRecipeUseCase from "../../../../core/usecases/recipe/UpdateRecipe.usecase";
@@ -37,32 +37,32 @@ export default class RecipeConfig {
     private classifyInRepository: ClassifyInRepository = new ClassifyInRepositorySQL();
     private illustrateRecipeRepository: IllustrateRecipeRepository = new IllustrateRecipeRepositorySQL();
 
-    public getAllRecipeUseCase(): GetAllRecipesUseCase {
-        return new GetAllRecipesUseCase(this.recipeRepository);
+    public getAllRecipeUseCase(): FindAllRecipesUsecase {
+        return new FindAllRecipesUsecase(this.recipeRepository);
     }
 
-    public getAllPerToNbViewUseCase(): GetAllPerToNbViewUseCase {
-        return new GetAllPerToNbViewUseCase(this.recipeRepository);
+    public getAllPerToNbViewUseCase(): FindAllPerToNbViewUsecase {
+        return new FindAllPerToNbViewUsecase(this.recipeRepository);
     }
 
-    public getRecipeByIdUseCase(): GetRecipeByIdUseCase {
-        return new GetRecipeByIdUseCase(this.recipeRepository);
+    public getRecipeByIdUseCase(): FindRecipeByIdUsecase {
+        return new FindRecipeByIdUsecase(this.recipeRepository);
     }
 
-    public getIngredientsByIdRecipeUseCase(): GetIngredientsByIdRecipeUseCase {
-        return new GetIngredientsByIdRecipeUseCase(this.recipeRepository);
+    public getIngredientsByIdRecipeUseCase(): FindIngredientsByIdRecipeUsecase {
+        return new FindIngredientsByIdRecipeUsecase(this.recipeRepository);
     }
 
-    public getCategoriesByIdRecipeUseCase(): GetCategoriesByIdRecipeUseCase {
-        return new GetCategoriesByIdRecipeUseCase(this.recipeRepository);
+    public getCategoriesByIdRecipeUseCase(): FindCategoriesByIdRecipeUsecase {
+        return new FindCategoriesByIdRecipeUsecase(this.recipeRepository);
     }
 
-    public getLatestRecipesUseCase(): GetLatestRecipesUseCase {
-        return new GetLatestRecipesUseCase(this.recipeRepository);
+    public getLatestRecipesUseCase(): FindLatestRecipesUsecase {
+        return new FindLatestRecipesUsecase(this.recipeRepository);
     }
 
-    public getMostPopularRecipesUseCase(): GetMostPopularRecipesUseCase {
-        return new GetMostPopularRecipesUseCase(this.recipeRepository);
+    public getMostPopularRecipesUseCase(): FindMostPopularRecipesUsecase {
+        return new FindMostPopularRecipesUsecase(this.recipeRepository);
     }
 
     public createRecipeUseCase(): CreateRecipeUseCase {

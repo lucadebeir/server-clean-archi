@@ -6,21 +6,20 @@ import CryptRepository from "../../ports/crypt/Crypt.repository";
 export default class LoginUseCase {
   constructor(private userRepository: UserRepository, private cryptRepository: CryptRepository) {}
 
-  async execute(email: any, password: any): Promise<Token> {
+  execute = async (email: any, password: any): Promise<Token> => {
     await this.checkBusinessRules(email, password);
     const user: Token = await this.userRepository.login(email, password);
     await this.checkPassword(password, user);
     return user;
-  }
+  };
 
-  async checkPassword(password: string, user: Token): Promise<void> {
+  checkPassword = async (password: string, user: Token): Promise<void> => {
     if (!await this.cryptRepository.compare(password, user.password)) {
       throw new BusinessException("Mot de passe et/ou email incorrect");
     }
-  }
+  };
 
-  private async checkBusinessRules(email: any, password: any): Promise<void> {
-
+  private checkBusinessRules = async (email: any, password: any): Promise<void> => {
       if (email) {
         if(await this.userRepository.existByEmail(email)) {
           if (password) {
@@ -36,6 +35,6 @@ export default class LoginUseCase {
       } else {
         throw new BusinessException("L'email est obligatoire");
       }
-    
-  }
+
+  };
 }

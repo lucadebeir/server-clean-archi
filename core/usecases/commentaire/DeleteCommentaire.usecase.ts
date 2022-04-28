@@ -7,64 +7,30 @@ import UserRepository from "../../ports/repositories/User.repository";
 import {isAdmin, isLogin} from "../../utils/token.service";
 
 export default class DeleteCommentaireUseCase {
-  constructor(
-    private commentaireRepository: CommentaireRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private commentaireRepository: CommentaireRepository, private userRepository: UserRepository) {}
 
-  async execute(
-    commentaire: Commentaire,
-    token?: Token
-  ): Promise<string> {
+  execute = async (commentaire: Commentaire, token?: Token): Promise<string> => {
     await this.checkBusinessRules(commentaire, token);
-    return await this.commentaireRepository.deleteById(
-      commentaire.id
-    );
-  }
+    return await this.commentaireRepository.deleteById(commentaire.id);
+  };
 
-  private checkBusinessRules(
-    commentaire: Commentaire,
-    token?: Token
-  ): void {
+  private checkBusinessRules = async (commentaire: Commentaire, token?: Token): Promise<void> => {
     if (token) {
-      if (isAdmin(token)) {
-        this.underCheckBusinessRules(commentaire, token);
-      } else {
+      if (isAdmin(token)) await this.underCheckBusinessRules(commentaire, token);
+      else {
         if (isLogin(token)) {
-          if (token.pseudo === commentaire.pseudo) {
-            this.underCheckBusinessRules(commentaire, token);
-          } else {
-            throw new BusinessException(
-              "Ce commentaire n'est pas un des votre. Vous ne pouvez pas supprimer cette ressource"
-            );
-          }
-        } else {
-          throw new TechnicalException(
-            "Vous ne pouvez pas supprimer cette ressource"
-          );
-        }
+          if (token.pseudo === commentaire.pseudo) this.underCheckBusinessRules(commentaire, token);
+          else throw new BusinessException("Ce commentaire n'est pas un des votre. Vous ne pouvez pas supprimer cette ressource");
+        } else throw new TechnicalException("Vous ne pouvez pas supprimer cette ressource");
       }
-    } else {
-      throw new TechnicalException(
-        "Vous ne pouvez pas supprimer cette ressource"
-      );
-    }
-  }
+    } else throw new TechnicalException("Vous ne pouvez pas supprimer cette ressource");
+  };
 
-  private async underCheckBusinessRules(
-    commentaire: Commentaire,
-    token: Token
-  ): Promise<void> {
+  private underCheckBusinessRules = async (commentaire: Commentaire, token: Token): Promise<void> => {
     if (await this.userRepository.existByPseudo(token.pseudo)) {
       if (commentaire.id) {
-        if (!this.commentaireRepository.existById(commentaire.id)) {
-          throw new BusinessException("Le commentaire n'existe pas");
-        }
-      } else {
-        throw new BusinessException("L'identifiant est obligatoire");
-      }
-    } else {
-      throw new BusinessException("L'utilisateur n'existe pas");
-    }
-  }
+        if (!this.commentaireRepository.existById(commentaire.id)) throw new BusinessException("Le commentaire n'existe pas");
+      } else throw new BusinessException("L'identifiant est obligatoire");
+    } else throw new BusinessException("L'utilisateur n'existe pas");
+  };
 }

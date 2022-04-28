@@ -4,7 +4,7 @@ import NotationRepository from "../../ports/repositories/Notation.repository";
 export default class FindByPseudoUseCase {
   constructor(private notationRepository: NotationRepository) {}
 
-  async execute(id_recipe: any, pseudo: string): Promise<Notation> {
+  execute = async (id_recipe: any, pseudo: string): Promise<Notation> => {
     let res: Notation = await this.notationRepository.findByPseudo(id_recipe, pseudo);
     if(!res) {
       res = new Notation();
@@ -13,5 +13,5 @@ export default class FindByPseudoUseCase {
       res.note = 0;
     }
     return res;
-  }
+  };
 }

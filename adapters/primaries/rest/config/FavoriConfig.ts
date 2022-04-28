@@ -4,9 +4,9 @@ import RecipeRepository from "../../../../core/ports/repositories/Recipe.reposit
 import CheckFavoriByPseudoUseCase from "../../../../core/usecases/favori/CheckFavoriByPseudo.usecase";
 import CreateFavoriUseCase from "../../../../core/usecases/favori/CreateFavori.usecase";
 import DeleteFavoriUseCase from "../../../../core/usecases/favori/DeleteFavori.usecase";
-import GetFavorisByIdUserUseCase from "../../../../core/usecases/favori/GetFavorisByIdUser.usecase";
-import GetFavorisByIdUserPerToCategoryUseCase
-    from "../../../../core/usecases/favori/GetFavorisByIdUserPerToCategory.usecase";
+import FindFavorisByIdUserUsecase from "../../../../core/usecases/favori/FindFavorisByIdUser.usecase";
+import FindFavorisByIdUserPerToCategoryUsecase
+    from "../../../../core/usecases/favori/FindFavorisByIdUserPerToCategory.usecase";
 import CategoryRepositorySQL from "../../../secondaries/mysql/repositories/CategoryRepositorySQL";
 import FavoriRepositorySQL from "../../../secondaries/mysql/repositories/FavoriRepositorySQL";
 import RecipeRepositorySQL from "../../../secondaries/mysql/repositories/RecipeRepositorySQL";
@@ -23,12 +23,12 @@ export default class FavoriConfig {
     );
   }
 
-  public getFavorisByIdUser(): GetFavorisByIdUserUseCase {
-    return new GetFavorisByIdUserUseCase(this.favoriRepository);
+  public getFavorisByIdUser(): FindFavorisByIdUserUsecase {
+    return new FindFavorisByIdUserUsecase(this.favoriRepository);
   }
 
-  public getFavorisByIdUserPerToCategoryUseCase(): GetFavorisByIdUserPerToCategoryUseCase {
-    return new GetFavorisByIdUserPerToCategoryUseCase(
+  public getFavorisByIdUserPerToCategoryUseCase(): FindFavorisByIdUserPerToCategoryUsecase {
+    return new FindFavorisByIdUserPerToCategoryUsecase(
       this.favoriRepository,
       this.categoryRepository
     );

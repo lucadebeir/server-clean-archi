@@ -7,10 +7,7 @@ import UserRepository from "../../ports/repositories/User.repository";
 import {isLogin} from "../../utils/token.service";
 
 export default class AddRecipeToRecipeListUseCase {
-  constructor(
-    private recipeListRepository: RecipeListRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private recipeListRepository: RecipeListRepository, private userRepository: UserRepository) {}
 
   execute = async (recipe: RecipeList, token?: Token): Promise<RecipeList> => {
     await this.checkBusinessRules(recipe, token);

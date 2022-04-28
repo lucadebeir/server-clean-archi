@@ -8,31 +8,26 @@ import {isLogin} from "../../utils/token.service";
 export default class DeleteFavoriUseCase {
   constructor(private favoriRepository: FavoriRepository) {}
 
-  async execute(id: any, pseudo: any, token?: Token): Promise<string> {
+  execute = async (id: any, pseudo: any, token?: Token): Promise<string> => {
     const favori: Favori = {
       id_recipe: id,
       pseudo: pseudo
     }
-    this.checkBusinessRules(favori, token);
+    await this.checkBusinessRules(favori, token);
     return await this.favoriRepository.deleteById(favori);
-  }
+  };
 
-  private checkBusinessRules(favori?: Favori, token?: Token): void {
+  private checkBusinessRules = async (favori?: Favori, token?: Token): Promise<void> => {
     if (token && isLogin(token)) {
       if (favori) {
-        if (!this.favoriRepository.check(favori)) {
-          throw new BusinessException(
-              "Cette recette n'existe pas dans la liste des recettes favorites de l'utilisateur " +
-                favori.pseudo
-            );
-          }
+        if (!await this.favoriRepository.check(favori)) {
+          throw new BusinessException("Cette recette n'existe pas dans la liste des recettes favorites de l'utilisateur " + favori.pseudo);
+        }
       } else {
         throw new TechnicalException("Problème technique");
       }
     } else {
-      throw new TechnicalException(
-        "Vous n'avez pas le droit de créer cette ressource"
-      );
+      throw new TechnicalException("Vous n'avez pas le droit de créer cette ressource");
     }
-  }
+  };
 }

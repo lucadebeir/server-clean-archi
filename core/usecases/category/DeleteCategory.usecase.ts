@@ -7,32 +7,26 @@ import {isAdmin} from "../../utils/token.service";
 export default class DeleteCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository) {}
 
-  async execute(id: any, user: Token): Promise<string> {
+  execute = async (id: any, user: Token): Promise<string> => {
     await this.checkBusinessRules(id, user);
     return await this.categoryRepository.deleteById(id);
-  }
+  };
 
-  private async checkBusinessRules(id: any, user: Token): Promise<void> {
+  private checkBusinessRules = async (id: any, user: Token): Promise<void> => {
     if (isAdmin(user)) {
       if (id) {
         if (await this.categoryRepository.existById(id)) {
           if (await this.categoryRepository.checkExistInRecipes(id)) {
-            throw new BusinessException(
-              "Cette catégorie est associée à une ou plusieurs recettes"
-            );
+            throw new BusinessException("Cette catégorie est associée à une ou plusieurs recettes");
           }
         } else {
           throw new BusinessException("Cette catégorie n'existe pas");
         }
       } else {
-        throw new TechnicalException(
-          "L'identifiant d'une catégorie est indéfini"
-        );
+        throw new TechnicalException("L'identifiant d'une catégorie est indéfini");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
-  }
+  };
 }

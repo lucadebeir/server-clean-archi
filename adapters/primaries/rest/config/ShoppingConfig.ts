@@ -5,9 +5,9 @@ import AddIngredientsOfRecipeToShoppingListUseCase
 import AddIngredientToShoppingListUseCase
     from "../../../../core/usecases/shopping-list/AddIngredientToShoppingList.usecase";
 import DeleteByIdUseCase from "../../../../core/usecases/shopping-list/DeleteById.usecase";
-import GetIngredientsNotInShoppingListByIdUseCase
-    from "../../../../core/usecases/shopping-list/GetIngredientsNotInShoppingListById.usecase";
-import GetShoppingListByIdUseCase from "../../../../core/usecases/shopping-list/GetShoppingListById.usecase";
+import FindIngredientsNotInShoppingListByIdUsecase
+    from "../../../../core/usecases/shopping-list/FindIngredientsNotInShoppingListById.usecase";
+import FindShoppingListByIdUsecase from "../../../../core/usecases/shopping-list/FindShoppingListById.usecase";
 import ShoppingRepositorySQL from "../../../secondaries/mysql/repositories/ShoppingRepositorySQL";
 import UserRepositorySQL from "../../../secondaries/mysql/repositories/UserRepositorySQL";
 
@@ -26,15 +26,15 @@ export default class ShoppingConfig {
         return new AddIngredientsOfRecipeToShoppingListUseCase(this.shoppingRepository);
     }
 
-    public getShoppingListByIdUseCase(): GetShoppingListByIdUseCase {
-        return new GetShoppingListByIdUseCase(
+    public getShoppingListByIdUseCase(): FindShoppingListByIdUsecase {
+        return new FindShoppingListByIdUsecase(
             this.shoppingRepository,
             this.userRepository
         );
     }
 
-    public getIngredientsNotInShoppingListByIdUseCase(): GetIngredientsNotInShoppingListByIdUseCase {
-        return new GetIngredientsNotInShoppingListByIdUseCase(
+    public getIngredientsNotInShoppingListByIdUseCase(): FindIngredientsNotInShoppingListByIdUsecase {
+        return new FindIngredientsNotInShoppingListByIdUsecase(
             this.shoppingRepository,
             this.userRepository
         );

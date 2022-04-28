@@ -9,65 +9,40 @@ import UseIngredientRepository from "../../ports/repositories/UseIngredient.repo
 import {isAdmin} from "../../utils/token.service";
 
 export default class AddIngredientToRecipeUseCase {
-  constructor(
-    private useIngredientRepository: UseIngredientRepository,
-    private unityRepository: UnityRepository,
-    private ingredientRepository: IngredientRepository,
-    private recipeRepository: RecipeRepository
-  ) {}
+  constructor(private useIngredientRepository: UseIngredientRepository, private unityRepository: UnityRepository,
+    private ingredientRepository: IngredientRepository, private recipeRepository: RecipeRepository) {}
 
-  async execute(
-    useIngredient: UseIngredient,
-    token?: Token
-  ): Promise<string> {
+  execute = async (useIngredient: UseIngredient, token?: Token): Promise<string> => {
     await this.checkBusinessRules(useIngredient, token);
     return this.useIngredientRepository.addIngredientToRecipe(useIngredient);
-  }
+  };
 
-  private async checkBusinessRules(
-    useIngredient?: UseIngredient,
-    token?: Token
-  ): Promise<void> {
+  private checkBusinessRules = async (useIngredient?: UseIngredient, token?: Token): Promise<void> => {
     if (token && isAdmin(token)) {
       if (useIngredient) {
-        if (
-          !useIngredient.id_unit ||
-          !this.unityRepository.findById(useIngredient.id_unit)
-        ) {
+        if (!useIngredient.id_unit || !await this.unityRepository.findById(useIngredient.id_unit)) {
           throw new BusinessException("L'unité doit exister");
         }
-        if (
-          !useIngredient.id_ingredient ||
-          !this.ingredientRepository.findById(useIngredient.id_ingredient)
-        ) {
+        if (!useIngredient.id_ingredient || !await this.ingredientRepository.findById(useIngredient.id_ingredient)) {
           throw new BusinessException("L'ingrédient doit exister");
         }
-        if (
-          !useIngredient.id_recipe ||
-          !this.recipeRepository.findById(useIngredient.id_recipe)
-        ) {
+        if (!useIngredient.id_recipe || !await this.recipeRepository.findById(useIngredient.id_recipe)) {
           throw new BusinessException("La recette doit exister");
         }
         if (useIngredient.quantity == 0) {
-          throw new BusinessException(
-            "Une quantité ne peut pas être négative, ni nulle"
-          );
+          throw new BusinessException("Une quantité ne peut pas être négative, ni nulle");
         }
         if (!useIngredient.quantity) {
           throw new BusinessException("La quantité est obligatoire");
         }
         if (await this.useIngredientRepository.check(useIngredient)) {
-          throw new BusinessException(
-            "Cet ingrédient existe déjà dans cette recette"
-          );
+          throw new BusinessException("Cet ingrédient existe déjà dans cette recette");
         }
       } else {
         throw new TechnicalException("Problème technique");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
-  }
+  };
 }

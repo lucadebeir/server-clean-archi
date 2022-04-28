@@ -8,14 +8,10 @@ import UserRepository from "../../ports/repositories/User.repository";
 import {isAdmin} from "../../utils/token.service";
 
 export default class CreateRecipeUseCase {
-    constructor(
-        private recipeRepository: RecipeRepository,
-        private mailingRepository: MailingRepository,
-        private userRepository: UserRepository //
-    ) {
-    } //constructeur avec l'interface
+    constructor(private recipeRepository: RecipeRepository, private mailingRepository: MailingRepository,
+        private userRepository: UserRepository) {} //constructeur avec l'interface
 
-    async execute(recipe: Recipe, token: Token): Promise<Recipe> {
+    execute = async (recipe: Recipe, token: Token): Promise<Recipe> => {
         try {
             await this.checkBusinessRules(recipe, token);
 
@@ -36,7 +32,7 @@ export default class CreateRecipeUseCase {
             throw e;
         }
 
-    }
+    };
 
     private checkBusinessRules = async (recipe: Recipe, token: Token): Promise<void> => {
         if (token && isAdmin(token)) {

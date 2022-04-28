@@ -17,20 +17,14 @@ export default class UpdateIngredientUseCase {
     if (user && isAdmin(user)) {
       if (ingredient) {
         if (!ingredient.id) {
-          throw new TechnicalException(
-            "L'identifiant d'un ingrédient est obligatoire pour pouvoir le modifier"
-          );
+          throw new TechnicalException("L'identifiant d'un ingrédient est obligatoire pour pouvoir le modifier");
         } else {
           if (await this.ingredientRepository.findById(ingredient.id)) {
             if (!ingredient.name) {
-              throw new BusinessException(
-                "Le nom d'un ingrédient est obligatoire"
-              );
+              throw new BusinessException("Le nom d'un ingrédient est obligatoire");
             } else {
               if (ingredient.name.length > 39) {
-                throw new BusinessException(
-                  "Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères"
-                );
+                throw new BusinessException("Le nom d'un ingrédient ne peut pas comporter plus de 39 caractères");
               }
             }
           } else {
@@ -41,9 +35,7 @@ export default class UpdateIngredientUseCase {
         throw new TechnicalException("L'ingrédient est indéfinie");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
   };
 }

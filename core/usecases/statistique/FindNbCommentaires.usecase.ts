@@ -11,9 +11,7 @@ export default class FindNbCommentairesUseCase {
     return this.statistiqueRepository.findNbCommentaires();
   }
 
-  private checkBusinessRules(token?: Token): void {
-    if (!token || !isAdmin(token)) {
-      throw new TechnicalException("Vous n'avez pas accès à cette ressource");
-    }
-  }
+  private checkBusinessRules = (token?: Token): void => {
+    if (!token || !isAdmin(token)) throw new TechnicalException("Vous n'avez pas accès à cette ressource");
+  };
 }

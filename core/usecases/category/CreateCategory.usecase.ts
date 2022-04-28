@@ -8,12 +8,12 @@ import {isAdmin} from "../../utils/token.service";
 export default class CreateCategoryUseCase {
     constructor(private categoryRepository: CategoryRepository) {}
 
-    async execute(category?: Category, user?: Token): Promise<Category> {
+    execute = async (category?: Category, user?: Token): Promise<Category> => {
         await this.checkBusinessRules(category, user);
         return await this.categoryRepository.create(category);
-    }
+    };
 
-    private async checkBusinessRules(category?: Category, user?: Token): Promise<void> {
+    private checkBusinessRules = async (category?: Category, user?: Token): Promise<void> => {
         if (user && isAdmin(user)) {
             if (category) {
                 if (!category.name) {
@@ -29,5 +29,5 @@ export default class CreateCategoryUseCase {
         } else {
             throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
         }
-    }
+    };
 }

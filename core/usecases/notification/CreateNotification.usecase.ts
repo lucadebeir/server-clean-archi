@@ -10,27 +10,18 @@ import {isLogin} from "../../utils/token.service";
 export default class CreateNotificationUseCase {
   typeList: any[] = ["vue", "abonne", "favori", "commentaire", "user"];
 
-  constructor(
-    private notificationRepository: NotificationRepository,
-    private userRepository: UserRepository,
-    private recipeRepository: RecipeRepository
-  ) {}
+  constructor(private notificationRepository: NotificationRepository, private userRepository: UserRepository,
+              private recipeRepository: RecipeRepository) {}
 
-  async execute(
-    notification: Notification,
-    token?: Token
-  ): Promise<Notification> {
+  execute = async (notification: Notification, token?: Token): Promise<Notification> => {
     await this.checkBusinessRules(notification, token);
     return this.notificationRepository.create(notification);
-  }
+  };
 
-  private async checkBusinessRules(
-    notification: Notification,
-    token?: Token
-  ): Promise<void> {
+  private checkBusinessRules = async (notification: Notification, token?: Token): Promise<void> => {
     if (notification.pseudo) {
       if (token && isLogin(token) && token.pseudo === notification.pseudo) {
-        if (await !this.userRepository.existByPseudo(notification.pseudo)) {
+        if (!await this.userRepository.existByPseudo(notification.pseudo)) {
           throw new BusinessException("L'utilisateur n'existe pas");
         }
       } else {
@@ -44,12 +35,10 @@ export default class CreateNotificationUseCase {
     }
     if (notification.type) {
       if (this.typeList.indexOf(notification.type) == -1) {
-        throw new BusinessException(
-          "Une notification doit être de type 'vue', 'abonne', 'favori', 'user' ou 'commentaire'"
-        );
+        throw new BusinessException("Une notification doit être de type 'vue', 'abonne', 'favori', 'user' ou 'commentaire'");
       }
     } else {
       throw new TechnicalException("Problème technique");
     }
-  }
+  };
 }

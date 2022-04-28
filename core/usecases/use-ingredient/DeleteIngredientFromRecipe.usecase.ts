@@ -6,37 +6,24 @@ import UseIngredientRepository from "../../ports/repositories/UseIngredient.repo
 import {isAdmin} from "../../utils/token.service";
 
 export default class DeleteIngredientFromRecipeUseCase {
-  constructor(
-    private useIngredientRepository: UseIngredientRepository,
-    private ingredientRepository: IngredientRepository,
-    private recipeRepository: RecipeRepository
-  ) {}
+  constructor(private useIngredientRepository: UseIngredientRepository, private ingredientRepository: IngredientRepository,
+    private recipeRepository: RecipeRepository) {}
 
-  async execute(
-    idRecette: any,
-    idIngredient: any,
-    token?: Token
-  ): Promise<string> {
-    this.checkBusinessRules(idRecette, idIngredient, token);
+  execute = async (idRecette: any, idIngredient: any, token?: Token): Promise<string> => {
+    await this.checkBusinessRules(idRecette, idIngredient, token);
     return this.useIngredientRepository.delete(idRecette, idIngredient);
-  }
+  };
 
-  private checkBusinessRules(
-    idRecette: number,
-    idIngredient: number,
-    token?: Token
-  ): void {
+  private checkBusinessRules = async (idRecette: number, idIngredient: number, token?: Token): Promise<void> => {
     if (token && isAdmin(token)) {
-      if (!idIngredient || !this.ingredientRepository.findById(idIngredient)) {
+      if (!idIngredient || !await this.ingredientRepository.findById(idIngredient)) {
         throw new BusinessException("L'ingrédient doit exister");
       }
-      if (!idRecette || !this.recipeRepository.findById(idRecette)) {
+      if (!idRecette || !await this.recipeRepository.findById(idRecette)) {
         throw new BusinessException("La recette doit exister");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
-  }
+  };
 }

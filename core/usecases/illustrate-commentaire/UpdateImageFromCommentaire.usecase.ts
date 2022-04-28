@@ -8,56 +8,31 @@ import CommentaireRepository from "../../ports/repositories/Commentaire.reposito
 import {isAdmin} from "../../utils/token.service";
 
 export default class UpdateImageFromCommentaireUseCase {
-  constructor(
-    private illustrateCommentaireRepository: IllustrateCommentaireRepository,
-    private imageRepository: ImageRepository,
-    private commentaireRepository: CommentaireRepository
-  ) {}
+  constructor(private illustrateCommentaireRepository: IllustrateCommentaireRepository, private imageRepository: ImageRepository,
+    private commentaireRepository: CommentaireRepository) {}
 
-  async execute(
-    illustrateCommentaire: IllustrateCommentaire,
-    token?: Token
-  ): Promise<string> {
-    this.checkBusinessRules(illustrateCommentaire, token);
-    return this.illustrateCommentaireRepository.updateFromCommentaire(
-      illustrateCommentaire
-    );
+  async execute(illustrateCommentaire: IllustrateCommentaire, token?: Token): Promise<string> {
+    await this.checkBusinessRules(illustrateCommentaire, token);
+    return this.illustrateCommentaireRepository.updateFromCommentaire(illustrateCommentaire);
   }
 
-  private checkBusinessRules(
-    illustrateCommentaire: IllustrateCommentaire,
-    token?: Token
-  ): void {
+  private checkBusinessRules = async (illustrateCommentaire: IllustrateCommentaire, token?: Token): Promise<void> => {
     if (token && isAdmin(token)) {
       if (illustrateCommentaire) {
-        if (
-          !illustrateCommentaire.id_image ||
-          !this.imageRepository.existById(illustrateCommentaire.id_image)
-        ) {
+        if (!illustrateCommentaire.id_image || !await this.imageRepository.existById(illustrateCommentaire.id_image)) {
           throw new BusinessException("L'image doit exister");
         }
-        if (
-          !illustrateCommentaire.id_commentaire ||
-          !this.commentaireRepository.existById(
-            illustrateCommentaire.id_commentaire
-          )
-        ) {
+        if (!illustrateCommentaire.id_commentaire || !await this.commentaireRepository.existById(illustrateCommentaire.id_commentaire)) {
           throw new BusinessException("Le commentaire doit exister");
         }
-        if (
-          !this.illustrateCommentaireRepository.check(illustrateCommentaire)
-        ) {
-          throw new BusinessException(
-            "Cette image n'existe pas dans ce commentaire"
-          );
+        if (!await this.illustrateCommentaireRepository.check(illustrateCommentaire)) {
+          throw new BusinessException("Cette image n'existe pas dans ce commentaire");
         }
       } else {
         throw new TechnicalException("Problème technique");
       }
     } else {
-      throw new BusinessException(
-        "Vous n'avez pas le droit d'accéder à cette ressource"
-      );
+      throw new BusinessException("Vous n'avez pas le droit d'accéder à cette ressource");
     }
-  }
+  };
 }
