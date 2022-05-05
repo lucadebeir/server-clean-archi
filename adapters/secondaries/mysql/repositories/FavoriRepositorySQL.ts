@@ -13,6 +13,7 @@ import UseIngredientSequelize from "../entities/UseIngredient.model";
 import RecipesFilter from "../../../../core/domain/RecipesFilter";
 import {Op} from "sequelize";
 import {TechnicalException} from "../../../../core/exceptions/TechnicalException";
+import ClassifyInSequelize from "../entities/ClassifyIn.model";
 
 export default class FavoriRepositorySQL implements FavoriRepository {
     research = (data: RecipesFilter, pseudo: string): Promise<Recipe[]> => RecipeSequelize.findAll({
@@ -26,14 +27,12 @@ export default class FavoriRepositorySQL implements FavoriRepository {
                 },
             },
             {
-                model: CategorySequelize,
-                //attributes: ["libelleCategorie"],
-                as: "categories",
+                model: ClassifyInSequelize,
                 required: true,
                 through: {
                     attributes: [],
                 },
-                where: {id: {[Op.in]: data.idsCategories}},
+                where: {id_category: {[Op.in]: data.idsCategories}},
             },
             {
                 model: UseIngredientSequelize,

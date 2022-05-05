@@ -17,7 +17,6 @@ favori.post("/add", authenticateJWT, (req, res) => {
     id_recipe: req.body.id_recipe,
     pseudo: req.body.pseudo,
   };
-  console.log(favoriData)
   favoriConfig
     .createFavoriUseCase()
     .execute(favoriData, req.body.user)

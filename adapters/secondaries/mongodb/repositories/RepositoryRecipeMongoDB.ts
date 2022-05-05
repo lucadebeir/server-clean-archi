@@ -5,6 +5,9 @@ import UseIngredient from "../../../../core/domain/UseIngredient";
 import RecipeRepository from "../../../../core/ports/repositories/Recipe.repository";
 
 export default class RepositoryRecipeMongoDB implements RecipeRepository {
+  updateNbFavoris(id: any): Promise<string> {
+      throw new Error("Method not implemented.");
+  }
   update(recipe: Recipe): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
@@ -38,7 +41,7 @@ export default class RepositoryRecipeMongoDB implements RecipeRepository {
   getMostPopularRecipes(): Promise<Recipe[]> {
     throw new Error("Method not implemented.");
   }
-  updateNbView(id: any): Promise<string> {
+  updateNbViews(id: any): Promise<string> {
     throw new Error("Method not implemented.");
   }
   deleteById(id: any): Promise<string> {
@@ -47,10 +50,7 @@ export default class RepositoryRecipeMongoDB implements RecipeRepository {
   create(recipe: Recipe): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
-  insertIngredientsAndCategories(
-    id: any,
-    categories: Category[]
-  ): Promise<Recipe> {
+  insertIngredientsAndCategories(id: any, categories: Category[]): Promise<Recipe> {
     throw new Error("Method not implemented.");
   }
   findAll(): Promise<Recipe[]> {

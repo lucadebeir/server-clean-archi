@@ -267,11 +267,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
     getLatestRecipes = (): Promise<Recipe[]> => RecipeSequelize.findAll({
         include: [
             {
-                model: CategorySequelize,
-                as: "categories",
-                through: {
-                    attributes: [],
-                }
+                model: ClassifyInSequelize,
+                include: [CategorySequelize]
             },
             {
                 model: UseIngredientSequelize,
@@ -317,11 +314,8 @@ export default class RecipeRepositorySQL implements RecipeRepository {
     getMostPopularRecipes = (): Promise<Recipe[]> => RecipeSequelize.findAll({
         include: [
             {
-                model: CategorySequelize,
-                as: "categories",
-                through: {
-                    attributes: [],
-                }
+                model: ClassifyInSequelize,
+                include: [CategorySequelize]
             },
             {
                 model: UseIngredientSequelize,
@@ -364,7 +358,7 @@ export default class RecipeRepositorySQL implements RecipeRepository {
             throw new TechnicalException(err.message);
         });
 
-    updateNbView = (id: any): Promise<string> => RecipeSequelize.findOne({
+    updateNbViews = (id: any): Promise<string> => RecipeSequelize.findOne({
         where: {
             id: id,
         },
@@ -416,13 +410,13 @@ export default class RecipeRepositorySQL implements RecipeRepository {
     research = (data: RecipesFilter): Promise<Recipe[]> => RecipeSequelize.findAll({
         include: [
             {
-                model: CategorySequelize,
-                //attributes: ["libelleCategorie"],
-                required: true,
-                through: {
-                    attributes: [],
-                },
-                where: {id: {[Op.in]: data.idsCategories}},
+                model: ClassifyInSequelize,
+                include: [{
+                    model: CategorySequelize,
+                    required: true,
+                    where: {id: {[Op.in]: data.idsCategories}},
+                }],
+                where: {id_category: {[Op.in]: data.idsCategories}},
             },
             {
                 model: UseIngredientSequelize,
@@ -466,4 +460,26 @@ export default class RecipeRepositorySQL implements RecipeRepository {
         .catch((err) => {
             throw new TechnicalException(err.message);
         });
+
+    updateNbFavoris = (id: any): Promise<string> => RecipeSequelize.findOne({
+        where: {
+            id: id,
+        },
+    })
+        .then((recipe: any) => {
+            return RecipeSequelize.update(
+                {number_favorites: recipe.number_favorites + 1},
+                {where: {id: id}}
+            )
+                .then((recipe: any) => {
+                    return "Nombre de favoris bien incrémenté";
+                })
+                .catch((err) => {
+                    throw new TechnicalException(err.message);
+                })
+        })
+        .catch((err) => {
+            throw new TechnicalException(err.message);
+        });
+
 }

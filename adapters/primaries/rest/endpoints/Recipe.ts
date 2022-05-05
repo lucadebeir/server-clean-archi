@@ -15,7 +15,6 @@ recipe.get("/all", (req, res) => {
         .getAllRecipeUseCase()
         .execute("desc")
         .then((recipes: Recipe[]) => {
-            console.log(recipes)
             res.json(recipes);
         })
         .catch((err: Error) => {
@@ -169,6 +168,19 @@ recipe.post("/update/:id", authenticateJWT, (req, res) => {
 recipe.post("/update/views/:id", (req, res) => {
     recipeConfig
         .updateNbViewsUseCase()
+        .execute(req.params.id)
+        .then((recipe: any) => {
+            res.json(recipe);
+        })
+        .catch((err: Error) => {
+            res.json({error: err.message});
+        });
+});
+
+//incrémente le nombre de favoris de +1
+recipe.post("/update/favoris/:id", (req, res) => {
+    recipeConfig
+        .updateNbFavorissUseCase()
         .execute(req.params.id)
         .then((recipe: any) => {
             res.json(recipe);

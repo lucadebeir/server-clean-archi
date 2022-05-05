@@ -26,6 +26,7 @@ import ClassifyInRepository from "../../../../core/ports/repositories/ClassifyIn
 import ClassifyInRepositorySQL from "../../../secondaries/mysql/repositories/ClassifyInRepositorySQL";
 import IllustrateRecipeRepository from "../../../../core/ports/repositories/IllustrateRecipe.repository";
 import IllustrateRecipeRepositorySQL from "../../../secondaries/mysql/repositories/IllustrateRecipeRepositorySQL";
+import UpdateNbFavorisUsecase from "../../../../core/usecases/recipe/UpdateNbFavoris.usecase";
 
 export default class RecipeConfig {
     private recipeRepository: RecipeRepository = new RecipeRepositorySQL();
@@ -76,6 +77,10 @@ export default class RecipeConfig {
 
     public updateNbViewsUseCase(): UpdateNbViewsUseCase {
         return new UpdateNbViewsUseCase(this.recipeRepository);
+    }
+
+    public updateNbFavorissUseCase(): UpdateNbFavorisUsecase {
+        return new UpdateNbFavorisUsecase(this.recipeRepository);
     }
 
     public deleteRecipeUseCase(): DeleteRecipeUseCase {

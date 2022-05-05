@@ -13,7 +13,8 @@ export default interface RecipeRepository {
   getLatestRecipes(): Promise<Recipe[]>;
   getMostPopularRecipes(): Promise<Recipe[]>;
 
-  updateNbView(id: any): Promise<string>;
+  updateNbFavoris(id: any): Promise<string>;
+  updateNbViews(id: any): Promise<string>;
   deleteById(id: any): Promise<string>;
 
   create(recipe?: Recipe): Promise<Recipe>;
