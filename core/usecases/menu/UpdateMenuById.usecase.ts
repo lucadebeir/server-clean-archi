@@ -11,7 +11,6 @@ export default class UpdateMenuByIdUseCase {
 
   execute = async (menu: Menu, token?: Token): Promise<string> => {
     await this.checkBusinessRules(menu, token);
-    console.log(menu)
     return await this.menuRepository.updateById(menu.id, menu.id_recipe);
   };
 
