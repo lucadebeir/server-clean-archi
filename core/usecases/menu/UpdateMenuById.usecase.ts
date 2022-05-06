@@ -11,6 +11,7 @@ export default class UpdateMenuByIdUseCase {
 
   execute = async (menu: Menu, token?: Token): Promise<string> => {
     await this.checkBusinessRules(menu, token);
+    console.log(menu)
     return await this.menuRepository.updateById(menu.id, menu.id_recipe);
   };
 
@@ -19,7 +20,7 @@ export default class UpdateMenuByIdUseCase {
       if (menu.id) {
         if (await this.menuRepository.existById(menu.id)) {
           if (menu.id_recipe) {
-            if (await !this.recipeRepository.existById(menu.id_recipe)) {
+            if (!await this.recipeRepository.existById(menu.id_recipe)) {
               throw new BusinessException("L'identifiant de recette " + menu.id + " ne correspond à aucune ressource existante");
             }
           } else {
