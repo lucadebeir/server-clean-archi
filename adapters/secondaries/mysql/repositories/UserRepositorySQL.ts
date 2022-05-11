@@ -304,4 +304,18 @@ export default class UserRepositorySQL implements UserRepository {
                 throw new TechnicalException(err.message);
             });
     }
+
+    verifyMail(pseudo: string): Promise<string> {
+        return UserSequelize.update(
+            {confirmed_email: true},
+            {
+                where: {pseudo: pseudo}
+            })
+            .then(() => {
+                return "Email vérifié !";
+            })
+            .catch((err) => {
+                throw new TechnicalException(err.message);
+            });
+    }
 }

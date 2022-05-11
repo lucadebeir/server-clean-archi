@@ -48,7 +48,7 @@ describe("Register user use case unit tests", () => {
 
     spyOn(userRepository, "register").and.callFake((user: User) => {
       if (user) {
-        const result: User = { ...user, is_admin: false, confirmed_email: false };
+        const result: User = { ...user, is_admin: false, confirmed_email: false } as User;
         return new Promise((resolve, reject) => resolve(result));
       }
       return new Promise((resolve, reject) => resolve(null));

@@ -15,12 +15,12 @@ export default class RegisterUseCase {
   };
 
   private checkBusinessRules = async (user: User): Promise<User> => {
-      if (user.pseudo && user.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
-        user.checkIfValueIsValid(29, user.pseudo, "pseudo", false)) {
+      if (user.pseudo && this.checkIfValueIsValid(4, user.pseudo, "pseudo", true) &&
+          this.checkIfValueIsValid(29, user.pseudo, "pseudo", false)) {
         if(await this.userRepository.existByPseudo(user.pseudo)) {
           throw new BusinessException("Un utilisateur existe déjà avec ce pseudo");
         } else {
-          if (user.email && user.checkIfValueIsValid(59, user.email, "email", false)) {
+          if (user.email && this.checkIfValueIsValid(59, user.email, "email", false)) {
                 if(await this.userRepository.existByEmail(user.email)) {
                   throw new BusinessException("Un utilisateur existe déjà avec cet email");
                 } else {
@@ -46,5 +46,17 @@ export default class RegisterUseCase {
       } else {
         throw new BusinessException("Le pseudo est obligatoire");
       }
+  };
+
+  checkIfValueIsValid = (chiffre: number, valueS?: string, champ?: string, inf?: boolean): boolean => {
+    if (!inf) {
+      if (valueS && valueS.length > chiffre)
+        throw new BusinessException("Un " + champ + " ne peut pas comporter plus de " + chiffre + " caractères");
+      else return true;
+    } else {
+      if (valueS && valueS.length < chiffre)
+        throw new BusinessException("Un " + champ + " ne peut pas comporter moins de " + chiffre + " caractères");
+      else return true;
+    }
   };
 }

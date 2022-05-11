@@ -5,6 +5,7 @@ import {authenticateJWT} from "../middleware/auth.middleware";
 import jwt from "jsonwebtoken";
 import UserConfig from "../config/UserConfig";
 import User from "../../../../core/domain/User";
+import UserSequelize from "../../../secondaries/mysql/entities/User.model";
 
 const user = express.Router();
 
@@ -14,6 +15,7 @@ const userConfig = new UserConfig();
 
 const refreshTokenSecret = "yourrefreshtokensecrethere";
 let refreshTokens: any[] = [];
+let rand, mailOptions, host, link;
 
 //Register for an user
 user.post("/register", (req, res) => {
@@ -25,16 +27,15 @@ user.post("/register", (req, res) => {
         is_admin: req.body.admin,
         is_subscribed: req.body.abonneNews,
     } as User;
-    const rand = Math.floor(Math.random() * 100 + 54);
-    const link = "//" + req.get("host") + "/server/verify?id=" + rand + "&pseudo=" + userData.pseudo;
+    rand = Math.floor(Math.random() * 100 + 54);
+    host = "https://" + req.get("host");
+    link = host + "/users/verify?id=" + rand + "&pseudo=" + userData.pseudo;
 
     userConfig
         .registerUseCase()
         .execute(userData, link)
         .then((user: any) => {
-            let accessToken = jwt.sign(user.dataValues, "secret", {
-                expiresIn: "1d",
-            });
+            let accessToken = jwt.sign(user.dataValues, "secret", { expiresIn: "1d" });
             res.json(accessToken);
         })
         .catch((err: Error) => {
@@ -52,8 +53,8 @@ user.post("/gregister", (req, res) => {
         is_subscribed: req.body.abonneNews,
         is_admin: false
     } as User;
-    const rand = Math.floor(Math.random() * 100 + 54);
-    const link = "//" + req.get("host") + "/server/verify?id=" + rand + "&pseudo=" + userData.pseudo;
+    rand = Math.floor(Math.random() * 100 + 54);
+    link = "//" + req.get("host") + "/server/verify?id=" + rand + "&pseudo=" + userData.pseudo;
 
     userConfig
         .gRegisterUseCase()
@@ -117,7 +118,7 @@ user.post("/glogin", (req, res) => {
 //Find an user per to his id
 user.get("/profile/:pseudo", authenticateJWT, (req, res) => {
     userConfig
-        .getUserByIdUseCase()
+        .findUserByIdUseCase()
         .execute(req.params.pseudo, req.body.user)
         .then((user: any) => {
             res.json(user);
@@ -143,7 +144,7 @@ user.get("/pseudo/:pseudo", (req, res) => {
 //Récupère tous les abonnés
 user.get("/abonne", authenticateJWT, (req, res) => {
     userConfig
-        .getAllAbonneUsersUseCase()
+        .findAllAbonneUsersUseCase()
         .execute(req.body.user)
         .then((users: any) => {
             res.json(users);
@@ -156,7 +157,7 @@ user.get("/abonne", authenticateJWT, (req, res) => {
 //Récupère tous les abonnés
 user.get("/abonne/mail", authenticateJWT, (req, res) => {
     userConfig
-        .getAllAbonneMailUsersUseCase()
+        .findAllAbonneMailUsersUseCase()
         .execute(req.body.user)
         .then((users: any) => {
             res.json(users);
@@ -170,13 +171,8 @@ user.get("/abonne/mail", authenticateJWT, (req, res) => {
 user.post("/password/:pseudo", authenticateJWT, (req, res) => {
     userConfig
         .updatePasswordUseCase()
-        .execute(
-            req.params.pseudo,
-            req.body.oldPassword,
-            req.body.newPassword,
-            req.body.confirmNewPassword,
-            req.body.user
-        )
+        .execute(req.params.pseudo, req.body.oldPassword, req.body.newPassword,
+            req.body.confirmNewPassword, req.body.user)
         .then((user: any) => {
             res.json(user);
         })
@@ -273,7 +269,7 @@ user.post("/contact", (req, res) => {
 //renvoie tous les pseudos existants
 user.get("/pseudos", (req, res) => {
     userConfig
-        .getAllExistingPseudoUseCase()
+        .findAllExistingPseudoUseCase()
         .execute()
         .then((pseudos: any) => {
             res.json(pseudos);
@@ -286,7 +282,7 @@ user.get("/pseudos", (req, res) => {
 //renvoie tous les pseudos existants
 user.get("/emails", (req, res) => {
     userConfig
-        .getAllExistingEmailsUseCase()
+        .findAllExistingEmailsUseCase()
         .execute()
         .then((emails: any) => {
             res.json(emails);
@@ -302,5 +298,21 @@ user.post("/logout", (req, res) => {
     refreshTokens = refreshTokens.filter((t) => t !== token);
     res.send("Logout successful");
 });
+
+//vérifie email
+user.get("/verify", (req, res) => {
+    console.log(req)
+    console.log(req.protocol)
+    userConfig
+        .verifyMailUseCase()
+        .execute(req.protocol + "://" + req.get("host"), host, req.query.id, rand, req.query.pseudo)
+        .then((user: any) => {
+            console.log(user);
+            res.redirect("https://marinesrecipes.fr/login");
+        })
+        .catch((err: Error) => {
+            res.json({error: err.message});
+        });
+})
 
 export = user;

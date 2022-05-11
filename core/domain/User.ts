@@ -12,17 +12,13 @@ export default class User {
 
     checkIfValueIsValid = (chiffre: number, valueS?: string, champ?: string, inf?: boolean): boolean => {
         if (!inf) {
-            if (valueS && valueS.length > chiffre) {
+            if (valueS && valueS.length > chiffre)
                 throw new BusinessException("Un " + champ + " ne peut pas comporter plus de " + chiffre + " caractères");
-            } else {
-                return true;
-            }
+            else return true;
         } else {
-            if (valueS && valueS.length < chiffre) {
+            if (valueS && valueS.length < chiffre)
                 throw new BusinessException("Un " + champ + " ne peut pas comporter moins de " + chiffre + " caractères");
-            } else {
-                return true;
-            }
+            else return true;
         }
     };
 }

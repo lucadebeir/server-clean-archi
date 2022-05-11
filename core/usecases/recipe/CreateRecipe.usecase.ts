@@ -15,7 +15,7 @@ export default class CreateRecipeUseCase {
         try {
             await this.checkBusinessRules(recipe, token);
 
-            return await this.recipeRepository.create(recipe)/**.then(async result => {
+            return await this.recipeRepository.create(recipe).then(async result => {
                 const users: { name: any; address: any; }[] = await this.userRepository.findAllAbonneMailUsers();
 
                 users.map((user) => {
@@ -27,7 +27,7 @@ export default class CreateRecipeUseCase {
                 });
 
                 return result;
-            })**/;
+            });
         } catch (e) {
             throw e;
         }

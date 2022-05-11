@@ -18,13 +18,11 @@ export default interface UserRepository {
 
   forgetPassword(email: any): Promise<{ pseudo: any; token: any }>;
   checkValideToken(token: any): Promise<string>;
-  updatePasswordWithToken(
-    token?: Token,
-    newPassword?: any
-  ): Promise<string>;
+  updatePasswordWithToken(token?: Token, newPassword?: any): Promise<string>;
 
   findAllExistingEmails(): Promise<string[]>;
   findAllExistingPseudo(): Promise<string[]>;
 
   checkEmailConfirmed(email: any): Promise<boolean>;
+  verifyMail(pseudo: string): Promise<string>;
 }
